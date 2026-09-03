@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       TRI-COUNTY COLLISION, SERVICE AND LOCATION PAGE TEMPLATE.
+       Copy this to docs/services/<slug>/index.html for a service page,
+       or docs/locations/<slug>/index.html for a location page, then
+       replace every {{TOKEN}}. This file mirrors the live pages: if you
+       change the shared shape, change it here too.
+
+       ---------------------------------------------------------------
+       CLIENT FACTS THIS TEMPLATE DOES NOT KNOW YET.
+
+       This template came from corcoranpr.com, where the business chrome
+       was hard-coded because there was only ever one business in it.
+       Every one of those hard-codes was a fact about a DIFFERENT
+       business, so each became a token rather than a Tri-County value
+       invented to fill the hole. Under the prime law an unverified fact
+       does not ship, and a plausible placeholder is the most dangerous
+       kind, because placeholders ship.
+
+       Nothing below has a default. Each one comes from the client, in
+       writing, and gets checked character for character against the
+       Google Business Profile before any page using it goes live. NAP
+       consistency is exact-match or it is nothing.
+
+         {{PHONE_TEL}}       tel: form, e.g. +1XXXXXXXXXX
+         {{PHONE_DISPLAY}}   as printed, e.g. XXX-XXX-XXXX
+         {{EMAIL}}           the address the shop actually reads
+         {{STREET}}          street address, Southampton PA
+         {{POSTAL}}          ZIP
+         {{GEO_LAT}}         latitude, bare number, no quotes
+         {{GEO_LON}}         longitude, bare number, no quotes
+         {{MAPS_URL}}        Google Maps link to the shop
+         {{SAME_AS}}         schema sameAs list: the GBP place_id URL
+                             plus real, claimed social profiles only.
+                             A profile the shop does not control does
+                             not go in here.
+         {{SOCIAL_LINKS}}    the footer's visible version of the same
+         {{AREA_SERVED}}     schema areaServed. Towns and counties the
+                             shop genuinely serves. Coverage without
+                             pages is legitimate.
+         {{GA4_ID}}          GA4 measurement ID, in the CLIENT'S OWN
+                             Google account, never the agency's
+         {{FORM_ENDPOINT}}   form POST target, on the CLIENT'S OWN
+                             account, never the agency's
+         {{FORM_SUBJECT}}    subject line on the form email
+         {{TAGLINE}}         short claim line under the hero
+         {{FOOTER_TAGLINE}}  footer version of the same
+         {{FOOTER_BADGE}}    the footer's small credential line. Only a
+                             credential the client can evidence, such as
+                             an I-CAR or manufacturer certification. If
+                             there is none, this token renders empty.
+         {{LOGO_DIMS}}       width and height attributes matching the
+                             real logo file's pixels
+         {{PROOF_LINE}}      see PROOF LINE below. No default on purpose.
+
+       PAGE MAP TOKENS. These are the site's own navigation, so they
+       come from the page map in the Tri-County plan, not from this
+       file and not from the founding site's structure:
+
+         {{NAV_LINKS}}       header nav <li> items
+         {{CTA_HREF}}        the one conversion action's target
+         {{CTA_LABEL}}       its label
+         {{CTA_NAV_LABEL}}   the short label in the header button
+         {{CONTACT_TITLE}}   contact band heading
+         {{CONTACT_SUB}}     contact band subhead
+         {{FOOTER_EXPLORE}}  footer Explore <li> items
+         {{FOOTER_SERVICES}} footer Services <li> items
+         {{FOOTER_AREA}}     footer Service Area <li> items
+         {{FOOTER_AREA_PROSE}} the line under that list
+
+       BUTTON GRAMMAR still applies: the filled button is the ONE
+       conversion action. For a collision shop that is almost certainly
+       the phone, not a form. Decide it once, in the plan, and never
+       inflate a nav item into a button.
+
+       SECTION ORDER, which CLAUDE.md also records:
+       hero (with per-page graphic) > plain English line > What You Get
+       > differentiator band with icon tiles and a CTA row > four-step
+       How It Works > What It Costs with a CTA row > Stronger Together
+       > contact band > FAQ last.
+       A COUNTY HUB inserts Towns We Serve between the differentiator
+       band and How It Works, on a Fresh Mint panel so no two touching
+       sections share a background. Backgrounds alternate all the way
+       down: dark, light, dark, mint, light, dark, light, dark, light.
+       Check that rhythm after any section is added or moved.
+
+       ---------------------------------------------------------------
+       DEPTH. Both folders sit two levels under docs/, so the site root
+       is ../../ either way and these need no change: the stylesheet,
+       the script, ../../logo-dark.png, and every ../../#anchor back to
+       the homepage. Only cross-links to the SERVICE pages differ, so
+       they go through one token:
+
+         {{SERVICES_PATH}}
+           service page   (docs/services/<slug>/)    ->  ../
+           industry page  (docs/industries/<slug>/)  ->  ../../services/
+
+       A page at any other depth would need the ../../ paths revisited
+       as well. Do not introduce a leading slash: the site also serves
+       from a project subpath, where /anything 404s.
+
+         {{ROOT}}           the site root from this page. EVERY
+                            depth-dependent path goes through it: the
+                            stylesheet, the script, the logo, the nav,
+                            the footer, the breadcrumb.
+                              two levels down   ->  ../../
+                              three levels down ->  ../../../
+         {{SERVICES_PATH}}  where the service pages are from here
+                              service page      ->  ../
+                              industry page     ->  ../../services/
+                              county hub        ->  ../../services/
+                              town page         ->  ../../../services/
+         {{PAGE_PATH}}      services/<slug>, industries/<slug>,
+                            locations/<county>, or
+                            locations/<county>/<town>
+
+       DEPTHS IN USE. Service, industry and county pages sit two levels
+       under docs/. A TOWN PAGE sits three, nested under its county hub,
+       so it needs {{ROOT}} = ../../../ and it links up to its hub with
+       a plain ../ Nothing else about the page changes.
+
+       BREADCRUMB. Two tokens, because the depth varies. Keep the
+       visible trail and the schema in the same order with the same
+       labels, and give the last item no link.
+         three levels (service, industry, county hub):
+           Home > Services|Industries|Service Area > This page
+         four levels (town page):
+           Home > Service Area > Bucks County > Southampton
+
+       ---------------------------------------------------------------
+       TOWN PAGE NOTES, learned on the founding build. Carry these forward.
+       - THE ADDRESS APPEARS ONCE in the body, in the FAQ answer to the
+         "are you actually based here" question, plus the schema and the
+         footer NAP that every page carries. Do not repeat the street
+         address in the dark band or the lead. Saying we are in the town
+         is the point; reciting the address three times is not.
+       - REGISTER. This is a collision shop, so the reader's own trade
+         words are the right words: bays, estimate, deductible, OEM
+         parts, frame rack, rental, "your insurer." Marketing-speak is
+         the jargon to kill, not the shop talk.
+       - NO PROCESS WINKS. Write about the customer's business, never
+         about how we made the page. A line like "the one town we do not
+         have to research" is about us and it came out.
+       - STRONGER TOGETHER COPY GIVES A REASON TO CLICK. Each card says
+         what the reader gets from that page, in their terms, not what
+         the page is. "How we build, what it includes, and what you own
+         at the end" beats "the full picture of our web design service".
+       - Six cards on a town page are six KINDS OF BUSINESS in that
+         town, not six features. That is what makes the page specific
+         enough to pass the variance test against its county hub.
+       - SCHEMA ON A LOCATION PAGE. The business address is ALWAYS
+         Southampton, on every page, because the shop is one location.
+         Never put an address in a town the shop does not sit in. The
+         town is declared through areaServed instead, and it goes on
+         BOTH nodes: the business node gets the town plus its county,
+         and the Service node gets the same. A county hub does the same
+         thing with the county plus every town under it. Getting this
+         half right is easy to miss, so check both nodes.
+
+       ---------------------------------------------------------------
+       PROOF LINE. {{PROOF_LINE}} has NO default in this repo. Whatever
+       goes there is a claim about the shop, so it comes from the client
+       in writing and nowhere else. Years in business, certifications
+       (I-CAR, ASE, manufacturer approvals), insurer relationships,
+       warranty terms: every one of those is checkable, and every one of
+       them ships only after the client has confirmed it. Never carry a
+       proof line over from another site and never write a plausible
+       one. An unverified proof line is the exact failure the prime law
+       exists to stop.
+
+       The founding site's own proof line, kept only as a shape to
+       imitate and never as text to reuse:
+
+         Clients from Main Street to Disney on Ice · U.S. Navy veteran owned &amp; operated
+
+       Override it per page when that line does not belong. Every
+       industry page drops the client mention from the proof line and
+       uses:
+
+         {{TAGLINE}}
+
+       Industry pages carry no client-attributed numbers or results
+       without the client's written permission. Client names appear on
+       industry pages only where the client relationship is itself the
+       point, and only for clients already named publicly on the site.
+
+       ---------------------------------------------------------------
+       RULES THIS TEMPLATE ENFORCES, do not break them:
+       - Every internal link is RELATIVE and never starts with "/".
+         Absolute URLs appear only where the spec demands them:
+         canonical, og:url, og:image, and schema @id/url values.
+       - Title under 60 characters, suffixed "| Tri-County Collision".
+       - Meta description under 160 characters.
+       - Exactly ONE h1. The visible breadcrumb and BreadcrumbList must
+         use the SAME label for the current page.
+       - Every <img> carries real alt text. alt="" scores as missing.
+       - Hero art is decorative: aria-hidden, palette colors only, no
+         gradients, and hidden below 1000px by .hero-art.
+       - No em dashes anywhere, including schema text.
+       - No price, offer, review or rating markup. Pricing is explained
+         in plain language with no dollar figures.
+       - Phone CTAs are tel: links. Every primary audit button links to
+         {{ROOT}}free-audit/, the page that explains the offer, NOT to
+         #contact. The contact band on this page keeps its form and its
+         mailto; it is simply no longer where the buttons point.
+       - Above the fold the ONLY trade term allowed is this page's own
+         primary keyword. AEO is spelled out on first use.
+
+       AFTER COPYING, the page does not exist until you also:
+       1. add its <url> block to docs/sitemap.xml with the real date
+       2. add its line to "## Key pages" in docs/llms.txt
+       3. link it from the matching homepage card and, for a service,
+          the footer Services column
+       4. run: python3 scripts/audit.py --strict   (every page 100/100)
+       Steps 1 and 2 are enforced by the audit, which fails the page if
+       either is missing.
+       ============================================================ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#082A4A">
+
+  <title>{{TITLE}}</title>
+  <meta name="description" content="{{META_DESC}}">
+
+  <link rel="canonical" href="https://tricountycollision.com/{{PAGE_PATH}}/">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{TITLE}}">
+  <meta property="og:description" content="{{OG_DESC}}">
+  <meta property="og:url" content="https://tricountycollision.com/{{PAGE_PATH}}/">
+  <meta property="og:image" content="https://tricountycollision.com/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Tri-County Collision, collision repair in Southampton, PA">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- WHY: Google Analytics 4. The property ID is {{GA4_ID}} and it lives
+       in the CLIENT'S OWN Google account, never the agency's, so the exit
+       promise stays easy to keep. Carry the existing property over from
+       the WordPress site at cutover if the shop already has one, so the
+       history survives; open a new one in their account if it does not.
+       This must be the ONLY tracking on the site. Audit whatever the
+       WordPress site is running before cutover (tag manager containers,
+       Meta pixels, dead Universal Analytics tags, Jetpack Stats are all
+       common) and bring none of it across. Do not add one
+       back without updating docs/privacy/ in the same commit.
+       The form_submit event in assets/site.js reaches GA4 through the
+       gtag() function defined here. GA4's own enhanced measurement
+       cannot see that submit, because the handler calls
+       preventDefault() to keep the no-reload thank you, so the
+       explicit call is what records it. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{GA4_ID}}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{GA4_ID}}');
+  </script>
+
+  <link rel="stylesheet" href="{{ROOT}}assets/site.css?v=cb98801c">
+  <script src="{{ROOT}}assets/site.js?v=8db47049" defer></script>
+
+  <!-- WHY: one @graph. The ProfessionalService node repeats the SAME @id
+       as the homepage so every page resolves to one business entity. It
+       is repeated in full rather than referenced, because a bare @id
+       reference carries no type and no sameAs, which is what search
+       engines and the audit both read to confirm the entity.
+       No offers, priceRange, hasOfferCatalog, Review or AggregateRating
+       anywhere: pricing is not published on this site. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AutoBodyShop",
+        "@id": "https://tricountycollision.com/#business",
+        "name": "Tri-County Collision",
+        "url": "https://tricountycollision.com/",
+        "telephone": "{{PHONE_TEL}}",
+        "email": "{{EMAIL}}",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "{{STREET}}",
+          "addressLocality": "Southampton",
+          "addressRegion": "PA",
+          "postalCode": "{{POSTAL}}",
+          "addressCountry": "US"
+        },
+        "geo": { "@type": "GeoCoordinates", "latitude": {{GEO_LAT}}, "longitude": {{GEO_LON}} },
+        "sameAs": [
+{{SAME_AS}}
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://tricountycollision.com/{{PAGE_PATH}}/#webpage",
+        "url": "https://tricountycollision.com/{{PAGE_PATH}}/",
+        "name": "{{TITLE}}",
+        "description": "{{META_DESC}}",
+        "about": { "@id": "https://tricountycollision.com/{{PAGE_PATH}}/#service" },
+        "isPartOf": { "@id": "https://tricountycollision.com/#business" }
+      },
+      {
+        "@type": "Service",
+        "@id": "https://tricountycollision.com/{{PAGE_PATH}}/#service",
+        "name": "{{SERVICE_NAME}}",
+        "serviceType": "{{SERVICE_TYPE}}",
+        "description": "{{SERVICE_DESC}}",
+        "provider": { "@id": "https://tricountycollision.com/#business" },
+        "areaServed": [
+{{AREA_SERVED}}
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+{{BREADCRUMB_SCHEMA}}
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {{FAQ_SCHEMA}}
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ============ STICKY DARK NAV (identical on every page) ============ -->
+  <header class="nav">
+    <div class="wrap inner">
+      <a class="nav-home" href="{{ROOT}}" aria-label="Tri-County Collision home"><img src="{{ROOT}}logo-dark.png" alt="Tri-County Collision" {{LOGO_DIMS}}></a>
+      <nav class="nav-main" id="navmenu" aria-label="Main"><ul>
+{{NAV_LINKS}}
+      </ul></nav>
+      <a class="btn btn-sm" href="{{CTA_HREF}}">{{CTA_NAV_LABEL}}</a>
+      <button class="navtoggle" type="button" aria-expanded="false" aria-controls="navmenu" aria-label="Menu">
+        <svg class="ico-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="ico-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero hero--page field-hero">
+      <div class="wrap">
+        <!-- The visible breadcrumb mirrors the BreadcrumbList above.
+             Same labels, or Google reports a mismatch. -->
+        <nav class="crumb" aria-label="Breadcrumb">
+          <ol>
+{{BREADCRUMB_HTML}}
+          </ol>
+        </nav>
+        <div class="hero-split">
+          <div class="hero-copy-col">
+            <p class="eyebrow">{{EYEBROW}}</p>
+            <h1>{{H1}}</h1>
+            <p class="lead">{{LEAD}}</p>
+            <div class="cta-row">
+              <a class="btn" href="{{CTA_HREF}}">{{CTA_LABEL}}</a>
+              <a class="btn btn-ghost" href="tel:{{PHONE_TEL}}">Call {{PHONE_DISPLAY}}</a>
+            </div>
+            <p class="proof">{{PROOF_LINE}}</p>
+          </div>
+
+          <!-- Decorative only, so aria-hidden and hidden below 1000px.
+               Draw the thing the page is about. Hex values are hardcoded
+               because CSS custom properties do not reach inline SVG
+               attributes; every one must be a Strategic Growth palette
+               color, used solid or at low alpha. No gradients. -->
+          <div class="hero-art" aria-hidden="true">
+            <svg viewBox="0 0 400 300" focusable="false">
+{{HERO_ART}}
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHAT YOU GET ============
+         The plain English line comes first: one sentence explaining the
+         service to someone who has never bought marketing. -->
+    <section id="included">
+      <div class="wrap">
+        <p class="plain"><span class="plain-label">IN PLAIN ENGLISH</span>{{PLAIN_ENGLISH}}</p>
+        <div class="sec-head">
+          <h2 class="sec-title">{{INCLUDED_TITLE}}</h2>
+          <p class="sec-sub">{{INCLUDED_SUB}}</p>
+        </div>
+        <div class="grid3">
+{{INCLUDED_CARDS}}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DIFFERENTIATOR BAND ============
+         Cards here use .tile.tile-dark, the icon tile adapted for a
+         Midnight panel: translucent surface, Fresh Mint strokes, and one
+         Growth Green accent path per icon marked class="ico-accent". -->
+    <section class="dark field-blue" id="approach">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">{{APPROACH_TITLE}}</h2>
+          <p class="sec-sub">{{APPROACH_SUB}}</p>
+        </div>
+        <div class="grid2">
+{{APPROACH_CARDS}}
+        </div>
+        <div class="cta-row" style="margin-top:52px;justify-content:center">
+          <a class="btn" href="{{CTA_HREF}}">{{CTA_LABEL}}</a>
+          <a class="btn btn-ghost" href="tel:{{PHONE_TEL}}">Call {{PHONE_DISPLAY}}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TOWNS WE SERVE, COUNTY HUBS ONLY ============
+         DELETE this whole section for a service or industry page.
+         Raised white panel so it does not sit light against the light
+         How It Works band below, and tighter padding because it is a list
+         rather than a feature. Town names are plain text until a town
+         earns its own page, then the name becomes a link to it. Never
+         link a town to a stub or a page that does not exist. -->
+    <section id="towns" class="band-panel band-towns">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">{{TOWNS_TITLE}}</h2>
+          <p class="sec-sub">EVERY TOWN LISTED HERE IS ONE WE ACTUALLY WORK IN</p>
+        </div>
+        <p style="text-align:center;max-width:860px;margin:0 auto;font-size:1.05rem">{{TOWNS_PROSE}}</p>
+        <ul class="town-list">
+{{TOWNS_LIST}}
+        </ul>
+        <p style="text-align:center;margin-top:32px;font-size:1.05rem">If your town is not listed, we almost certainly still serve it. Call and ask.</p>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============
+         Four NUMBERED PROCESS steps, not benefit tiles. If you are
+         lifting them from a live page, take the grid4 inside that
+         page's own id="how" section: several pages have an earlier
+         grid4 in the differentiator band, and grabbing the first one
+         silently ships the wrong content.
+         Step 02 is standard on the service and industry pages:
+         "The plan and the number" / "We walk you through the report
+         together, agree on what is worth doing, and you get the flat quote
+         in writing. No pressure, and no meter running."
+         The web design and location pages are the sanctioned exception:
+         the same card, with "agree on what is worth building." -->
+    <section id="how">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">How It Works</h2>
+          <p class="sec-sub">{{HOW_SUB}}</p>
+        </div>
+        <div class="grid4">
+{{HOW_STEPS}}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHAT IT COSTS ============
+         Plain language only. No dollar figures on this site, and no
+         price or offer markup in the schema above. -->
+    <section class="dark field-green" id="pricing">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">What It Costs</h2>
+          <p class="sec-sub">FLAT QUOTE, MONTH TO MONTH, NO LONG CONTRACTS</p>
+        </div>
+        <div class="grid3">
+          <article class="card">
+            <span class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.8h4.5"/></svg></span>
+            <h3>A flat quote in one business day</h3>
+            <p>Tell us what you need and you get a written, flat quote within one business day. One number for the build, agreed before anything starts. No hourly meter, and no surprise line items at the end.</p>
+          </article>
+          <article class="card">
+            <span class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 3v3M16 3v3"/></svg></span>
+            <h3>Month to month after that</h3>
+            <p>If you want the site watched and maintained once it is live, that runs month to month. You can stop any time, and you keep the site. We would rather earn the next month than trap you in the last one.</p>
+          </article>
+          <article class="card">
+            <span class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l7.5 3.3v5c0 4.6-3.1 8.3-7.5 9.5-4.4-1.2-7.5-4.9-7.5-9.5v-5z"/><path d="M8.9 12.1l2.2 2.2 4.1-4.6"/></svg></span>
+            <h3>No long contracts</h3>
+            <p>No annual lock-in, no early termination fee, and no auto-renewing term you have to remember to cancel. The free audit comes first, so you see the evidence before you spend a dollar.</p>
+          </article>
+        </div>
+        <div class="cta-row" style="margin-top:52px;justify-content:center">
+          <a class="btn" href="{{CTA_HREF}}">{{CTA_LABEL}}</a>
+          <a class="btn btn-ghost" href="tel:{{PHONE_TEL}}">Call {{PHONE_DISPLAY}}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STRONGER TOGETHER ============
+         Three cross-links to sibling pages, through {{SERVICES_PATH}}
+         so the depth is right from either folder. -->
+    <section id="together">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Stronger Together</h2>
+          <p class="sec-sub">{{TOGETHER_SUB}}</p>
+        </div>
+        <div class="grid3">
+{{TOGETHER_CARDS}}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT (identical on every page) ============ -->
+    <section class="dark contact field-both" id="contact">
+      <div class="wrap">
+        <div class="sec-head" style="margin-bottom:0">
+          <h2 class="sec-title">{{CONTACT_TITLE}}</h2>
+          <p class="sec-sub">{{CONTACT_SUB}}</p>
+        </div>
+        <!-- ============ AUDIT REQUEST FORM ============
+             Posts to a hosted Formspree endpoint, so there is no server code
+             in this repo and nothing to maintain. It works with JavaScript
+             off: the browser submits normally and Formspree returns its own
+             confirmation. With JavaScript on, assets/site.js intercepts it,
+             posts in the background, and swaps in the thank you below.
+             The Google Ads conversion tag goes in assets/site.js, in the
+             success branch marked CONVERSION TAG. -->
+        <form class="audit-form" action="{{FORM_ENDPOINT}}" method="POST">
+          <input type="hidden" name="_subject" value="{{FORM_SUBJECT}}">
+          <!-- Honeypot. Hidden from people and from screen readers, so
+               anything that fills it in is a bot and Formspree drops it. -->
+          <div class="af-hp" aria-hidden="true">
+            <label for="af-company">Leave this field empty</label>
+            <input type="text" id="af-company" name="_gotcha" tabindex="-1" autocomplete="off">
+          </div>
+          <div class="af-grid">
+            <p class="af-field">
+              <label for="af-name">Your name</label>
+              <input type="text" id="af-name" name="name" required autocomplete="name">
+            </p>
+            <p class="af-field">
+              <label for="af-business">Business name</label>
+              <input type="text" id="af-business" name="business" required autocomplete="organization">
+            </p>
+            <p class="af-field af-wide af-url">
+              <label for="af-website">Your website address</label>
+              <input type="text" id="af-website" name="website" required inputmode="url" autocomplete="url" placeholder="yourbusiness.com" aria-describedby="af-website-hint">
+              <span class="af-hint" id="af-website-hint">This is the site we audit. If you do not have one yet, put none.</span>
+            </p>
+            <p class="af-field">
+              <label for="af-email">Email</label>
+              <input type="email" id="af-email" name="email" required autocomplete="email">
+            </p>
+            <p class="af-field">
+              <label for="af-phone">Phone <span class="af-opt">Optional</span></label>
+              <input type="tel" id="af-phone" name="phone" autocomplete="tel">
+            </p>
+            <p class="af-field af-wide">
+              <label for="af-note">Anything we should know? <span class="af-opt">Optional</span></label>
+              <textarea id="af-note" name="note" rows="3"></textarea>
+            </p>
+          </div>
+          <p class="af-error" role="alert" hidden></p>
+          <button class="btn af-submit" type="submit">Send My Free Audit</button>
+        </form>
+        <div class="af-thanks" role="status" hidden>
+          <p>Got it. Your report comes back within one business day. If it is urgent, call or text <a href="tel:{{PHONE_TEL}}">{{PHONE_DISPLAY}}</a>.</p>
+        </div>
+        <p class="contact-alt">Prefer to talk? Call or text <a href="tel:{{PHONE_TEL}}">{{PHONE_DISPLAY}}</a> or email <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>.</p>
+      </div>
+    </section>
+
+    <!-- ============ FAQ, LAST BEFORE THE FOOTER ============
+         Each answer must be byte-identical to its acceptedAnswer text in
+         the FAQPage schema above. Edit one, edit both.
+         The contracts question ("Do you require long-term contracts?")
+         and its answer are standard on every page's FAQ and must be
+         byte-identical site-wide, visible and schema; the current
+         canonical wording lives on docs/index.html. Two pages are
+         sanctioned exceptions: web-design, whose four FAQs are
+         page-specific by design, and film-live-entertainment, which
+         carries no contracts question at all because production work is
+         project-scoped to a run rather than sold as a monthly plan. New pages carry the contracts question as their
+         final FAQ item. -->
+    <section id="faq">
+      <div class="wrap" style="max-width:880px">
+        <div class="sec-head">
+          <h2 class="sec-title">Questions, Answered</h2>
+          <p class="sec-sub">{{FAQ_SUB}}</p>
+        </div>
+{{FAQ_ITEMS}}
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER (identical on every page) ============ -->
+  <footer class="site field-green">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <a class="foot-home" href="{{ROOT}}" aria-label="Tri-County Collision home"><img src="{{ROOT}}logo-dark.png" alt="Tri-County Collision" {{LOGO_DIMS}}></a>
+          <p class="foot-tag">{{FOOTER_TAGLINE}}</p>
+          <p class="foot-nap">
+            Tri-County Collision<br>
+            <a href="{{MAPS_URL}}" target="_blank" rel="noopener">{{STREET}}<br>
+            Southampton, PA {{POSTAL}}</a><br>
+            <a href="tel:{{PHONE_TEL}}">{{PHONE_DISPLAY}}</a><br>
+            <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
+          </p>
+        </div>
+        <div>
+          <h2 class="foot-head">Explore</h2>
+          <ul class="foot-links">
+{{FOOTER_EXPLORE}}
+          </ul>
+        </div>
+        <div>
+          <h2 class="foot-head">Services</h2>
+          <ul class="foot-links">
+{{FOOTER_SERVICES}}
+          </ul>
+        </div>
+        <div>
+          <h2 class="foot-head">Get Started</h2>
+          <ul class="foot-links">
+            <li><a href="{{CTA_HREF}}">{{CTA_LABEL}}</a></li>
+            <li><a href="tel:{{PHONE_TEL}}">Call {{PHONE_DISPLAY}}</a></li>
+            <li><a href="mailto:{{EMAIL}}">Email the shop</a></li>
+          </ul>
+        </div>
+        <div class="foot-area" id="service-area">
+          <h2 class="foot-head">Service Area</h2>
+          <ul>
+{{FOOTER_AREA}}
+          </ul>
+          <p>{{FOOTER_AREA_PROSE}}</p>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <p>© 2026 Tri-County Collision · <a href="{{MAPS_URL}}" target="_blank" rel="noopener">{{STREET}}, Southampton, PA {{POSTAL}}</a> · <a href="tel:{{PHONE_TEL}}">{{PHONE_DISPLAY}}</a> · <a href="mailto:{{EMAIL}}">{{EMAIL}}</a> · <a href="{{ROOT}}privacy/">Privacy Policy</a></p>
+        <p>{{FOOTER_BADGE}}</p>
+        <div class="social">
+{{SOCIAL_LINKS}}
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
