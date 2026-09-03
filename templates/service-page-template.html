@@ -19,19 +19,33 @@
        does not ship, and a plausible placeholder is the most dangerous
        kind, because placeholders ship.
 
-       Nothing below has a default. Each one comes from the client, in
-       writing, and gets checked character for character against the
-       Google Business Profile before any page using it goes live. NAP
-       consistency is exact-match or it is nothing.
+       ALREADY FILLED IN, and never retyped by hand anywhere:
 
-         {{PHONE_TEL}}       tel: form, e.g. +1XXXXXXXXXX
-         {{PHONE_DISPLAY}}   as printed, e.g. XXX-XXX-XXXX
-         {{EMAIL}}           the address the shop actually reads
-         {{STREET}}          street address, Southampton PA
-         {{POSTAL}}          ZIP
+         name     Tri-County Collision
+         address  995 Jaymor Rd, Southampton, PA 18966
+         phone    (215) 322-5350   tel:+12153225350
+
+       Those are the values published on the shop's live site, read and
+       confirmed on 2026-09-03 by Greg Quinn of Corcoran Communications,
+       the vendor. Owner sign-off is still outstanding; the same note sits
+       in scripts/audit.py, which now ENFORCES all three. The audit fails
+       any page that spells the street a second way, so there is no longer
+       a way for the NAP to drift without the build saying so.
+
+       Nothing still tokenized below has a default. Each one comes from
+       the client, in writing, and gets checked character for character
+       against the Google Business Profile before any page using it goes
+       live. NAP consistency is exact-match or it is nothing.
+
+         {{EMAIL}}           the address the shop actually reads. STILL
+                             OPEN: the owner has not designated the one
+                             address to publish, and the page map calls
+                             for one email and one phone on Home and on
+                             Contact. Do not pick one off the old site.
+                             The audit's email check is off until this
+                             lands, and says so on every page.
          {{GEO_LAT}}         latitude, bare number, no quotes
          {{GEO_LON}}         longitude, bare number, no quotes
-         {{MAPS_URL}}        Google Maps link to the shop
          {{SAME_AS}}         schema sameAs list: the GBP place_id URL
                              plus real, claimed social profiles only.
                              A profile the shop does not control does
@@ -279,14 +293,14 @@
         "@id": "https://tricountycollision.com/#business",
         "name": "Tri-County Collision",
         "url": "https://tricountycollision.com/",
-        "telephone": "{{PHONE_TEL}}",
+        "telephone": "+12153225350",
         "email": "{{EMAIL}}",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "{{STREET}}",
+          "streetAddress": "995 Jaymor Rd",
           "addressLocality": "Southampton",
           "addressRegion": "PA",
-          "postalCode": "{{POSTAL}}",
+          "postalCode": "18966",
           "addressCountry": "US"
         },
         "geo": { "@type": "GeoCoordinates", "latitude": {{GEO_LAT}}, "longitude": {{GEO_LON}} },
@@ -365,7 +379,7 @@
             <p class="lead">{{LEAD}}</p>
             <div class="cta-row">
               <a class="btn" href="{{CTA_HREF}}">{{CTA_LABEL}}</a>
-              <a class="btn btn-ghost" href="tel:{{PHONE_TEL}}">Call {{PHONE_DISPLAY}}</a>
+              <a class="btn btn-ghost" href="tel:+12153225350">Call (215) 322-5350</a>
             </div>
             <p class="proof">{{PROOF_LINE}}</p>
           </div>
@@ -415,7 +429,7 @@
         </div>
         <div class="cta-row" style="margin-top:52px;justify-content:center">
           <a class="btn" href="{{CTA_HREF}}">{{CTA_LABEL}}</a>
-          <a class="btn btn-ghost" href="tel:{{PHONE_TEL}}">Call {{PHONE_DISPLAY}}</a>
+          <a class="btn btn-ghost" href="tel:+12153225350">Call (215) 322-5350</a>
         </div>
       </div>
     </section>
@@ -493,7 +507,7 @@
         </div>
         <div class="cta-row" style="margin-top:52px;justify-content:center">
           <a class="btn" href="{{CTA_HREF}}">{{CTA_LABEL}}</a>
-          <a class="btn btn-ghost" href="tel:{{PHONE_TEL}}">Call {{PHONE_DISPLAY}}</a>
+          <a class="btn btn-ghost" href="tel:+12153225350">Call (215) 322-5350</a>
         </div>
       </div>
     </section>
@@ -567,9 +581,9 @@
           <button class="btn af-submit" type="submit">Send My Free Audit</button>
         </form>
         <div class="af-thanks" role="status" hidden>
-          <p>Got it. Your report comes back within one business day. If it is urgent, call or text <a href="tel:{{PHONE_TEL}}">{{PHONE_DISPLAY}}</a>.</p>
+          <p>Got it. Your report comes back within one business day. If it is urgent, call or text <a href="tel:+12153225350">(215) 322-5350</a>.</p>
         </div>
-        <p class="contact-alt">Prefer to talk? Call or text <a href="tel:{{PHONE_TEL}}">{{PHONE_DISPLAY}}</a> or email <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>.</p>
+        <p class="contact-alt">Prefer to talk? Call or text <a href="tel:+12153225350">(215) 322-5350</a> or email <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>.</p>
       </div>
     </section>
 
@@ -606,9 +620,9 @@
           <p class="foot-tag">{{FOOTER_TAGLINE}}</p>
           <p class="foot-nap">
             Tri-County Collision<br>
-            <a href="{{MAPS_URL}}" target="_blank" rel="noopener">{{STREET}}<br>
-            Southampton, PA {{POSTAL}}</a><br>
-            <a href="tel:{{PHONE_TEL}}">{{PHONE_DISPLAY}}</a><br>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd<br>
+            Southampton, PA 18966</a><br>
+            <a href="tel:+12153225350">(215) 322-5350</a><br>
             <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
           </p>
         </div>
@@ -628,7 +642,7 @@
           <h2 class="foot-head">Get Started</h2>
           <ul class="foot-links">
             <li><a href="{{CTA_HREF}}">{{CTA_LABEL}}</a></li>
-            <li><a href="tel:{{PHONE_TEL}}">Call {{PHONE_DISPLAY}}</a></li>
+            <li><a href="tel:+12153225350">Call (215) 322-5350</a></li>
             <li><a href="mailto:{{EMAIL}}">Email the shop</a></li>
           </ul>
         </div>
@@ -641,7 +655,7 @@
         </div>
       </div>
       <div class="foot-bottom">
-        <p>© 2026 Tri-County Collision · <a href="{{MAPS_URL}}" target="_blank" rel="noopener">{{STREET}}, Southampton, PA {{POSTAL}}</a> · <a href="tel:{{PHONE_TEL}}">{{PHONE_DISPLAY}}</a> · <a href="mailto:{{EMAIL}}">{{EMAIL}}</a> · <a href="{{ROOT}}privacy/">Privacy Policy</a></p>
+        <p>© 2026 Tri-County Collision · <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> · <a href="tel:+12153225350">(215) 322-5350</a> · <a href="mailto:{{EMAIL}}">{{EMAIL}}</a> · <a href="{{ROOT}}privacy/">Privacy Policy</a></p>
         <p>{{FOOTER_BADGE}}</p>
         <div class="social">
 {{SOCIAL_LINKS}}

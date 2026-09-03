@@ -43,27 +43,79 @@ SITE_DIR = "docs"
 SITEMAP_PATH = os.path.join(SITE_DIR, "sitemap.xml")
 LLMS_PATH = os.path.join(SITE_DIR, "llms.txt")
 
-# The NAP phone and email, in the formats they could plausibly be typed.
+# --- The NAP -----------------------------------------------------------
+# Name, address, phone. Rule 6: these are character-identical everywhere
+# they appear, on the site, in schema, on the Google Business Profile and
+# in every directory. One spelling, no variants. This block is the single
+# place the canonical spelling lives, so a page and a check can never
+# disagree about it.
+#
+# PROVENANCE, because a fact on a client site is only as good as its
+# source. Phone and address below are the values published on the shop's
+# live WordPress site, read and confirmed on 2026-09-03 by Greg Quinn of
+# Corcoran Communications, the vendor. The standards make the CLIENT-OWNER
+# the fact-checker of record for a client site, so the vendor confirming
+# is a deliberate exception and it is recorded here rather than blurred:
+# owner sign-off on the NAP is still outstanding. Get it, and when you do,
+# replace this paragraph with the date the owner confirmed. Until then a
+# reader of this file knows exactly whose word these values rest on.
+NAP_NAME = "Tri-County Collision"
+NAP_STREET = "995 Jaymor Rd"
+NAP_LOCALITY = "Southampton"
+NAP_REGION = "PA"
+NAP_POSTAL = "18966"
+NAP_PHONE_DISPLAY = "(215) 322-5350"
+NAP_PHONE_TEL = "+12153225350"
+
+# The phone and email, in the formats they could plausibly be typed.
 # Every visible mention of either is meant to be tappable: a reader on a
 # phone should never have to memorize a number and retype it in the
 # dialer. Mentions inside JSON-LD are data, not copy, and are skipped.
 #
-# UNSET ON PURPOSE. These carried Corcoran's real phone and email in the
-# repo this file came from. Tri-County Collision's NAP has not been
-# confirmed by the fact-checker of record (the client), and the prime
-# law is that an unverified fact does not ship, not even as a
-# placeholder that "will be fixed later." So both are None, the
-# tappability check stands down, and every scored page carries a note
-# saying the check is not running. A silent skip would have read as a
-# pass, which is the one outcome that must not happen.
+# The phone regex is deliberately loose about punctuation. It has to be:
+# the point of the check is to CATCH a number typed some other way, and a
+# pattern that only matched the canonical spelling would sail past
+# "215.322.5350" as if it were not a phone number at all.
+NAP_PHONE_RE = re.compile(r"\(?215\)?[\s.\-]?322[\s.\-]?5350")
+
+# THE EMAIL CHECK STAYS OFF, ON PURPOSE. The shop has not designated the
+# one address it wants published. The page map calls for "one email, one
+# phone" on both Home and Contact, so there is a right answer here and it
+# is the owner's to give, not ours to pick from whatever the old site
+# happens to show. The prime law says an unverified fact does not ship,
+# not even as a placeholder that will be fixed later, because
+# placeholders ship. So this stays None, the email half of the check
+# stands down, and every scored page carries a note saying so. A silent
+# skip would read as a pass, which is the one outcome that must not
+# happen.
 #
-# TO TURN THE CHECK ON: get the phone and email from the client in
-# writing, confirm they match the Google Business Profile and the live
-# site character for character, then fill both in below. Nothing else
-# needs to change.
-NAP_PHONE_RE = None    # e.g. re.compile(r"\(?215\)?[\s.\-]?555[\s.\-]?0100")
+# TO TURN IT ON: get the address from the owner in writing, confirm it
+# matches the Google Business Profile character for character, fill it in
+# below, and delete the note text in audit_page that names it. Nothing
+# else needs to change.
 NAP_EMAIL_RE = None    # e.g. re.compile(r"info@tricountycollision\.com")
-NAP_CONFIGURED = NAP_PHONE_RE is not None and NAP_EMAIL_RE is not None
+
+# The contact patterns that are actually live. Built from whichever of the
+# two above is set, so turning one on or off changes nothing else.
+NAP_CONTACT_RES = [(k, rx) for k, rx in
+                   (("phone", NAP_PHONE_RE), ("email", NAP_EMAIL_RE))
+                   if rx is not None]
+
+# --- Address consistency ----------------------------------------------
+# The street address is the NAP field that drifts, because it is the one
+# with abbreviations in it. "Rd" becomes "Road", the ZIP goes missing, the
+# comma moves. Each variant is a slightly different business as far as a
+# search engine's entity matching is concerned, which is exactly the harm
+# rule 6 exists to prevent, and none of it is visible by eye across
+# thirty-odd pages.
+#
+# So: any page that says "Jaymor" at all is claiming to carry the
+# address, and gets checked for the canonical spelling of it.
+NAP_STREET_CANON = NAP_STREET
+NAP_CITYLINE_CANON = f"{NAP_LOCALITY}, {NAP_REGION} {NAP_POSTAL}"
+NAP_STREET_MENTION_RE = re.compile(r"Jaymor", re.I)
+NAP_STREET_VARIANT_RE = re.compile(
+    r"\b995\s+Jaymor\s+(?:Road|Rd\.)\b|\bJaymor\s+(?:Road|Rd\.)\b", re.I)
 
 # The site's own base URL, used to work out what URL a local file will
 # serve at. That is how the two checks below know whether a page is in
@@ -464,10 +516,10 @@ class PageParser(HTMLParser):
             self._faq_a += data
         if self._skip_depth:
             return
-        if not NAP_CONFIGURED:
+        if not NAP_CONTACT_RES:
             return
         linked = any(h.startswith(("tel:", "mailto:")) for h in self._href_stack)
-        for kind, rx in (("phone", NAP_PHONE_RE), ("email", NAP_EMAIL_RE)):
+        for kind, rx in NAP_CONTACT_RES:
             for _ in rx.finditer(data):
                 if linked:
                     self.contacts_linked += 1
@@ -759,22 +811,48 @@ def audit(source: str, coverage: dict = None):
     # a phone reader taps once. Silent regression is the real risk here:
     # this is the kind of thing that gets missed when a new FAQ answer or
     # card is written, which is exactly why it is checked on every page.
-    if not NAP_CONFIGURED:
-        notes.append("**The tappable phone/email check is not running.** Tri-County "
-                     "Collision's NAP has not been confirmed by the client yet, so "
-                     "`NAP_PHONE_RE` and `NAP_EMAIL_RE` in `scripts/audit.py` are unset. "
-                     "This is a check that is OFF, not a check that passed. Get the "
-                     "phone and email in writing from the client, confirm they match "
-                     "the Google Business Profile character for character, and fill "
-                     "them in.")
-    elif p.contacts_bare:
+    if p.contacts_bare:
         where = ", ".join(f"line {ln} ({kind})" for ln, kind in p.contacts_bare[:5])
         warns.append(f"**{len(p.contacts_bare)} phone/email mention(s) not linked** ({where}). "
-                     "Wrap each one so it is tappable on a phone, for example "
-                     "`<a href=\"tel:+1XXXXXXXXXX\">the shop's number</a>` or "
-                     "`<a href=\"mailto:...\">the shop's email</a>`.")
+                     f"Wrap each one so it is tappable on a phone: "
+                     f"`<a href=\"tel:{NAP_PHONE_TEL}\">{NAP_PHONE_DISPLAY}</a>`.")
     elif p.contacts_linked:
         passes.append(f"All {p.contacts_linked} phone/email mentions are tappable tel:/mailto: links.")
+
+    if NAP_EMAIL_RE is None:
+        notes.append("**The email half of the contact check is not running.** The shop "
+                     "has not designated the one address it wants published, so "
+                     "`NAP_EMAIL_RE` in `scripts/audit.py` is unset. The phone half IS "
+                     "running. This is a check that is OFF, not a check that passed: a "
+                     "bare, untappable email address on this page would not be caught. "
+                     "The page map calls for one email and one phone on Home and "
+                     "Contact, so the owner has a decision to make here.")
+
+    # --- The street address, spelled one way ---
+    if NAP_STREET_MENTION_RE.search(html):
+        has_street = NAP_STREET_CANON in html
+        has_cityline = NAP_CITYLINE_CANON in html
+        variant = NAP_STREET_VARIANT_RE.search(html)
+        if variant and not has_street:
+            fails.append(
+                f"**The street address is spelled `{variant.group(0)}` here, not "
+                f"`{NAP_STREET_CANON}`.** NAP is character-identical everywhere or it is "
+                f"nothing: each variant reads as a slightly different business to "
+                f"Google's entity matching, which is how a shop ends up competing with "
+                f"itself in the Map Pack. Use `{NAP_STREET_CANON}`.")
+        elif not has_street:
+            fails.append(
+                f"**This page names Jaymor but not `{NAP_STREET_CANON}`.** If the page "
+                f"carries the address it carries the canonical spelling. If it should "
+                f"not carry the address at all, take the mention out.")
+        elif not has_cityline:
+            warns.append(
+                f"**The street line is here but `{NAP_CITYLINE_CANON}` is not.** A street "
+                f"address without its city, state and ZIP is not a NAP match. Add the "
+                f"full line.")
+        else:
+            passes.append(f"NAP address is the canonical spelling: "
+                          f"{NAP_STREET_CANON}, {NAP_CITYLINE_CANON}.")
 
     # --- Word count (thin content check) ---
     text = re.sub(r"<script[\s\S]*?</script>|<style[\s\S]*?</style>|<[^>]+>", " ", html)

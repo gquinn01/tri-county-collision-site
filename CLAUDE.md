@@ -9,11 +9,37 @@ Corcoran Communications builds and monitors it. The shop owns it.
 
 ## The four things that govern this repo
 
-### 1. The build spec is the page map in the Tri-County plan
+### 1. The build spec is `pagemap.md`
 
-Not this file, and not an idea anyone has later. The page map in the plan
-says which pages exist. If a page is not on it, it does not get built; if
-the map should change, the map changes first and the build follows.
+**`pagemap.md` at the repo root is the page map of record.** It was
+extracted from the Tri-County plan on 2026-09-03 and it, not this file and
+not an idea anyone has later, says which pages exist. If a page is not on
+it, it does not get built. If the map should change, the map changes first
+and the build follows.
+
+The full plan, pricing and client notes stay OUT of this repo, because this
+repo is public. `pagemap.md` carries only what the build needs.
+
+What it commits us to, in short:
+
+- **37 indexable pages** (38 if ADAS calibration clears its gate), plus 2
+  noindexed utility pages. The old sitemap's 48 entries become 37 or 38,
+  all real.
+- **Migrate faithfully, do not rewrite for its own sake.** The promise of
+  this migration is that rankings survive. Existing slugs are kept wherever
+  a page keeps its purpose, because every unnecessary redirect spends a
+  little of that.
+- **Ten old URLs redirect**: 8 clones to their canonical targets, 2 category
+  archives to the blog index. A clone or plumbing URL gets a 301 to the page
+  it copies or an honest 404, never a forced mapping to a sales page.
+- **Two gates that data decides, not us.** ADAS calibration is built only if
+  Keyword Planner shows demand AND the owner confirms calibration happens
+  in-house. A town page keeps its page unless Search Console shows no
+  impressions over the last 12 months, in which case it folds into the hub
+  and its URL 301s there. This is rule 7: town pages earn their existence.
+- **No page ships copy from `pagemap.md`.** Facts come from the truth
+  inventory, the client-owner is fact-checker of record, and every text
+  change is proposed as before/after pairs and approved before it lands.
 
 Small and true beats big and padded. A collision shop needs the pages that
 are fact, not a page count.
@@ -48,15 +74,46 @@ Greg holds that role for corcoranpr.com. **Here it is the shop owner**, and
 it is a role, not a courtesy. Every claim on the site passes through them
 before it ships. Anything they have not confirmed does not go on a page.
 
-This is already load-bearing: `scripts/audit.py` ships with `NAP_PHONE_RE`
-and `NAP_EMAIL_RE` **unset**, because the shop's phone and email have not
-been confirmed in writing. The tappable-contact check therefore does not
-run, and the audit says so as a note on every page rather than passing
-silently. `templates/service-page-template.html` does the same thing with
-every other unknown: address, ZIP, geo, socials, area served, proof line.
-They are `{{TOKENS}}` with no defaults. Fill them from the client, in
-writing, and check them character for character against the Google Business
-Profile.
+**Confirmed and now enforced** (2026-09-03):
+
+```
+name     Tri-County Collision
+address  995 Jaymor Rd, Southampton, PA 18966
+phone    (215) 322-5350   tel:+12153225350
+```
+
+These are the values published on the shop's live site, read and confirmed
+by Greg Quinn of Corcoran Communications, **the vendor**. The standards make
+the client-owner the fact-checker of record for a client site, so a vendor
+confirmation is a deliberate exception and it is recorded as one, here and
+in `scripts/audit.py`. **Owner sign-off on the NAP is still outstanding.**
+When it lands, note the date in both places.
+
+They are not advisory. `scripts/audit.py` now fails any page that spells the
+street a second way (`Jaymor Road`, a missing ZIP, a moved comma), because
+each variant reads as a slightly different business to Google's entity
+matching, which is how a shop ends up competing with itself in the Map Pack.
+`templates/service-page-template.html` carries all three as literals, so
+nobody retypes them.
+
+**Still unconfirmed, and therefore still off:**
+
+- **The email.** The owner has not designated the one address to publish.
+  The page map calls for one email and one phone on both Home and Contact,
+  so there is a right answer and it is theirs to give. `NAP_EMAIL_RE` stays
+  `None`, the email half of the contact check does not run, and the audit
+  says so as a note on every page rather than passing silently. Do not pick
+  an address off the old site.
+- **Everything else the template still tokenizes**: geo coordinates,
+  socials and `sameAs`, area served, GA4 ID, form endpoint, taglines, and
+  the proof line. `{{TOKENS}}` with no defaults. Fill them from the client,
+  in writing, and check them character for character against the Google
+  Business Profile.
+
+The proof line deserves its own warning. Years in business, I-CAR or ASE
+certifications, manufacturer approvals, insurer relationships, warranty
+terms: every one of those is checkable, and every one of them ships only
+after the owner has confirmed it.
 
 ### 4. The client owns their accounts
 
@@ -87,8 +144,9 @@ dark. That archive is the last copy of it that will ever exist.
 
 | Path | What it is |
 |---|---|
+| `pagemap.md` | **The build spec.** The page map of record. |
 | `.claude/skills/corcoran-site-standards/` | The law. Unedited copy of the firm's standards. |
-| `scripts/audit.py` | The SEO and AEO scanner. Scores every page separately. |
+| `scripts/audit.py` | The SEO and AEO scanner. Scores every page separately. Its NAP block is the one place the canonical name, address and phone live. |
 | `scripts/test-sitemap-expansion.py` | Tests the sitemap expansion. Run it before touching that code. |
 | `scripts/stamp-assets.py` | Cache-busting stamps for `docs/assets/site.css` and `site.js`. |
 | `scripts/fetch_seo_news.py` | Pulls the headline sweep the Google Watcher reads. |

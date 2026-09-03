@@ -142,14 +142,37 @@ assume the change has happened. Look.
    through every audit, at a steady 100/100, because nothing was looking.
    Do not let that happen twice.
 
-4. **Note what the audit is NOT checking.** `scripts/audit.py` ships with
-   `NAP_PHONE_RE` and `NAP_EMAIL_RE` unset, because the shop's phone and
-   email have not been confirmed in writing by the client, and this firm
-   does not ship an unverified fact even as a placeholder. The report
-   surfaces this as a note on every page. **Carry it into your report
-   once, under its own line, and say plainly that it is a check that is
-   OFF rather than a check that passed.** It clears the moment the client
-   confirms the NAP. Do not let it go quiet just because it repeats.
+4. **Report the NAP findings, and report what is still not checked.**
+
+   Since 2026-09-03 `scripts/audit.py` knows the shop's canonical NAP:
+
+   ```
+   Tri-County Collision
+   995 Jaymor Rd, Southampton, PA 18966
+   (215) 322-5350
+   ```
+
+   Two live checks come out of that, and both matter more on a live
+   WordPress site than they would on a site we built, because years of
+   edits by different hands is exactly how a NAP drifts:
+
+   - **Address spelling.** Any page naming Jaymor is checked for the
+     canonical street line and city line. A `Jaymor Road`, a missing ZIP
+     or a moved comma is a **critical**. Report it as one, and explain it
+     in the owner's terms: each variant reads as a slightly different
+     business to Google, which is how a shop ends up competing with
+     itself in the Map Pack. This is the kind of finding that is
+     invisible by eye across thirty-odd pages and cheap to fix.
+   - **Tappable phone.** A bare, unlinked number is a warning.
+
+   **The email half is still OFF**, because the owner has not designated
+   the one address to publish. Every page carries a note saying so.
+   **Carry it into your report once, under its own line, and say plainly
+   that it is a check that is OFF rather than a check that passed.** Note
+   that `pagemap.md` calls for one email and one phone on both Home and
+   Contact, so this is a decision waiting on the owner and worth putting
+   in front of them. Do not let it go quiet just because it repeats, and
+   do not report it as though the phone check were off too. It is not.
 
 5. **Write the weekly report.** It goes in the issue **body**, as one
    readable document. Do not split it across follow-up comments.
@@ -223,6 +246,12 @@ assume the change has happened. Look.
      affecting us this week."
    - A short **"Build status"** line: whether `docs/` is still a
      placeholder or has started carrying pages, and what step 3 found.
+     `pagemap.md` at the repo root is the build spec and says what the
+     finished site is: 37 indexable pages, 38 with ADAS, plus 2 noindexed
+     utility pages. Once pages start landing you may say how many of them
+     exist, but **count them, do not compute progress from a number you
+     remember**, and never present a page as built because the map lists
+     it.
 
 6. **Keep it honest.** If **every page** is at 100/100, say so plainly and
    suggest the next *growth* move instead: a service page the shop does not
