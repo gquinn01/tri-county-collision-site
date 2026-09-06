@@ -236,6 +236,7 @@ dark. That archive is the last copy of it that will ever exist.
 | `agents/site-auditor.md` | The weekly Monday report agent's job description. |
 | `agents/google-watcher.md` | The daily algorithm watch agent's job description. |
 | `.github/workflows/` | The two agent schedules. |
+| `drafts/` | **Throwaway.** Three design directions for the hero, proof band and header, built 2026-09-06 for a pick. Outside `docs/` so the audit never scores them. Deleted when a direction is chosen. |
 | `docs/` | The site. `assets/site.css` is the one place the palette lives, and its header carries the palette table, where each color came from, and the measured contrast ratios. |
 
 ## The two agents

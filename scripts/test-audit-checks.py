@@ -148,7 +148,12 @@ def main():
     # that turn into the site and greps them directly.
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     hits = []
-    for tree in ("templates", "docs"):
+    # drafts/ is included while it exists. It is throwaway design work, but
+    # it is throwaway design work that gets copied FROM, and the tracking
+    # number has no business travelling out of it either.
+    for tree in ("templates", "docs", "drafts"):
+        if not os.path.isdir(os.path.join(root, tree)):
+            continue
         for dirpath, dirnames, filenames in os.walk(os.path.join(root, tree)):
             dirnames[:] = [d for d in dirnames if d != ".git"]
             for fn in filenames:
@@ -160,7 +165,7 @@ def main():
                     continue
                 if audit.TRACKING_PHONE_RE.search(text):
                     hits.append(os.path.relpath(full, root))
-    check("    no file under templates/ or docs/ carries it", not hits, hits)
+    check("    no file under templates/, docs/ or drafts/ carries it", not hits, hits)
 
     print("12. Every relative link under docs/ has a file behind it")
     # WHY. The nav on this site grows as pages land, and the standards say

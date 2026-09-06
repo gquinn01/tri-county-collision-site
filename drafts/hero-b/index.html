@@ -2,459 +2,155 @@
 <html lang="en">
 <head>
   <!-- ============================================================
-       COLLISION REPAIR. Built 2026-09-05 from templates/service-page-template.html.
+       DESIGN DRAFT HERO-B. NOT A PAGE OF THE SITE.
 
-       THE SOURCE OF EVERY WORD ON THIS PAGE is the shop's own live
-       WordPress page at https://tricountycollision.com/collision-repair/,
-       read on 2026-09-05. Nothing here was written for the shop and
-       nothing here claims anything the live page does not already claim.
-       Every place the wording changed is recorded as a before/after pair
-       in proposed-changes.md at the repo root, awaiting the owner's
-       fact-check. Do not edit copy here without adding the pair there.
+       STRUCTURAL. Split hero, angled solid wedges in oxblood and ink, Anton set oversized, photograph bleeding off the right edge, proof as heavy chip rows.
 
-       STAGING, DELIBERATE, AND NOT A DEFECT:
-       this page carries <meta name="robots" content="noindex, nofollow">,
-       docs/robots.txt disallows everything, and the canonical below is
-       absolute to the production domain. All three are on purpose, all
-       three come off together at cutover, and scripts/audit.py enforces
-       them through its STAGING switch. See CLAUDE.md.
+       This file lives outside docs/ on purpose, so scripts/audit.py never
+       scores it and scripts/build-sitemap.py never lists it. It carries no
+       canonical, no Open Graph and no schema, because it is a picture of a
+       direction rather than a page: everything below the hero and the proof
+       band is copied verbatim out of docs/collision-repair/index.html so the
+       whole thing renders and can be compared by scrolling.
 
-       THE FAQ IS MIRRORED. Each visible answer is byte-identical to its
-       acceptedAnswer in the FAQPage node. Edit one, edit both, then run
-       python3 scripts/audit.py --strict, which scores a mismatch as a
-       critical rather than a note.
+       All three drafts share: the ink sticky header with the oxblood call
+       button, the slim ink staging bar, and a palette with no gold in it.
+       They differ in the hero, the proof band, and the type.
 
-       NO PRICE, OFFER, REVIEW OR RATING MARKUP. The live site publishes a
-       priceRange and an offer catalog; neither is carried here. Both are
-       on the claims list as an owner decision.
+       WHEN A DIRECTION IS PICKED, drafts/ IS DELETED. The winner gets
+       rebuilt into docs/ properly, with its fonts moved to
+       docs/assets/fonts/ and their licence files with them.
        ============================================================ -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Ink. The palette lives in assets/site.css; a meta tag cannot read a
-       custom property, which is why this one hex is duplicated. -->
   <meta name="theme-color" content="#121B27">
-
-  <title>Collision Repair in Southampton, PA | Tri-County Collision</title>
-  <meta name="description" content="Trusted collision repair in Southampton, PA. ASE &amp; I-CAR Gold certified, lifetime warranty, free estimates. Serving Bucks &amp; Montgomery County. (215) 322-5350.">
-
-  <link rel="canonical" href="https://tricountycollision.com/collision-repair/">
   <meta name="robots" content="noindex, nofollow">
+  <title>Draft B, structural | Tri-County Collision</title>
 
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Collision Repair in Southampton, PA | Tri-County Collision">
-  <meta property="og:description" content="Trusted collision repair in Southampton, PA. ASE &amp; I-CAR Gold certified, lifetime warranty, free estimates. Serving Bucks &amp; Montgomery County. (215) 322-5350.">
-  <meta property="og:url" content="https://tricountycollision.com/collision-repair/">
-  <meta property="og:image" content="https://tricountycollision.com/assets/img/accent-minor-collision-repair.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="800">
-  <meta property="og:image:alt" content="Final collision repair touch-ups being completed on a black automobile.">
-  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../../docs/assets/site.css">
+  <script src="../../docs/assets/site.js" defer></script>
 
-  <!-- No analytics tag yet. GA4 goes in the CLIENT'S OWN Google account at
-       cutover, and the CallRail snippet goes in beside it. Neither is here,
-       because a measurement ID nobody has given us is a fact nobody has
-       confirmed. docs/privacy/ ships in the same commit as the first tag. -->
+  <style>
+    @font-face { font-family: "Anton"; src: url("../fonts/Anton-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "IBM Plex Sans"; src: url("../fonts/IBMPlexSans-var.woff2") format("woff2"); font-weight: 100 700; font-style: normal; font-display: swap; }
 
-  <link rel="stylesheet" href="../assets/site.css?v=5c381ca5">
-  <script src="../assets/site.js?v=5ba30d0b" defer></script>
+    /* Anton for display, IBM Plex Sans for reading. Anton is a single very
+       heavy condensed face: it survives being set enormous and clipped by a
+       diagonal, which is the point of this direction. IBM Plex Sans was drawn
+       for technical documentation and keeps long paragraphs legible under it.
+       Plex's variable range tops out at 700, so nothing here asks for 800. */
+    :root { --font: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --display: "Anton", "Arial Narrow", Impact, sans-serif; }
+    h1, h2, h3 { font-family: var(--display); font-weight: 400; letter-spacing: .005em; }
+    /* Uppercase is for the display line only. Anton set all-caps across every
+       H2 on a 3,000-word page shouts, and shouting is not structure. */
+    h1 { font-weight: 400; text-transform: uppercase; }
+    h2 { font-size: clamp(1.7rem, 3.8vw, 2.5rem); }
+    strong, .sec-sub, .eyebrow, .chips li, .badges li, .btn, .step::before { font-weight: 700; }
+    .sec-sub, .eyebrow { letter-spacing: .14em; }
 
-  <!-- One @graph. The AutoBodyShop node repeats in full on every page under
-       the SAME @id, so the whole site resolves to one business entity: a
-       bare @id reference carries no type and no sameAs, which is what
-       search engines and the audit both read.
-       sameAs IS DELIBERATELY ABSENT. The live site publishes five profile
-       URLs and they are listed in proposed-changes.md, but a sameAs claims
-       "this profile is us" and only profiles the shop actually controls
-       belong in it. The verified list is coming from the client. Until it
-       lands the property is not here, and the audit says so out loud rather
-       than the page quietly claiming an entity signal it does not have. -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "AutoBodyShop",
-        "@id": "https://tricountycollision.com/#business",
-        "name": "Tri-County Collision",
-        "url": "https://tricountycollision.com/",
-        "telephone": "+12153225350",
-        "email": "contact@tricountycollision.com",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "995 Jaymor Rd",
-          "addressLocality": "Southampton",
-          "addressRegion": "PA",
-          "postalCode": "18966",
-          "addressCountry": "US"
-        },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 40.1660232,
-          "longitude": -75.0538596
-        },
-        "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
-        "openingHoursSpecification": [
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": [
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday"
-            ],
-            "opens": "08:00",
-            "closes": "18:00"
-          }
-        ],
-        "areaServed": [
-          {
-            "@type": "AdministrativeArea",
-            "@id": "https://tricountycollision.com/#area-bucks-county",
-            "name": "Bucks County, Pennsylvania"
-          },
-          {
-            "@type": "AdministrativeArea",
-            "@id": "https://tricountycollision.com/#area-montgomery-county",
-            "name": "Montgomery County, Pennsylvania"
-          },
-          {
-            "@type": "AdministrativeArea",
-            "@id": "https://tricountycollision.com/#area-philadelphia",
-            "name": "Philadelphia, Pennsylvania"
-          },
-          {
-            "@type": "City",
-            "name": "Southampton, Pennsylvania",
-            "containedInPlace": {
-              "@id": "https://tricountycollision.com/#area-bucks-county"
-            }
-          },
-          {
-            "@type": "City",
-            "name": "Feasterville-Trevose, Pennsylvania",
-            "containedInPlace": {
-              "@id": "https://tricountycollision.com/#area-bucks-county"
-            }
-          },
-          {
-            "@type": "City",
-            "name": "Richboro, Pennsylvania",
-            "containedInPlace": {
-              "@id": "https://tricountycollision.com/#area-bucks-county"
-            }
-          },
-          {
-            "@type": "City",
-            "name": "Warminster, Pennsylvania",
-            "containedInPlace": {
-              "@id": "https://tricountycollision.com/#area-bucks-county"
-            }
-          },
-          {
-            "@type": "City",
-            "name": "Langhorne, Pennsylvania",
-            "containedInPlace": {
-              "@id": "https://tricountycollision.com/#area-bucks-county"
-            }
-          },
-          {
-            "@type": "City",
-            "name": "Bensalem, Pennsylvania",
-            "containedInPlace": {
-              "@id": "https://tricountycollision.com/#area-bucks-county"
-            }
-          },
-          {
-            "@type": "City",
-            "name": "Huntingdon Valley, Pennsylvania",
-            "containedInPlace": {
-              "@id": "https://tricountycollision.com/#area-montgomery-county"
-            }
-          },
-          {
-            "@type": "City",
-            "name": "Hatboro, Pennsylvania",
-            "containedInPlace": {
-              "@id": "https://tricountycollision.com/#area-montgomery-county"
-            }
-          },
-          {
-            "@type": "City",
-            "name": "Willow Grove, Pennsylvania",
-            "containedInPlace": {
-              "@id": "https://tricountycollision.com/#area-montgomery-county"
-            }
-          },
-          {
-            "@type": "City",
-            "name": "Horsham, Pennsylvania",
-            "containedInPlace": {
-              "@id": "https://tricountycollision.com/#area-montgomery-county"
-            }
-          },
-          {
-            "@type": "City",
-            "name": "Jenkintown, Pennsylvania",
-            "containedInPlace": {
-              "@id": "https://tricountycollision.com/#area-montgomery-county"
-            }
-          },
-          {
-            "@type": "Place",
-            "name": "Northeast Philadelphia, Pennsylvania",
-            "containedInPlace": {
-              "@id": "https://tricountycollision.com/#area-philadelphia"
-            }
-          }
-        ]
-      },
-      {
-        "@type": "WebPage",
-        "@id": "https://tricountycollision.com/collision-repair/#webpage",
-        "url": "https://tricountycollision.com/collision-repair/",
-        "name": "Collision Repair in Southampton, PA | Tri-County Collision",
-        "description": "Trusted collision repair in Southampton, PA. ASE & I-CAR Gold certified, lifetime warranty, free estimates. Serving Bucks & Montgomery County. (215) 322-5350.",
-        "inLanguage": "en-US",
-        "dateModified": "2026-09-05",
-        "isPartOf": {
-          "@id": "https://tricountycollision.com/#business"
-        },
-        "about": {
-          "@id": "https://tricountycollision.com/collision-repair/#service"
-        },
-        "breadcrumb": {
-          "@id": "https://tricountycollision.com/collision-repair/#breadcrumb"
-        },
-        "primaryImageOfPage": {
-          "@type": "ImageObject",
-          "url": "https://tricountycollision.com/assets/img/accent-minor-collision-repair.jpg",
-          "caption": "Final collision repair touch-ups being completed on a black automobile."
-        }
-      },
-      {
-        "@type": "Service",
-        "@id": "https://tricountycollision.com/collision-repair/#service",
-        "name": "Collision Repair",
-        "serviceType": "Collision Repair",
-        "url": "https://tricountycollision.com/collision-repair/",
-        "description": "Comprehensive minor and major collision repair restoring foreign and domestic vehicles to pre-accident condition, including body and frame repair, paint, and refinishing. Performed by ASE and I-CAR Gold Class certified technicians at a factory-certified collision repair center and backed by a lifetime warranty on parts and labor.",
-        "provider": {
-          "@id": "https://tricountycollision.com/#business"
-        },
-        "areaServed": [
-          {
-            "@id": "https://tricountycollision.com/#area-bucks-county"
-          },
-          {
-            "@id": "https://tricountycollision.com/#area-montgomery-county"
-          },
-          {
-            "@id": "https://tricountycollision.com/#area-philadelphia"
-          }
-        ]
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://tricountycollision.com/collision-repair/#breadcrumb",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://tricountycollision.com/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Collision Repair",
-            "item": "https://tricountycollision.com/collision-repair/"
-          }
-        ]
-      },
-      {
-        "@type": "FAQPage",
-        "@id": "https://tricountycollision.com/collision-repair/#faq",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "How long does collision repair take?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "How long collision repair takes depends on the severity of the damage. Minor repairs, like small dents, scratches, or bumper damage, typically take 2 to 5 days. Major structural work, frame straightening, or extensive panel replacement can take 2 to 4 weeks. We provide a detailed timeline estimate upfront so you know exactly what to expect. Throughout the repair process, we keep you updated on progress. And if your insurance provides for a loaner or rental car, we'll coordinate that with them to minimize the impact on your life."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Will my car look the same after collision repair?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes, your car will look the same after collision repair, and that is our standard. Our ASE/I-CAR® Gold certified technicians are trained to factory specifications and have the expertise to restore your vehicle to its pre-accident condition. We use computerized color matching to ensure paint blends perfectly. We source OEM parts whenever possible to maintain your vehicle's integrity. And behind all of this is our lifetime warranty. If anything isn't right, we'll make it right. When you drive away from our shop, no one will know your vehicle was ever in an accident."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Do you work with my insurance company?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "We work with all major insurance companies. We have direct repair relationships with them, so we communicate with adjusters on your behalf. We handle all the paperwork, coordinate authorizations, and keep your insurer updated on repair progress. We'll also advocate for you if we believe your vehicle needs more extensive repairs than initially approved. You don't need to navigate the claims process alone, we've got you covered."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How much does collision repair cost?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Repair costs vary significantly based on the extent of damage. That's why we offer free estimates. There's no obligation and no surprises. You can request an estimate online or call us at (215) 322-5350. If your vehicle is covered by insurance, your policy typically covers most repair costs minus your deductible. We provide transparent pricing with no hidden fees. We'll walk you through the estimate and answer any questions about the repair process and costs."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Can I choose my own collision repair shop after an accident in Pennsylvania?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes, Pennsylvania law protects your right to choose your own collision shop for repairs. Your insurance company cannot require you to use their preferred facility or steer you elsewhere. This is an important consumer right. When you choose Tri-County Collision, you're choosing based on our reputation, expertise, and commitment to quality. Not because your insurer told you to. Learn more about your right to choose by reading our blog post on the topic."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What certifications do your technicians have?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Our technicians are ASE (Automotive Service Excellence) and I-CAR® Gold Class certified, the highest level of collision repair certification in the industry. These certifications require extensive training, hands-on experience, and rigorous testing. We also maintain factory certifications from the vehicle manufacturers we service, which ensures we stay current with the latest repair techniques and have access to manufacturer-specific procedures and tooling. When you bring your vehicle to us, you're working with some of the most qualified collision repair professionals in the region."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Do you use OEM or aftermarket parts?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "As a factory-certified collision center for 12+ vehicle brands, we prioritize OEM (original equipment manufacturer) parts. These are the same parts that came on your vehicle when it rolled off the factory line, and they're engineered to match your vehicle's exact specifications. If a part is unavailable or if aftermarket parts are more appropriate for a specific repair, we'll discuss the options with you and advocate with your insurance company for the best solution. You always have the final say in what parts are used on your vehicle."
-            }
-          }
-        ]
-      }
-    ]
-  }
-  </script>
+    /* SPLIT HERO WITH AN ANGLED SOLID DIVIDER. clip-path, not a gradient and
+       not an image: the wedge is one solid colour with a hard edge. */
+    .heroB { position: relative; padding: 0; background: var(--paper); overflow: hidden; }
+    .heroB-grid { display: grid; }
+    @media (min-width: 940px) { .heroB-grid { grid-template-columns: 1fr 1fr; align-items: center; } }
+    .heroB-copy { padding: clamp(34px, 5vw, 76px) 20px clamp(44px, 5vw, 76px); max-width: 620px; margin-left: auto; }
+    @media (min-width: 940px) { .heroB-copy { padding-right: 56px; } }
+    .heroB h1 { font-size: clamp(3.2rem, 9vw, 6.2rem); line-height: .88; margin-bottom: .22em; }
+    .heroB .lead { font-size: 1.14rem; max-width: 44ch; }
+    /* The photo runs off the right edge of the viewport, and the wedge is cut
+       out of its left side so the two shapes interlock. */
+    .heroB-media { position: relative; min-height: 300px; }
+    @media (min-width: 940px) { .heroB-media { min-height: 640px; height: 100%; } }
+    .heroB-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    /* The wedge overlays the photo's left edge rather than being nested
+       inside a clipped parent, which is where the first attempt put it: a
+       clip-path on the parent clips its children too, and the triangle was
+       being eaten by the very cut it was supposed to draw. */
+    .heroB-wedge { display: none; }
+    @media (min-width: 940px) {
+      .heroB-wedge { display: block; position: absolute; left: -1px; top: 0; bottom: 0; width: 30%; background: var(--ox); clip-path: polygon(0 0, 100% 0, 0 100%); }
+    }
+    /* The band under the hero is cut on the same angle, in ink. */
+    .wedge-ink { height: 84px; background: var(--ink); clip-path: polygon(0 0, 100% 44%, 100% 100%, 0 100%); margin-top: -1px; }
+
+    /* HEAVY CHIP ROWS. Two rows: what backs the work, then who certifies it. */
+    .chiprows { background: var(--ink); color: var(--paper); }
+    .chiprow { display: flex; flex-wrap: wrap; gap: 14px; list-style: none; margin: 0; padding: 0; }
+    .chiprow + .chiprow { margin-top: 26px; }
+    .chip-hd { font-family: var(--display); text-transform: uppercase; letter-spacing: .1em; font-size: 1rem; color: var(--paper); margin: 0 0 14px; }
+    .chiprow + .chip-hd { margin-top: 46px; }
+    .chip-heavy { display: inline-flex; align-items: center; gap: 11px; border: 3px solid var(--paper); padding: 13px 22px; font-weight: 700; font-size: 1.02rem; }
+    .chip-heavy svg { width: 20px; height: 20px; fill: none; stroke: var(--paper); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .chip-brand { border: 3px solid var(--ox); background: var(--ox); padding: 11px 20px; font-weight: 700; font-size: 1rem; font-family: var(--display); letter-spacing: .06em; text-transform: uppercase; }
+
+  </style>
 </head>
 <body>
 
-  <!-- Removed at cutover, with the noindex tag and the robots.txt disallow.
-       A human who opens this page should not have to guess why it is not
-       indexed. -->
-  <p class="staging">Staging build. Not the live site. The shop's live site is at tricountycollision.com</p>
-
+  <p class="staging">Design draft. Not the live site, and not the staging build either. The shop's live site is at tricountycollision.com</p>
   <header class="nav">
     <div class="wrap inner">
-      <!-- The logo is not a link yet, because docs/index.html does not exist
-           yet and this site never writes a link to a page that has not been
-           built. scripts/test-audit-checks.py fails the build on a relative
-           link with no file behind it. It becomes a link to ../ in the same
-           commit as the homepage. -->
-      <span class="nav-home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></span>
+      <!-- Ink header, shared by all three drafts. The logo needs no paper
+           plate on it: its wordmark is silver at 9.96 against ink, and the
+           red "COLLISION" is brand art, which contrast rules exempt. A
+           light-background logo variant is still worth asking the owner
+           for. See the note in the draft README. -->
+      <span class="nav-home"><img src="../../docs/logo.png" alt="Tri-County Collision" width="1332" height="530"></span>
       <nav class="nav-main" aria-label="Main"><ul>
         <li><a href="./" aria-current="page">Collision Repair</a></li>
       </ul></nav>
+      <!-- Oxblood fill because oxblood means act, paper border because
+           --ox on --ink measures 1.47 and the shape would vanish. -->
       <a class="btn btn-sm" href="tel:+12153225350">Call (215) 322-5350</a>
     </div>
   </header>
 
   <main>
 
-    <section class="hero">
-      <div class="wrap">
-        <!-- Mirrors the BreadcrumbList, same labels and same order. "Home"
-             is text rather than a link for the reason given at the logo
-             above; the schema item points at the production URL, which is
-             correct today and will be correct at cutover. -->
-        <nav class="crumb" aria-label="Breadcrumb">
-          <ol>
-            <li>Home</li>
-            <li>Collision Repair</li>
-          </ol>
-        </nav>
-        <div class="hero-split">
-          <div>
-            <p class="eyebrow">Southampton, PA</p>
-            <h1>Collision Repair</h1>
-            <p class="lead">When you've been in a collision, the last thing you want is to deal with a faceless, impersonal repair chain. At Tri-County Collision, we understand that your vehicle isn't just transportation, it's part of your life.</p>
+    <section class="hero heroB">
+      <div class="heroB-grid">
+        <div class="heroB-copy">
+          <nav class="crumb" aria-label="Breadcrumb"><ol><li>Home</li><li>Collision Repair</li></ol></nav>
+          <p class="eyebrow">Southampton, PA</p>
+          <h1>Collision<br>Repair</h1>
+          <p class="lead">When you've been in a collision, the last thing you want is to deal with a faceless, impersonal repair chain. At Tri-County Collision, we understand that your vehicle isn't just transportation, it's part of your life.</p>
             <div class="cta-row">
               <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
               <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
             </div>
-            <!-- Every one of these four is a claim the live site already
-                 makes, and every one is on the claims list in
-                 proposed-changes.md for the owner to confirm. The review
-                 count is a point-in-time number: see the note there. -->
-            <ul class="badges">
-              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l7.5 3.3v5c0 4.6-3.1 8.3-7.5 9.5-4.4-1.2-7.5-4.9-7.5-9.5v-5z"/><path d="M8.9 12.1l2.2 2.2 4.1-4.6"/></svg>ASE and I-CAR Gold certified</li>
-              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 11.1a8.8 8.8 0 1 1-3.4-6"/><path d="M8.6 11.6l3 3 8.4-9"/></svg>Lifetime warranty on repairs</li>
-              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.8h4.5"/></svg>Free estimates</li>
-              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.8l5.9-.9z"/></svg>Excellent, based on 231 reviews</li>
-            </ul>
-          </div>
-          <!-- A real photograph, carried over from the live page with its
-               own alt text. SEE THE CLAIMS LIST: all three photographs on
-               this page need the owner to confirm they are this shop, its
-               people or its work. If any is stock it is replaced before
-               cutover, because the standards say real photos only. -->
-          <div class="hero-photo">
-            <img src="../assets/img/accent-collision-repair-1.jpg" alt="Male mechanic performing collision repair services." width="600" height="900" fetchpriority="high" decoding="async">
-          </div>
+        </div>
+        <div class="heroB-media">
+          <img src="../../docs/assets/img/accent-major-collision-repair.jpg" alt="Technician grinding metal beside a vehicle with its front bumper and headlight assembly removed for major collision repair." width="1200" height="800" fetchpriority="high" decoding="async">
+          <div class="heroB-wedge" aria-hidden="true"></div>
         </div>
       </div>
     </section>
+    <div class="wedge-ink" aria-hidden="true"></div>
 
-    <section id="expert">
+    <section class="chiprows" id="proof" aria-label="Certifications, warranty and estimates">
       <div class="wrap">
-        <div class="sec-head">
-          <h2 class="sec-title">Expert Collision Repair Services in Southampton, PA</h2>
-        </div>
-        <div class="prose">
-          <p>Our family-owned shop has served drivers across Bucks County and Montgomery County for years, delivering expert collision repair with genuine care. Located at 995 Jaymor Rd in Southampton, PA, we're conveniently positioned to serve communities from Warminster to Bensalem, Huntingdon Valley to Doylestown. Our ASE and I-CAR&reg; Gold certified technicians handle everything from minor fender benders to complex structural damage, all backed by a lifetime warranty. We work directly with all major insurance companies, handle the paperwork so you don't have to, and pride ourselves on restoring your vehicle to its pre-accident condition. If you've been in an accident or need collision repair, don't settle for the first shop you find. Call us at <a href="tel:+12153225350">(215) 322-5350</a> for a free estimate, or get started online. We'll take it from here.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ PROOF BAND ============
-         Ink, not oxblood: oxblood means act, and there is nothing to click
-         here. This is the second thing a stressed reader sees after the
-         hero, and every line in it is a claim the live site already makes.
-         All four are on the claims list in proposed-changes.md.
-         THE TWELVE ARE TEXT CHIPS. No manufacturer wordmarks or badges until
-         the owner supplies official program art for each program the shop is
-         actually in, because a logo is a claim of endorsement in a form the
-         brand controls. -->
-    <section class="dark field-ink" id="proof" aria-label="Certifications, warranty and estimates">
-      <div class="wrap">
-        <div class="proof-grid">
-          <div class="proof-item">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l7.5 3.3v5c0 4.6-3.1 8.3-7.5 9.5-4.4-1.2-7.5-4.9-7.5-9.5v-5z"/><path d="M8.9 12.1l2.2 2.2 4.1-4.6"/></svg>
-            <strong>ASE certified</strong>
-            <span>Automotive Service Excellence, held by our technicians.</span>
-          </div>
-          <div class="proof-item">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.8l5.9-.9z"/></svg>
-            <strong>I-CAR Gold Class certified</strong>
-            <span>The highest level of collision repair certification in the industry.</span>
-          </div>
-          <div class="proof-item">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 11.1a8.8 8.8 0 1 1-3.4-6"/><path d="M8.6 11.6l3 3 8.4-9"/></svg>
-            <strong>Lifetime warranty</strong>
-            <span>On all repair work. If anything isn't right, we'll make it right.</span>
-          </div>
-          <div class="proof-item">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.8h4.5"/></svg>
-            <strong>Free estimates</strong>
-            <span>Online and by phone. No obligation and no surprises.</span>
-          </div>
-        </div>
-        <p class="chips-head">Factory-certified for 12 vehicle brands</p>
-        <ul class="chips">
-          <li>INFINITI</li><li>Nissan</li><li>Hyundai</li><li>Kia</li>
-          <li>Acura</li><li>Honda</li><li>GM</li><li>Chrysler</li>
-          <li>Ford</li><li>Dodge</li><li>Subaru</li><li>Jeep</li>
+        <p class="chip-hd">What backs the work</p>
+        <ul class="chiprow">
+          <li class="chip-heavy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l7.5 3.3v5c0 4.6-3.1 8.3-7.5 9.5-4.4-1.2-7.5-4.9-7.5-9.5v-5z"/><path d="M8.9 12.1l2.2 2.2 4.1-4.6"/></svg>ASE certified</li>
+          <li class="chip-heavy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.8l5.9-.9z"/></svg>I-CAR Gold Class certified</li>
+          <li class="chip-heavy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 11.1a8.8 8.8 0 1 1-3.4-6"/><path d="M8.6 11.6l3 3 8.4-9"/></svg>Lifetime warranty</li>
+          <li class="chip-heavy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.8h4.5"/></svg>Free estimates</li>
+        </ul>
+        <p class="chip-hd">Factory-certified for 12 vehicle brands</p>
+        <ul class="chiprow">
+          <li class="chip-brand">INFINITI</li>
+          <li class="chip-brand">Nissan</li>
+          <li class="chip-brand">Hyundai</li>
+          <li class="chip-brand">Kia</li>
+          <li class="chip-brand">Acura</li>
+          <li class="chip-brand">Honda</li>
+          <li class="chip-brand">GM</li>
+          <li class="chip-brand">Chrysler</li>
+          <li class="chip-brand">Ford</li>
+          <li class="chip-brand">Dodge</li>
+          <li class="chip-brand">Subaru</li>
+          <li class="chip-brand">Jeep</li>
         </ul>
       </div>
     </section>
@@ -532,7 +228,7 @@
         <div class="svc-grid">
 
           <article class="svc">
-            <img class="svc-photo" src="../assets/img/accent-minor-collision-repair.jpg" alt="Final collision repair touch-ups being completed on a black automobile." width="1200" height="800" loading="lazy" decoding="async">
+            <img class="svc-photo" src="../../docs/assets/img/accent-minor-collision-repair.jpg" alt="Final collision repair touch-ups being completed on a black automobile." width="1200" height="800" loading="lazy" decoding="async">
             <div class="svc-body">
               <span class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15.5h18"/><path d="M7.4 15.5c1.6-4.4 3.2-6.6 5-6.6s3.4 2.2 5 6.6"/><path d="M12 5.2v1.9"/></svg></span>
               <h3>Minor Collision Repair</h3>
@@ -546,7 +242,7 @@
           </article>
 
           <article class="svc">
-            <img class="svc-photo" src="../assets/img/accent-major-collision-repair.jpg" alt="Technician grinding metal beside a vehicle with its front bumper and headlight assembly removed for major collision repair." width="1200" height="800" loading="lazy" decoding="async">
+            <img class="svc-photo" src="../../docs/assets/img/accent-major-collision-repair.jpg" alt="Technician grinding metal beside a vehicle with its front bumper and headlight assembly removed for major collision repair." width="1200" height="800" loading="lazy" decoding="async">
             <div class="svc-body">
               <span class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6.2" width="18" height="11.6" rx="2"/><path d="M3 10.2h18M9 6.2v11.6M15 6.2v11.6"/></svg></span>
               <h3>Major Collision Repair</h3>
@@ -797,7 +493,7 @@
     <div class="wrap">
       <div class="foot-grid">
         <div>
-          <span class="foot-home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></span>
+          <span class="foot-home"><img src="../../docs/logo.png" alt="Tri-County Collision" width="1332" height="530"></span>
           <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
           <p class="foot-nap">
             Tri-County Collision<br>
