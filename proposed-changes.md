@@ -147,6 +147,110 @@ the schema. The live page used curly in its visible copy and straight in its
 JSON-LD, which alone would break the mirror law: the FAQ answers have to be
 byte-identical in both places, and a curly apostrophe is a different byte.
 
+### 1.12 The orphaned connective
+
+| | |
+|---|---|
+| **Before** | **That's why** our family-owned shop has served drivers across Bucks County and Montgomery County for years, delivering expert collision repair with genuine care. |
+| **After** | Our family-owned shop has served drivers across Bucks County and Montgomery County for years, delivering expert collision repair with genuine care. |
+
+Fallout from the 1.5 split. "That's why" pointed back at a sentence that is
+now in the hero, so it opened a section by referring to something the reader
+had scrolled past. The connective is dropped rather than the antecedent
+restored, because the hero sentence still carries the reason and repeating it
+would be worse.
+
+### 1.13 The process paragraph becomes six steps
+
+**Before**, one paragraph of about 180 words:
+
+> We've refined our collision repair process over years of experience to make
+> sure you get back on the road with confidence. It all starts with a free
+> estimate. You can request one online or give us a call at (215) 322-5350.
+> Once you're ready to move forward, we take care of the insurance
+> coordination so you're not juggling calls with adjusters. Our team performs
+> a thorough damage assessment and creates a detailed repair plan that we walk
+> you through. Using state-of-the-art equipment and factory-certified
+> techniques, our ASE/I-CAR Gold technicians perform precision repairs to
+> manufacturer standards. After the structural and cosmetic work is complete,
+> we don't just hand you the keys; we run a full quality control inspection to
+> ensure everything meets our standards. Then comes the detail: we thoroughly
+> clean the interior and exterior, making your vehicle look as good as it
+> runs. Finally, we walk through the finished work with you, answer any
+> questions, and make sure you're completely satisfied. From start to finish,
+> we handle the heavy lifting so you can focus on getting back to your life.
+
+**After**: the first sentence is the lead-in, the last sentence is the closing
+line, and the eight sentences between them are six numbered steps, split at
+their own sentence boundaries. **Not one word changed, and not one sentence
+moved out of order.** Step 6 carries two sentences, the detail and the
+walkthrough, because they are one handover.
+
+**Six step titles are new text.** Each is lifted from the words inside its own
+step, so none of them is a new claim:
+
+| Step | Title | Lifted from |
+|---|---|---|
+| 01 | The free estimate | "It all starts with a free estimate" |
+| 02 | Insurance coordination | "we take care of the insurance coordination" |
+| 03 | Damage assessment and repair plan | "a thorough damage assessment and creates a detailed repair plan" |
+| 04 | Precision repairs | "perform precision repairs to manufacturer standards" |
+| 05 | Quality control inspection | "we run a full quality control inspection" |
+| 06 | Detail and walkthrough | "Then comes the detail" / "we walk through the finished work with you" |
+
+### 1.14 Minor and Major become side-by-side cards, with subheads
+
+The two blocks are now two cards standing next to each other so a reader can
+tell at a glance which one is theirs. The text inside each is the live page's,
+unchanged and in order, chunked under subheads.
+
+**Seven subheads are new text**, and every one is a label rather than a claim:
+
+- Minor: **What counts as minor** / **How we fix it** / **Why not to wait**
+- Major: **What counts as major** / **Who does the work** / **The parts we use** /
+  **Safety systems and warranty**
+
+**One new H2 is added**, "Minor and Major Collision Repair", to head the pair.
+On the live page the two H3s float under the process heading with no parent of
+their own.
+
+### 1.15 The "three critical things" sentence becomes three cards
+
+| | |
+|---|---|
+| **Before** | Why does this matter to you? Because factory certification ensures three critical things: your vehicle's warranty protection isn't compromised, your vehicle's safety systems work exactly as designed, and your vehicle's resale value is protected. |
+| **After** | Why does this matter to you? Because factory certification ensures three critical things: <br>• Your vehicle's warranty protection isn't compromised. <br>• Your vehicle's safety systems work exactly as designed. <br>• Your vehicle's resale value is protected. |
+
+Three clauses become three cards. The only change is a capital letter and a
+full stop on each. No words added, none dropped.
+
+### 1.16 The proof band's four supporting lines
+
+The band is new furniture, and the four one-line explanations under its badges
+are **recombined from sentences already on the page**. They are the only place
+on this page where live sentences were shortened rather than moved:
+
+| Badge | Line | Recombined from |
+|---|---|---|
+| ASE certified | Automotive Service Excellence, held by our technicians. | "Our technicians are ASE (Automotive Service Excellence)... certified" |
+| I-CAR Gold Class certified | The highest level of collision repair certification in the industry. | Verbatim, FAQ 6 |
+| Lifetime warranty | On all repair work. If anything isn't right, we'll make it right. | "Lifetime warranty on all repair work" + "If anything isn't right, we'll make it right" |
+| Free estimates | Online and by phone. No obligation and no surprises. | "Free estimates online and by phone" + "There's no obligation and no surprises" |
+
+**The twelve factory certifications are text chips, not logos.** No
+manufacturer wordmark or program badge goes on this site until the owner
+supplies official program art for each program the shop is actually in. A logo
+is a claim of endorsement in a form the brand controls, and using one without
+their art is the kind of thing a manufacturer's legal team writes about.
+
+### 1.17 The four customer quotes are migrated verbatim
+
+The live page's testimonials carousel is now four quote cards on an ink band.
+**The quotes are byte-for-byte what the live site publishes**, which includes
+one typo ("The were great about sending e-mail updates"), two emoji, and some
+loose punctuation. A testimonial is somebody else's words, and tidying one is
+not a style fix. See 4.8 for what needs confirming about them.
+
 ---
 
 ## 2. What the live page carries that this page does not
@@ -161,7 +265,7 @@ and each is reversible.
 | `priceRange: "$$"` in the schema | The standards allow no price, offer, review or rating markup unless the data is real and the owner has decided to publish it. `$$` is a claim about what the shop costs. **Owner decision: publish it or not.** |
 | `hasOfferCatalog` with two `Offer` nodes | Same rule. The two services it lists, minor and major collision repair, are on the page as prose instead. |
 | The blog feed, ten posts with excerpts | It belongs on `/blog/`, per the page map. |
-| The testimonials carousel | Four named testimonials. Reviews are a ranking engine and these are real, but they are a site-wide module and they need a decision about where they live. **Owner decision.** |
+| ~~The testimonials carousel~~ | **Now carried**, as of 2026-09-06. The four quotes are migrated verbatim as quote cards on an ink band, moved up the page to sit after the insurance section. The carousel itself is not: they are four cards, all visible, no rotation. See 1.17 and 4.8. |
 | The Trustindex review widget | A third-party script. The rating it displays is carried as one line of visible text instead. See 4.4. |
 | The link on "paintless dent repair (PDR)" | `/paintless-dent-repair/` has not been built. This site never writes a link to a page that does not exist, and `scripts/test-audit-checks.py` fails the build on one. It goes back when the page lands. |
 | The link in FAQ 5 to the anti-steering blog post | Same reason. The sentence stays; only the link waits. |
@@ -214,17 +318,36 @@ The migrated page is 2,623 words including its own headings, nav and footer, so
 to judge whether the other pages migrated completely, because "~1,670 words" and
 "~1,525 words" on the sibling rows were almost certainly measured the same way.
 
-### 3.4 Section order, and the one section that moved
+### 3.4 Section order, and what moved
 
-The migrated page keeps the live page's section order exactly: intro, process,
-minor, major, what to do after a crash, insurance claims, factory certification,
-why choose us, service area. **One block moved.** The FAQ is now the last thing
-before the footer, and the contact band sits above it, which is the house
-structure every page on this site uses. On the live page the FAQ is followed by
-the blog feed, the testimonials carousel and then the contact block, and the
-first two of those are not carried at all.
+The page keeps the live page's order for everything it carries: intro, process,
+minor and major, what to do after a crash, insurance claims, factory
+certification, why choose us, service area.
 
-No words changed and no section was added or dropped in the reorder.
+**Three things moved, on 2026-09-06.** A proof band was inserted after the
+intro, so the certifications, the warranty, the free estimates and the twelve
+brands sit high on the page where a stressed reader meets them first. The
+testimonials moved up from the bottom of the live page to between insurance and
+factory certification, where they answer the question the insurance section
+raises. And the FAQ is the last thing before the footer, with the contact band
+above it, which is the house structure every page on this site uses.
+
+No words changed and no section was dropped in any of it. On the live page the
+FAQ is followed by the blog feed, the testimonials and then the contact block;
+the blog feed is the only one of those not carried, and it belongs on `/blog/`.
+
+### 3.4b The band rhythm, and what oxblood means
+
+Backgrounds now run: paper, ink, paper, white panel, **oxblood**, paper, ink,
+paper, **oxblood**, white panel, ink, paper, ink. No two touching sections share
+a ground.
+
+**Oxblood means act and nothing else.** There are exactly two oxblood bands on
+the page and each one carries the CTA row. The ink bands are structural: they
+break the paper run under the proof band and the quotes, where there is nothing
+to click. `docs/assets/site.css` splits this into `.dark` for the behavior and
+`.field-ox` / `.field-ink` for the ground, so the two can never be confused by
+someone adding a section later.
 
 ### 3.5 sameAs is deliberately absent, pending the verified list
 
@@ -342,7 +465,30 @@ vehicles.
   Must match the Google Business Profile exactly.
 - **hasMap**, the `share.google` link, migrated from the live schema.
 
-### 4.8 The photographs, and this one is a cutover blocker
+### 4.8 The four customer quotes
+
+Carried verbatim from the live page. They are already published there, which is
+not the same as being cleared to republish. Four things to confirm:
+
+1. **Permission.** Reviews are the ranking engine and these are real, but a
+   quote attributed to a named person is that person's words. Confirm the shop
+   has permission to republish each one.
+2. **Three staff members are named**: Kevin Bliss, Barry and Victor. A
+   testimonial praising someone who has left is a small trap, and a customer
+   who asks for them by name and finds them gone is a worse one. Confirm all
+   three still work here. The live page's review widget also names Armando and
+   Justin, neither of whom is in these four quotes.
+3. **An insurer is named** (Nationwide) and **a customer's business is named**
+   (Apex Heating). Both are third parties on somebody else's website.
+4. **They ship exactly as written**, typo and emoji included. If the owner
+   would rather not publish the loosest of the four, the answer is to drop it
+   whole, never to tidy it.
+
+**No `Review` or `AggregateRating` markup is in the schema** and none should be
+added on the strength of these. Rating markup needs real, owned, publishable
+data and an owner who has decided to publish it.
+
+### 4.9 The photographs, and this one is a cutover blocker
 
 Three photographs are carried onto this page, all from the live site:
 `accent-collision-repair-1.jpg`, `accent-minor-collision-repair.jpg` and
@@ -372,7 +518,7 @@ Ordered by how much else depends on it.
    after this page inherits the answer. See 1.1.
 2. **The email.** `contact@` is published; the live footer also shows `info@`.
    Which does the shop read, and does the other forward? See section 2.
-3. **The photographs.** Shop's own, or stock? See 4.8.
+3. **The photographs.** Shop's own, or stock? See 4.9.
 4. **ADAS recalibration in-house, yes or no.** It settles this page's copy and
    the ADAS page's gate at once. See 4.2.
 5. **The warranty**, in the owner's own words: lifetime of what, covering what,
@@ -380,4 +526,6 @@ Ordered by how much else depends on it.
 6. **The rating**: live widget, dated number, or nothing. See 4.4.
 7. **1974 and second generation**: publish them or not. See 4.5.
 8. **priceRange**: publish `$$` or not. See section 2.
-9. **The verified `sameAs` list.** See 3.5.
+9. **The four customer quotes**: permission to republish, and whether the
+   staff they name still work here. See 4.8.
+10. **The verified `sameAs` list.** See 3.5.
