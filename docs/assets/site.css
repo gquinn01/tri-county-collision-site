@@ -1,6 +1,48 @@
 /* ===========================================================================
    TRI-COUNTY COLLISION, SHARED STYLESHEET.
 
+   ---------------------------------------------------------------------------
+   THE DESIGN SYSTEM. DECIDED 2026-09-06. PAGES 2 THROUGH 37 INHERIT IT.
+
+   Three directions were built as complete pages and compared by scrolling.
+   The pick is PHOTOGRAPHIC, and it is not up for re-deciding on the next
+   page. What that commits every page to:
+
+   1. HERO: a full-bleed photograph with an OPAQUE INK PANEL over it holding
+      the copy. Opaque, not a wash and not a gradient, because type over a
+      photograph is only reliably readable when something solid is behind it.
+      The photograph is a real one of this shop, its people or its work.
+
+   2. THE PANEL IS FLUSH TO THE LEFT VIEWPORT EDGE. No gap, no float, no
+      rounded corner. Its LEFT PADDING equals the page grid's left margin, so
+      the type inside it lines up with every other section's first character
+      all the way down the page. At wide viewports the panel GROWS with the
+      margin rather than detaching from the edge: it is pinned to the glass,
+      and only its content column is centred. See .heroA-panel for the sum.
+
+   3. STAT BAND directly under the hero, on paper. THREE stats, big numeral,
+      label, one supporting line. Three, not four: a fourth would have to be
+      invented, and inventing a statistic to balance a row is exactly the
+      failure the prime law exists to stop. Any number that is true only on
+      the day it is written CARRIES THE DATE IT WAS TRUE.
+
+   4. TYPE: Archivo Black for display, Source Sans 3 for everything read at
+      length. Both self-hosted, both SIL OFL 1.1, licence texts beside them
+      in assets/fonts/. Nothing reaches a webfont CDN at runtime. Archivo
+      Black has ONE weight and it is enormous, so it takes h1, h2, h3 and the
+      step numerals and nothing smaller; every label, subhead and run of body
+      copy is Source Sans 3, which is variable and covers 200 to 900 from one
+      file. Never ask for a weight Archivo Black does not have: the browser
+      will synthesise it and it looks like a mistake.
+
+   5. INK STICKY HEADER, with the slim ink staging bar above it until
+      cutover. The call button keeps its oxblood fill and gains a paper
+      border. See the contrast note below for why the border is not optional.
+
+   The palette table, its provenance and its measured ratios follow. Read all
+   of it before writing a hex, a font-family or a hero.
+   ---------------------------------------------------------------------------
+
    THE PALETTE LIVES HERE AND NOWHERE ELSE. One file defines it, every page
    reads it. A hex typed into a page is a second palette, and a second
    palette drifts. The two sanctioned duplicates are the theme-color meta
@@ -106,7 +148,26 @@
   --wrap: 1120px;
   --pad: clamp(48px, 7vw, 88px);
   --radius: 4px;
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --display: "Archivo Black", Impact, "Arial Black", sans-serif;
+}
+
+/* SELF-HOSTED, both of them. No webfont CDN is contacted at runtime, so there
+   is no third-party request on any page, nothing to leak, and nothing to
+   break when somebody else's CDN changes. These are the latin subsets.
+   Source Sans 3 is variable, so one file covers 200 to 900. Archivo Black has
+   exactly one weight, 400, and that weight is already very heavy: asking for
+   700 or 800 makes the browser fake it. Both are SIL Open Font License 1.1
+   and the licence texts sit beside them, unedited, in assets/fonts/. */
+@font-face {
+  font-family: "Archivo Black";
+  src: url("fonts/ArchivoBlack-400.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("fonts/SourceSans3-var.woff2") format("woff2");
+  font-weight: 200 900; font-style: normal; font-display: swap;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -134,10 +195,12 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   outline-offset: 2px;
 }
 
-h1, h2, h3 { line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 0.5em; }
-h1 { font-size: clamp(2.1rem, 6vw, 3.4rem); font-weight: 800; }
-h2 { font-size: clamp(1.6rem, 3.6vw, 2.3rem); font-weight: 800; }
-h3 { font-size: 1.25rem; font-weight: 700; }
+/* Archivo Black stops at h3. h4 is a small-caps label and Source Sans 3 at
+   700 is the right weight for one; Archivo Black at label size is a brick. */
+h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 0.5em; }
+h1 { font-size: clamp(2.3rem, 6.2vw, 3.9rem); }
+h2 { font-size: clamp(1.6rem, 3.6vw, 2.3rem); }
+h3 { font-size: 1.2rem; }
 p { margin: 0 0 1.1em; }
 p:last-child { margin-bottom: 0; }
 
@@ -208,17 +271,72 @@ section { padding: var(--pad) 0; }
 .callbar svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; }
 @media (min-width: 900px) { .callbar { display: none; } }
 
-/* ---------- Hero ---------- */
+/* ---------- Hero: full-bleed photograph, opaque ink panel ----------
+   The panel is FLUSH TO THE LEFT VIEWPORT EDGE. No gap, no float, no rounded
+   corner, and it does not detach from the edge when the viewport gets wide.
+
+   THE SUM, because it is the one piece of arithmetic on this site that has to
+   be right on every page:
+
+     --edge  = the page grid's left margin, measured from the glass. It is the
+               same distance .wrap puts between the viewport edge and the first
+               character of every other section, so type in the panel lines up
+               with type all the way down the page.
+     --col   = the content column inside the panel.
+     width   = --edge + --col + the right padding.
+
+   Because the width CONTAINS --edge, the panel grows as the margin grows. At
+   1440 the margin is 180px and the panel is 792px; at 1920 the margin is 420px
+   and the panel is 1032px. It stays welded to the edge and only the column
+   inside it moves with the grid. A plain percentage fallback sits in front of
+   the calc so a browser that cannot parse nested math still gets a panel. */
 .hero { padding-top: clamp(32px, 5vw, 60px); }
-.hero-split { display: grid; gap: 34px; align-items: center; }
-@media (min-width: 900px) { .hero-split { grid-template-columns: 1.15fr .85fr; gap: 48px; } }
 .eyebrow {
   font-size: .82rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
   color: var(--ox-tx); margin: 0 0 12px;
 }
 .lead { font-size: 1.2rem; color: var(--ink-2); max-width: 60ch; }
 .proof { margin-top: 22px; font-size: .98rem; color: var(--ink-2); }
-.hero-photo img { border-radius: var(--radius); width: 100%; object-fit: cover; }
+
+.heroA { position: relative; padding: 0; background: var(--ink); overflow: hidden; }
+.heroA-photo {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 72% 50%;
+}
+.heroA-panel {
+  position: relative; z-index: 1; background: var(--ink);
+  padding: clamp(34px, 5vw, 64px) clamp(24px, 3.5vw, 52px) clamp(40px, 5vw, 64px) 20px;
+}
+@media (max-width: 899px) {
+  /* Stacked: photograph on top at a fixed band height, panel full width under
+     it. The panel is still flush left, because at this width the grid margin
+     IS 20px. */
+  .heroA-photo { position: relative; height: 52vw; min-height: 200px; }
+}
+@media (min-width: 900px) {
+  .heroA { display: flex; align-items: stretch; min-height: 620px; }
+  .heroA-panel {
+    --edge: max(20px, calc((100% - var(--wrap)) / 2 + 20px));
+    --col: min(560px, 46%);
+    --pad-r: clamp(24px, 3.5vw, 52px);
+    flex: 0 0 auto;
+    width: 54%;
+    width: calc(var(--edge) + var(--col) + var(--pad-r));
+    padding-left: var(--edge);
+    padding-right: var(--pad-r);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+}
+.heroA h1, .heroA .eyebrow { color: var(--paper); }
+.heroA h1 { margin-bottom: .3em; }
+.heroA .lead { color: var(--paper-2); font-size: 1.16rem; max-width: 46ch; }
+.heroA .proof { color: var(--paper-2); }
+.heroA .crumb ol { color: var(--paper-2); }
+.heroA .btn { border-color: var(--paper); }
+.heroA .btn-ghost { color: var(--paper); }
+.heroA .badges { margin-top: 30px; }
+.heroA .badges li { background: transparent; border-color: rgba(249, 247, 244, .42); color: var(--paper); }
+.heroA .badges svg { stroke: var(--paper); }
 
 /* ---------- Reassurance strip: certifications and rating ---------- */
 .badges { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 0; padding: 0; list-style: none; }
@@ -400,28 +518,28 @@ footer.site a { color: var(--paper); }
    only moving part on the page and it moves because a person opened it.
    =========================================================================== */
 
-/* ---------- Proof band: the four claims, then the twelve brands ---------- */
-.proof-grid { display: grid; gap: 18px; }
-@media (min-width: 640px) { .proof-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1000px) { .proof-grid { grid-template-columns: repeat(4, 1fr); } }
-.proof-item {
-  display: flex; flex-direction: column; gap: 12px;
-  padding: 24px 22px; border-radius: var(--radius);
-  background: rgba(249, 247, 244, .07); border: 1px solid rgba(249, 247, 244, .2);
+/* ---------- Stat band: three numbers, directly under the hero ----------
+   THREE, NEVER FOUR. A four-across row is the natural shape and there is no
+   fourth honest number to put in it, so the row is three and one of the three
+   is a word. Inventing a statistic to balance a layout is exactly the failure
+   the prime law exists to stop.
+   ANY NUMBER TRUE ONLY ON THE DAY IT WAS WRITTEN CARRIES ITS DATE, in .stat-s.
+   The review count is the one on this page. */
+.statband { background: var(--paper); border-bottom: 1px solid var(--rule); }
+.stats { display: grid; gap: 34px; }
+@media (min-width: 820px) { .stats { grid-template-columns: repeat(3, 1fr); gap: 0; } }
+.stat { padding: 8px 0; }
+@media (min-width: 820px) {
+  .stat { padding-right: 44px; }
+  .stat + .stat { border-left: 1px solid var(--rule); padding-left: 44px; }
 }
-.proof-item strong { font-size: 1.08rem; line-height: 1.3; }
-.proof-item span { font-size: .97rem; color: var(--paper-2); }
-.proof-item svg { width: 28px; height: 28px; fill: none; stroke: var(--paper); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-.chips-head { margin: 46px 0 16px; text-align: center; font-size: .84rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--paper); }
-.chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; list-style: none; margin: 0; padding: 0; }
-/* TEXT CHIPS, deliberately. No manufacturer wordmarks or badges until the
-   owner supplies official program art for each program the shop is actually
-   in. A logo is a claim of endorsement in a form the brand controls. */
-.chips li {
-  border: 1px solid rgba(249, 247, 244, .34); border-radius: 999px;
-  padding: 8px 17px; font-size: .96rem; font-weight: 700; color: var(--paper);
+.stat-n {
+  display: block; font-family: var(--display); font-weight: 400;
+  font-size: clamp(3.1rem, 6.4vw, 4.7rem); line-height: .88;
+  letter-spacing: -.025em; color: var(--ox);
 }
+.stat-l { display: block; margin-top: 15px; font-size: 1.06rem; font-weight: 700; }
+.stat-s { display: block; margin-top: 7px; font-size: .95rem; color: var(--ink-2); }
 
 /* ---------- The six-step process rail ---------- */
 .steps { display: grid; gap: 22px; counter-reset: step; }
@@ -435,9 +553,9 @@ footer.site a { color: var(--paper); }
 .step::before {
   content: "0" counter(step);
   position: absolute; top: 20px; right: 22px;
-  font-size: 1.5rem; font-weight: 800; color: var(--rule); letter-spacing: -.02em;
+  font-family: var(--display); font-size: 1.45rem; color: var(--rule); letter-spacing: -.02em;
 }
-.step h3 { font-size: 1.1rem; margin-bottom: .5em; padding-right: 44px; }
+.step h3 { font-size: 1.1rem; margin-bottom: .5em; padding-right: 48px; }
 .step p { font-size: 1rem; color: var(--ink-2); margin: 0; }
 
 /* ---------- Minor and Major, side by side ---------- */
@@ -450,6 +568,7 @@ footer.site a { color: var(--paper); }
 .svc-photo { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
 .svc-body { padding: 28px 26px 30px; }
 .svc-body > h3 { margin-bottom: .6em; }
+.svc-body h4, .sec-sub, .eyebrow, .foot-head, .contact-grid h3 { font-family: var(--font); }
 .svc-body h4 {
   font-size: .82rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
   color: var(--ox-tx); margin: 26px 0 8px;

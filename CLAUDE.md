@@ -156,6 +156,60 @@ easier to set up right than to unwind later.
 
 ---
 
+## The design system
+
+**Decided 2026-09-06, from three complete pages built as drafts and compared
+by scrolling. The pick is PHOTOGRAPHIC. Pages 2 through 37 inherit it, and
+nobody re-decides it per page.** The losing drafts were deleted rather than
+kept around, because a second direction sitting in the repo is a second
+direction someone will build from.
+
+The full spec, with the arithmetic, lives in the header of
+`docs/assets/site.css`. That file is the one place the palette and the type
+are defined. Read it before writing a hex, a `font-family`, or a hero.
+
+**1. The hero is a full-bleed photograph with an opaque ink panel over it.**
+Opaque, not a translucent wash and not a gradient: type over a photograph is
+only reliably readable when something solid sits behind it. The photograph is
+a real one of this shop, its people or its work.
+
+**2. The panel is flush to the left viewport edge.** No gap, no float, no
+rounded corner. Its **left padding equals the page grid's left margin**, so
+the type inside it lines up with the first character of every band below it.
+At wide viewports the panel **grows with the margin instead of detaching from
+the edge**: it is welded to the glass, and only the column inside it moves
+with the grid. `width = --edge + --col + --pad-r`, and because the width
+contains `--edge`, the panel is 792px at 1440 and 1032px at 1920.
+
+**3. A stat band sits directly under the hero, on paper. Three stats.**
+Big numeral, label, one supporting line. **Three is the rule, not the
+leftover**: a four-across row is the natural shape and there is no fourth
+honest number, so the third stat is a word. Inventing a statistic to balance a
+layout is the exact failure the prime law exists to stop. **Any number that is
+true only on the day it is written carries the date it was true**, in the
+supporting line. On the collision page that is the review count.
+
+**4. Type: Archivo Black for display, Source Sans 3 for reading.** Both
+self-hosted in `docs/assets/fonts/`, both SIL Open Font License 1.1, both
+licence texts sitting beside them unedited. **Nothing reaches a webfont CDN at
+runtime**, so there is no third-party request on any page and nothing to break
+when someone else's CDN changes. Archivo Black takes `h1`, `h2`, `h3` and the
+step numerals and nothing smaller; every label, subhead and run of body copy
+is Source Sans 3. **Archivo Black has exactly one weight.** Ask it for 700 and
+the browser fakes it, which looks like a mistake because it is one.
+
+**5. Ink sticky header**, with the slim ink staging bar above it until
+cutover. The call button keeps its oxblood fill, because oxblood means act,
+and carries a paper border: `--ox` on `--ink` measures **1.47**, so without
+the border the button is invisible as a shape even though its label reads at
+11.04.
+
+**6. The palette is four colours and two text shades**, and gold is not one of
+them any more. Oxblood means act and nothing else: two oxblood bands per page,
+each carrying the CTA row. Ink is structural. Solid colours only, no gradients
+and no glows. **Motion is zero** except the FAQ accordion, which moves because
+a person opened it.
+
 ## Staging ships noindexed on purpose
 
 **Three things are deliberately "wrong" on every page in `docs/` until
@@ -236,8 +290,9 @@ dark. That archive is the last copy of it that will ever exist.
 | `agents/site-auditor.md` | The weekly Monday report agent's job description. |
 | `agents/google-watcher.md` | The daily algorithm watch agent's job description. |
 | `.github/workflows/` | The two agent schedules. |
-| `drafts/` | **Throwaway.** Three design directions for the hero, proof band and header, built 2026-09-06 for a pick. Outside `docs/` so the audit never scores them. Deleted when a direction is chosen. |
-| `docs/` | The site. `assets/site.css` is the one place the palette lives, and its header carries the palette table, where each color came from, and the measured contrast ratios. |
+| `docs/` | The site. |
+| `docs/assets/site.css` | **The design system.** The one place the palette and the type are defined. Its header carries the chosen direction, the type pairing, the flush-left hero arithmetic, the stat-band rule, the palette table with its provenance, and the measured contrast ratios. |
+| `docs/assets/fonts/` | Archivo Black and Source Sans 3, self-hosted, with their unedited SIL OFL 1.1 licence texts. No webfont CDN is contacted at runtime. |
 
 ## The two agents
 

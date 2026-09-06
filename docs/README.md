@@ -30,13 +30,25 @@ not have to read the head to find out why.
 
 | Path | What it is |
 |---|---|
-| `assets/site.css` | **The one place the palette lives.** Its header carries the palette table, where each color was sampled from on the live site, and the measured contrast ratios. Read it before writing a hex anywhere. |
+| `assets/site.css` | **The design system, and the one place the palette lives.** Its header carries the chosen direction, the type pairing, the flush-left hero arithmetic, the stat-band rule, the palette table with its provenance, and the measured contrast ratios. Read it before writing a hex, a `font-family` or a hero. |
+| `assets/fonts/` | Archivo Black and Source Sans 3, self-hosted, with their unedited SIL OFL 1.1 licence texts. **No webfont CDN is contacted at runtime.** |
 | `assets/site.js` | Almost empty, deliberately. Every page works with JavaScript off. |
 | `assets/img/` | Photographs. See the warning below. |
 | `collision-repair/` | The pattern page. |
 | `robots.txt` | The staging block. |
 | `llms.txt` | The AI-agent guide. A page is not done until it is listed here. |
 | `sitemap.xml` | **Generated.** Run `python3 scripts/build-sitemap.py`; do not hand-edit. |
+
+## The design, decided once
+
+The direction was picked on 2026-09-06 from three complete drafts, and the
+losers were deleted. **Every page from here follows it and nobody re-decides
+it**: full-bleed photograph hero with an opaque ink panel flush to the left
+viewport edge, a three-stat band under it, Archivo Black over Source Sans 3,
+ink sticky header, oxblood for act and nothing else, motion zero.
+
+The spec with the arithmetic is in the header of `assets/site.css`, and
+CLAUDE.md carries the short version.
 
 ## Rules that hold on every page here
 
@@ -69,7 +81,7 @@ exceptions, including for small changes.
 ## The photographs are not cleared yet
 
 `assets/img/` holds three photographs carried over from the live page. **All
-three look like stock**, and the live site's blog images are named
+three look like stock**, and one of them is now the full-bleed hero, and the live site's blog images are named
 `AdobeStock_*.jpeg`, so the site demonstrably uses stock elsewhere. The
 standards say real photos only: the owner, the shop, the work.
 

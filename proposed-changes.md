@@ -224,24 +224,36 @@ their own.
 Three clauses become three cards. The only change is a capital letter and a
 full stop on each. No words added, none dropped.
 
-### 1.16 The proof band's four supporting lines
+### 1.16 The proof band became a stat band
 
-The band is new furniture, and the four one-line explanations under its badges
-are **recombined from sentences already on the page**. They are the only place
-on this page where live sentences were shortened rather than moved:
+Superseded 2026-09-06, when the photographic direction was picked. The band
+under the hero is now **three stats**, not four badges and a chip row.
 
-| Badge | Line | Recombined from |
+| Stat | Label | Supporting line |
 |---|---|---|
-| ASE certified | Automotive Service Excellence, held by our technicians. | "Our technicians are ASE (Automotive Service Excellence)... certified" |
-| I-CAR Gold Class certified | The highest level of collision repair certification in the industry. | Verbatim, FAQ 6 |
-| Lifetime warranty | On all repair work. If anything isn't right, we'll make it right. | "Lifetime warranty on all repair work" + "If anything isn't right, we'll make it right" |
-| Free estimates | Online and by phone. No obligation and no surprises. | "Free estimates online and by phone" + "There's no obligation and no surprises" |
+| **12** | Vehicle brands, factory-certified | INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep. |
+| **231** | Google reviews | **Rated Excellent, as of September 2026.** |
+| **Lifetime** | Warranty on all repair work | If anything isn't right, we'll make it right. |
 
-**The twelve factory certifications are text chips, not logos.** No
-manufacturer wordmark or program badge goes on this site until the owner
-supplies official program art for each program the shop is actually in. A logo
-is a claim of endorsement in a form the brand controls, and using one without
-their art is the kind of thing a manufacturer's legal team writes about.
+**Three, not four, and the third is a word.** There is no fourth honest number
+to put in a four-across row, and inventing one to balance a layout is the exact
+failure the prime law exists to stop.
+
+**The review count now carries the date it was true**, which it did not before.
+That is a partial answer to 4.4, not the whole one: dating it stops it lying
+silently, but somebody still has to decide between a dated number and a live
+widget, and re-date it if it stays static.
+
+The four claims themselves did not leave the page. ASE and I-CAR Gold, the
+lifetime warranty and free estimates are now three chips in the hero panel, and
+each is also stated at length further down: the certifications in FAQ 6 and the
+Major card, the warranty in the Major card and the Why Choose list, free
+estimates in FAQ 4 and the Why Choose list.
+
+**Two label lines I had written are retired**, and both were my recombinations
+rather than the live page's sentences: "Automotive Service Excellence, held by
+our technicians" and "Online and by phone. No obligation and no surprises." The
+underlying claims are still on the page in the live site's own words.
 
 ### 1.17 The four customer quotes are migrated verbatim
 
@@ -336,7 +348,7 @@ No words changed and no section was dropped in any of it. On the live page the
 FAQ is followed by the blog feed, the testimonials and then the contact block;
 the blog feed is the only one of those not carried, and it belongs on `/blog/`.
 
-### 3.4b The band rhythm, and what oxblood means
+### 3.5 The band rhythm, and what oxblood means
 
 Backgrounds now run: paper, ink, paper, white panel, **oxblood**, paper, ink,
 paper, **oxblood**, white panel, ink, paper, ink. No two touching sections share
@@ -349,7 +361,29 @@ to click. `docs/assets/site.css` splits this into `.dark` for the behavior and
 `.field-ox` / `.field-ink` for the ground, so the two can never be confused by
 someone adding a section later.
 
-### 3.5 sameAs is deliberately absent, pending the verified list
+### 3.6 The hero and Minor photographs swapped places
+
+Done 2026-09-06, with the photographic direction. The hero is now a full-bleed
+photograph, and a full-bleed band needs a landscape source: the portrait
+`accent-collision-repair-1.jpg` is 600px wide and was being stretched across a
+1440px band.
+
+So the two traded slots, and **their alt text travelled with them**:
+
+| Slot | Before | After |
+|---|---|---|
+| Hero | accent-collision-repair-1.jpg (600x900) | accent-minor-collision-repair.jpg (1200x800) |
+| Minor card | accent-minor-collision-repair.jpg | accent-collision-repair-1.jpg |
+
+Both photographs are still on the page, once each, with the same alt text they
+have always had. The Major card is untouched. `og:image` is unchanged, because
+it already pointed at the image that is now the hero.
+
+**1200px is still not enough for a full-bleed hero** on a 1440 or 1920 screen.
+Whatever the answer to 4.9 turns out to be, this slot wants a file at 2000px or
+better, and a body shop can shoot one in an afternoon.
+
+### 3.7 sameAs is deliberately absent, pending the verified list
 
 The business node ships with no `sameAs`, so the audit reports one warning and
 the page scores 95/100 rather than 100. That is honest and it is the only gap.
@@ -433,8 +467,13 @@ Two decisions:
 
 1. **It is a static number in static HTML.** It was true on 2026-09-05 and it
    is quietly wrong every week after that. Either it stays a live widget, or it
-   gets a "as of" date, or it comes off. A number that decays silently is a
+   gets an "as of" date, or it comes off. A number that decays silently is a
    stale-clock claim and the standards name it as a defect.
+   **Interim answer taken 2026-09-06**: it is dated. The stat band reads "Rated
+   Excellent, as of September 2026", so the number no longer lies silently.
+   That is not the end of the decision. A dated number still goes stale, it
+   just goes stale honestly, and somebody has to either refresh the date or
+   replace it with something live. **Owner's call.**
 2. **No rating or review markup is in the schema, deliberately**, and none
    should be added on the strength of a widget. Rating markup needs real,
    owned, publishable data and an owner who has decided to publish it.
@@ -508,6 +547,11 @@ They are carried today because the migration is faithful and because staging is
 not public. **Confirm each one is the shop's own work, or replace it before
 cutover.** This is the only item on this list that should stop a launch.
 
+Since 2026-09-06 the hero is a full-bleed photograph, which raises the stakes
+on the answer: a stock photo at the top of the page at 1440px wide is a much
+louder mistake than a stock photo in a card. That slot also needs a file at
+2000px or better regardless of the answer. See 3.6.
+
 ---
 
 ## 5. What the owner needs to answer first
@@ -528,4 +572,4 @@ Ordered by how much else depends on it.
 8. **priceRange**: publish `$$` or not. See section 2.
 9. **The four customer quotes**: permission to republish, and whether the
    staff they name still work here. See 4.8.
-10. **The verified `sameAs` list.** See 3.5.
+10. **The verified `sameAs` list.** See 3.7.

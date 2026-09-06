@@ -55,7 +55,12 @@
        because a measurement ID nobody has given us is a fact nobody has
        confirmed. docs/privacy/ ships in the same commit as the first tag. -->
 
-  <link rel="stylesheet" href="../assets/site.css?v=5c381ca5">
+  <!-- Both faces are self-hosted and both are needed above the fold, so they
+       are preloaded rather than discovered inside the stylesheet. They are
+       SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
+  <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/site.css?v=f6382ca1">
   <script src="../assets/site.js?v=5ba30d0b" defer></script>
 
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
@@ -362,100 +367,80 @@
 
   <main>
 
-    <section class="hero">
-      <div class="wrap">
-        <!-- Mirrors the BreadcrumbList, same labels and same order. "Home"
-             is text rather than a link for the reason given at the logo
-             above; the schema item points at the production URL, which is
-             correct today and will be correct at cutover. -->
+    <!-- ============ HERO ============
+         Full-bleed photograph with an OPAQUE ink panel over it, flush to the
+         left viewport edge. The panel's left padding is the page grid's left
+         margin, so the type in it lines up with the type in every band below.
+         The arithmetic and the reason live in assets/site.css under
+         "Hero: full-bleed photograph, opaque ink panel".
+
+         THE PHOTOGRAPH AND THE MINOR CARD'S SWAPPED PLACES, and their alt text
+         travelled with them: this slot needs a landscape source, and the
+         portrait one was being upscaled from 600px across a 1440px band. Both
+         are still on the page, once each. Recorded in proposed-changes.md.
+
+         SEE THE CLAIMS LIST: all three photographs on this page need the owner
+         to confirm they are this shop, its people or its work, and this one
+         wants a bigger file than 1200px whatever the answer is. -->
+    <section class="hero heroA">
+      <img class="heroA-photo" src="../assets/img/accent-minor-collision-repair.jpg" alt="Final collision repair touch-ups being completed on a black automobile." width="1200" height="800" fetchpriority="high" decoding="async">
+      <div class="heroA-panel">
+        <!-- Mirrors the BreadcrumbList, same labels and same order. "Home" is
+             text rather than a link because docs/index.html does not exist
+             yet, and this site never writes a link to a page that has not
+             been built. -->
         <nav class="crumb" aria-label="Breadcrumb">
           <ol>
             <li>Home</li>
             <li>Collision Repair</li>
           </ol>
         </nav>
-        <div class="hero-split">
-          <div>
-            <p class="eyebrow">Southampton, PA</p>
-            <h1>Collision Repair</h1>
-            <p class="lead">When you've been in a collision, the last thing you want is to deal with a faceless, impersonal repair chain. At Tri-County Collision, we understand that your vehicle isn't just transportation, it's part of your life.</p>
-            <div class="cta-row">
-              <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
-              <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
-            </div>
-            <!-- Every one of these four is a claim the live site already
-                 makes, and every one is on the claims list in
-                 proposed-changes.md for the owner to confirm. The review
-                 count is a point-in-time number: see the note there. -->
-            <ul class="badges">
-              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l7.5 3.3v5c0 4.6-3.1 8.3-7.5 9.5-4.4-1.2-7.5-4.9-7.5-9.5v-5z"/><path d="M8.9 12.1l2.2 2.2 4.1-4.6"/></svg>ASE and I-CAR Gold certified</li>
-              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 11.1a8.8 8.8 0 1 1-3.4-6"/><path d="M8.6 11.6l3 3 8.4-9"/></svg>Lifetime warranty on repairs</li>
-              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.8h4.5"/></svg>Free estimates</li>
-              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.8l5.9-.9z"/></svg>Excellent, based on 231 reviews</li>
-            </ul>
-          </div>
-          <!-- A real photograph, carried over from the live page with its
-               own alt text. SEE THE CLAIMS LIST: all three photographs on
-               this page need the owner to confirm they are this shop, its
-               people or its work. If any is stock it is replaced before
-               cutover, because the standards say real photos only. -->
-          <div class="hero-photo">
-            <img src="../assets/img/accent-collision-repair-1.jpg" alt="Male mechanic performing collision repair services." width="600" height="900" fetchpriority="high" decoding="async">
-          </div>
+        <p class="eyebrow">Southampton, PA</p>
+        <h1>Collision Repair</h1>
+        <p class="lead">When you've been in a collision, the last thing you want is to deal with a faceless, impersonal repair chain. At Tri-County Collision, we understand that your vehicle isn't just transportation, it's part of your life.</p>
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
         </div>
-      </div>
-    </section>
-
-    <section id="expert">
-      <div class="wrap">
-        <div class="sec-head">
-          <h2 class="sec-title">Expert Collision Repair Services in Southampton, PA</h2>
-        </div>
-        <div class="prose">
-          <p>Our family-owned shop has served drivers across Bucks County and Montgomery County for years, delivering expert collision repair with genuine care. Located at 995 Jaymor Rd in Southampton, PA, we're conveniently positioned to serve communities from Warminster to Bensalem, Huntingdon Valley to Doylestown. Our ASE and I-CAR&reg; Gold certified technicians handle everything from minor fender benders to complex structural damage, all backed by a lifetime warranty. We work directly with all major insurance companies, handle the paperwork so you don't have to, and pride ourselves on restoring your vehicle to its pre-accident condition. If you've been in an accident or need collision repair, don't settle for the first shop you find. Call us at <a href="tel:+12153225350">(215) 322-5350</a> for a free estimate, or get started online. We'll take it from here.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ PROOF BAND ============
-         Ink, not oxblood: oxblood means act, and there is nothing to click
-         here. This is the second thing a stressed reader sees after the
-         hero, and every line in it is a claim the live site already makes.
-         All four are on the claims list in proposed-changes.md.
-         THE TWELVE ARE TEXT CHIPS. No manufacturer wordmarks or badges until
-         the owner supplies official program art for each program the shop is
-         actually in, because a logo is a claim of endorsement in a form the
-         brand controls. -->
-    <section class="dark field-ink" id="proof" aria-label="Certifications, warranty and estimates">
-      <div class="wrap">
-        <div class="proof-grid">
-          <div class="proof-item">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l7.5 3.3v5c0 4.6-3.1 8.3-7.5 9.5-4.4-1.2-7.5-4.9-7.5-9.5v-5z"/><path d="M8.9 12.1l2.2 2.2 4.1-4.6"/></svg>
-            <strong>ASE certified</strong>
-            <span>Automotive Service Excellence, held by our technicians.</span>
-          </div>
-          <div class="proof-item">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.8l5.9-.9z"/></svg>
-            <strong>I-CAR Gold Class certified</strong>
-            <span>The highest level of collision repair certification in the industry.</span>
-          </div>
-          <div class="proof-item">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 11.1a8.8 8.8 0 1 1-3.4-6"/><path d="M8.6 11.6l3 3 8.4-9"/></svg>
-            <strong>Lifetime warranty</strong>
-            <span>On all repair work. If anything isn't right, we'll make it right.</span>
-          </div>
-          <div class="proof-item">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.8h4.5"/></svg>
-            <strong>Free estimates</strong>
-            <span>Online and by phone. No obligation and no surprises.</span>
-          </div>
-        </div>
-        <p class="chips-head">Factory-certified for 12 vehicle brands</p>
-        <ul class="chips">
-          <li>INFINITI</li><li>Nissan</li><li>Hyundai</li><li>Kia</li>
-          <li>Acura</li><li>Honda</li><li>GM</li><li>Chrysler</li>
-          <li>Ford</li><li>Dodge</li><li>Subaru</li><li>Jeep</li>
+        <!-- Every one of these is a claim the live site already makes, and
+             every one is on the claims list in proposed-changes.md. The review
+             count moved to the stat band below, where it carries its date. -->
+        <ul class="badges">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l7.5 3.3v5c0 4.6-3.1 8.3-7.5 9.5-4.4-1.2-7.5-4.9-7.5-9.5v-5z"/><path d="M8.9 12.1l2.2 2.2 4.1-4.6"/></svg>ASE and I-CAR Gold certified</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 11.1a8.8 8.8 0 1 1-3.4-6"/><path d="M8.6 11.6l3 3 8.4-9"/></svg>Lifetime warranty</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.8h4.5"/></svg>Free estimates</li>
         </ul>
+      </div>
+    </section>
+
+    <!-- ============ STAT BAND ============
+         Three stats, and three is the rule rather than the leftover. A fourth
+         would have to be invented, and inventing a number to balance a row is
+         the exact failure the prime law exists to stop. So the third is a word.
+         THE REVIEW COUNT CARRIES THE DATE IT WAS TRUE. It was 231 on
+         2026-09-05, read off the live site's Trustindex widget, and it is
+         quietly wrong every week after that unless it is dated or made live.
+         See proposed-changes.md 4.4: dating it is the interim answer, not the
+         final one. NO Review OR AggregateRating MARKUP anywhere in the schema. -->
+    <section class="statband" id="proof" aria-label="Certifications, reviews and warranty">
+      <div class="wrap">
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-n">12</span>
+            <span class="stat-l">Vehicle brands, factory-certified</span>
+            <span class="stat-s">INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep.</span>
+          </div>
+          <div class="stat">
+            <span class="stat-n">231</span>
+            <span class="stat-l">Google reviews</span>
+            <span class="stat-s">Rated Excellent, as of September 2026.</span>
+          </div>
+          <div class="stat">
+            <span class="stat-n">Lifetime</span>
+            <span class="stat-l">Warranty on all repair work</span>
+            <span class="stat-s">If anything isn't right, we'll make it right.</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -532,7 +517,7 @@
         <div class="svc-grid">
 
           <article class="svc">
-            <img class="svc-photo" src="../assets/img/accent-minor-collision-repair.jpg" alt="Final collision repair touch-ups being completed on a black automobile." width="1200" height="800" loading="lazy" decoding="async">
+            <img class="svc-photo" src="../assets/img/accent-collision-repair-1.jpg" alt="Male mechanic performing collision repair services." width="600" height="900" loading="lazy" decoding="async">
             <div class="svc-body">
               <span class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15.5h18"/><path d="M7.4 15.5c1.6-4.4 3.2-6.6 5-6.6s3.4 2.2 5 6.6"/><path d="M12 5.2v1.9"/></svg></span>
               <h3>Minor Collision Repair</h3>
