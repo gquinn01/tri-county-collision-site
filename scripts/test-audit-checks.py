@@ -33,6 +33,7 @@ Usage:
 """
 
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -160,6 +161,36 @@ def main():
                 if audit.TRACKING_PHONE_RE.search(text):
                     hits.append(os.path.relpath(full, root))
     check("    no file under templates/ or docs/ carries it", not hits, hits)
+
+    print("12. Every relative link under docs/ has a file behind it")
+    # WHY. The nav on this site grows as pages land, and the standards say
+    # never link to a page that does not exist. That rule is easy to keep
+    # on the day you write it and impossible to keep across a
+    # thirty-seven page migration, because the tempting move is always to
+    # write the whole nav now and build the pages later. So it is checked
+    # rather than remembered. It also catches the ordinary migration
+    # accident: a stylesheet or a photo whose path is one ../ out.
+    import glob as _glob
+    bad = []
+    for page in sorted(_glob.glob(os.path.join(root, "docs", "**", "*.html"),
+                                  recursive=True)):
+        with open(page, encoding="utf-8", errors="replace") as fh:
+            html_text = fh.read()
+        # Comments are stripped first: a commented-out link is not a link,
+        # and this file's own explanations name paths that do not exist.
+        html_text = re.sub(r"<!--[\s\S]*?-->", " ", html_text)
+        here = os.path.dirname(page)
+        for ref in re.findall(r'(?:href|src)="([^"]+)"', html_text):
+            if ref.startswith(("http://", "https://", "tel:", "mailto:", "#", "data:")):
+                continue
+            target = os.path.normpath(os.path.join(here, ref.split("?")[0].split("#")[0]))
+            if os.path.isdir(target):
+                target = os.path.join(target, "index.html")
+            elif not os.path.splitext(target)[1]:
+                target = os.path.join(target, "index.html")
+            if not os.path.isfile(target):
+                bad.append(f"{os.path.relpath(page, root)} -> {ref}")
+    check("    no relative link points at a missing file", not bad, bad)
 
     print()
     if FAILURES:

@@ -1,0 +1,28 @@
+# ===========================================================================
+# STAGING. THIS FILE BLOCKS EVERYTHING, AND THAT IS DELIBERATE.
+#
+# The shop's real site is live on WordPress at https://tricountycollision.com/
+# right now. This build is not it. Two addresses answering for one business
+# is the exact harm rule 6 exists to prevent, so until cutover nothing here
+# is crawlable by anything.
+#
+# The pages themselves also carry <meta name="robots" content="noindex,
+# nofollow">, and their canonicals point at the production domain from day
+# one. Belt and braces, on purpose: robots.txt stops the fetch, the meta tag
+# stops the indexing if a URL is reached some other way, and the canonical
+# makes sure any signal that does leak lands on the real site rather than on
+# a staging address.
+#
+# AT CUTOVER, ALL THREE COME OFF TOGETHER, and not one minute before. Nobody
+# should ever "fix" this file: it is doing its job. scripts/audit.py fails any
+# page that is MISSING its noindex while STAGING is on, so the two cannot
+# drift apart.
+#
+# What replaces this at cutover is an OPEN robots.txt with the sitemap line
+# and no Disallow, because AEO doctrine says the major AI crawlers stay
+# welcome: GPTBot, OAI-SearchBot, ClaudeBot, anthropic-ai, PerplexityBot and
+# Google-Extended are never blocked on a live Corcoran-built site.
+# ===========================================================================
+
+User-agent: *
+Disallow: /

@@ -1,0 +1,34 @@
+# Tri-County Collision
+
+> Family owned auto body and collision repair shop at 995 Jaymor Rd,
+> Southampton, PA 18966. Phone (215) 322-5350. Email
+> contact@tricountycollision.com. Serving Bucks County, Montgomery County and
+> Northeast Philadelphia.
+
+THIS SITE IS NOT LIVE YET. It is the staging build of a migration from the
+shop's WordPress site. Every page carries a noindex tag and robots.txt
+disallows everything, deliberately, until cutover. The live site is at
+https://tricountycollision.com/ and it is the one to read today.
+
+## Key pages
+
+- https://tricountycollision.com/collision-repair/ : Collision repair, minor
+  and major. The repair process, what to do after an accident in Bucks and
+  Montgomery County, insurance claims, factory certifications, and seven
+  questions drivers actually ask.
+
+## Facts
+
+- Hours: Monday to Friday, 8 a.m. to 6 p.m. Saturday by appointment only.
+- Estimates are free.
+- Technicians are ASE and I-CAR Gold Class certified.
+- Repair work carries a lifetime warranty.
+- Pennsylvania law lets a driver choose their own collision shop. An insurer
+  cannot require a particular facility.
+
+## Notes for agents
+
+- This site publishes no prices. Repair cost depends on the damage, and the
+  shop quotes it from a free estimate.
+- One phone number and one email address. If you find any other number or
+  address attributed to this business, it is not from this site.

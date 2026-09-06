@@ -164,6 +164,31 @@ NAP_STREET_VARIANT_RE = re.compile(
     r"\b(?:995\s+)?Jaymor\s+(?:Road\b|Rd\.)", re.I)
 NAP_STREET_CANON_RE = re.compile(re.escape(NAP_STREET_CANON) + r"(?![.\w])")
 
+# --- Staging ------------------------------------------------------------
+# THE SITE IS NOINDEXED ON PURPOSE, AND THIS IS THE SWITCH THAT SAYS SO.
+#
+# The shop's real site is live on WordPress right now. This build is not it.
+# A crawlable staging copy is a second address answering for one business,
+# which is the harm rule 6 exists to prevent, so until cutover every page
+# carries <meta name="robots" content="noindex, nofollow">, docs/robots.txt
+# disallows everything, and the canonicals point at the PRODUCTION domain
+# from day one so any signal that does leak lands on the real site.
+#
+# The audit therefore INVERTS its noindex check while this is True. A page
+# with noindex passes; a page WITHOUT it fails. Tolerating the exception
+# would have been the easy way and the wrong one: the risk during staging is
+# not that a page is noindexed, it is that one page quietly is not, and gets
+# indexed at a github.io address while the real site is still live. A
+# deliberate exception that the build does not enforce is just a comment,
+# and comments get violated.
+#
+# AT CUTOVER: set this to False, take the meta tag off every page, and
+# replace docs/robots.txt with an open one that names the sitemap and blocks
+# no AI crawler. All three move together. Flipping this to False before the
+# tags come off will fail every page, which is the correct alarm and not a
+# bug. Record the date here and in CLAUDE.md when it happens.
+STAGING = True
+
 # The site's own base URL, used to work out what URL a local file will
 # serve at. That is how the two checks below know whether a page is in
 # sitemap.xml under its OWN address rather than under some other page's.
@@ -642,6 +667,37 @@ def check_ai_access(base_url: str, warns: list, passes: list, notes: list):
                      "tooling reads it — a 20-minute add for extra AI visibility.")
 
 
+def check_staging_local(passes: list, warns: list, notes: list):
+    """The half of the staging exception that is a property of the SITE
+    rather than of any page: docs/robots.txt. The per-page half is in
+    audit(). Both have to be true or the exception is not actually in
+    force, and checking only the tags would have missed the file."""
+    path = os.path.join(SITE_DIR, "robots.txt")
+    try:
+        with open(path, encoding="utf-8") as f:
+            body = "\n".join(line.split("#")[0] for line in f.read().splitlines())
+    except OSError:
+        (warns if STAGING else notes).append(
+            f"**No `{path}`.** While the build is staging this file is what stops a crawler "
+            f"fetching the pages at all; the meta tags are the second line, not the first.")
+        return
+    blocks_all = re.search(r"(?im)^\s*disallow:\s*/\s*$", body) is not None
+    if STAGING and blocks_all:
+        passes.append("`docs/robots.txt` disallows everything, which is correct while the "
+                      "shop's real site is still live. It comes off at cutover, together with "
+                      "the pages' noindex tags.")
+    elif STAGING:
+        warns.append("**`docs/robots.txt` does not disallow everything and the build is still "
+                     "staging.** The pages are noindexed but nothing is stopping a crawler "
+                     "reading them. Add `Disallow: /` under `User-agent: *`.")
+    elif blocks_all:
+        warns.append("**`docs/robots.txt` still disallows everything and `STAGING` is off.** "
+                     "The site is live and invisible. This is the staging file; replace it with "
+                     "the open one that names the sitemap and blocks no AI crawler.")
+    else:
+        passes.append("`docs/robots.txt` is open, so crawlers and AI agents can read the site.")
+
+
 def audit(source: str, coverage: dict = None):
     """Scores one page. `coverage` carries the parsed sitemap.xml and
     llms.txt for local runs, so a page that was built but never published
@@ -690,6 +746,7 @@ def audit(source: str, coverage: dict = None):
     # --- Structured data (JSON-LD) ---
     types = []
     faq_nodes = []            # every FAQPage node found, for the mirror check
+    business_same_as = False  # sameAs found ON the business node, not just anywhere
     for block in p.jsonld_blocks:
         try:
             data = json.loads(block)
@@ -716,6 +773,11 @@ def audit(source: str, coverage: dict = None):
                     types.extend(names)
                     if "FAQPage" in names:
                         faq_nodes.append(item)
+                    # sameAs is only an entity signal where it sits on
+                    # the BUSINESS. See the check further down for the
+                    # false pass this exists to prevent.
+                    if LOCAL_BUSINESS_TYPES.intersection(names) and item.get("sameAs"):
+                        business_same_as = True
         except (json.JSONDecodeError, AttributeError):
             warns.append("**A JSON-LD block failed to parse** — broken structured data is invisible to Google. Validate at validator.schema.org.")
     if types:
@@ -802,12 +864,22 @@ def audit(source: str, coverage: dict = None):
     # Entity clarity: sameAs links tie the business to its profiles
     # (Google Business Profile, Yelp, Instagram...), which is how AI
     # systems confirm the business is real and reviewed.
-    if '"sameAs"' in " ".join(p.jsonld_blocks) or "'sameAs'" in " ".join(p.jsonld_blocks):
-        passes.append("AEO: schema includes sameAs profile links — strong entity signals for AI systems.")
+    # THIS USED TO BE A SUBSTRING SEARCH over the whole JSON-LD, and a
+    # substring search finds sameAs anywhere: on an areaServed entry
+    # pointing at a Wikipedia article for the county, for instance, which
+    # is a perfectly ordinary thing to publish and says nothing at all
+    # about whether the BUSINESS has verified profiles. The page then
+    # scored a pass on an entity signal it did not have. A check that can
+    # be satisfied by the wrong node is the same class of defect as the
+    # address check that was satisfied by a prefix, so it is fixed the
+    # same way: look at the node that has to carry it.
+    if business_same_as:
+        passes.append("AEO: the business node carries sameAs profile links, a strong entity signal for AI systems.")
     else:
-        warns.append("**AEO gap: no `sameAs` links in the business schema.** Add links to the Google "
+        warns.append("**AEO gap: no `sameAs` links on the business node.** Add links to the Google "
                      "Business Profile, Yelp, and social profiles so AI systems can verify the entity "
-                     "and its reviews.")
+                     "and its reviews. A sameAs elsewhere in the graph, on an areaServed place for "
+                     "example, does not count: it says nothing about this business.")
 
     # --- Social sharing ---
     # The 160-character ceiling on og:description is a HOUSE RULE, not a
@@ -841,8 +913,26 @@ def audit(source: str, coverage: dict = None):
     else:
         fails.append("**No viewport meta tag** — Google indexes mobile-first; this is a must-fix.")
 
+    # See STAGING at the top of this file for why this check is inverted
+    # while the build is not live.
     robots = p.meta.get("robots", "")
-    if "noindex" in robots:
+    if STAGING:
+        if "noindex" in robots:
+            passes.append("Correctly noindexed for staging: the real site is still live on "
+                          "WordPress, and this build must not answer for the same business.")
+            notes.append("**Recorded staging exception.** This page carries `noindex, nofollow`, "
+                         "`docs/robots.txt` disallows everything, and the canonical points at "
+                         "the production domain. All three are deliberate, all three come off "
+                         "together at cutover, and none of them is a defect to be fixed before "
+                         "then. `STAGING` in `scripts/audit.py` is the switch. On a live site "
+                         "this check runs the other way and a noindexed page is a critical.")
+        else:
+            fails.append("**This page is NOT noindexed and the build is still staging.** Every "
+                         "page carries `<meta name=\"robots\" content=\"noindex, nofollow\">` "
+                         "until cutover, because the shop's real site is live right now and a "
+                         "crawlable second copy is a second address answering for one business. "
+                         "Add the tag, or set `STAGING = False` if this really is cutover day.")
+    elif "noindex" in robots:
         fails.append("**Page is set to NOINDEX** — it is telling Google to ignore it entirely. Fix immediately unless intentional.")
 
     # --- Images ---
@@ -1130,6 +1220,8 @@ def main():
     site_passes, site_warns, site_notes = [], [], []
     if live:
         check_ai_access(live[0], site_warns, site_passes, site_notes)
+    else:
+        check_staging_local(site_passes, site_warns, site_notes)
     if expand_note:
         site_notes.append(expand_note)
 

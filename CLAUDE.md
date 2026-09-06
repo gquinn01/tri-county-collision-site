@@ -156,6 +156,52 @@ easier to set up right than to unwind later.
 
 ---
 
+## Staging ships noindexed on purpose
+
+**Three things are deliberately "wrong" on every page in `docs/` until
+cutover. None of them is a defect and none of them gets "fixed" before
+then.**
+
+```
+1. <meta name="robots" content="noindex, nofollow">   on every page
+2. docs/robots.txt                                    Disallow: /
+3. <link rel="canonical">                             absolute to
+                                                      https://tricountycollision.com/
+```
+
+The reason is the one that also keeps GitHub Pages switched off: **the
+shop's real site is live on WordPress right now**, and a crawlable copy of
+it at a second address is a second address answering for one business. That
+is the Map Pack self-competition rule 6 exists to prevent, and it is worse
+here than on a greenfield build, because the two copies would be near
+duplicates of each other.
+
+The three work at different layers on purpose. `robots.txt` stops the fetch.
+The meta tag stops the indexing if a URL is reached some other way, which a
+`robots.txt` disallow does not by itself guarantee. The canonical means any
+signal that does leak lands on the **real** site rather than on a staging
+address, and it is absolute from day one so no page has to be edited at
+cutover to point somewhere new.
+
+**This is enforced, not remembered.** `scripts/audit.py` carries a `STAGING`
+switch, and while it is `True` the noindex check runs **inverted**: a page
+carrying the tag passes, and a page **missing** it is a critical. The risk
+during staging is not that a page is noindexed, it is that one page quietly
+is not. The audit also checks `docs/robots.txt` itself, because tags without
+the file is only half the exception. Every scored page carries a note naming
+the exception, so nobody reading a report has to wonder.
+
+**At cutover, all three come off in one commit**: set `STAGING = False`,
+strip the meta tag from every page, and replace `docs/robots.txt` with an
+open one that names the sitemap and blocks no AI crawler (GPTBot,
+OAI-SearchBot, ClaudeBot, anthropic-ai, PerplexityBot and Google-Extended
+stay welcome). Flipping the switch before the tags come off fails every
+page, which is the correct alarm and not a bug. Record the date here when it
+happens.
+
+The pages also carry a visible staging banner. A human who opens one should
+not have to read the head to find out why it is not indexed.
+
 ## Never touch MX records
 
 At cutover, change **web DNS records only**. Never MX.
@@ -181,6 +227,7 @@ dark. That archive is the last copy of it that will ever exist.
 | `scripts/test-sitemap-expansion.py` | Tests the sitemap expansion. Run it before touching that code. |
 | `scripts/test-audit-checks.py` | Smoke tests for the NAP checks: the address spelling, the CallRail number, the one email. Written after the address check was caught scoring a wrong address as a pass. |
 | `proposed-changes.md` | Every text change made during the migration, as before/after pairs, plus the claims the pages carry. Awaiting the owner's fact-check. |
+| `scripts/build-sitemap.py` | Generates `docs/sitemap.xml` from the pages themselves. `lastmod` comes from each page's own schema `dateModified`, never from a file mtime and never from today. |
 | `scripts/stamp-assets.py` | Cache-busting stamps for `docs/assets/site.css` and `site.js`. |
 | `scripts/fetch_seo_news.py` | Pulls the headline sweep the Google Watcher reads. |
 | `scripts/cascade-analyzer.html` | CSS cascade analyzer. |
@@ -189,7 +236,7 @@ dark. That archive is the last copy of it that will ever exist.
 | `agents/site-auditor.md` | The weekly Monday report agent's job description. |
 | `agents/google-watcher.md` | The daily algorithm watch agent's job description. |
 | `.github/workflows/` | The two agent schedules. |
-| `docs/` | Placeholder. The build has not started. |
+| `docs/` | The site. `assets/site.css` is the one place the palette lives, and its header carries the palette table, where each color came from, and the measured contrast ratios. |
 
 ## The two agents
 
@@ -225,8 +272,14 @@ record the decision here. Do not let it drift.
 ```
 python3 scripts/test-sitemap-expansion.py     # exits 1 if anything fails
 python3 scripts/test-audit-checks.py          # exits 1 if anything fails
-python3 scripts/audit.py --strict             # once docs/ has pages
+python3 scripts/stamp-assets.py               # after touching site.css or site.js
+python3 scripts/build-sitemap.py              # after adding or removing a page
+python3 scripts/audit.py --strict             # every page at 100/100
 ```
+
+The two middle commands take `--check`, which exits 1 instead of rewriting.
+Neither is a thing to remember: the audit fails a page whose asset stamp is
+stale or whose `<url>` block is missing.
 
 ## GitHub Pages
 

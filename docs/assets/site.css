@@ -1,0 +1,336 @@
+/* ===========================================================================
+   TRI-COUNTY COLLISION, SHARED STYLESHEET.
+
+   THE PALETTE LIVES HERE AND NOWHERE ELSE. One file defines it, every page
+   reads it. A hex typed into a page is a second palette, and a second
+   palette drifts. The two sanctioned duplicates are the theme-color meta
+   tag, because a meta tag cannot read a custom property, and inline SVG
+   attributes, because those cannot either. Both are noted where they sit.
+
+   ---------------------------------------------------------------------------
+   WHERE THESE COLORS CAME FROM. They were sampled from the shop's own live
+   WordPress site on 2026-09-05, not chosen. The theme declares two of them
+   outright in wp-content/themes/tricounty/style.css:
+
+       --primary-color: #121b27      --secondary-color: #691c17
+
+   and the compiled layout CSS uses #691c17 a hundred and forty times against
+   ninety-eight whites, which is what makes oxblood the shop's color rather
+   than an accent. #E92424 was decoded out of the logo PNG's own palette, so
+   the mark's red is the mark's actual red and not a lookalike.
+
+   | Token   | Hex      | Role                                              |
+   |---------|----------|---------------------------------------------------|
+   | --ox    | #691C17  | ACT. Filled buttons, the call bar, the two bands.  |
+   | --ink   | #121B27  | Body text, headings, the footer.                   |
+   | --paper | #F9F7F4  | The default ground for almost everything.          |
+   | --mark  | #E92424  | The logo, and nothing else. See the warning below. |
+   | --gold  | #E5C549  | Certification and rating marks, on dark only.      |
+   | --ox-tx | #8A2419  | Oxblood's shade for small text on paper.           |
+   | --ink-2 | #3C4453  | Secondary text on paper.                           |
+
+   MEASURED CONTRAST, machine-counted against WCAG's formula, never eyeballed:
+
+       --ink    on --paper    16.21        --paper on --ink       16.21
+       --ox     on --paper    11.04        --paper on --ox        11.04
+       --gold   on --ink      10.24        --gold  on --ox         6.98
+       --ox-tx  on --paper     8.37        --ink-2 on --paper      7.04
+
+   THE LOGO RED FAILS AS TEXT. #E92424 on paper is 4.14, under the 4.5 that
+   normal-size text needs. That is why the mark's red and the text red are two
+   separate tokens rather than one "brand red": --mark is for the logo file
+   and --ox-tx is for words. Do not set type in --mark, at any size, on any
+   background lighter than --ink. This is the palette law's rule that small
+   accent text on light backgrounds gets its own darker accessible shade, and
+   it is the single easiest thing on this site to get wrong.
+
+   ---------------------------------------------------------------------------
+   THE RULES THIS FILE KEEPS.
+
+   SOLID COLORS ONLY. No gradients on text, buttons, cards or accents, and no
+   glows. There is no sanctioned section-background gradient on this site.
+
+   MOTION IS EVIDENCE, NOT COSTUME, and on this site there is almost no
+   evidence to show, so there is almost no motion: a hover state, a focus
+   ring, and the FAQ disclosure. Nothing animates on load. The reader arrived
+   here from a collision and is holding a phone; a page that moves while they
+   are trying to read a phone number is a page that costs them time.
+
+   BUTTON GRAMMAR. A filled button (.btn) means act, and on this site acting
+   means calling (215) 322-5350. A text link means read more. Navigation is
+   never inflated into a button. .btn-ghost is the same grammar at lower
+   emphasis, for the second CTA in a row, never for a nav item.
+
+   THE CALL BAR IS FIXED TO THE BOTTOM OF EVERY PHONE VIEWPORT. It is the
+   whole design argument in one element: the reader should never have to
+   scroll, hunt or remember to reach the shop. It is hidden above 900px, where
+   the header's own call button is always visible instead, and the body gets
+   bottom padding to match so it never covers the last line of the footer.
+
+   BACKGROUND RHYTHM. --paper by default, --ox for the two bands that ask the
+   reader to act, --ink for the contact band and the footer. That is the whole
+   system, and it is deliberately quieter than an alternating dark/light
+   rhythm, because every contrast switch costs reading time.
+
+   REAL PHOTOS ONLY. Every image on this site is the shop, its people or its
+   work. No stock, no AI imagery, no decorative drawing standing in for a
+   photograph.
+   =========================================================================== */
+
+:root {
+  --ox: #691C17;
+  --ox-dk: #55160F;
+  --ox-tx: #8A2419;
+  --ink: #121B27;
+  --ink-2: #3C4453;
+  --paper: #F9F7F4;
+  --mark: #E92424;
+  --gold: #E5C549;
+  --rule: #DED8D1;
+  --panel: #FFFFFF;
+
+  --wrap: 1120px;
+  --pad: clamp(48px, 7vw, 88px);
+  --radius: 4px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--paper);
+  /* Room for the fixed call bar, so it never sits on the last line. */
+  padding-bottom: 68px;
+}
+
+@media (min-width: 900px) { body { padding-bottom: 0; } }
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--ox-tx); }
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 3px solid var(--ox);
+  outline-offset: 2px;
+}
+
+h1, h2, h3 { line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 0.5em; }
+h1 { font-size: clamp(2.1rem, 6vw, 3.4rem); font-weight: 800; }
+h2 { font-size: clamp(1.6rem, 3.6vw, 2.3rem); font-weight: 800; }
+h3 { font-size: 1.25rem; font-weight: 700; }
+p { margin: 0 0 1.1em; }
+p:last-child { margin-bottom: 0; }
+
+.wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 20px; }
+
+section { padding: var(--pad) 0; }
+
+/* ---------- Buttons: filled means act, and act means call ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  background: var(--ox); color: var(--paper);
+  font-size: 1.0625rem; font-weight: 700; text-decoration: none;
+  padding: 15px 26px; border: 2px solid var(--ox); border-radius: var(--radius);
+  min-height: 52px; transition: background-color .12s ease, border-color .12s ease;
+}
+.btn:hover { background: var(--ox-dk); border-color: var(--ox-dk); }
+.btn-sm { padding: 10px 18px; min-height: 44px; font-size: 1rem; }
+.btn-ghost { background: transparent; color: var(--ox); }
+.btn-ghost:hover { background: rgba(105, 28, 23, .08); border-color: var(--ox); }
+.dark .btn { background: var(--paper); color: var(--ox); border-color: var(--paper); }
+.dark .btn:hover { background: #FFFFFF; border-color: #FFFFFF; }
+.dark .btn-ghost { background: transparent; color: var(--paper); border-color: var(--paper); }
+.dark .btn-ghost:hover { background: rgba(249, 247, 244, .14); }
+.cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin: 26px 0 0; }
+
+/* ---------- Header ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 40;
+  background: var(--paper); border-bottom: 1px solid var(--rule);
+}
+.nav .inner { display: flex; align-items: center; gap: 18px; min-height: 76px; }
+.nav-home { display: block; flex: 0 0 auto; }
+.nav-home img { width: 190px; height: 76px; object-fit: contain; }
+.nav-main { margin-left: auto; }
+.nav-main ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; }
+.nav-main a { color: var(--ink); font-weight: 600; text-decoration: none; font-size: 1rem; }
+.nav-main a:hover { color: var(--ox-tx); text-decoration: underline; }
+.nav .btn { flex: 0 0 auto; }
+.navtoggle { display: none; }
+
+@media (max-width: 899px) {
+  .nav .inner { min-height: 64px; }
+  .nav-home img { width: 150px; height: 60px; }
+  .nav-main { margin-left: auto; }
+  .nav-main ul { gap: 16px; }
+  .nav .btn-sm { display: none; }
+}
+
+/* ---------- The call bar. The one element the whole design turns on. ---------- */
+.callbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 60px; padding: 10px 16px;
+  background: var(--ox); color: var(--paper);
+  font-size: 1.15rem; font-weight: 800; text-decoration: none;
+  border-top: 2px solid var(--ox-dk);
+}
+.callbar svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; }
+@media (min-width: 900px) { .callbar { display: none; } }
+
+/* ---------- Hero ---------- */
+.hero { padding-top: clamp(32px, 5vw, 60px); }
+.hero-split { display: grid; gap: 34px; align-items: center; }
+@media (min-width: 900px) { .hero-split { grid-template-columns: 1.15fr .85fr; gap: 48px; } }
+.eyebrow {
+  font-size: .82rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ox-tx); margin: 0 0 12px;
+}
+.lead { font-size: 1.2rem; color: var(--ink-2); max-width: 60ch; }
+.proof { margin-top: 22px; font-size: .98rem; color: var(--ink-2); }
+.hero-photo img { border-radius: var(--radius); width: 100%; object-fit: cover; }
+
+/* ---------- Reassurance strip: certifications and rating ---------- */
+.badges { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 0; padding: 0; list-style: none; }
+.badges li {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 999px;
+  padding: 8px 15px; font-size: .95rem; font-weight: 700; color: var(--ink);
+}
+.badges svg { width: 17px; height: 17px; fill: none; stroke: var(--ox); stroke-width: 2.1; }
+
+/* ---------- Breadcrumb ---------- */
+.crumb { margin: 0 0 22px; font-size: .95rem; }
+.crumb ol { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; color: var(--ink-2); }
+.crumb li + li::before { content: "/"; margin-right: 8px; color: var(--rule); }
+
+/* ---------- Sections ---------- */
+.sec-head { max-width: 780px; margin: 0 0 38px; }
+.sec-title { margin-bottom: .35em; }
+.sec-sub {
+  font-size: .84rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ox-tx); margin: 0;
+}
+.dark { background: var(--ox); color: var(--paper); }
+.dark .sec-sub, .dark .eyebrow { color: var(--gold); }
+.dark a { color: var(--paper); }
+.band-panel { background: var(--panel); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.prose { max-width: 68ch; }
+.prose h3 { margin-top: 1.6em; }
+
+.grid2, .grid3, .grid4 { display: grid; gap: 22px; }
+@media (min-width: 700px) { .grid2 { grid-template-columns: repeat(2, 1fr); } .grid3 { grid-template-columns: repeat(2, 1fr); } .grid4 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .grid3 { grid-template-columns: repeat(3, 1fr); } .grid4 { grid-template-columns: repeat(4, 1fr); } }
+
+.card {
+  background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius);
+  padding: 26px 24px;
+}
+.card h3 { margin-bottom: .45em; }
+.card p { font-size: 1rem; color: var(--ink-2); }
+.dark .card { background: rgba(249, 247, 244, .08); border-color: rgba(249, 247, 244, .28); }
+.dark .card p { color: var(--paper); }
+
+.tile { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-bottom: 16px; border: 2px solid var(--ox); border-radius: var(--radius); }
+.tile svg { width: 24px; height: 24px; fill: none; stroke: var(--ox); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tile-dark { border-color: rgba(249, 247, 244, .5); }
+.tile-dark svg { stroke: var(--paper); }
+.tile-dark svg .ico-accent { stroke: var(--gold); }
+
+/* ---------- Numbered process steps ---------- */
+.step { counter-increment: step; }
+.steps { counter-reset: step; }
+.step .num {
+  display: block; font-size: .82rem; font-weight: 800; letter-spacing: .12em;
+  color: var(--ox-tx); margin-bottom: 10px;
+}
+
+/* ---------- A plain checked list, used for the what-you-get bullets ---------- */
+.ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+@media (min-width: 800px) { .ticks { grid-template-columns: repeat(2, 1fr); gap: 14px 34px; } }
+.ticks li { position: relative; padding-left: 32px; }
+.ticks li::before {
+  content: ""; position: absolute; left: 0; top: .45em; width: 16px; height: 9px;
+  border-left: 3px solid var(--ox); border-bottom: 3px solid var(--ox);
+  transform: rotate(-45deg);
+}
+.ticks strong { display: block; }
+
+/* ---------- Ordered steps in prose, the what-to-do-next list ---------- */
+.numbered { counter-reset: n; list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.numbered li { counter-increment: n; position: relative; padding-left: 52px; }
+.numbered li::before {
+  content: counter(n); position: absolute; left: 0; top: 0;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--ox); color: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 1rem;
+}
+/* On an oxblood band the oxblood counter would vanish, so it flips to gold
+   on ink. Same for the tick marks in .ticks. */
+.dark .numbered li::before { background: var(--gold); color: var(--ink); }
+.dark .ticks li::before { border-color: var(--gold); }
+
+/* ---------- Figures ---------- */
+.figure { margin: 34px 0 0; }
+.figure img { border-radius: var(--radius); width: 100%; }
+.split { display: grid; gap: 30px; align-items: center; }
+@media (min-width: 900px) { .split { grid-template-columns: 1fr 1fr; gap: 44px; } .split.flip .split-media { order: 2; } }
+
+/* ---------- FAQ ---------- */
+#faq details {
+  border-top: 1px solid var(--rule); padding: 6px 0;
+}
+#faq details:last-of-type { border-bottom: 1px solid var(--rule); }
+#faq summary {
+  display: flex; align-items: flex-start; gap: 14px; justify-content: space-between;
+  cursor: pointer; list-style: none; padding: 18px 0;
+  font-size: 1.12rem; font-weight: 700; color: var(--ink);
+}
+#faq summary::-webkit-details-marker { display: none; }
+.faq-ico { flex: 0 0 auto; width: 20px; height: 20px; position: relative; margin-top: 5px; }
+.faq-ico::before, .faq-ico::after {
+  content: ""; position: absolute; background: var(--ox); left: 50%; top: 50%;
+}
+.faq-ico::before { width: 16px; height: 3px; transform: translate(-50%, -50%); }
+.faq-ico::after { width: 3px; height: 16px; transform: translate(-50%, -50%); }
+#faq details[open] .faq-ico::after { display: none; }
+#faq details > p { margin: 0 0 22px; max-width: 74ch; color: var(--ink-2); }
+
+/* ---------- Contact band ---------- */
+.contact { background: var(--ink); color: var(--paper); }
+.contact .sec-sub { color: var(--gold); }
+.contact a { color: var(--paper); }
+.contact-grid { display: grid; gap: 26px; margin-top: 34px; }
+@media (min-width: 800px) { .contact-grid { grid-template-columns: repeat(3, 1fr); } }
+.contact-grid h3 { font-size: .84rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: .6em; }
+.contact-alt { margin-top: 30px; }
+
+/* ---------- Footer ---------- */
+footer.site { background: var(--ink); color: var(--paper); padding: var(--pad) 0 34px; }
+footer.site a { color: var(--paper); }
+.foot-grid { display: grid; gap: 34px; }
+@media (min-width: 760px) { .foot-grid { grid-template-columns: 1.4fr 1fr 1fr; } }
+.foot-home img { width: 200px; height: 80px; object-fit: contain; background: var(--paper); border-radius: var(--radius); padding: 8px; }
+.foot-tag { margin-top: 16px; max-width: 38ch; color: #C9CCD3; }
+.foot-nap { margin-top: 18px; line-height: 1.8; }
+.foot-head { font-size: .84rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin: 0 0 14px; }
+.foot-links { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
+.foot-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(249, 247, 244, .18); font-size: .93rem; color: #C9CCD3; }
+.foot-bottom a { color: #C9CCD3; }
+
+/* ---------- The staging banner. Removed at cutover with the noindex. ---------- */
+.staging {
+  background: var(--gold); color: var(--ink);
+  font-size: .92rem; font-weight: 700; text-align: center; padding: 9px 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

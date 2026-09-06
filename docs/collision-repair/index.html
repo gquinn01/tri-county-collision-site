@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       COLLISION REPAIR. Built 2026-09-05 from templates/service-page-template.html.
+
+       THE SOURCE OF EVERY WORD ON THIS PAGE is the shop's own live
+       WordPress page at https://tricountycollision.com/collision-repair/,
+       read on 2026-09-05. Nothing here was written for the shop and
+       nothing here claims anything the live page does not already claim.
+       Every place the wording changed is recorded as a before/after pair
+       in proposed-changes.md at the repo root, awaiting the owner's
+       fact-check. Do not edit copy here without adding the pair there.
+
+       STAGING, DELIBERATE, AND NOT A DEFECT:
+       this page carries <meta name="robots" content="noindex, nofollow">,
+       docs/robots.txt disallows everything, and the canonical below is
+       absolute to the production domain. All three are on purpose, all
+       three come off together at cutover, and scripts/audit.py enforces
+       them through its STAGING switch. See CLAUDE.md.
+
+       THE FAQ IS MIRRORED. Each visible answer is byte-identical to its
+       acceptedAnswer in the FAQPage node. Edit one, edit both, then run
+       python3 scripts/audit.py --strict, which scores a mismatch as a
+       critical rather than a note.
+
+       NO PRICE, OFFER, REVIEW OR RATING MARKUP. The live site publishes a
+       priceRange and an offer catalog; neither is carried here. Both are
+       on the claims list as an owner decision.
+       ============================================================ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Ink. The palette lives in assets/site.css; a meta tag cannot read a
+       custom property, which is why this one hex is duplicated. -->
+  <meta name="theme-color" content="#121B27">
+
+  <title>Collision Repair in Southampton, PA | Tri-County Collision</title>
+  <meta name="description" content="Trusted collision repair in Southampton, PA. ASE &amp; I-CAR Gold certified, lifetime warranty, free estimates. Serving Bucks &amp; Montgomery County. (215) 322-5350.">
+
+  <link rel="canonical" href="https://tricountycollision.com/collision-repair/">
+  <meta name="robots" content="noindex, nofollow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Collision Repair in Southampton, PA | Tri-County Collision">
+  <meta property="og:description" content="Trusted collision repair in Southampton, PA. ASE &amp; I-CAR Gold certified, lifetime warranty, free estimates. Serving Bucks &amp; Montgomery County. (215) 322-5350.">
+  <meta property="og:url" content="https://tricountycollision.com/collision-repair/">
+  <meta property="og:image" content="https://tricountycollision.com/assets/img/accent-minor-collision-repair.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="800">
+  <meta property="og:image:alt" content="Final collision repair touch-ups being completed on a black automobile.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- No analytics tag yet. GA4 goes in the CLIENT'S OWN Google account at
+       cutover, and the CallRail snippet goes in beside it. Neither is here,
+       because a measurement ID nobody has given us is a fact nobody has
+       confirmed. docs/privacy/ ships in the same commit as the first tag. -->
+
+  <link rel="stylesheet" href="../assets/site.css?v=61cacfbd">
+  <script src="../assets/site.js?v=5ba30d0b" defer></script>
+
+  <!-- One @graph. The AutoBodyShop node repeats in full on every page under
+       the SAME @id, so the whole site resolves to one business entity: a
+       bare @id reference carries no type and no sameAs, which is what
+       search engines and the audit both read.
+       sameAs IS DELIBERATELY ABSENT. The live site publishes five profile
+       URLs and they are listed in proposed-changes.md, but a sameAs claims
+       "this profile is us" and only profiles the shop actually controls
+       belong in it. The verified list is coming from the client. Until it
+       lands the property is not here, and the audit says so out loud rather
+       than the page quietly claiming an entity signal it does not have. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AutoBodyShop",
+        "@id": "https://tricountycollision.com/#business",
+        "name": "Tri-County Collision",
+        "url": "https://tricountycollision.com/",
+        "telephone": "+12153225350",
+        "email": "contact@tricountycollision.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "995 Jaymor Rd",
+          "addressLocality": "Southampton",
+          "addressRegion": "PA",
+          "postalCode": "18966",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 40.1660232,
+          "longitude": -75.0538596
+        },
+        "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "08:00",
+            "closes": "18:00"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-bucks-county",
+            "name": "Bucks County, Pennsylvania"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-montgomery-county",
+            "name": "Montgomery County, Pennsylvania"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-philadelphia",
+            "name": "Philadelphia, Pennsylvania"
+          },
+          {
+            "@type": "City",
+            "name": "Southampton, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Feasterville-Trevose, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Richboro, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Warminster, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Langhorne, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Bensalem, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Huntingdon Valley, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Hatboro, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Willow Grove, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Horsham, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Jenkintown, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "Place",
+            "name": "Northeast Philadelphia, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-philadelphia"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://tricountycollision.com/collision-repair/#webpage",
+        "url": "https://tricountycollision.com/collision-repair/",
+        "name": "Collision Repair in Southampton, PA | Tri-County Collision",
+        "description": "Trusted collision repair in Southampton, PA. ASE & I-CAR Gold certified, lifetime warranty, free estimates. Serving Bucks & Montgomery County. (215) 322-5350.",
+        "inLanguage": "en-US",
+        "dateModified": "2026-09-05",
+        "isPartOf": {
+          "@id": "https://tricountycollision.com/#business"
+        },
+        "about": {
+          "@id": "https://tricountycollision.com/collision-repair/#service"
+        },
+        "breadcrumb": {
+          "@id": "https://tricountycollision.com/collision-repair/#breadcrumb"
+        },
+        "primaryImageOfPage": {
+          "@type": "ImageObject",
+          "url": "https://tricountycollision.com/assets/img/accent-minor-collision-repair.jpg",
+          "caption": "Final collision repair touch-ups being completed on a black automobile."
+        }
+      },
+      {
+        "@type": "Service",
+        "@id": "https://tricountycollision.com/collision-repair/#service",
+        "name": "Collision Repair",
+        "serviceType": "Collision Repair",
+        "url": "https://tricountycollision.com/collision-repair/",
+        "description": "Comprehensive minor and major collision repair restoring foreign and domestic vehicles to pre-accident condition, including body and frame repair, paint, and refinishing. Performed by ASE and I-CAR Gold Class certified technicians at a factory-certified collision repair center and backed by a lifetime warranty on parts and labor.",
+        "provider": {
+          "@id": "https://tricountycollision.com/#business"
+        },
+        "areaServed": [
+          {
+            "@id": "https://tricountycollision.com/#area-bucks-county"
+          },
+          {
+            "@id": "https://tricountycollision.com/#area-montgomery-county"
+          },
+          {
+            "@id": "https://tricountycollision.com/#area-philadelphia"
+          }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://tricountycollision.com/collision-repair/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://tricountycollision.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Collision Repair",
+            "item": "https://tricountycollision.com/collision-repair/"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://tricountycollision.com/collision-repair/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How long does collision repair take?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "How long collision repair takes depends on the severity of the damage. Minor repairs, like small dents, scratches, or bumper damage, typically take 2 to 5 days. Major structural work, frame straightening, or extensive panel replacement can take 2 to 4 weeks. We provide a detailed timeline estimate upfront so you know exactly what to expect. Throughout the repair process, we keep you updated on progress. And if your insurance provides for a loaner or rental car, we'll coordinate that with them to minimize the impact on your life."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Will my car look the same after collision repair?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, your car will look the same after collision repair, and that is our standard. Our ASE/I-CAR® Gold certified technicians are trained to factory specifications and have the expertise to restore your vehicle to its pre-accident condition. We use computerized color matching to ensure paint blends perfectly. We source OEM parts whenever possible to maintain your vehicle's integrity. And behind all of this is our lifetime warranty. If anything isn't right, we'll make it right. When you drive away from our shop, no one will know your vehicle was ever in an accident."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do you work with my insurance company?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We work with all major insurance companies. We have direct repair relationships with them, so we communicate with adjusters on your behalf. We handle all the paperwork, coordinate authorizations, and keep your insurer updated on repair progress. We'll also advocate for you if we believe your vehicle needs more extensive repairs than initially approved. You don't need to navigate the claims process alone, we've got you covered."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much does collision repair cost?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Repair costs vary significantly based on the extent of damage. That's why we offer free estimates. There's no obligation and no surprises. You can request an estimate online or call us at (215) 322-5350. If your vehicle is covered by insurance, your policy typically covers most repair costs minus your deductible. We provide transparent pricing with no hidden fees. We'll walk you through the estimate and answer any questions about the repair process and costs."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I choose my own collision repair shop after an accident in Pennsylvania?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, Pennsylvania law protects your right to choose your own collision shop for repairs. Your insurance company cannot require you to use their preferred facility or steer you elsewhere. This is an important consumer right. When you choose Tri-County Collision, you're choosing based on our reputation, expertise, and commitment to quality. Not because your insurer told you to. Learn more about your right to choose by reading our blog post on the topic."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What certifications do your technicians have?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Our technicians are ASE (Automotive Service Excellence) and I-CAR® Gold Class certified, the highest level of collision repair certification in the industry. These certifications require extensive training, hands-on experience, and rigorous testing. We also maintain factory certifications from the vehicle manufacturers we service, which ensures we stay current with the latest repair techniques and have access to manufacturer-specific procedures and tooling. When you bring your vehicle to us, you're working with some of the most qualified collision repair professionals in the region."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do you use OEM or aftermarket parts?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "As a factory-certified collision center for 12+ vehicle brands, we prioritize OEM (original equipment manufacturer) parts. These are the same parts that came on your vehicle when it rolled off the factory line, and they're engineered to match your vehicle's exact specifications. If a part is unavailable or if aftermarket parts are more appropriate for a specific repair, we'll discuss the options with you and advocate with your insurance company for the best solution. You always have the final say in what parts are used on your vehicle."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Removed at cutover, with the noindex tag and the robots.txt disallow.
+       A human who opens this page should not have to guess why it is not
+       indexed. -->
+  <p class="staging">Staging build. Not the live site. The shop's live site is at tricountycollision.com</p>
+
+  <header class="nav">
+    <div class="wrap inner">
+      <!-- The logo is not a link yet, because docs/index.html does not exist
+           yet and this site never writes a link to a page that has not been
+           built. scripts/test-audit-checks.py fails the build on a relative
+           link with no file behind it. It becomes a link to ../ in the same
+           commit as the homepage. -->
+      <span class="nav-home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></span>
+      <nav class="nav-main" aria-label="Main"><ul>
+        <li><a href="./" aria-current="page">Collision Repair</a></li>
+      </ul></nav>
+      <a class="btn btn-sm" href="tel:+12153225350">Call (215) 322-5350</a>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="wrap">
+        <!-- Mirrors the BreadcrumbList, same labels and same order. "Home"
+             is text rather than a link for the reason given at the logo
+             above; the schema item points at the production URL, which is
+             correct today and will be correct at cutover. -->
+        <nav class="crumb" aria-label="Breadcrumb">
+          <ol>
+            <li>Home</li>
+            <li>Collision Repair</li>
+          </ol>
+        </nav>
+        <div class="hero-split">
+          <div>
+            <p class="eyebrow">Southampton, PA</p>
+            <h1>Collision Repair</h1>
+            <p class="lead">When you've been in a collision, the last thing you want is to deal with a faceless, impersonal repair chain. At Tri-County Collision, we understand that your vehicle isn't just transportation, it's part of your life.</p>
+            <div class="cta-row">
+              <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+              <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+            </div>
+            <!-- Every one of these four is a claim the live site already
+                 makes, and every one is on the claims list in
+                 proposed-changes.md for the owner to confirm. The review
+                 count is a point-in-time number: see the note there. -->
+            <ul class="badges">
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l7.5 3.3v5c0 4.6-3.1 8.3-7.5 9.5-4.4-1.2-7.5-4.9-7.5-9.5v-5z"/><path d="M8.9 12.1l2.2 2.2 4.1-4.6"/></svg>ASE and I-CAR Gold certified</li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 11.1a8.8 8.8 0 1 1-3.4-6"/><path d="M8.6 11.6l3 3 8.4-9"/></svg>Lifetime warranty on repairs</li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.8h4.5"/></svg>Free estimates</li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.8l5.9-.9z"/></svg>Excellent, based on 231 reviews</li>
+            </ul>
+          </div>
+          <!-- A real photograph, carried over from the live page with its
+               own alt text. SEE THE CLAIMS LIST: all three photographs on
+               this page need the owner to confirm they are this shop, its
+               people or its work. If any is stock it is replaced before
+               cutover, because the standards say real photos only. -->
+          <div class="hero-photo">
+            <img src="../assets/img/accent-collision-repair-1.jpg" alt="Male mechanic performing collision repair services." width="600" height="900" fetchpriority="high" decoding="async">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="expert">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Expert Collision Repair Services in Southampton, PA</h2>
+        </div>
+        <div class="prose">
+          <p>That's why our family-owned shop has served drivers across Bucks County and Montgomery County for years, delivering expert collision repair with genuine care. Located at 995 Jaymor Rd in Southampton, PA, we're conveniently positioned to serve communities from Warminster to Bensalem, Huntingdon Valley to Doylestown. Our ASE and I-CAR&reg; Gold certified technicians handle everything from minor fender benders to complex structural damage, all backed by a lifetime warranty. We work directly with all major insurance companies, handle the paperwork so you don't have to, and pride ourselves on restoring your vehicle to its pre-accident condition. If you've been in an accident or need collision repair, don't settle for the first shop you find. Call us at <a href="tel:+12153225350">(215) 322-5350</a> for a free estimate, or get started online. We'll take it from here.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="process" class="band-panel">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Our Collision Repair Process: From Accident to Road-Ready</h2>
+          <p class="sec-sub">What happens between the phone call and the keys</p>
+        </div>
+        <div class="prose">
+          <p>We've refined our collision repair process over years of experience to make sure you get back on the road with confidence. It all starts with a free estimate. You can request one online or give us a call at <a href="tel:+12153225350">(215) 322-5350</a>. Once you're ready to move forward, we take care of the insurance coordination so you're not juggling calls with adjusters. Our team performs a thorough damage assessment and creates a detailed repair plan that we walk you through. Using state-of-the-art equipment and factory-certified techniques, our ASE/I-CAR&reg; Gold technicians perform precision repairs to manufacturer standards. After the structural and cosmetic work is complete, we don't just hand you the keys; we run a full quality control inspection to ensure everything meets our standards. Then comes the detail: we thoroughly clean the interior and exterior, making your vehicle look as good as it runs. Finally, we walk through the finished work with you, answer any questions, and make sure you're completely satisfied. From start to finish, we handle the heavy lifting so you can focus on getting back to your life.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="minor">
+      <div class="wrap">
+        <div class="split">
+          <div class="split-media">
+            <img src="../assets/img/accent-minor-collision-repair.jpg" alt="Final collision repair touch-ups being completed on a black automobile." width="1200" height="800" loading="lazy" decoding="async">
+          </div>
+          <div>
+            <h3>Minor Collision Repair</h3>
+            <!-- The live page links "paintless dent repair (PDR)" to
+                 /paintless-dent-repair/. That page has not been built, and
+                 this site does not write a link to a page that does not
+                 exist. The link goes back the moment the PDR page lands. -->
+            <p>Not every accident is catastrophic. Scratches, scuffs, small dents, bumper damage, and fender benders happen. They're a normal part of driving, especially around the busy neighborhoods of Bucks County. The good news is that minor damage doesn't have to mean weeks in the shop. We specialize in getting you back on the road quickly without cutting corners on quality. For qualifying dents, we offer paintless dent repair (PDR), which removes minor dings without repainting, saving you time and money. Even if PDR isn't the right fit, our technicians can blend repairs seamlessly so there's no trace of the damage. Here's the thing many drivers don't realize: even minor damage deserves prompt repair. Small paint chips can lead to rust over time, dents affect resale value, and unaddressed damage can escalate. We recommend getting an estimate even for what seems like minor damage. It's free, and peace of mind is priceless. Call us at <a href="tel:+12153225350">(215) 322-5350</a> to discuss your minor collision damage, or request a free estimate online.</p>
+          </div>
+        </div>
+
+        <div class="split flip" style="margin-top:56px">
+          <div class="split-media">
+            <img src="../assets/img/accent-major-collision-repair.jpg" alt="Technician grinding metal beside a vehicle with its front bumper and headlight assembly removed for major collision repair." width="1200" height="800" loading="lazy" decoding="async">
+          </div>
+          <div>
+            <h3>Major Collision Repair</h3>
+            <p>Serious collisions demand serious expertise. When frame straightening, structural repair, and full panel replacement are needed, you need technicians who've seen it all and know exactly how to handle it. That's where our ASE/I-CAR&reg; Gold certified team comes in. These certifications aren't handed out lightly. They represent hundreds of hours of training, rigorous testing, and a commitment to staying current with the latest repair techniques. We're factory-certified for 12 vehicle brands: Honda, Nissan, Hyundai, Kia, Subaru, Ford, Jeep, Acura, GM, Dodge, Chrysler, and INFINITI. That means we have direct access to manufacturer repair procedures, tooling, and specifications for your specific vehicle.</p>
+            <!-- "we also perform ADAS recalibration" is the in-house ADAS
+                 claim. pagemap.md gates the ADAS calibration PAGE on the
+                 owner confirming calibration happens in-house; this
+                 sentence already asserts it. Flagged on the claims list. -->
+            <p>When we repair your vehicle, we use OEM (original equipment manufacturer) parts whenever possible. The same parts that came on your car when it rolled off the factory line. Why does this matter? Because your vehicle's structural integrity, safety systems, and resale value depend on it. We always follow manufacturer specifications to the letter. For major repairs, we also perform ADAS recalibration. This ensures your vehicle's advanced safety systems, like lane departure warnings and automatic braking, function correctly after structural work. We use state-of-the-art equipment in our facility and environmentally friendly products throughout the repair process because we care about doing things right. And backing all of this is our lifetime warranty on repair work. Major damage is stressful, but knowing you're in expert hands should give you peace of mind.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The first of the two oxblood bands, and the most urgent block on
+         the page: it is what a reader who has just crashed came for, and
+         step 8 is the call. Section order follows the live page. See the
+         header of assets/site.css for the background rhythm. -->
+    <section class="dark" id="after-a-crash">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">What to Do After a Car Accident in Bucks &amp; Montgomery County</h2>
+          <p class="sec-sub">The moments right after a collision can feel chaotic</p>
+        </div>
+        <ol class="numbered">
+          <li><strong>Check for injuries and call 911 if anyone is hurt.</strong> Your health comes first, always.</li>
+          <li><strong>Move your vehicle to safety</strong> if possible, and it's safe to do so. Turn on hazard lights and stay alert to traffic.</li>
+          <li><strong>Exchange contact and insurance information</strong> with the other driver(s) involved. Get their name, phone number, address, insurance company, policy number, and license plate.</li>
+          <li><strong>Document the scene thoroughly.</strong> Take photos of vehicle damage, road conditions, traffic signs, and the surrounding area from multiple angles. If possible, get contact information from witnesses.</li>
+          <li><strong>File a police report</strong>, especially if there's significant damage or injuries. This creates an official record that your insurance company will need.</li>
+          <li><strong>Contact your insurance company</strong> and report the accident. Provide them with all the information you gathered and the police report number.</li>
+          <li><strong>Choose your own body shop.</strong> Pennsylvania law protects your right to select the repair facility you want. Your insurer cannot require you to use their preferred shop or steer you elsewhere. This is an important right you shouldn't overlook.</li>
+          <li><strong>Call Tri-County Collision at <a href="tel:+12153225350">(215) 322-5350</a>.</strong> We'll handle the rest: the estimate, insurance communication, repairs, and getting you back in your vehicle. You don't have to navigate this alone.</li>
+        </ol>
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="insurance" class="band-panel">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Insurance Claims Assistance</h2>
+          <p class="sec-sub">We talk to the adjuster so you do not have to</p>
+        </div>
+        <div class="prose">
+          <p>Insurance claims can feel overwhelming. Between adjusters, estimates, authorizations, and timelines, there's a lot to juggle. That's where we come in. We work with all major insurance companies. We have direct repair relationships with them, which means we speak their language and know how to navigate their processes. When you bring your vehicle to us, we handle the claims process so you don't have to. We'll communicate directly with your insurance adjuster, provide detailed repair estimates, and keep your insurer updated throughout the process. And here's something important: we'll advocate on your behalf for proper repairs. If we believe your vehicle needs more extensive work than what the adjuster initially approved, we'll make the case and fight for your vehicle to be restored correctly. You have a voice in this process, and we make sure it's heard.</p>
+          <p>Remember, Pennsylvania law gives you the right to choose your own collision repair shop. Your insurer cannot steer you to their preferred vendor or demand you use a specific facility. This is your vehicle and your choice. We're here to make that choice easy. Get a free estimate by calling <a href="tel:+12153225350">(215) 322-5350</a> or requesting one online. We'll walk you through everything.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="factory-certified">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Factory-Certified Collision Center</h2>
+          <p class="sec-sub">Twelve manufacturers, and the procedures that come with them</p>
+        </div>
+        <div class="prose">
+          <p>When you buy a new vehicle, it comes with a manufacturer's warranty. That warranty covers repairs performed at certified facilities using proper techniques and parts. Our shop is factory-certified for 12 vehicle brands: INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru, and Jeep. What does factory certification actually mean? It means our technicians have completed manufacturer-specific training, we have access to OEM repair procedures and technical bulletins, and we have the proper diagnostic equipment to work on your vehicle correctly. Every repair we perform follows manufacturer specifications exactly. No shortcuts, no guessing.</p>
+          <p>Why does this matter to you? Because factory certification ensures three critical things: your vehicle's warranty protection isn't compromised, your vehicle's safety systems work exactly as designed, and your vehicle's resale value is protected. When you choose a factory-certified collision center, you're choosing peace of mind. You're choosing expertise. You're choosing a shop that takes your vehicle as seriously as you do.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- The second oxblood band. -->
+    <section class="dark" id="why">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Why Choose Tri-County Collision</h2>
+          <p class="sec-sub">You are choosing who cares for your vehicle during a stressful time</p>
+        </div>
+        <ul class="ticks">
+          <li><strong>Family owned and operated.</strong> We're not a chain or a franchise. The same people who own this shop also stand behind every repair. That means personal service and accountability.</li>
+          <li><strong>ASE/I-CAR&reg; Gold certified technicians.</strong> These are the highest-level collision repair certifications in the industry. Your vehicle is in expert hands.</li>
+          <li><strong>Factory-certified for 12+ vehicle brands.</strong> We know how to repair your specific vehicle correctly, whether it's a Honda, Nissan, Ford, or something else.</li>
+          <li><strong>Lifetime warranty on all repair work.</strong> We stand behind our repairs. If anything isn't right, we'll make it right.</li>
+          <li><strong>State-of-the-art facilities and equipment.</strong> We've invested in the latest technology to deliver quality repairs quickly.</li>
+          <li><strong>Environmentally friendly repair products.</strong> We care about our work and our community.</li>
+          <li><strong>Works with all major insurance companies.</strong> We handle the paperwork and communication so you don't have to.</li>
+          <li><strong>Free estimates online and by phone.</strong> No surprises, no hidden fees. Transparent pricing from the start.</li>
+          <li><strong>Vehicles detailed inside and out after every repair.</strong> Your car leaves our facility looking as good as it drives.</li>
+          <li><strong>Convenient Southampton location serving Bucks and Montgomery Counties.</strong> Easy access, personal service.</li>
+        </ul>
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="area">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Collision Repair Serving Bucks County and Montgomery County</h2>
+        </div>
+        <div class="prose">
+          <p>Located at 995 Jaymor Rd in Southampton, PA, we're ideally positioned to serve the greater Bucks County and Montgomery County areas. Our shop has built its reputation on consistent quality and personal service, which is why drivers throughout the region trust us with their vehicles. We proudly serve Southampton, Warminster, Feasterville-Trevose, Bensalem, Huntingdon Valley, Hatboro, Horsham, Willow Grove, Jenkintown, Richboro, Langhorne, Doylestown, Warrington, Newtown, Churchville, Northeast Philadelphia, and more. Whether you're just down the road or a bit further out, we're conveniently accessible from all major routes. When you come in for a free estimate or to have your vehicle repaired, you'll experience the kind of service that keeps customers coming back.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark contact" id="contact">
+      <div class="wrap">
+        <div class="sec-head" style="margin-bottom:0">
+          <h2 class="sec-title">Contact Us for Your Free Estimate</h2>
+          <p class="sec-sub">One phone number, one email address, one shop</p>
+        </div>
+        <!-- NO FORM HERE YET, on purpose. The old site's intake form is
+             retired and the new one posts to an endpoint in the CLIENT'S
+             own account, which nobody has set up yet. The template's form
+             fields, its submit label and its thank-you text are all tokens
+             with no defaults for the same reason. The form lands on
+             /contact-us/, per pagemap.md, and this band gains it then. -->
+        <div class="contact-grid">
+          <div>
+            <h3>Address</h3>
+            <p><a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd<br>Southampton, PA 18966</a></p>
+          </div>
+          <div>
+            <h3>Phone and email</h3>
+            <p><a href="tel:+12153225350">(215) 322-5350</a><br><a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a></p>
+          </div>
+          <div>
+            <h3>Hours</h3>
+            <p>Monday to Friday, 8 a.m. to 6 p.m.<br>Saturday by appointment only</p>
+          </div>
+        </div>
+        <p class="contact-alt">Estimates are free. Call <a href="tel:+12153225350">(215) 322-5350</a> or email <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>.</p>
+      </div>
+    </section>
+
+    <!-- FAQ LAST. Each answer is byte-identical to its acceptedAnswer in the
+         FAQPage node above: edit one, edit both. Three openers were changed
+         during the migration so they survive being lifted without their
+         question, which is exactly what an AI assistant does with them; all
+         three are recorded as before/after pairs in proposed-changes.md. -->
+    <section id="faq">
+      <div class="wrap" style="max-width:880px">
+        <div class="sec-head">
+          <h2 class="sec-title">Frequently Asked Questions About Collision Repair</h2>
+          <p class="sec-sub">The questions drivers actually call and ask</p>
+        </div>
+        <details>
+          <summary>How long does collision repair take?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>How long collision repair takes depends on the severity of the damage. Minor repairs, like small dents, scratches, or bumper damage, typically take 2 to 5 days. Major structural work, frame straightening, or extensive panel replacement can take 2 to 4 weeks. We provide a detailed timeline estimate upfront so you know exactly what to expect. Throughout the repair process, we keep you updated on progress. And if your insurance provides for a loaner or rental car, we&#x27;ll coordinate that with them to minimize the impact on your life.</p>
+        </details>
+        <details>
+          <summary>Will my car look the same after collision repair?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Yes, your car will look the same after collision repair, and that is our standard. Our ASE/I-CAR® Gold certified technicians are trained to factory specifications and have the expertise to restore your vehicle to its pre-accident condition. We use computerized color matching to ensure paint blends perfectly. We source OEM parts whenever possible to maintain your vehicle&#x27;s integrity. And behind all of this is our lifetime warranty. If anything isn&#x27;t right, we&#x27;ll make it right. When you drive away from our shop, no one will know your vehicle was ever in an accident.</p>
+        </details>
+        <details>
+          <summary>Do you work with my insurance company?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>We work with all major insurance companies. We have direct repair relationships with them, so we communicate with adjusters on your behalf. We handle all the paperwork, coordinate authorizations, and keep your insurer updated on repair progress. We&#x27;ll also advocate for you if we believe your vehicle needs more extensive repairs than initially approved. You don&#x27;t need to navigate the claims process alone, we&#x27;ve got you covered.</p>
+        </details>
+        <details>
+          <summary>How much does collision repair cost?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Repair costs vary significantly based on the extent of damage. That&#x27;s why we offer free estimates. There&#x27;s no obligation and no surprises. You can request an estimate online or call us at <a href="tel:+12153225350">(215) 322-5350</a>. If your vehicle is covered by insurance, your policy typically covers most repair costs minus your deductible. We provide transparent pricing with no hidden fees. We&#x27;ll walk you through the estimate and answer any questions about the repair process and costs.</p>
+        </details>
+        <details>
+          <summary>Can I choose my own collision repair shop after an accident in Pennsylvania?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Yes, Pennsylvania law protects your right to choose your own collision shop for repairs. Your insurance company cannot require you to use their preferred facility or steer you elsewhere. This is an important consumer right. When you choose Tri-County Collision, you&#x27;re choosing based on our reputation, expertise, and commitment to quality. Not because your insurer told you to. Learn more about your right to choose by reading our blog post on the topic.</p>
+        </details>
+        <details>
+          <summary>What certifications do your technicians have?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Our technicians are ASE (Automotive Service Excellence) and I-CAR® Gold Class certified, the highest level of collision repair certification in the industry. These certifications require extensive training, hands-on experience, and rigorous testing. We also maintain factory certifications from the vehicle manufacturers we service, which ensures we stay current with the latest repair techniques and have access to manufacturer-specific procedures and tooling. When you bring your vehicle to us, you&#x27;re working with some of the most qualified collision repair professionals in the region.</p>
+        </details>
+        <details>
+          <summary>Do you use OEM or aftermarket parts?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>As a factory-certified collision center for 12+ vehicle brands, we prioritize OEM (original equipment manufacturer) parts. These are the same parts that came on your vehicle when it rolled off the factory line, and they&#x27;re engineered to match your vehicle&#x27;s exact specifications. If a part is unavailable or if aftermarket parts are more appropriate for a specific repair, we&#x27;ll discuss the options with you and advocate with your insurance company for the best solution. You always have the final say in what parts are used on your vehicle.</p>
+        </details>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <span class="foot-home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></span>
+          <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
+          <p class="foot-nap">
+            Tri-County Collision<br>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd<br>
+            Southampton, PA 18966</a><br>
+            <a href="tel:+12153225350">(215) 322-5350</a><br>
+            <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>
+          </p>
+        </div>
+        <div>
+          <!-- These columns list only pages that exist. They grow as pages
+               land, and never before. -->
+          <h2 class="foot-head">Services</h2>
+          <ul class="foot-links">
+            <li><a href="./">Collision Repair</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="foot-head">Get Started</h2>
+          <ul class="foot-links">
+            <li><a href="tel:+12153225350">Call (215) 322-5350</a></li>
+            <li><a href="mailto:contact@tricountycollision.com">Email the shop</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <!-- The year is written into the markup so it is right with
+             JavaScript off, and assets/site.js updates it so it is right
+             next January. A hard-coded year is a stale-clock claim. -->
+        <p>&copy; <span data-year>2026</span> Tri-County Collision &middot; <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> &middot; <a href="tel:+12153225350">(215) 322-5350</a> &middot; <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a></p>
+        <p>Hours: Monday to Friday, 8 a.m. to 6 p.m. Saturday by appointment only.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- The one element the whole design turns on. Fixed to the bottom of
+       every phone viewport, hidden above 900px where the header's own call
+       button is always visible. -->
+  <a class="callbar" href="tel:+12153225350">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h3l1.5 3.8-2 1.4a12.5 12.5 0 0 0 6.2 6.2l1.4-2 3.8 1.5v3a1.8 1.8 0 0 1-2 1.8A16.5 16.5 0 0 1 4.8 5.5a1.8 1.8 0 0 1 1.8-2z"/></svg>
+    Call (215) 322-5350
+  </a>
+
+</body>
+</html>
