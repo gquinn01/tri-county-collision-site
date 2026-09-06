@@ -11,8 +11,8 @@ for the same business. Leave it off until cutover.
 ## What lands here when the build starts
 
 **`pagemap.md` at the repo root is the page map of record.** It is the build
-spec: 37 indexable pages, 38 if ADAS calibration clears its gate, plus 2
-noindexed utility pages, and 10 old URLs that redirect. Every page it lists
+spec: 37 indexable pages, 38 if ADAS calibration clears its gate, plus 1
+noindexed utility page, and 11 old URLs that redirect. Every page it lists
 gets built from `templates/service-page-template.html`, and every page is
 governed by the `corcoran-site-standards` skill in
 `.claude/skills/corcoran-site-standards/`. The standards are not advisory.
@@ -50,15 +50,25 @@ report describes, and the report says so on its own face.
 Tri-County Collision
 995 Jaymor Rd, Southampton, PA 18966
 (215) 322-5350
+contact@tricountycollision.com
 ```
 
 One spelling, everywhere, character for character. `scripts/audit.py` fails
-a page that writes the street any other way. Do not retype it from memory;
-the template already carries it.
+a page that writes the street any other way, the trailing period in
+`Jaymor Rd.` included. Do not retype any of it from memory; the template
+already carries all four.
 
-The **email is still open**: the owner has not designated the one address to
-publish, so the audit's email check is off and says so on every page. The
-map calls for one email and one phone on Home and on Contact.
+The email was settled on 2026-09-05. The old site's footer carries a second
+address, `info@`, and the audit now fails any page that prints it: one
+business publishes one mailbox.
+
+**The CallRail tracking number does not belong in this folder**, which is
+why its digits are not printed here. CallRail swaps numbers into the page
+visually at runtime, so the source says (215) 322-5350 and nothing else. The
+snippet is added at cutover. CLAUDE.md carries the number and the reasoning;
+`scripts/audit.py` scores it as a critical on any page, and
+`scripts/test-audit-checks.py` fails the build if it appears anywhere under
+`templates/` or `docs/`.
 
 ## At cutover
 

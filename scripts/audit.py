@@ -78,22 +78,49 @@ NAP_PHONE_TEL = "+12153225350"
 # "215.322.5350" as if it were not a phone number at all.
 NAP_PHONE_RE = re.compile(r"\(?215\)?[\s.\-]?322[\s.\-]?5350")
 
-# THE EMAIL CHECK STAYS OFF, ON PURPOSE. The shop has not designated the
-# one address it wants published. The page map calls for "one email, one
-# phone" on both Home and Contact, so there is a right answer here and it
-# is the owner's to give, not ours to pick from whatever the old site
-# happens to show. The prime law says an unverified fact does not ship,
-# not even as a placeholder that will be fixed later, because
-# placeholders ship. So this stays None, the email half of the check
-# stands down, and every scored page carries a note saying so. A silent
-# skip would read as a pass, which is the one outcome that must not
-# happen.
+# THE EMAIL CHECK IS ON, as of 2026-09-05. The canonical published
+# address is contact@tricountycollision.com.
 #
-# TO TURN IT ON: get the address from the owner in writing, confirm it
-# matches the Google Business Profile character for character, fill it in
-# below, and delete the note text in audit_page that names it. Nothing
-# else needs to change.
-NAP_EMAIL_RE = None    # e.g. re.compile(r"info@tricountycollision\.com")
+# PROVENANCE, on the same footing as the phone and address above. This is
+# a VENDOR decision by Greg Quinn of Corcoran Communications, recorded as
+# the same deliberate exception the rest of the NAP is recorded as: the
+# standards make the CLIENT-OWNER the fact-checker of record, and owner
+# sign-off on the NAP, email included, is still outstanding. When it
+# lands, replace this paragraph with the date the owner confirmed.
+#
+# It is not a guess. contact@tricountycollision.com is the address the
+# live site publishes in its AutoBodyShop JSON-LD and in the contact
+# block on every service page. The live site ALSO prints
+# info@tricountycollision.com in its footer, which is exactly the drift
+# this check exists to stop: two addresses for one business read as two
+# businesses to entity matching, and one of them is the one customers and
+# insurers actually reach. The new site publishes ONE address, and any
+# page here that prints the other one now fails.
+NAP_EMAIL_RE = re.compile(r"contact@tricountycollision\.com")
+
+# The OTHER address, the one the old site's footer carries. It is not a
+# variant spelling to be corrected quietly, it is a second mailbox, and
+# whether it forwards, is read, or is dead is the owner's to answer. Until
+# then it does not go on a page here, and a page that carries it says so.
+NAP_EMAIL_WRONG_RE = re.compile(r"info@tricountycollision\.com", re.I)
+
+# --- The CallRail tracking number -------------------------------------
+# (215) 709-9665 is a CallRail tracking number. The old WordPress site
+# prints it in the header, and CallRail's own script swaps numbers into
+# the page VISUALLY at runtime, which is the supported way to run call
+# tracking without breaking NAP consistency.
+#
+# So the number never belongs in this site's source: not in the HTML, not
+# in the schema, not in the template, not in a comment. A tracking number
+# baked into the markup is a second phone number for one business, which
+# is the Map Pack self-competition rule 6 exists to prevent, and it is
+# the number a crawler and an AI assistant would then hand out as the
+# shop's. The CallRail snippet gets added at cutover and does its
+# swapping at runtime, over a page whose source says (215) 322-5350.
+#
+# This is a CRITICAL, not a warning. It is the kind of thing that gets
+# pasted in during a hurried migration and is invisible by eye.
+TRACKING_PHONE_RE = re.compile(r"\(?215\)?[\s.\-]?709[\s.\-]?9665")
 
 # The contact patterns that are actually live. Built from whichever of the
 # two above is set, so turning one on or off changes nothing else.
@@ -114,8 +141,28 @@ NAP_CONTACT_RES = [(k, rx) for k, rx in
 NAP_STREET_CANON = NAP_STREET
 NAP_CITYLINE_CANON = f"{NAP_LOCALITY}, {NAP_REGION} {NAP_POSTAL}"
 NAP_STREET_MENTION_RE = re.compile(r"Jaymor", re.I)
+
+# THE TRAILING PERIOD IS A VARIANT. "995 Jaymor Rd." is not "995 Jaymor
+# Rd", and character-identical has no rounding.
+#
+# The first version of this pattern ended each alternative with \b, which
+# reads as "a word character has to come next." After "Rd." the next
+# character on a real page is a comma or a line break, and neither is a
+# word character, so the boundary never matched and
+# "995 Jaymor Rd., Southampton, PA 18966" sailed through. Worse, it
+# scored as a PASS rather than as a silent skip, because the canonical
+# string "995 Jaymor Rd" is a PREFIX of the variant: a plain
+# `in` test found it inside "995 Jaymor Rd." and reported the address as
+# correctly spelled. A check that says PASS on the thing it exists to
+# catch is worse than no check.
+#
+# So both halves are fixed. "Rd\." is self-terminating and needs no
+# boundary; "Road" keeps one. And the canonical test is now a regex with
+# a lookahead, so "995 Jaymor Rd" only counts when nothing word-like or a
+# period follows it.
 NAP_STREET_VARIANT_RE = re.compile(
-    r"\b995\s+Jaymor\s+(?:Road|Rd\.)\b|\bJaymor\s+(?:Road|Rd\.)\b", re.I)
+    r"\b(?:995\s+)?Jaymor\s+(?:Road\b|Rd\.)", re.I)
+NAP_STREET_CANON_RE = re.compile(re.escape(NAP_STREET_CANON) + r"(?![.\w])")
 
 # The site's own base URL, used to work out what URL a local file will
 # serve at. That is how the two checks below know whether a page is in
@@ -819,27 +866,44 @@ def audit(source: str, coverage: dict = None):
     elif p.contacts_linked:
         passes.append(f"All {p.contacts_linked} phone/email mentions are tappable tel:/mailto: links.")
 
-    if NAP_EMAIL_RE is None:
-        notes.append("**The email half of the contact check is not running.** The shop "
-                     "has not designated the one address it wants published, so "
-                     "`NAP_EMAIL_RE` in `scripts/audit.py` is unset. The phone half IS "
-                     "running. This is a check that is OFF, not a check that passed: a "
-                     "bare, untappable email address on this page would not be caught. "
-                     "The page map calls for one email and one phone on Home and "
-                     "Contact, so the owner has a decision to make here.")
+    # The second mailbox. See NAP_EMAIL_WRONG_RE for why this is a
+    # critical and not a tidy-up.
+    if NAP_EMAIL_WRONG_RE.search(html):
+        fails.append(
+            "**This page prints `info@tricountycollision.com`.** The one address this site "
+            "publishes is `contact@tricountycollision.com`. The old WordPress footer carries "
+            "the other one, so it travels during a migration without anyone typing it. Two "
+            "addresses for one business read as two businesses to entity matching, and only "
+            "one of them is the mailbox the shop actually reads.")
+
+    # The CallRail number. See TRACKING_PHONE_RE.
+    if TRACKING_PHONE_RE.search(html):
+        fails.append(
+            "**This page contains the CallRail tracking number (215) 709-9665.** It must never "
+            "appear in this site's source, schema or templates. CallRail swaps numbers into the "
+            "page visually at runtime; a tracking number written into the markup is a second "
+            "phone number for one business, and it is the number crawlers and AI assistants "
+            f"will hand out. Use `{NAP_PHONE_DISPLAY}` and let the snippet do its job.")
 
     # --- The street address, spelled one way ---
     if NAP_STREET_MENTION_RE.search(html):
-        has_street = NAP_STREET_CANON in html
+        has_street = NAP_STREET_CANON_RE.search(html) is not None
         has_cityline = NAP_CITYLINE_CANON in html
         variant = NAP_STREET_VARIANT_RE.search(html)
-        if variant and not has_street:
+        # A variant fails even when the canonical spelling is ALSO on the
+        # page, which the old `and not has_street` guard let through. That
+        # is not a hypothetical: the live WordPress site prints
+        # "995 Jaymor Rd" in its footer and "995 Jaymor Road" in its
+        # JSON-LD, on the same page. One page, two businesses.
+        if variant:
             fails.append(
                 f"**The street address is spelled `{variant.group(0)}` here, not "
                 f"`{NAP_STREET_CANON}`.** NAP is character-identical everywhere or it is "
                 f"nothing: each variant reads as a slightly different business to "
                 f"Google's entity matching, which is how a shop ends up competing with "
-                f"itself in the Map Pack. Use `{NAP_STREET_CANON}`.")
+                f"itself in the Map Pack. A trailing period counts, and so does a variant "
+                f"that sits alongside the correct spelling somewhere else on the page. "
+                f"Use `{NAP_STREET_CANON}`.")
         elif not has_street:
             fails.append(
                 f"**This page names Jaymor but not `{NAP_STREET_CANON}`.** If the page "

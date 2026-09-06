@@ -22,16 +22,17 @@ repo is public. `pagemap.md` carries only what the build needs.
 
 What it commits us to, in short:
 
-- **37 indexable pages** (38 if ADAS calibration clears its gate), plus 2
-  noindexed utility pages. The old sitemap's 48 entries become 37 or 38,
-  all real.
+- **37 indexable pages** (38 if ADAS calibration clears its gate), plus 1
+  noindexed utility page, the thank-you page. The old sitemap's 48 entries
+  become 37 or 38, all real.
 - **Migrate faithfully, do not rewrite for its own sake.** The promise of
   this migration is that rankings survive. Existing slugs are kept wherever
   a page keeps its purpose, because every unnecessary redirect spends a
   little of that.
-- **Ten old URLs redirect**: 8 clones to their canonical targets, 2 category
-  archives to the blog index. A clone or plumbing URL gets a 301 to the page
-  it copies or an honest 404, never a forced mapping to a sales page.
+- **Eleven old URLs redirect**: 8 clones to their canonical targets, 2
+  category archives to the blog index, and `/customer-information/` to
+  `/contact-us/`. A clone or plumbing URL gets a 301 to the page it copies
+  or an honest 404, never a forced mapping to a sales page.
 - **Two gates that data decides, not us.** ADAS calibration is built only if
   Keyword Planner shows demand AND the owner confirms calibration happens
   in-house. A town page keeps its page unless Search Console shows no
@@ -80,6 +81,7 @@ before it ships. Anything they have not confirmed does not go on a page.
 name     Tri-County Collision
 address  995 Jaymor Rd, Southampton, PA 18966
 phone    (215) 322-5350   tel:+12153225350
+email    contact@tricountycollision.com          (added 2026-09-05)
 ```
 
 These are the values published on the shop's live site, read and confirmed
@@ -89,21 +91,50 @@ confirmation is a deliberate exception and it is recorded as one, here and
 in `scripts/audit.py`. **Owner sign-off on the NAP is still outstanding.**
 When it lands, note the date in both places.
 
+The email is the address the live site publishes in its `AutoBodyShop`
+JSON-LD and in the contact block on every service page. The live site also
+prints `info@tricountycollision.com` in its footer. That second address is
+**not** published here, and `scripts/audit.py` now fails any page carrying
+it: two addresses for one business read as two businesses to entity
+matching, and only one of them is the mailbox the shop actually reads.
+Which one that is, and whether the other should forward, is still the
+owner's to answer.
+
 They are not advisory. `scripts/audit.py` now fails any page that spells the
-street a second way (`Jaymor Road`, a missing ZIP, a moved comma), because
-each variant reads as a slightly different business to Google's entity
-matching, which is how a shop ends up competing with itself in the Map Pack.
-`templates/service-page-template.html` carries all three as literals, so
-nobody retypes them.
+street a second way (`Jaymor Road`, `Jaymor Rd.` with the period, a missing
+ZIP, a moved comma), because each variant reads as a slightly different
+business to Google's entity matching, which is how a shop ends up competing
+with itself in the Map Pack. `templates/service-page-template.html` carries
+all four as literals, so nobody retypes them.
+
+That check was itself wrong until 2026-09-05, and wrong in the worst
+direction: `995 Jaymor Rd., Southampton` scored as a **pass**, because the
+pattern demanded a word character after `Rd.` and the canonical string is a
+prefix of the variant. `scripts/test-audit-checks.py` now holds that input
+and the rest of the wrong addresses, so the mechanism has a mechanism.
+
+### The CallRail number never reaches the source
+
+**(215) 709-9665 is a CallRail tracking number.** The old WordPress header
+prints it. It must never appear in this site's HTML, its schema, the
+template, or a comment, on any page.
+
+CallRail does its work by **swapping numbers into the rendered page
+visually at runtime**, which is the supported way to run call tracking
+without breaking NAP consistency. The source says (215) 322-5350 and always
+will; the script rewrites what a particular visitor sees. **The CallRail
+snippet gets added at cutover**, in the same pass as the GA4 property, and
+not before.
+
+A tracking number baked into the markup is a second phone number for one
+business, which is the Map Pack self-competition rule 6 exists to prevent,
+and it is the number a crawler or an AI assistant would hand out as the
+shop's. `scripts/audit.py` scores it as a **critical**, because it is the
+kind of thing that gets pasted in during a hurried migration and is
+invisible by eye.
 
 **Still unconfirmed, and therefore still off:**
 
-- **The email.** The owner has not designated the one address to publish.
-  The page map calls for one email and one phone on both Home and Contact,
-  so there is a right answer and it is theirs to give. `NAP_EMAIL_RE` stays
-  `None`, the email half of the contact check does not run, and the audit
-  says so as a note on every page rather than passing silently. Do not pick
-  an address off the old site.
 - **Everything else the template still tokenizes**: geo coordinates,
   socials and `sameAs`, area served, GA4 ID, form endpoint, taglines, and
   the proof line. `{{TOKENS}}` with no defaults. Fill them from the client,
@@ -148,6 +179,8 @@ dark. That archive is the last copy of it that will ever exist.
 | `.claude/skills/corcoran-site-standards/` | The law. Unedited copy of the firm's standards. |
 | `scripts/audit.py` | The SEO and AEO scanner. Scores every page separately. Its NAP block is the one place the canonical name, address and phone live. |
 | `scripts/test-sitemap-expansion.py` | Tests the sitemap expansion. Run it before touching that code. |
+| `scripts/test-audit-checks.py` | Smoke tests for the NAP checks: the address spelling, the CallRail number, the one email. Written after the address check was caught scoring a wrong address as a pass. |
+| `proposed-changes.md` | Every text change made during the migration, as before/after pairs, plus the claims the pages carry. Awaiting the owner's fact-check. |
 | `scripts/stamp-assets.py` | Cache-busting stamps for `docs/assets/site.css` and `site.js`. |
 | `scripts/fetch_seo_news.py` | Pulls the headline sweep the Google Watcher reads. |
 | `scripts/cascade-analyzer.html` | CSS cascade analyzer. |
@@ -191,6 +224,7 @@ record the decision here. Do not let it drift.
 
 ```
 python3 scripts/test-sitemap-expansion.py     # exits 1 if anything fails
+python3 scripts/test-audit-checks.py          # exits 1 if anything fails
 python3 scripts/audit.py --strict             # once docs/ has pages
 ```
 

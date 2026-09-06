@@ -24,6 +24,25 @@
          name     Tri-County Collision
          address  995 Jaymor Rd, Southampton, PA 18966
          phone    (215) 322-5350   tel:+12153225350
+         email    contact@tricountycollision.com
+
+       The email joined the list on 2026-09-05. It was a token while the
+       address was undecided; it is a literal now, for the same reason
+       the other three are. It is the address the live site publishes in
+       its schema and its contact block. The live FOOTER carries a
+       different one, info@, and that one is not published here: the
+       audit fails any page that prints it.
+
+       THE CALLRAIL TRACKING NUMBER IS NOT IN THIS FILE and must never
+       be added to it. It is a call-tracking number that CallRail swaps
+       in visually at runtime, so the source stays one phone number and
+       the shop does not compete with itself in the Map Pack. The
+       snippet is added at cutover. The digits are deliberately not
+       written here either, because this file is copied into pages: see
+       CLAUDE.md, "The CallRail number never reaches the source", for
+       the number itself and the reasoning. scripts/audit.py fails any
+       page that carries it, and scripts/test-audit-checks.py fails the
+       build if it appears anywhere under templates/ or docs/.
 
        Those are the values published on the shop's live site, read and
        confirmed on 2026-09-03 by Greg Quinn of Corcoran Communications,
@@ -37,13 +56,6 @@
        against the Google Business Profile before any page using it goes
        live. NAP consistency is exact-match or it is nothing.
 
-         {{EMAIL}}           the address the shop actually reads. STILL
-                             OPEN: the owner has not designated the one
-                             address to publish, and the page map calls
-                             for one email and one phone on Home and on
-                             Contact. Do not pick one off the old site.
-                             The audit's email check is off until this
-                             lands, and says so on every page.
          {{GEO_LAT}}         latitude, bare number, no quotes
          {{GEO_LON}}         longitude, bare number, no quotes
          {{SAME_AS}}         schema sameAs list: the GBP place_id URL
@@ -59,6 +71,11 @@
          {{FORM_ENDPOINT}}   form POST target, on the CLIENT'S OWN
                              account, never the agency's
          {{FORM_SUBJECT}}    subject line on the form email
+         {{FORM_THANKS}}     what the reader sees after sending the form.
+                             NO DEFAULT: it is a promise about how the
+                             shop responds, so it comes from the owner.
+                             See the block itself for what came out of
+                             it and why.
          {{TAGLINE}}         short claim line under the hero
          {{FOOTER_TAGLINE}}  footer version of the same
          {{FOOTER_BADGE}}    the footer's small credential line. Only a
@@ -294,7 +311,7 @@
         "name": "Tri-County Collision",
         "url": "https://tricountycollision.com/",
         "telephone": "+12153225350",
-        "email": "{{EMAIL}}",
+        "email": "contact@tricountycollision.com",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "995 Jaymor Rd",
@@ -580,10 +597,25 @@
           <p class="af-error" role="alert" hidden></p>
           <button class="btn af-submit" type="submit">Send My Free Audit</button>
         </form>
+        <!-- WHY THIS IS A TOKEN. What used to sit here was Corcoran's
+             offer, word for word: "Your report comes back within one
+             business day." That is a promise the AGENCY makes about an
+             audit it sells. Tri-County does not sell a report, and
+             nobody has asked the shop how fast it answers a form. The
+             old line also said "call or text", which is a claim about
+             what (215) 322-5350 can receive, and no one has confirmed
+             the number takes SMS. Both shipped as template defaults,
+             which is exactly how a placeholder ships.
+             {{FORM_THANKS}} has NO default. It is one or two sentences
+             from the OWNER saying what actually happens after someone
+             sends the form. The call line below it stays, because the
+             phone number is confirmed and the reader who has just
+             crashed a car should never have to hunt for it. -->
         <div class="af-thanks" role="status" hidden>
-          <p>Got it. Your report comes back within one business day. If it is urgent, call or text <a href="tel:+12153225350">(215) 322-5350</a>.</p>
+          <p>{{FORM_THANKS}}</p>
+          <p>Or call <a href="tel:+12153225350">(215) 322-5350</a>.</p>
         </div>
-        <p class="contact-alt">Prefer to talk? Call or text <a href="tel:+12153225350">(215) 322-5350</a> or email <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>.</p>
+        <p class="contact-alt">Prefer to talk? Call or text <a href="tel:+12153225350">(215) 322-5350</a> or email <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>.</p>
       </div>
     </section>
 
@@ -623,7 +655,7 @@
             <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd<br>
             Southampton, PA 18966</a><br>
             <a href="tel:+12153225350">(215) 322-5350</a><br>
-            <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
+            <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>
           </p>
         </div>
         <div>
@@ -643,7 +675,7 @@
           <ul class="foot-links">
             <li><a href="{{CTA_HREF}}">{{CTA_LABEL}}</a></li>
             <li><a href="tel:+12153225350">Call (215) 322-5350</a></li>
-            <li><a href="mailto:{{EMAIL}}">Email the shop</a></li>
+            <li><a href="mailto:contact@tricountycollision.com">Email the shop</a></li>
           </ul>
         </div>
         <div class="foot-area" id="service-area">
@@ -655,7 +687,7 @@
         </div>
       </div>
       <div class="foot-bottom">
-        <p>© 2026 Tri-County Collision · <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> · <a href="tel:+12153225350">(215) 322-5350</a> · <a href="mailto:{{EMAIL}}">{{EMAIL}}</a> · <a href="{{ROOT}}privacy/">Privacy Policy</a></p>
+        <p>© 2026 Tri-County Collision · <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> · <a href="tel:+12153225350">(215) 322-5350</a> · <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a> · <a href="{{ROOT}}privacy/">Privacy Policy</a></p>
         <p>{{FOOTER_BADGE}}</p>
         <div class="social">
 {{SOCIAL_LINKS}}
