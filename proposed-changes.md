@@ -793,7 +793,8 @@ rather than three strokes.
 
 **Nothing else means "road".** The full set is twelve glyphs: certification
 shield, sparkles, document, umbrella, magnifier, wrench, dent, panel grid,
-quote mark, tag, phone, and now the lane. The nearest neighbour is the Minor
+quote mark, tag, phone, and now the lane. **The dent and the panel grid were
+both redrawn on 2026-09-10; see 3.11.** The nearest neighbour is the Minor
 card's dent, an arch over a horizontal rule, which shares no geometry with two
 converging diagonals.
 
@@ -879,6 +880,58 @@ the only intake form on the site. So the pending target above follows the
 spec. **But somebody has to decide whether the Carwise photo-estimate flow is
 being replaced by our form or kept alongside it**, because four sentences point
 at it today and 3.2 already says those sentences come out if no form ships.
+
+### 3.11 The Minor and Major card icons were too abstract to mean anything
+
+**Design note. No copy changed.**
+
+```
+Minor   was  an arch over a horizontal rule
+        now  two lines dipping together: the panel surface, and the
+             character line bending over the dent
+
+Major   was  a rectangle divided into six panes, which read as a window
+        now  the tapered unibody outline, overhead, measured corner to
+             corner with the diagonal cross-measures
+```
+
+**Minor is the thing paintless dent repair exists for.** Two lines dipping
+together is what a tech actually sees sighting down a wing: the surface
+falls away and the reflection line bends with it. The old arch was a shape,
+not a dent.
+
+**Major is the drawing a structural tech works from.** The cross-measures are
+the ones that prove a unibody is square, which is what frame straightening
+means, and the card claims exactly that.
+
+#### Round one was drawn, rendered and thrown away
+
+The first four candidates were 8 to 12 path segments each and **none of them
+survived 24px**: one dip was too shallow to register, one panel-with-rings
+read as an eye, and both structural candidates mushed into a dense block.
+**At 24px with a 2px stroke the budget is about five to seven strokes.** The
+shipped pair is two paths and three paths. Judging at 96px would have passed
+all four; judging at the real tile size failed them, which is the only reason
+to render at real size.
+
+#### The set was checked both ways
+
+**Neither old glyph survives anywhere.** Each had exactly one use, so
+replacing them retires them; swept `docs/` and `templates/` by path data.
+The set is still twelve distinct glyphs across twenty uses.
+
+**Nothing else in the set means either thing.** The nearest neighbour to the
+new Major is the lane: both are tall and tapered. They stay apart because the
+lane is two open diagonals with a dashed centre line and no outline, and the
+Major is a closed outline with an X and no dashes.
+
+#### One thing the brief asked for that could not be delivered
+
+The Major icon was asked to echo **the frame-datum band art**, so the card and
+the Why Choose band would speak the same structural language. **That band art
+was reverted in `5d30750`** and the band carries the gradient now, so there is
+nothing left to echo. The icon is right on its own terms, and the shared
+language is a separate decision about bringing the drawing back.
 
 ---
 
