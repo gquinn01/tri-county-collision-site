@@ -756,6 +756,52 @@ budget and how to measure it.
 bottom of every phone viewport and that is exactly what it is for. What was
 wrong is that the hero asked for an action and then hid its own button.
 
+### 3.9 The safety-systems icon was a wifi signal
+
+**Design note. No copy changed**, and the card still reads "Your vehicle's
+safety systems work exactly as designed."
+
+The middle card of the payoff trio wore three stacked arcs over a stem. At
+44px that is the wifi glyph, and it anchored a card about lane departure
+warnings and automatic braking to connectivity. An icon is a handle for
+finding a sentence again; a handle that points at the wrong thing is worse
+than none, because the reader trusts it.
+
+```
+was   <path d="M12 20.4v-7.6"/>
+      <path d="M8.6 15.8a4.8 4.8 0 0 1 6.8 0"/>
+      <path d="M5.7 12.7a8.9 8.9 0 0 1 12.6 0"/>
+
+now   <path d="M3.2 21.2L9.8 4.2"/>
+      <path d="M20.8 21.2L14.2 4.2"/>
+      <path d="M12 20v-3.4M12 14.4v-2.6M12 9.4v-2"/>
+```
+
+Two road edges converging upward with a dashed centre line: the lane a lane
+departure system watches. House style throughout, and none of it is set on
+the element, because `.tile svg` in `site.css` already supplies it: 24x24
+viewBox, no fill, 2px strokes, round caps and joins. `aria-hidden="true"`
+stays, because the sentence beside it is the content and the glyph is
+decoration.
+
+**Drawn at three splays and compared at the real 44px tile**, not at 5x where
+everything reads. The committed one has the widest base of the three: a
+narrower road turns to mush at 24px, and the trapezoid is what makes it a road
+rather than three strokes.
+
+#### The set was checked both ways
+
+**Nothing else means "road".** The full set is twelve glyphs: certification
+shield, sparkles, document, umbrella, magnifier, wrench, dent, panel grid,
+quote mark, tag, phone, and now the lane. The nearest neighbour is the Minor
+card's dent, an arch over a horizontal rule, which shares no geometry with two
+converging diagonals.
+
+**The arc glyph is now used nowhere.** It had exactly one use on the site, so
+retiring it from that card retires it entirely and there is no second meaning
+left to keep unique. Swept across `docs/` and `templates/` by its path data
+rather than by eye.
+
 ---
 
 ## 4. The claims list
