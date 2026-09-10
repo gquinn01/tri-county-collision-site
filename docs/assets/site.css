@@ -142,7 +142,16 @@
    THE RULES THIS FILE KEEPS.
 
    SOLID COLORS ONLY. No gradients on text, buttons, cards or accents, and no
-   glows. There is no sanctioned section-background gradient on this site.
+   glows.
+
+   ONE SANCTIONED SECTION-BACKGROUND GRADIENT, DECIDED 2026-09-10. The palette
+   law allows exactly this one exception and only as a dated, recorded
+   decision, so this is the record. The two oxblood act bands carry a gradient
+   derived from the logo's own swoosh: deep at the ends, --ox exactly through
+   the middle, on the mark's angle. IT STAYS INSIDE ONE HUE, so oxblood still
+   means act from the first pixel. See .field-ox for the stops, the fallback
+   chain and the measured contrast at each stop. Nothing else on this site
+   gets a gradient.
 
    MOTION IS EVIDENCE, NOT COSTUME. That is still the rule, and it is
    still the reason for everything below. NOTHING ANIMATES ON LOAD,
@@ -730,7 +739,51 @@ section { padding: var(--pad) 0; }
    CTA row; there are exactly two on a page. Ink is structural: it breaks
    the paper run under proof and quotes, where there is nothing to click. */
 .dark { color: var(--paper); }
-.field-ox { background: var(--ox); }
+/* THE ONE SANCTIONED GRADIENT ON THIS SITE. Decided 2026-09-10, and the
+   palette law's own exception: section backgrounds may carry a gradient
+   when it is a dated, recorded decision. This is that record. Everything
+   else stays solid: no gradient on text, on a button, on a card or on an
+   accent, and no glows anywhere.
+
+   IT IS THE LOGO'S OWN GESTURE. The mark's red swoosh runs dark, bright,
+   dark across its length, and the chrome swoosh under it does the same
+   in grey. At band scale that reads as light falling across a painted
+   panel, which is a fair thing for a shop that paints panels to have
+   behind its words.
+
+   IT STAYS INSIDE ONE HUE, WHICH IS THE POINT. The brightest place in
+   the band is --ox exactly, and the ends are a deeper oxblood. Nothing
+   new enters the band, so OXBLOOD STILL MEANS ACT and it means it from
+   the first pixel. A gradient that started in --ink was drawn and
+   rejected for that reason: an act band would have spent its first
+   screen looking structural.
+
+   THE DEEP END IS DERIVED, NOT INVENTED. color-mix() takes it from
+   --ox-dk and --ink, both already in the palette, so no fifth colour is
+   typed into this file and the palette still lives in one place. The
+   plain --ox-dk gradient above it is the fallback: a browser without
+   color-mix drops the second declaration and gets the softer version,
+   and one without either gets the flat --ox background-color. All three
+   are readable.
+
+   MEASURED, at every stop:
+
+       ground        paper text     ink button AS A SHAPE
+       --ox              11.04                       1.47
+       --ox-dk           13.02                       1.24
+       deep end          14.38                       1.13
+
+   Text gets MORE readable toward the ends, not less. The act button sits
+   mid-band on --ox, and its paper hairline is what draws its shape in
+   any case, which is the rule recorded in the contrast note above. */
+.field-ox {
+  background: var(--ox);
+  background-image: linear-gradient(104deg, var(--ox-dk) 0%, var(--ox) 46%, var(--ox-dk) 100%);
+  background-image: linear-gradient(104deg,
+      color-mix(in srgb, var(--ox-dk) 72%, var(--ink)) 0%,
+      var(--ox) 46%,
+      color-mix(in srgb, var(--ox-dk) 72%, var(--ink)) 100%);
+}
 .field-ink { background: var(--ink); }
 .dark .sec-sub, .dark .eyebrow { color: var(--paper); }
 .dark a { color: var(--paper); }

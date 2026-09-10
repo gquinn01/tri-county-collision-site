@@ -265,8 +265,26 @@ unchanged on either ground** — it is a border and a label already.
 
 **6. The palette is four colours and two text shades**, and gold is not one of
 them any more. Oxblood means act and nothing else: two oxblood bands per page,
-each carrying the CTA row. Ink is structural. Solid colours only, no gradients
-and no glows.
+each carrying the CTA row. Ink is structural. Solid colours only and no glows.
+
+**One sanctioned section-background gradient, decided 2026-09-10.** The firm's
+palette law allows exactly this one exception, and only as a dated, recorded
+decision; this is the record. The two oxblood act bands carry a gradient taken
+from **the logo's own swoosh** — the mark's red sweep runs dark, bright, dark
+across its length, and the chrome sweep beneath it does the same in grey. At
+band scale that reads as light falling across a painted panel.
+
+**It stays inside one hue, which is the point.** The brightest place in the
+band is `--ox` exactly and the ends are a deeper oxblood, so **oxblood still
+means act from the first pixel**. A version starting in `--ink` was drawn and
+rejected for that reason: an act band would have spent its first screen
+looking structural. The deep end is **derived, not invented** — `color-mix()`
+takes it from `--ox-dk` and `--ink`, both already in the palette, so no fifth
+colour is typed into the stylesheet.
+
+Text gets *more* readable toward the ends, not less: 11.04 on `--ox`, 13.02 on
+`--ox-dk`, 14.38 at the deep end. **Nothing else on this site gets a
+gradient** — not text, not a button, not a card, not an accent.
 
 **7. The lift, adopted 2026-09-10. A mold behaviour: every card on every page
 gets it and nobody re-decides it per page.** A `.card`, `.step` or `.svc`
