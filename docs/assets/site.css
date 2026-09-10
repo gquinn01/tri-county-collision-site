@@ -346,9 +346,35 @@ section { padding: var(--pad) 0; }
   position: sticky; top: 0; z-index: 40;
   background: var(--ink); border-bottom: 1px solid rgba(249, 247, 244, .16);
 }
-.nav .inner { display: flex; align-items: center; gap: 18px; min-height: 76px; }
+/* THE LOGO NEEDS CLEAR SPACE, AND IT HAD NONE. The mark's PNG is cropped
+   tight to the artwork, so the <img> box IS the mark: at 1440 the logo
+   measured 190x76 inside a 76px bar, which is zero clearance top and
+   bottom, and the swoosh touched the ink edge.
+
+   MEASURED, NOT EYEBALLED. The target is ~12px of clear space around the
+   mark, which is about a fifth of its own height and reads as deliberate
+   rather than as a gap.
+
+       desktop   168 x 66.85 in a 92px bar   ->  12.6px top and bottom
+       phone     120 x 47.75 in a 64px bar   ->   8.1px top and bottom
+
+   THE PHONE BAR DOES NOT GROW, AND THAT IS NOT AN AESTHETIC CHOICE. The
+   header is sticky, so every pixel it gains comes off the fold budget,
+   and the hero's CTA pair clears that budget by 8px. Growing this bar
+   would spend the lot. So on a phone the clearance comes out of the
+   mark's size instead, and the bar stays exactly where it was.
+
+   THE LEFT EDGE IS THE PAGE GRID'S MARGIN and is left alone on purpose.
+   The logo starts where every other first character on the page starts;
+   insetting it further would break the alignment the hero panel's whole
+   arithmetic exists to hold.
+
+   height is auto so nothing letterboxes inside object-fit. The width and
+   height attributes on the <img> still reserve the space, so there is no
+   layout shift while it loads. */
+.nav .inner { display: flex; align-items: center; gap: 18px; min-height: 92px; }
 .nav-home { display: block; flex: 0 0 auto; }
-.nav-home img { width: 190px; height: 76px; object-fit: contain; }
+.nav-home img { width: 168px; height: auto; object-fit: contain; }
 .nav-main { margin-left: auto; }
 .nav-main ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; }
 .nav-main a { color: var(--paper); font-weight: 600; text-decoration: none; font-size: 1rem; }
@@ -361,7 +387,7 @@ section { padding: var(--pad) 0; }
 
 @media (max-width: 899px) {
   .nav .inner { min-height: 64px; }
-  .nav-home img { width: 150px; height: 60px; }
+  .nav-home img { width: 120px; height: auto; }
   .nav-main { margin-left: auto; }
   .nav-main ul { gap: 16px; }
   .nav .btn-sm { display: none; }
