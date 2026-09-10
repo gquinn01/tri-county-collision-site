@@ -8,10 +8,37 @@
    The pick is PHOTOGRAPHIC, and it is not up for re-deciding on the next
    page. What that commits every page to:
 
-   1. HERO: a full-bleed photograph with an OPAQUE INK PANEL over it holding
-      the copy. Opaque, not a wash and not a gradient, because type over a
+   1. HERO: a full-bleed photograph with an OPAQUE PANEL over it holding the
+      copy. Opaque is the rule and it is about the PHOTOGRAPH: no wash, no
+      translucency, nothing that lets the image through, because type over a
       photograph is only reliably readable when something solid is behind it.
       The photograph is a real one of this shop, its people or its work.
+
+      THE PANEL'S GROUND IS OXBLOOD AS OF 2026-09-10. It was ink until then.
+      It now carries .field-ox, the same ground the two act bands carry,
+      including the recorded 104 degree gradient, under the palette law's
+      written exception for section backgrounds. It is still opaque; a
+      gradient between two solid stops is not a wash.
+
+      WHY IT IS THE SAME CLASS RATHER THAN A COPY OF IT. The act-button rule
+      is keyed to .field-ox, so the hero's Call button became ink-filled with
+      paper text and the paper hairline on its own, and the Email ghost stayed
+      a paper outline, with nothing written for the hero specifically. One
+      class, one ground, one button grammar. A hand-copied gradient would
+      have needed its own button rule and would have drifted from the bands
+      the first time either changed.
+
+      THE SUPPORTING COLOURS WERE RE-MEASURED AGAINST THE GRADIENT'S LIGHTEST
+      STOP, which is --ox and therefore the worst case:
+
+          h1, eyebrow        --paper     11.04
+          lead, breadcrumb   --paper-2    7.34
+          breadcrumb rule    --rule       8.35
+          chip border        see .badges, re-tuned from .42 to .50
+
+      Text needs 4.5 and the chip border needs 3 as a shape. Everything
+      cleared without changing a token; only the chip border's alpha moved,
+      and only to hold the strength it already had.
 
    2. THE PANEL IS FLUSH TO THE LEFT VIEWPORT EDGE. No gap, no float, no
       rounded corner. Its LEFT PADDING equals the page grid's left margin, so
@@ -468,8 +495,12 @@ section { padding: var(--pad) 0; }
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; object-position: 50% 42%;
 }
+/* NO BACKGROUND HERE. The panel carries .field-ox in the markup and takes
+   the act bands' ground from it, gradient and all. Declaring a background
+   here as well would be a second answer to the same question, decided by
+   source order, which is how a panel ends up ink again by accident. */
 .heroA-panel {
-  position: relative; z-index: 1; background: var(--ink);
+  position: relative; z-index: 1;
   padding: clamp(34px, 5vw, 64px) clamp(24px, 3.5vw, 52px) clamp(40px, 5vw, 64px) 20px;
 }
 @media (max-width: 899px) {
@@ -533,7 +564,13 @@ section { padding: var(--pad) 0; }
 .heroA .btn { border-color: var(--paper); }
 .heroA .btn-ghost { color: var(--paper); }
 .heroA .badges { margin-top: 30px; }
-.heroA .badges li { background: transparent; border-color: rgba(249, 247, 244, .42); color: var(--paper); }
+/* RE-TUNED FOR THE OX GROUND, 2026-09-10, and the number is not a guess.
+   At .42 alpha this border measured 3.85 against ink, which is what it
+   was set for. The same .42 over --ox measures 3.11: the ground got
+   lighter, so the same wash of paper reads weaker on it. .50 puts it
+   back to exactly 3.85 on --ox, and 4.58 on the gradient's deep end.
+   Same strength as it always had, on a ground that changed under it. */
+.heroA .badges li { background: transparent; border-color: rgba(249, 247, 244, .50); color: var(--paper); }
 .heroA .badges svg { stroke: var(--paper); }
 
 /* ---------- THE PHONE HERO AND THE FOLD, added 2026-09-10 ----------

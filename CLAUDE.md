@@ -217,10 +217,31 @@ The full spec, with the arithmetic, lives in the header of
 `docs/assets/site.css`. That file is the one place the palette and the type
 are defined. Read it before writing a hex, a `font-family`, or a hero.
 
-**1. The hero is a full-bleed photograph with an opaque ink panel over it.**
-Opaque, not a translucent wash and not a gradient: type over a photograph is
+**1. The hero is a full-bleed photograph with an opaque panel over it.**
+Opaque, not a translucent wash: type over a photograph is
 only reliably readable when something solid sits behind it. The photograph is
 a real one of this shop, its people or its work.
+
+**The panel's ground is oxblood, decided 2026-09-10.** It was ink until then.
+It now carries `.field-ox`, the same ground the two act bands carry, including
+the recorded 104 degree gradient, under the palette law's written exception for
+section backgrounds. Still opaque: a gradient between two solid stops is not a
+wash, and nothing of the photograph shows through.
+
+**It is the same class, not a copy of it.** The act-button rule is keyed to
+`.field-ox`, so the hero's Call button became ink-filled with paper text and
+the paper hairline **on its own**, and the Email ghost stayed a paper outline,
+with nothing written for the hero specifically. One class, one ground, one
+button grammar. A hand-copied gradient would have needed its own button rule
+and would have drifted from the bands the first time either changed.
+
+**The supporting colours were re-measured against the gradient's lightest
+stop**, `--ox`, which is the worst case: h1 and eyebrow 11.04, lead and
+breadcrumb 7.34, breadcrumb separator 8.35. Text needs 4.5 and a chip border
+needs 3 as a shape. Everything cleared without moving a token. **Only the chip
+border's alpha changed**, from .42 to .50, and not to make it stronger: .42
+measured 3.85 on ink and only 3.11 on the lighter oxblood ground, so .50 puts
+it back to exactly 3.85. Same strength, on a ground that changed under it.
 
 **2. The panel is flush to the left viewport edge.** No gap, no float, no
 rounded corner. Its **left padding equals the page grid's left margin**, so
