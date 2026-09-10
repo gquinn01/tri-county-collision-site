@@ -263,6 +263,41 @@ one typo ("The were great about sending e-mail updates"), two emoji, and some
 loose punctuation. A testimonial is somebody else's words, and tidying one is
 not a style fix. See 4.8 for what needs confirming about them.
 
+### 1.18 A fourth hero chip: the insurance paperwork
+
+**Flagged for the owner's pass as a new visible promise**, even though it is
+not a new fact.
+
+| | |
+|---|---|
+| **Before** | ASE and I-CAR Gold certified &nbsp;•&nbsp; Lifetime warranty &nbsp;•&nbsp; Free estimates |
+| **After** | ASE and I-CAR Gold certified &nbsp;•&nbsp; Lifetime warranty &nbsp;•&nbsp; Free estimates &nbsp;•&nbsp; **Insurance paperwork handled** |
+
+The claim is already on the page three times, in the live site's own words:
+the Why Choose list ("Works with all major insurance companies. We handle the
+paperwork and communication so you don't have to."), step 02 of the process
+("we take care of the insurance coordination so you're not juggling calls with
+adjusters"), and the insurance FAQ ("We handle all the paperwork, coordinate
+authorizations, and keep your insurer updated on repair progress."). So this
+is a placement, not an invention, and the migration rule holds: the page still
+claims nothing the live page does not.
+
+**Why it is flagged anyway.** A hero chip is the loudest, shortest, most
+quotable form a claim takes on this page, and it is what an assistant lifts
+first. "Insurance paperwork handled" reads as an unconditional promise in a way
+that the three sentences it compresses do not, and rule 2 says the site may
+only sell what the shop actually does. **The question for the owner is scope,
+not truth: is the paperwork handled for every insurer and every claim, or are
+there carriers or claim types where the customer still files themselves?** If
+there are exceptions, the chip comes off and the longer sentences stay, because
+they carry their own context and the chip cannot.
+
+Related, and already open in 4.2: whether "direct repair relationship" is the
+right phrase for what the shop actually has with those insurers.
+
+The chip's icon is the umbrella step 02 already uses for insurance
+coordination. No new icon was drawn.
+
 ---
 
 ## 2. What the live page carries that this page does not
@@ -446,6 +481,10 @@ but "do you actually do this":
 - **Direct repair relationships with all major insurance companies.** A "direct
   repair relationship" is a specific arrangement, not a synonym for accepting
   insurance. Confirm it is the right phrase.
+- **The shop handles the insurance paperwork.** In the Why Choose list, step 02
+  and the insurance FAQ, and **now also a hero chip**, which is the strongest
+  form the claim takes anywhere on the page. Every insurer and every claim, or
+  are there exceptions? See 1.18.
 - **We advocate with the insurer for more extensive repairs** than the adjuster
   approved.
 - **Loaner or rental coordination** where the policy provides for it (FAQ 1).
