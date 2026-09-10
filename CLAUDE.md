@@ -339,6 +339,7 @@ dark. That archive is the last copy of it that will ever exist.
 | `agents/site-auditor.md` | The weekly Monday report agent's job description. |
 | `agents/google-watcher.md` | The daily algorithm watch agent's job description. |
 | `.github/workflows/` | The two agent schedules. |
+| `drafts/motion/` | **Motion sampler. Candidates only, nothing ships.** Five effects on a generated copy of the pattern page, so they can be judged on the real thing. Its README carries the hard rules, how each effect earns its place, and the one that would amend the motion law if kept. `build.py --check` says whether the copy has gone stale. |
 | `docs/` | The site. |
 | `docs/assets/site.css` | **The design system.** The one place the palette and the type are defined. Its header carries the chosen direction, the type pairing, the flush-left hero arithmetic, the stat-band rule, the palette table with its provenance, and the measured contrast ratios. |
 | `docs/assets/fonts/` | Archivo Black and Source Sans 3, self-hosted, with their unedited SIL OFL 1.1 licence texts. No webfont CDN is contacted at runtime. |
