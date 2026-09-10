@@ -164,6 +164,32 @@ did not do before, because there had never been one to raise.
 else. Google's guidelines rule out self-serving review markup on a business's
 own site. Visible text only.
 
+### Comments name the constant, never the value
+
+**A comment never carries the literal review count or the stat band's order.
+It names `REVIEW_COUNT` and "the band's DOM order" instead.** Decided
+2026-09-10, after the stat band's own comment was found carrying a stale
+count and a stale order through two commits.
+
+Nothing could have caught it. The review-count check strips comments before
+it reads counts, on purpose, so that a comment recording history is not read
+as the page contradicting itself, and the one mechanism that reads counts is
+therefore the one told to look away. A comment that names the constant stays
+true when the value changes; a comment that spells the value out is a copy
+that nothing updates.
+
+`scripts/audit.py` **warns, and can only ever warn**, when an HTML comment
+under `docs/` carries a two-to-four digit number within a few words of
+"review". It is handed no `fails` list, so it is structurally incapable of
+stopping a build: a rotting comment misleads the next reader and costs a
+visitor nothing, and a check that can fail a build on somebody's reasonable
+prose is a check that gets deleted rather than fixed.
+
+**The convention and the check fit by construction.** `\breview\b` cannot
+match inside `REVIEW_COUNT`, because the next character is an underscore and
+an underscore is a word character. The approved spelling is exactly the one
+the pattern cannot fire on.
+
 The proof line deserves its own warning. Years in business, I-CAR or ASE
 certifications, manufacturer approvals, insurer relationships, warranty
 terms: every one of those is checkable, and every one of them ships only

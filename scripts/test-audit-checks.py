@@ -310,6 +310,58 @@ def main():
     check("     no page carries aggregateRating, ratingValue or reviewCount in its schema",
           not marked, marked)
 
+    print("15. The comment convention, which is the blind spot's dressing")
+    # WHY. audit.py strips comments before it reads review counts, so a
+    # number quoted in a comment can rot with nothing to catch it. On
+    # 2026-09-10 the stat band's own comment was found carrying a stale
+    # count and a stale order, through two commits, and no check could
+    # have seen it. The convention is that comments name REVIEW_COUNT and
+    # the band's DOM order instead of quoting either. This is the check
+    # that watches for the convention lapsing.
+    import inspect as _inspect
+    import tempfile as _tempfile
+
+    def comment_hits(body):
+        with _tempfile.TemporaryDirectory() as tmp:
+            with open(os.path.join(tmp, "p.html"), "w", encoding="utf-8") as fh:
+                fh.write(body)
+            return audit.find_rotting_comments(tmp)
+
+    check("     a comment quoting a literal count is caught",
+          len(comment_hits("<!-- It was 274 reviews on the profile. -->")) == 1)
+    check("     the other word order is caught too",
+          len(comment_hits("<!-- The reviews stood at 274 that day. -->")) == 1)
+    check("     a comment wrapped across lines is still one sentence",
+          len(comment_hits("<!-- It was 274\n         Google reviews. -->")) == 1)
+
+    # THE POINT OF THE CONVENTION: the approved spelling is the one the
+    # pattern cannot fire on, because the character after "REVIEW" in
+    # REVIEW_COUNT is an underscore and an underscore is a word
+    # character. The rule is easy to keep rather than easy to resent.
+    check("     naming REVIEW_COUNT instead is NOT caught, by construction",
+          comment_hits("<!-- The count lives in REVIEW_COUNT, set 2026 in audit.py. -->") == [])
+    check("     naming the band's DOM order instead is NOT caught",
+          comment_hits("<!-- The order is the band's DOM order. Read the markup. -->") == [])
+
+    check("     one digit beside the word is prose, not a count",
+          comment_hits("<!-- Ask for a 5 star review. -->") == [])
+    check("     five digits is not a count this shop will have",
+          comment_hits("<!-- 12345 reviews someday. -->") == [])
+    check("     a number more than a few words away is left alone",
+          comment_hits("<!-- 274 is the number of things that are not "
+                       "at all related to any reviews here. -->") == [])
+
+    # Structurally incapable of failing: it is not handed anywhere to put
+    # a critical. A promise in a docstring is not a mechanism.
+    params = list(_inspect.signature(audit.check_comment_convention_local).parameters)
+    check("     the check cannot raise a critical, having no fails list",
+          params == ["warns", "notes"], params)
+
+    warns, notes = [], []
+    audit.check_comment_convention_local(warns, notes)
+    check("     and the repo's own comments are clean right now",
+          not warns and len(notes) == 1, warns)
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} check(s) failed:")

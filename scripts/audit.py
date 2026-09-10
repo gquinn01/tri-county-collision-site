@@ -229,6 +229,45 @@ REVIEW_STALE_DAYS = 35
 # would teach everyone to stop writing them.
 REVIEW_COUNT_RE = re.compile(r"\b(\d[\d,]{0,6})\s+(?:google\s+)?reviews?\b", re.I)
 
+# --- The convention that keeps comments from rotting ------------------
+# COMMENTS NEVER CARRY THE LITERAL REVIEW COUNT OR THE STAT ORDER. They
+# name `REVIEW_COUNT` and "the band's DOM order" instead.
+#
+# WHY THERE IS A CONVENTION AT ALL. The check above strips comments
+# before reading review counts, deliberately, so that a comment
+# recording history is not read as the page contradicting itself. The
+# cost of that choice showed up on 2026-09-10: the stat band's own
+# comment had been carrying a stale count AND a stale order through two
+# commits, and nothing could have caught it, because the one mechanism
+# that reads counts is the one that had been told to look away.
+#
+# So the convention removes the thing that rots, and this check watches
+# for it coming back. A comment that says `REVIEW_COUNT` stays true
+# when the number changes; a comment that says the number does not.
+#
+# THE CONVENTION AND THE CHECK FIT EACH OTHER BY CONSTRUCTION: `\breview\b`
+# cannot match inside `REVIEW_COUNT`, because the character after
+# "REVIEW" is an underscore and an underscore is a word character. The
+# approved way of writing it is exactly the way this pattern cannot fire
+# on, which is what makes the rule easy to keep rather than easy to
+# resent.
+#
+# WARN-LEVEL, AND STRUCTURALLY INCAPABLE OF FAILING: the function is not
+# handed a `fails` list. A rotting comment misleads the next reader and
+# costs nothing to a visitor, so it should never stop a build. It is
+# also the kind of thing that turns into a false positive on somebody's
+# perfectly reasonable prose, and a false positive that fails a build
+# gets the check deleted rather than fixed.
+HTML_COMMENT_RE = re.compile(r"(?s)<!--(.*?)-->")
+
+# "a few words" is three. Two to four digits, because a one-digit number
+# beside "review" is prose ("a 5 star review") and five digits is not a
+# count this shop will have in this decade.
+_NEARBY_WORDS = r"(?:[\w'\u2019()\-.,:;/]+ ){0,3}"
+COMMENT_REVIEW_NUM_RE = re.compile(
+    r"\b\d{2,4}\b " + _NEARBY_WORDS + r"reviews?\b"
+    r"|\breviews?\b " + _NEARBY_WORDS + r"\d{2,4}\b", re.I)
+
 # The site's own base URL, used to work out what URL a local file will
 # serve at. That is how the two checks below know whether a page is in
 # sitemap.xml under its OWN address rather than under some other page's.
@@ -770,6 +809,60 @@ def find_review_counts(root: str = SITE_DIR) -> list:
                 hits.append((path, int(m.group(1).replace(",", "")),
                              text[max(0, m.start() - 40):m.end() + 24].strip()))
     return hits
+
+
+def find_rotting_comments(root: str = SITE_DIR) -> list:
+    """Every HTML comment under docs/ that carries a number near the word
+    "review", as (path, line, snippet). Whitespace is collapsed first, so
+    a comment wrapped across five lines reads as one sentence and the
+    "few words" window means what it says."""
+    hits = []
+    for dirpath, _dirs, files in os.walk(root):
+        for name in sorted(files):
+            if not name.endswith(".html"):
+                continue
+            path = os.path.join(dirpath, name)
+            try:
+                with open(path, encoding="utf-8") as f:
+                    raw = f.read()
+            except OSError:
+                continue
+            for m in HTML_COMMENT_RE.finditer(raw):
+                body = re.sub(r"\s+", " ", m.group(1)).strip()
+                for hit in COMMENT_REVIEW_NUM_RE.finditer(body):
+                    hits.append((path, raw.count("\n", 0, m.start()) + 1,
+                                 hit.group(0).strip()))
+    return hits
+
+
+def check_comment_convention_local(warns: list, notes: list):
+    """THE CONVENTION: a comment names `REVIEW_COUNT` and "the band's DOM
+    order", never the literal count and never the literal order.
+
+    NO `fails` LIST, ON PURPOSE. This check cannot raise a critical
+    because it was never handed anywhere to put one. A rotting comment
+    misleads the next person to read the file and costs a visitor
+    nothing, so it must never stop a build, and a check that can only
+    warn is one nobody has a reason to delete.
+    """
+    hits = find_rotting_comments()
+    if not hits:
+        notes.append(
+            "**No HTML comment under `docs/` carries a literal review count.** The "
+            "convention is that comments name `REVIEW_COUNT` and the band's DOM order "
+            "rather than quoting either, so they stay true when the values change. "
+            "`\\breview\\b` cannot match inside `REVIEW_COUNT`, so the approved "
+            "spelling is the one this check cannot fire on.")
+        return
+    where = "; ".join(f"`{pth}` line {ln} (\"{snip}\")" for pth, ln, snip in hits[:6])
+    more = "" if len(hits) <= 6 else f", and {len(hits) - 6} more"
+    warns.append(
+        f"**{len(hits)} HTML comment{'' if len(hits) == 1 else 's'} under `{SITE_DIR}/` "
+        f"carr{'ies' if len(hits) == 1 else 'y'} a number next to the word \"review\": "
+        f"{where}{more}.** The review-count check strips comments before it reads counts, "
+        "so a number quoted in one can go stale with nothing to catch it, which is exactly "
+        "what happened on 2026-09-10. Rewrite it to name `REVIEW_COUNT` instead of quoting "
+        "a value. This is a warning and it will never fail a build.")
 
 
 def check_review_count_local(passes: list, warns: list, fails: list,
@@ -1372,6 +1465,7 @@ def main():
     else:
         check_staging_local(site_passes, site_warns, site_notes)
         check_review_count_local(site_passes, site_warns, site_fails, site_notes)
+        check_comment_convention_local(site_warns, site_notes)
     if expand_note:
         site_notes.append(expand_note)
 

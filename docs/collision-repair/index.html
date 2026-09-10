@@ -429,36 +429,34 @@
          Three stats, and three is the rule rather than the leftover. A fourth
          would have to be invented, and inventing a number to balance a row is
          the exact failure the prime law exists to stop. So one of the three is
-         a word, and since 2026-09-10 it is the FIRST one.
-         THE WARRANTY LEADS, AND THE ORDER IS THE DOM ORDER. It reads
-         Lifetime, 274, 12 in the markup and it reads that way on every
-         viewport, and the band's aria-label names the same sequence.
-         THIS LINE WAS STALE ONCE ALREADY. It still said "Lifetime, 12, 231"
-         after the count was refreshed to 274 and after the band was first
-         reordered, because a comment is the one place a number can rot
-         without any check noticing: audit.py strips comments before it
-         reads review counts, on purpose, so that a comment recording
-         history is not read as the page contradicting itself. The cost of
-         that choice is this line, and the only thing that keeps it honest
-         is editing it in the same commit as the thing it describes. No CSS reordering: `order` and `row-reverse` split what a
-         sighted reader sees from what the DOM, a screen reader and tab order
-         say, and a page that argues with itself about its own sequence is a
-         page nobody can reason about later. On a phone the stats stack in
-         source order, so leading with the warranty is what puts the single
-         most load-bearing claim on the page on screen two.
-         THE REVIEW COUNT CARRIES THE DAY IT WAS COUNTED. 274 reviews and
-         4.9 stars, read off the shop's own Google Business Profile on
-         2026-09-10. It replaces 231 and "Rated Excellent", which came off the
-         live site's Trustindex widget on 2026-09-05. THE WIDGET AND THE
-         PROFILE DISAGREED BY 43 REVIEWS IN THE SAME WEEK, which is the whole
-         argument for not carrying the widget through cutover: a third-party
-         script that is wrong about the shop's own numbers is worse than a
-         dated line of text that is right. See proposed-changes.md 4.4.
-         THE NUMBER IS ENFORCED NOW, not remembered. scripts/audit.py holds
-         REVIEW_COUNT and REVIEW_COUNTED_ON, reads every visible review-count
-         mention under docs/, fails when any two disagree, and warns once the
-         count is more than 35 days old. Change it there and here in the same
-         commit or the audit will say so.
+         a word rather than a number.
+
+         THE ORDER IS THE BAND'S DOM ORDER. Read the markup below for what it
+         is; this comment does not repeat it, and neither should the next one.
+         The band's aria-label names the same sequence, so the two get edited
+         in the same breath. NO CSS REORDERING: `order` and `row-reverse`
+         split what a sighted reader sees from what the DOM, a screen reader
+         and tab order say, and a page that argues with itself about its own
+         sequence is a page nobody can reason about later. On a phone the
+         stats stack in source order, which is what makes the order a decision
+         rather than a detail.
+
+         THE COUNT, THE RATING AND THE DAY THEY WERE READ LIVE IN
+         scripts/audit.py, as REVIEW_COUNT, REVIEW_RATING and
+         REVIEW_COUNTED_ON. The story behind them is proposed-changes.md 4.4.
+         THIS COMMENT QUOTES NONE OF THEM, BY CONVENTION. It quoted two of
+         them once, went stale through two commits, and nothing caught it: the
+         check that reads counts strips comments first, on purpose, so that a
+         comment recording history is not read as the page contradicting
+         itself. A comment that names the constant stays true when the value
+         changes; a comment that spells the value out is a copy that nothing
+         updates. audit.py now warns, and can only ever warn, when a comment
+         carries a number beside that word again.
+
+         The supporting line below carries the day the count was read, because
+         any number true only on the day it is written carries that day.
+         audit.py warns once the reading is older than REVIEW_STALE_DAYS.
+
          NO Review OR AggregateRating MARKUP anywhere in the schema. Google's
          own guidelines rule out self-serving review markup on a business's
          own site, and the standards allow none unless the data is real and
