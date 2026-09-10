@@ -406,6 +406,46 @@ and the document scroll width is exactly the viewport at all three widths.
 fold numbers from 3.8 are identical before and after, at 360, 390 and 430, in
 both the staging and the post-cutover state.
 
+### 1.22 The Minor card named one county where the page claims two
+
+| | |
+|---|---|
+| **Before** | They're a normal part of driving, especially around the busy neighborhoods of Bucks **County**. |
+| **After** | They're a normal part of driving, especially around the busy neighborhoods of Bucks **and Montgomery County**. |
+
+**Consistency, not new scope.** The shop sits on the county line, and every
+other place the page states its geography already claims both. Checked rather
+than assumed, and this was the only sentence naming one alone:
+
+```
+meta description        Bucks & Montgomery County
+og:description          Bucks & Montgomery County
+schema areaServed       Bucks County, Pennsylvania / Montgomery County, Pennsylvania
+H2, after a crash       What to Do After a Car Accident in Bucks & Montgomery County
+Why Choose list         serving Bucks and Montgomery Counties
+H2, serving areas       Collision Repair Serving Bucks County and Montgomery County
+serving-areas copy      the greater Bucks County and Montgomery County areas
+footer                  Bucks County, Montgomery County and Northeast Philadelphia
+Minor card              Bucks County                                  <- the odd one
+```
+
+So the change closes a gap rather than opening a claim. The service area
+itself is unchanged, and nothing here adds a town, a route or a radius.
+
+**One thing for the owner's pass anyway**, because 4.2 is about scope and this
+is a geography sentence: the towns listed in the serving-areas section are the
+live site's own list and are still on the claims list. This edit does not touch
+them.
+
+**A note on the form.** "Bucks and Montgomery County", singular, matches the
+"Bucks & Montgomery County" already in the meta description, the og
+description and the crash H2. The page also carries "Bucks and Montgomery
+Counties" and "Bucks County and Montgomery County" elsewhere, all from the
+live site. **Three forms of the same pair is a tidy-up worth doing in one
+pass**, and it is deliberately not done here: it would touch a heading and a
+meta description, and headings and descriptions are not something to change
+while making a one-sentence consistency fix.
+
 ---
 
 ## 2. What the live page carries that this page does not
