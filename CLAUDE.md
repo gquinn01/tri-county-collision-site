@@ -342,10 +342,12 @@ disclosure and its chevron, the lift under a pointer, the press under a
 finger. Unremarkable.
 
 **Kind two, which is the actual amendment: motion may also fire once on a
-section's first arrival. A number counts. A word stamps. A lane draws. Never
-looping, never re-triggering.** The stat band is one event, not three: the two
-numbers roll and the word presses on the same class, released by the same
-observer, so the row arrives as a row.
+section's first arrival. A number counts. A word rolls with it. A lane draws.
+Never looping, never re-triggering.** The stat band is one event, not three:
+all three stats roll on the same drum and the same class, released by the same
+observer, so the row arrives as a row. The word's strips hold **the same letter
+twice** and travel one cell, so it rolls without ever showing a character that
+is not its own.
 
 Both are still evidence rather than costume, which is the only reason they
 were allowed in:

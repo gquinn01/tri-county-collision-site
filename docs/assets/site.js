@@ -73,6 +73,50 @@
     return s;
   }
 
+  /* THE WORD ROLLS TOO, on the same drum. A letter strip holds THE SAME
+     LETTER TWICE and travels exactly one cell, so the word never shows a
+     character that is not its own: no A-to-Z scramble, no slot machine,
+     nothing on screen that the warranty does not actually say.
+
+     Letters are not monospaced the way Archivo Black's digits are, so
+     there is no fixed cell width here. There does not need to be: a
+     strip holding one repeated letter is exactly as wide as that
+     letter, so each window sizes itself and nothing can jitter.
+
+     It runs a little quicker per cell than the numbers, 520ms against
+     700, and staggers at 60ms against 90, so eight letters finish at
+     about the same moment three digits do and the row still lands as
+     one event. */
+  var WORD_TRAVEL = 1;
+
+  function buildWordOdometer(el) {
+    var word = el.textContent.trim();
+    if (!word || /\d/.test(word)) { return false; }
+    var odo = document.createElement("span");
+    odo.className = "odo odo-word";
+    odo.setAttribute("aria-hidden", "true");
+    for (var i = 0; i < word.length; i++) {
+      var ch = word.charAt(i);
+      var win = document.createElement("span");
+      win.className = "odo-l";
+      var strip = document.createElement("span");
+      strip.className = "odo-strip";
+      strip.appendChild(cell(ch));
+      strip.appendChild(cell(ch));
+      strip.style.setProperty("--odo-end", (-WORD_TRAVEL * ODO_STEP).toFixed(3) + "em");
+      strip.style.setProperty("--odo-delay", (i * 60) + "ms");
+      win.appendChild(strip);
+      odo.appendChild(win);
+    }
+    var sr = document.createElement("span");
+    sr.className = "sr-only";
+    sr.textContent = word;
+    el.textContent = "";
+    el.appendChild(odo);
+    el.appendChild(sr);
+    return true;
+  }
+
   function buildOdometer(el) {
     var value = el.textContent.trim();
     if (!/^\d+$/.test(value)) { return false; }
@@ -145,7 +189,7 @@
       /* A number rolls. The one stat that is a word gets stamped. The
          whole row is one event on one class, so it arrives as a row. */
       if (buildOdometer(numerals[n])) { moving = true; }
-      else { numerals[n].classList.add("stamp"); moving = true; }
+      else if (buildWordOdometer(numerals[n])) { moving = true; }
     }
     if (moving) { sections.push(statband); }
   }

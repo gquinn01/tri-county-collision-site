@@ -197,11 +197,11 @@
    them, and they are unremarkable.
 
    KIND TWO, WHICH IS THE ACTUAL AMENDMENT: MOTION MAY ALSO FIRE ONCE ON
-   A SECTION'S FIRST ARRIVAL. A NUMBER COUNTS. A WORD STAMPS. A LANE
-   DRAWS. NEVER LOOPING, NEVER RE-TRIGGERING.
+   A SECTION'S FIRST ARRIVAL. A NUMBER COUNTS. A WORD ROLLS WITH IT. A
+   LANE DRAWS. NEVER LOOPING, NEVER RE-TRIGGERING.
 
-   The stat band is ONE event, not three. The two numbers roll and the
-   word presses on the same class, released by the same observer, so the
+   The stat band is ONE event, not three. All three stats roll on the
+   same drum and the same class, released by the same observer, so the
    row arrives as a row.
 
    Both are still evidence rather than costume, which is the only reason
@@ -749,6 +749,12 @@ section { padding: var(--pad) 0; }
 .odo-d { display: block; width: .667em; height: .88em; overflow: hidden; }
 .odo-strip { display: block; will-change: transform; }
 .odo-strip > span { display: block; height: .88em; line-height: .88; }
+/* A LETTER WINDOW HAS NO FIXED WIDTH, and does not need one. Archivo
+   Black's digits are all 0.667em, which is why .odo-d can be, but its
+   letters are not. A letter strip holds the same letter twice, so the
+   window is exactly as wide as that letter and nothing can jitter. */
+.odo-l { display: block; height: .88em; overflow: hidden; }
+.motion-in .odo-word .odo-strip { transition-duration: 520ms; }
 .motion-armed .odo-strip { transform: translateY(0); }
 .motion-in .odo-strip {
   transform: translateY(var(--odo-end));
@@ -756,28 +762,26 @@ section { padding: var(--pad) 0; }
   transition-delay: var(--odo-delay, 0ms);
 }
 
-/* ---------- The stamp: the one stat that is a word ----------
-   Restored from the motion sampler, where it was candidate B, and
-   attached to "Lifetime". It arrives on the SAME once-on-first-arrival
-   class as the odometer, so the whole row is ONE event: the numbers roll
-   and the word stamps.
+/* ---------- The word rolls on the same drum ----------
+   "Lifetime" is the one stat that is a word rather than a number, and
+   since 2026-09-10 it arrives the same way the numbers do. It replaced
+   a stamp, which pressed the word onto the page from its own centre.
+   The stamp is gone rather than commented out.
 
-   The opacity snaps in at 90ms while the scale settles over 380ms, and
-   the gap between those two durations is what makes it read as a press
-   rather than a zoom. The 1.2 degrees of rotation is as built, because a
-   stamp is never square to the paper.
+   A LETTER STRIP HOLDS THE SAME LETTER TWICE and travels exactly one
+   cell. The word rolls, but it never shows a character that is not its
+   own: no A-to-Z scramble, nothing on screen mid-flight that the
+   warranty does not say. A scrambling word is the cheap version of this
+   effect and it is the version that puts non-words in front of a reader.
 
-   THE ORIGIN HAD TO MOVE, and it is the only thing that changed. The
-   sampler's stamp pressed from the left, which was right when the stat
-   was left-aligned. The band is centred now, so a left origin would
-   translate the word sideways as it scaled and read as a slide. It
-   presses from its own centre instead. */
-.stamp { transform-origin: center; }
-.motion-armed .stamp { opacity: 0; transform: scale(1.06) rotate(-1.2deg); }
-.motion-in .stamp {
-  opacity: 1; transform: none;
-  transition: opacity 90ms linear, transform 380ms cubic-bezier(.2, .9, .25, 1);
-}
+   THE LETTER WINDOWS SIZE THEMSELVES. Archivo Black's digits are all
+   0.667em, which is why .odo-d can carry a fixed width; its letters are
+   not, and do not need one, because a strip of one repeated letter is
+   exactly as wide as that letter. Nothing can jitter.
+
+   IT RUNS QUICKER PER CELL SO THE ROW STILL LANDS AS ONE EVENT: 520ms
+   against the numbers' 700, staggered at 60ms against 90, so eight
+   letters finish about when three digits do. */
 
 /* The drum is decoration and is aria-hidden. The number itself still has
    to reach a screen reader, once, as a number. */
@@ -828,9 +832,8 @@ section { padding: var(--pad) 0; }
    drawn. site.js is the first guard and never arms either one; this is
    the second, and it also covers the FAQ chevron and its answer. */
 @media (prefers-reduced-motion: reduce) {
-  .odo-strip, .lane-dash, .faq-ico, .stamp { transition: none; }
-  .odo-strip, .stamp { transform: none; }
-  .stamp { opacity: 1; }
+  .odo-strip, .lane-dash, .faq-ico { transition: none; }
+  .odo-strip { transform: none; }
   .lane-dash { transform: scaleY(1); }
   #faq details[open] > p { animation: none; }
 }
