@@ -351,7 +351,7 @@ the stat band reorder gains ground on its own, the chip swap gives more back.
 
 53px of that 221 is the chip row itself, see below.
 
-### 1.20 The stat band is reordered: Lifetime, 12, 274
+### 1.20 The stat band is reordered: Lifetime, 274, 12
 
 Supersedes the order in 1.16. Same three stats, same words. The review count
 in the table below was refreshed on 2026-09-10, separately from the reorder;
@@ -363,13 +363,16 @@ what the document says.
 | Stat | Label | Supporting line |
 |---|---|---|
 | **Lifetime** | Warranty on all repair work | If anything isn't right, we'll make it right. |
-| **12** | Vehicle brands, factory-certified | INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep. |
 | **274** | Google reviews | **4.9 stars on Google, counted on September 10, 2026.** |
+| **12** | Vehicle brands, factory-certified | INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep. |
 
 On a phone the three stack in source order, so the warranty is the first thing
 under the hero. On desktop they are three columns and the warranty is the left
-one. The band's `aria-label` was updated to match: "Warranty, certifications
-and reviews".
+one. The band's `aria-label` names the same sequence.
+
+**Reordered again 2026-09-10**, to Lifetime, 274, 12: the review count moves to
+second and the brand count to third. Same three stats, same words, same DOM
+rule. The `aria-label` follows to "Warranty, reviews and certifications".
 
 **One is a word rather than a number, and now it is the first one.** That does
 not change the rule in 1.16: three, never four, and no number gets invented to
