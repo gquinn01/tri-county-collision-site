@@ -354,10 +354,12 @@
     <div class="wrap inner">
       <!-- The logo is not a link yet, because docs/index.html does not exist
            yet and this site never writes a link to a page that has not been
-           built. scripts/test-audit-checks.py fails the build on a relative
-           link with no file behind it. It becomes a link to ../ in the same
-           commit as the homepage. -->
-      <span class="nav-home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></span>
+           built. THE WAITING IS MECHANIZED: data-pending-href carries the URL
+           it will point to, and scripts/test-audit-checks.py fails the build
+           the day docs/index.html appears and this is still a span. The check
+           cuts both ways, a real href to a missing file and a pending href to
+           a file that now exists. See proposed-changes.md 3.10. -->
+      <span class="nav-home" data-pending-href="../"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></span>
       <nav class="nav-main" aria-label="Main"><ul>
         <li><a href="./" aria-current="page">Collision Repair</a></li>
       </ul></nav>
@@ -388,10 +390,12 @@
         <!-- Mirrors the BreadcrumbList, same labels and same order. "Home" is
              text rather than a link because docs/index.html does not exist
              yet, and this site never writes a link to a page that has not
-             been built. -->
+             been built. data-pending-href holds the URL it becomes, and the
+             link test fails once that file exists. See proposed-changes.md
+             3.10. -->
         <nav class="crumb" aria-label="Breadcrumb">
           <ol>
-            <li>Home</li>
+            <li data-pending-href="../">Home</li>
             <li>Collision Repair</li>
           </ol>
         </nav>
@@ -504,7 +508,7 @@
           <article class="step">
             <span class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.8h4.5"/></svg></span>
             <h3>The free estimate</h3>
-            <p>It all starts with a free estimate. You can request one online or give us a call at <a href="tel:+12153225350">(215) 322-5350</a>.</p>
+            <p>It all starts with a free estimate. You can <span data-pending-href="../contact-us/">request one online</span> or give us a call at <a href="tel:+12153225350">(215) 322-5350</a>.</p>
           </article>
           <article class="step">
             <span class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6v2M3.4 12a8.6 8.6 0 0 1 17.2 0z"/><path d="M12 12v6.4a2.3 2.3 0 0 0 4.6 0"/></svg></span>
@@ -563,9 +567,9 @@
               <h4>What counts as minor</h4>
               <p>Not every accident is catastrophic. Scratches, scuffs, small dents, bumper damage, and fender benders happen. They're a normal part of driving, especially around the busy neighborhoods of Bucks and Montgomery County.</p>
               <h4>How we fix it</h4>
-              <p>The good news is that minor damage doesn't have to mean weeks in the shop. We specialize in getting you back on the road quickly without cutting corners on quality. For qualifying dents, we offer paintless dent repair (PDR), which removes minor dings without repainting, saving you time and money. Even if PDR isn't the right fit, our technicians can blend repairs seamlessly so there's no trace of the damage.</p>
+              <p>The good news is that minor damage doesn't have to mean weeks in the shop. We specialize in getting you back on the road quickly without cutting corners on quality. For qualifying dents, we offer <span data-pending-href="../paintless-dent-repair/">paintless dent repair (PDR)</span>, which removes minor dings without repainting, saving you time and money. Even if PDR isn't the right fit, our technicians can blend repairs seamlessly so there's no trace of the damage.</p>
               <h4>Why not to wait</h4>
-              <p>Here's the thing many drivers don't realize: even minor damage deserves prompt repair. Small paint chips can lead to rust over time, dents affect resale value, and unaddressed damage can escalate. We recommend getting an estimate even for what seems like minor damage. It's free, and peace of mind is priceless. Call us at <a href="tel:+12153225350">(215) 322-5350</a> to discuss your minor collision damage, or request a free estimate online.</p>
+              <p>Here's the thing many drivers don't realize: even minor damage deserves prompt repair. Small paint chips can lead to rust over time, dents affect resale value, and unaddressed damage can escalate. We recommend getting an estimate even for what seems like minor damage. It's free, and peace of mind is priceless. Call us at <a href="tel:+12153225350">(215) 322-5350</a> to discuss your minor collision damage, or <span data-pending-href="../contact-us/">request a free estimate online</span>.</p>
             </div>
           </article>
 
@@ -646,7 +650,7 @@
         </div>
         <div class="prose">
           <p>Insurance claims can feel overwhelming. Between adjusters, estimates, authorizations, and timelines, there's a lot to juggle. That's where we come in. We work with all major insurance companies. We have direct repair relationships with them, which means we speak their language and know how to navigate their processes. When you bring your vehicle to us, we handle the claims process so you don't have to. We'll communicate directly with your insurance adjuster, provide detailed repair estimates, and keep your insurer updated throughout the process. And here's something important: we'll advocate on your behalf for proper repairs. If we believe your vehicle needs more extensive work than what the adjuster initially approved, we'll make the case and fight for your vehicle to be restored correctly. You have a voice in this process, and we make sure it's heard.</p>
-          <p>Remember, Pennsylvania law gives you the right to choose your own collision repair shop. Your insurer cannot steer you to their preferred vendor or demand you use a specific facility. This is your vehicle and your choice. We're here to make that choice easy. Get a free estimate by calling <a href="tel:+12153225350">(215) 322-5350</a> or requesting one online. We'll walk you through everything.</p>
+          <p>Remember, Pennsylvania law gives you the right to choose your own collision repair shop. Your insurer cannot steer you to their preferred vendor or demand you use a specific facility. This is your vehicle and your choice. We're here to make that choice easy. Get a free estimate by calling <a href="tel:+12153225350">(215) 322-5350</a> or <span data-pending-href="../contact-us/">requesting one online</span>. We'll walk you through everything.</p>
         </div>
       </div>
     </section>
@@ -821,11 +825,11 @@
         </details>
         <details>
           <summary>How much does collision repair cost?<span class="faq-ico" aria-hidden="true"></span></summary>
-          <p>Repair costs vary significantly based on the extent of damage. That&#x27;s why we offer free estimates. There&#x27;s no obligation and no surprises. You can request an estimate online or call us at <a href="tel:+12153225350">(215) 322-5350</a>. If your vehicle is covered by insurance, your policy typically covers most repair costs minus your deductible. We provide transparent pricing with no hidden fees. We&#x27;ll walk you through the estimate and answer any questions about the repair process and costs.</p>
+          <p>Repair costs vary significantly based on the extent of damage. That&#x27;s why we offer free estimates. There&#x27;s no obligation and no surprises. You can <span data-pending-href="../contact-us/">request an estimate online</span> or call us at <a href="tel:+12153225350">(215) 322-5350</a>. If your vehicle is covered by insurance, your policy typically covers most repair costs minus your deductible. We provide transparent pricing with no hidden fees. We&#x27;ll walk you through the estimate and answer any questions about the repair process and costs.</p>
         </details>
         <details>
           <summary>Can I choose my own collision repair shop after an accident in Pennsylvania?<span class="faq-ico" aria-hidden="true"></span></summary>
-          <p>Yes, Pennsylvania law protects your right to choose your own collision shop for repairs. Your insurance company cannot require you to use their preferred facility or steer you elsewhere. This is an important consumer right. When you choose Tri-County Collision, you&#x27;re choosing based on our reputation, expertise, and commitment to quality. Not because your insurer told you to. Learn more about your right to choose by reading our blog post on the topic.</p>
+          <p>Yes, Pennsylvania law protects your right to choose your own collision shop for repairs. Your insurance company cannot require you to use their preferred facility or steer you elsewhere. This is an important consumer right. When you choose Tri-County Collision, you&#x27;re choosing based on our reputation, expertise, and commitment to quality. Not because your insurer told you to. Learn more about your right to choose by reading <span data-pending-href="../your-right-to-choose-a-body-shop/">our blog post on the topic</span>.</p>
         </details>
         <details>
           <summary>What certifications do your technicians have?<span class="faq-ico" aria-hidden="true"></span></summary>
@@ -844,7 +848,7 @@
     <div class="wrap">
       <div class="foot-grid">
         <div>
-          <span class="foot-home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></span>
+          <span class="foot-home" data-pending-href="../"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></span>
           <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
           <p class="foot-nap">
             Tri-County Collision<br>

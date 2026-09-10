@@ -167,35 +167,114 @@ def main():
                     hits.append(os.path.relpath(full, root))
     check("    no file under templates/, docs/ or drafts/ carries it", not hits, hits)
 
-    print("12. Every relative link under docs/ has a file behind it")
-    # WHY. The nav on this site grows as pages land, and the standards say
-    # never link to a page that does not exist. That rule is easy to keep
-    # on the day you write it and impossible to keep across a
-    # thirty-seven page migration, because the tempting move is always to
-    # write the whole nav now and build the pages later. So it is checked
-    # rather than remembered. It also catches the ordinary migration
-    # accident: a stylesheet or a photo whose path is one ../ out.
+    print("12. Links, both directions: nothing dead, nothing forgotten")
+    # WHY, DIRECTION ONE. The nav on this site grows as pages land, and
+    # the standards say never link to a page that does not exist. That
+    # rule is easy to keep on the day you write it and impossible to keep
+    # across a thirty-seven page migration, because the tempting move is
+    # always to write the whole nav now and build the pages later. It also
+    # catches the ordinary migration accident: a stylesheet or a photo
+    # whose path is one ../ out.
+    #
+    # WHY DIRECTION TWO, ADDED 2026-09-10. Enforcing direction one leaves
+    # a residue: elements that SHOULD be links and are not yet. The logo,
+    # the breadcrumb's "Home", the online-estimate phrases, the paintless
+    # dent repair mention, the blog post in FAQ 5. Waiting was the
+    # unmechanized half. Nothing recorded what each was waiting for and
+    # nothing would notice the day the wait ended, so a page could ship
+    # built and unlinked with a span sitting where its link belongs, and
+    # direction one would report a clean site the whole time.
+    #
+    # Each now carries data-pending-href with the URL it becomes, and this
+    # fails the moment that URL resolves to a real file. BOTH DIRECTIONS
+    # RESOLVE THROUGH audit.resolve_local_link, so they cannot disagree
+    # about what "../" means.
     import glob as _glob
-    bad = []
-    for page in sorted(_glob.glob(os.path.join(root, "docs", "**", "*.html"),
-                                  recursive=True)):
-        with open(page, encoding="utf-8", errors="replace") as fh:
-            html_text = fh.read()
-        # Comments are stripped first: a commented-out link is not a link,
-        # and this file's own explanations name paths that do not exist.
-        html_text = re.sub(r"<!--[\s\S]*?-->", " ", html_text)
-        here = os.path.dirname(page)
-        for ref in re.findall(r'(?:href|src)="([^"]+)"', html_text):
-            if ref.startswith(("http://", "https://", "tel:", "mailto:", "#", "data:")):
-                continue
-            target = os.path.normpath(os.path.join(here, ref.split("?")[0].split("#")[0]))
-            if os.path.isdir(target):
-                target = os.path.join(target, "index.html")
-            elif not os.path.splitext(target)[1]:
-                target = os.path.join(target, "index.html")
-            if not os.path.isfile(target):
-                bad.append(f"{os.path.relpath(page, root)} -> {ref}")
-    check("    no relative link points at a missing file", not bad, bad)
+    import tempfile as _tempfile
+
+    def dead_links(under):
+        out = []
+        for page in sorted(_glob.glob(os.path.join(under, "**", "*.html"),
+                                      recursive=True)):
+            with open(page, encoding="utf-8", errors="replace") as fh:
+                html_text = fh.read()
+            # Comments are stripped first: a commented-out link is not a
+            # link, and this file's own explanations name paths that do
+            # not exist.
+            html_text = re.sub(r"<!--[\s\S]*?-->", " ", html_text)
+            # THE ATTRIBUTE BOUNDARY IS load-BEARING. "href" is a
+            # substring of "data-pending-href", so an unanchored pattern
+            # reads every pending link as a dead link, which is exactly
+            # what it did the first time this ran. A pending link is the
+            # opposite of a dead one.
+            for ref in re.findall(r'(?:^|\s)(?:href|src)="([^"]+)"', html_text):
+                if ref.startswith(("http://", "https://", "tel:", "mailto:",
+                                   "#", "data:")):
+                    continue
+                if not os.path.isfile(audit.resolve_local_link(page, ref)):
+                    out.append(f"{os.path.relpath(page, under)} -> {ref}")
+        return out
+
+    check("    no relative link points at a missing file",
+          not dead_links(os.path.join(root, "docs")), dead_links(os.path.join(root, "docs")))
+
+    live = [x for x in audit.find_pending_links(os.path.join(root, "docs")) if x[4]]
+    check("    no data-pending-href points at a page that now exists",
+          not live, [f"{os.path.relpath(pth, root)}:{ln} {href}"
+                     for pth, ln, href, _t, _r in live])
+
+    # The inventory is not empty, and that is the point: if it ever is,
+    # either every referenced page exists or somebody deleted the
+    # attributes instead of converting them.
+    pend = audit.find_pending_links(os.path.join(root, "docs"))
+    check("    and the pending inventory is populated, not quietly emptied",
+          len(pend) > 0, len(pend))
+
+    # --- fixtures, so both directions are proved on inputs we control ---
+    with _tempfile.TemporaryDirectory() as tmp:
+        os.makedirs(os.path.join(tmp, "svc"))
+        with open(os.path.join(tmp, "svc", "index.html"), "w", encoding="utf-8") as fh:
+            fh.write('<a href="../gone/">dead</a>'
+                     '<span data-pending-href="../soon/">waiting</span>'
+                     '<!-- <a href="../commented-out/">not a link</a> -->')
+        check("     DIRECTION 1: an href with no file behind it fails",
+              dead_links(tmp) == ["svc/index.html -> ../gone/"], dead_links(tmp))
+        check("     a link inside a comment is not a link",
+              not any("commented-out" in x for x in dead_links(tmp)), dead_links(tmp))
+        check("     a data-pending-href is NOT read as an href",
+              not any("soon" in x for x in dead_links(tmp)), dead_links(tmp))
+        check("     DIRECTION 2: a pending href stays quiet while unbuilt",
+              [x for x in audit.find_pending_links(tmp) if x[4]] == [])
+
+        # Now build the page it was waiting for. The wait is over, and the
+        # span is still a span.
+        os.makedirs(os.path.join(tmp, "soon"))
+        with open(os.path.join(tmp, "soon", "index.html"), "w", encoding="utf-8") as fh:
+            fh.write("<h1>built</h1>")
+        now_live = [x for x in audit.find_pending_links(tmp) if x[4]]
+        check("     DIRECTION 2: the day its target exists, it FAILS",
+              len(now_live) == 1, now_live)
+        check("     and it reports the file, the line and the href",
+              bool(now_live) and now_live[0][1] == 1
+              and now_live[0][2] == "../soon/", now_live)
+
+        # Converting it is what clears the failure, and the converted link
+        # then has a real file behind it, so direction one stays quiet.
+        pth = os.path.join(tmp, "svc", "index.html")
+        body = open(pth, encoding="utf-8").read().replace(
+            '<span data-pending-href="../soon/">waiting</span>',
+            '<a href="../soon/">waiting</a>')
+        open(pth, "w", encoding="utf-8").write(body)
+        check("     converting it to a real link clears BOTH directions",
+              [x for x in audit.find_pending_links(tmp) if x[4]] == []
+              and dead_links(tmp) == ["svc/index.html -> ../gone/"],
+              dead_links(tmp))
+
+    # Both halves resolve "../" through the same function, which is the
+    # only reason they can be trusted to agree.
+    check("     both directions share one resolver",
+          "audit.resolve_local_link" in open(
+              os.path.abspath(__file__), encoding="utf-8").read())
 
     print("13. The review count, which is the one number that rots on its own")
     # WHY. A review count is true on the day it is read and quietly wrong

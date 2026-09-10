@@ -802,6 +802,84 @@ retiring it from that card retires it entirely and there is no second meaning
 left to keep unique. Swept across `docs/` and `templates/` by its path data
 rather than by eye.
 
+### 3.10 The waiting is mechanized: data-pending-href
+
+**Design note. No copy changed and nothing became a link.**
+
+This site never writes a link to a page that has not been built, and that rule
+is enforced: a relative `href` with no file behind it fails the build.
+Enforcing it leaves a residue, which is every element that *should* be a link
+and is not yet. **The residue was the unmechanized part.** Nothing recorded
+what each element was waiting for, and nothing would notice the day the wait
+ended. The failure mode is a page shipping built and unlinked, with a span
+sitting where its link belongs, while the link test reports a clean site the
+whole time.
+
+Each waiting element now carries `data-pending-href` with the URL it becomes.
+Converting one is renaming the attribute and changing the tag.
+
+#### The inventory, nine elements across four target pages
+
+| Element | Becomes |
+|---|---|
+| Header logo | `../` |
+| Footer logo | `../` |
+| Breadcrumb "Home" | `../` |
+| "paintless dent repair (PDR)", Minor card | `../paintless-dent-repair/` |
+| "request one online", step 01 | `../contact-us/` |
+| "request a free estimate online", Minor card | `../contact-us/` |
+| "requesting one online", insurance section | `../contact-us/` |
+| "request an estimate online", FAQ 4 visible | `../contact-us/` |
+| "our blog post on the topic", FAQ 5 visible | `../your-right-to-choose-a-body-shop/` |
+
+**The blog slug was read, not invented.** `pagemap.md` says the 16 posts keep
+their existing slugs but does not list them, so the live page was read on
+2026-09-10 and it links `/your-right-to-choose-a-body-shop/`. A URL is a fact.
+
+**The two FAQ spans do not break the mirror.** They wrap visible text only; the
+schema strings two hundred lines up are untouched, and the audit still reports
+all 7 questions and answers byte-identical.
+
+#### The test cuts both ways now
+
+```
+direction 1   a real href with no file behind it            FAILS  (as before)
+direction 2   a data-pending-href whose target NOW EXISTS   FAILS  (new)
+```
+
+Direction 2 is the half that was missing. Both resolve through one shared
+function, `audit.resolve_local_link`, so they cannot drift apart by one of them
+deciding `../` means something different.
+
+**Live-fired before committing.** `docs/contact-us/index.html` was created on
+purpose: the test failed, and the audit note flipped the `../contact-us/` row
+to "BUILT, convert these to real links". Then it was deleted and both went
+quiet again.
+
+**One bug this turned up immediately**, and it is the reason the fixtures
+exist: `href` is a substring of `data-pending-href`, so the dead-link pattern
+matched the new attribute and reported all nine pending links as dead links.
+The pattern now requires an attribute boundary, and a harness case holds that
+exact trap.
+
+#### It shows up in the Monday report
+
+`scripts/audit.py` carries the inventory as a **note**, grouped by target, in
+every run. A note rather than a warning, because an unbuilt page is the plan
+working rather than a defect. When a target does exist, the note says so in
+that row and the test is what fails.
+
+#### One thing the inventory turned up, for the owner
+
+The live site's "request an estimate online" links do **not** go to a
+first-party form. They go to `carwise.com`, a third-party photo-estimate tool.
+`pagemap.md` retired `/customer-information/` precisely because it "carried a
+third-party intake form the shop does not own", and it makes `/contact-us/`
+the only intake form on the site. So the pending target above follows the
+spec. **But somebody has to decide whether the Carwise photo-estimate flow is
+being replaced by our form or kept alongside it**, because four sentences point
+at it today and 3.2 already says those sentences come out if no form ships.
+
 ---
 
 ## 4. The claims list

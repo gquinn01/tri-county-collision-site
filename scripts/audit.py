@@ -268,6 +268,25 @@ COMMENT_REVIEW_NUM_RE = re.compile(
     r"\b\d{2,4}\b " + _NEARBY_WORDS + r"reviews?\b"
     r"|\breviews?\b " + _NEARBY_WORDS + r"\d{2,4}\b", re.I)
 
+# --- Links that are waiting on a page that does not exist yet ---------
+# THE SITE NEVER WRITES A LINK TO A PAGE THAT HAS NOT BEEN BUILT. That
+# rule is enforced: a relative href with no file behind it fails the
+# build. The cost of enforcing it is a set of elements that SHOULD be
+# links and are not yet: the logo, the breadcrumb's "Home", the
+# online-estimate phrases, the paintless dent repair mention, the blog
+# post in FAQ 5.
+#
+# Waiting was the unmechanized part. Nothing recorded what each one was
+# waiting for, and nothing would notice the day the wait ended, so the
+# failure mode is a page that ships built and unlinked with a span
+# sitting where its link should be.
+#
+# So each carries data-pending-href with the URL it becomes. The test
+# then cuts BOTH ways: a real href to a missing file fails, and a
+# pending href to a file that now EXISTS fails until it is converted.
+# The second direction is the one that was missing.
+PENDING_HREF_RE = re.compile(r'data-pending-href="([^"]+)"')
+
 # The site's own base URL, used to work out what URL a local file will
 # serve at. That is how the two checks below know whether a page is in
 # sitemap.xml under its OWN address rather than under some other page's.
@@ -863,6 +882,92 @@ def check_comment_convention_local(warns: list, notes: list):
         "so a number quoted in one can go stale with nothing to catch it, which is exactly "
         "what happened on 2026-09-10. Rewrite it to name `REVIEW_COUNT` instead of quoting "
         "a value. This is a warning and it will never fail a build.")
+
+
+def resolve_local_link(page_path: str, ref: str) -> str:
+    """The file a relative reference points at, from the page holding it.
+    A directory and an extensionless path both mean that folder's
+    index.html, which is how this site's URLs work.
+
+    SHARED ON PURPOSE. audit.py's pending-link inventory and
+    test-audit-checks.py's no-dead-links test both call this, so the two
+    directions of the same rule cannot drift apart by one resolving
+    "../" differently from the other."""
+    target = os.path.normpath(os.path.join(os.path.dirname(page_path),
+                                           ref.split("?")[0].split("#")[0]))
+    if os.path.isdir(target) or not os.path.splitext(target)[1]:
+        target = os.path.join(target, "index.html")
+    return target
+
+
+def find_pending_links(root: str = SITE_DIR) -> list:
+    """Every data-pending-href under docs/, as
+    (path, line, href, target, ready). `ready` is True when the target
+    file now exists, which means the wait is over and the element should
+    have become a real link."""
+    out = []
+    for dirpath, _dirs, files in os.walk(root):
+        for name in sorted(files):
+            if not name.endswith(".html"):
+                continue
+            path = os.path.join(dirpath, name)
+            try:
+                with open(path, encoding="utf-8") as f:
+                    raw = f.read()
+            except OSError:
+                continue
+            for m in PENDING_HREF_RE.finditer(raw):
+                href = m.group(1)
+                target = resolve_local_link(path, href)
+                out.append((path, raw.count("\n", 0, m.start()) + 1, href,
+                            target, os.path.isfile(target)))
+    return out
+
+
+def check_pending_links_local(warns: list, notes: list):
+    """THE INVENTORY OF WHAT IS WAITING, in every Monday report.
+
+    A note, not a warning, while everything is genuinely still waiting:
+    an unbuilt page is the plan working, not a defect. The gate is
+    test-audit-checks.py, which fails the build the day a target exists
+    and its element is still a span.
+    """
+    pend = find_pending_links()
+    if not pend:
+        notes.append(
+            "**Nothing is waiting to become a link.** No element under "
+            f"`{SITE_DIR}/` carries `data-pending-href`, so either every page "
+            "this site references exists, or nothing references one that does not.")
+        return
+
+    ready = [x for x in pend if x[4]]
+    by_href = {}
+    for _path, _line, href, _target, is_ready in pend:
+        by_href.setdefault(href, {"n": 0, "ready": is_ready})
+        by_href[href]["n"] += 1
+
+    lines = []
+    for href in sorted(by_href):
+        info = by_href[href]
+        mark = " **<- BUILT, convert these to real links**" if info["ready"] else ""
+        lines.append(f"  - `{href}`, {info['n']} element"
+                     f"{'' if info['n'] == 1 else 's'}{mark}")
+    body = "\n".join(lines)
+
+    head = (f"**{len(pend)} element{'' if len(pend) == 1 else 's'} waiting to become "
+            f"link{'' if len(pend) == 1 else 's'}**, across "
+            f"{len({x[3] for x in pend})} target page"
+            f"{'' if len({x[3] for x in pend}) == 1 else 's'}:")
+    why = ("\n\nEach carries `data-pending-href` with the URL it becomes. They are "
+           "not links yet because this site never writes a link to a page that has "
+           "not been built, and each target above is still unbuilt. This is the plan "
+           "working, not a defect. `scripts/test-audit-checks.py` fails the build "
+           "from the day a target exists, so none of them can be forgotten.")
+    if ready:
+        why = ("\n\n**" + str(len(ready)) + " of them are ready now**: the target file "
+               "exists, so the element should already be a real link. The link test is "
+               "failing on this and will keep failing until it is converted." + why)
+    notes.append(head + "\n" + body + why)
 
 
 def check_review_count_local(passes: list, warns: list, fails: list,
@@ -1466,6 +1571,7 @@ def main():
         check_staging_local(site_passes, site_warns, site_notes)
         check_review_count_local(site_passes, site_warns, site_fails, site_notes)
         check_comment_convention_local(site_warns, site_notes)
+        check_pending_links_local(site_warns, site_notes)
     if expand_note:
         site_notes.append(expand_note)
 
