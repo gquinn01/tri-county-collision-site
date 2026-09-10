@@ -300,6 +300,32 @@ rule's width that the stylesheet animates.
 **8. Arrival motion, adopted 2026-09-10.** The odometer and the lane, both
 from the same sampler.
 
+**9. Band art, when present, depicts that band's own claim.** Adopted
+2026-09-10. **Meaning-matched, one solid colour, low opacity, never generic
+texture.** A band that cannot name what its drawing is *of* does not get a
+drawing.
+
+Two on this page, and each wears the drawing of its own claim: the band that
+tells a reader what to do at the scene carries **the estimator's car profile**,
+the side elevation off an intake damage-assessment sheet, because that visit
+becomes that sheet. The band that claims factory certification and frame work
+carries **the frame-datum drawing**, the overhead measuring sheet with the
+diagonal cross-measures that prove a unibody is square.
+
+The constraints: paper strokes at **7 percent**, inline SVG so there is no
+request and nothing to fail to load, `aria-hidden` because the band says in
+words everything the drawing says, no gradients, no glows, no fill, one
+colour. **Sparse to absent under the text measure at desktop** — both are
+cropped hard at a band edge so the copy runs over ground, not over line work.
+No colour is typed into the markup; `stroke` lives in the stylesheet the same
+way the icon set's does.
+
+**Why the rule is worth keeping.** Background art is the easiest place on a
+site to spend bytes on nothing. A blur, a mesh, a scatter of dots: each reads
+as "a designer was here" and none says anything a reader could check. A
+drawing of the shop's own paperwork says what the copy says, quietly, and a
+reader who knows the trade recognises it.
+
 ---
 
 ## The motion amendment, 2026-09-10

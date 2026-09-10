@@ -58,6 +58,12 @@
       the motion amendment below for what that is allowed to mean and
       what it is not.
 
+   8. BAND ART, WHEN PRESENT, DEPICTS THAT BAND'S OWN CLAIM. Adopted
+      2026-09-10. Meaning-matched, one solid colour, low opacity, never
+      generic texture. A band that cannot name what its drawing is OF
+      does not get a drawing. See the BAND ART section for the two on
+      this page and for the constraints.
+
    The palette table, its provenance and its measured ratios follow. Read all
    of it before writing a hex, a font-family or a hero.
    ---------------------------------------------------------------------------
@@ -710,6 +716,67 @@ section { padding: var(--pad) 0; }
   .odo-strip { transform: none; }
   .lane-dash { transform: scaleY(1); }
   #faq details[open] > p { animation: none; }
+}
+
+/* ===========================================================================
+   BAND ART. ADOPTED 2026-09-10.
+
+   THE PRINCIPLE, AND IT IS THE WHOLE RULE: BAND ART, WHEN PRESENT,
+   DEPICTS THAT BAND'S OWN CLAIM. Meaning-matched, one solid colour, low
+   opacity, never generic texture. A band that cannot name what its
+   drawing is of does not get a drawing.
+
+   The two on this page:
+
+     .bandart-a  the estimator's car profile, the side elevation off an
+                 intake damage-assessment sheet, behind the band that
+                 tells a reader what to do at the scene. That visit
+                 becomes this sheet.
+     .bandart-b  the frame-datum drawing, the overhead measuring sheet a
+                 structural tech works from, behind the band that claims
+                 factory certification and frame work. That claim's own
+                 drawing.
+
+   WHY THE RULE IS WORTH KEEPING. Background art is the easiest place on
+   a site to spend bytes on nothing. A blur, a mesh, a scatter of dots:
+   all of them read as "a designer was here" and none of them says
+   anything a reader could check. A drawing of the shop's own paperwork
+   says the same thing the copy does, quietly, and a reader who knows the
+   trade recognises it.
+
+   THE CONSTRAINTS. Paper strokes at 7 percent. Inline SVG, so there is
+   no request and nothing to fail to load. aria-hidden, because the band
+   says in words everything the drawing says. No gradients, no glows, no
+   fill, one colour. AND IT IS SPARSE TO ABSENT UNDER THE TEXT MEASURE at
+   desktop: both are cropped hard at a band edge and the copy runs over
+   ground, not over line work.
+
+   NO COLOUR IS TYPED INTO THE MARKUP. stroke, width and caps live here,
+   the same way .tile svg carries the icon set's, so the palette stays in
+   one place and the drawings cost fewer bytes for it.
+   =========================================================================== */
+.field-ox { position: relative; overflow: hidden; }
+.field-ox > .wrap { position: relative; z-index: 1; }
+.bandart {
+  position: absolute; pointer-events: none; opacity: .07;
+  fill: none; stroke: var(--paper); stroke-width: 2.4;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+/* A rides the trailing edge, below the measure. */
+.bandart-a { right: -8%; bottom: -6%; width: 78%; height: auto; }
+/* B is cropped top and bottom at the leading edge. */
+.bandart-b { left: -4%; top: -22%; height: 144%; width: auto; }
+
+/* ON A PHONE A IS RE-CROPPED RATHER THAN SHRUNK. At 390 the first
+   version scaled the whole car down against the band's bottom edge and
+   what survived was a wheel arch: present in the byte count, absent to
+   the eye. So it is scaled UP and cropped harder instead, which keeps
+   the readable middle, the door seams, the glass line and both arches,
+   and throws away the bumpers nobody would recognise anyway. Cropping
+   beats shrinking when the drawing is line work. */
+@media (max-width: 899px) {
+  .bandart-a { right: -30%; bottom: 4%; width: 168%; }
+  .bandart-b { left: -26%; top: -10%; height: 120%; }
 }
 
 /* ---------- Breadcrumb ---------- */
