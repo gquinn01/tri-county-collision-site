@@ -197,6 +197,119 @@ def main():
                 bad.append(f"{os.path.relpath(page, root)} -> {ref}")
     check("    no relative link points at a missing file", not bad, bad)
 
+    print("13. The review count, which is the one number that rots on its own")
+    # WHY. A review count is true on the day it is read and quietly wrong
+    # every week after, and nothing on the page changes when it goes
+    # wrong. On 2026-09-10 the live site's Trustindex widget said 231 and
+    # the shop's own Google Business Profile said 274, in the same week.
+    # Nobody would have noticed by eye. So both halves are checked: that
+    # every visible mention agrees, and that the recorded reading is not
+    # stale. These cases are the ones that must never score a pass.
+    import tempfile as _tempfile
+    from datetime import date as _date, timedelta as _timedelta
+
+    with _tempfile.TemporaryDirectory() as tmp:
+        # The real markup shape: the numeral and the words live in two
+        # separate spans, so anything matching raw HTML would miss it.
+        with open(os.path.join(tmp, "index.html"), "w", encoding="utf-8") as fh:
+            fh.write('<!-- It was 231 on 2026-09-05, off the widget. -->\n'
+                     '<span class="stat-n">274</span>\n'
+                     '<span class="stat-l">Google reviews</span>\n'
+                     '<script>var old = "199 reviews";</script>')
+        with open(os.path.join(tmp, "llms.txt"), "w", encoding="utf-8") as fh:
+            fh.write("Rated 4.9 across 274 Google reviews.\n")
+
+        found = audit.find_review_counts(tmp)
+        nums = sorted(n for _p, n, _s in found)
+        check("     the numeral and the words in separate spans are still read as one count",
+              274 in nums, nums)
+        check("     a comment recording the OLD number is not counted as a claim",
+              231 not in nums, nums)
+        check("     a number inside <script> is not counted either",
+              199 not in nums, nums)
+        check("     llms.txt is scanned, not just the pages",
+              nums == [274, 274], nums)
+
+    def run_review(hits, counted_on, today):
+        """One call of the check against fixed inputs. find_review_counts
+        is swapped out so the cases are the fixtures, not the repo."""
+        real_find, real_date = audit.find_review_counts, audit.REVIEW_COUNTED_ON
+        audit.find_review_counts = lambda root=None: hits
+        audit.REVIEW_COUNTED_ON = counted_on
+        try:
+            passes, warns, fails, notes = [], [], [], []
+            audit.check_review_count_local(passes, warns, fails, notes, today=today)
+            return warns, fails, notes
+        finally:
+            audit.find_review_counts, audit.REVIEW_COUNTED_ON = real_find, real_date
+
+    TODAY = _date(2026, 9, 10)
+    N = audit.REVIEW_COUNT
+    agree = [("docs/a/index.html", N, "274 Google reviews")]
+    disagree = agree + [("docs/b/index.html", 231, "231 Google reviews")]
+
+    warns, fails, notes = run_review(agree, "2026-09-10", TODAY)
+    check("     agreement on the day it was counted is clean", not fails and not warns,
+          fails + warns)
+    check("     and it reports as a note rather than a pass",
+          len(notes) == 1, notes)
+
+    warns, fails, notes = run_review(disagree, "2026-09-10", TODAY)
+    check("     TWO PAGES THAT DISAGREE ARE A CRITICAL", len(fails) == 1, fails)
+    check("     and the critical names both numbers",
+          bool(fails) and "231" in fails[0] and "274" in fails[0], fails)
+    check("     and names the files, so it can be fixed without a search",
+          bool(fails) and "docs/b/index.html" in fails[0], fails)
+
+    # The recorded constant counts as one of the instances. A single page
+    # that drifts from it has nothing else on the site to disagree with,
+    # and that is exactly when a wrong number survives longest.
+    lone = [("docs/a/index.html", 231, "231 Google reviews")]
+    warns, fails, notes = run_review(lone, "2026-09-10", TODAY)
+    check("     ONE page disagreeing with REVIEW_COUNT is a critical too",
+          len(fails) == 1, fails)
+
+    warns, fails, notes = run_review(agree, str(TODAY - _timedelta(days=35)), TODAY)
+    check("     exactly 35 days old is not yet stale", not warns, warns)
+    warns, fails, notes = run_review(agree, str(TODAY - _timedelta(days=36)), TODAY)
+    check("     36 days old is a WARNING, not a critical",
+          len(warns) == 1 and not fails, warns + fails)
+    check("     and the warning says how old it is",
+          bool(warns) and "36 days old" in warns[0], warns)
+
+    warns, fails, notes = run_review(agree, str(TODAY + _timedelta(days=1)), TODAY)
+    check("     a counted-on date in the future is caught", len(warns) == 1, warns)
+
+    warns, fails, notes = run_review([], "2026-09-10", TODAY)
+    check("     no mention anywhere is a note, not a failure",
+          not fails and not warns and len(notes) == 1, fails + warns + notes)
+
+    # The whole point of a critical is that --strict stops the build.
+    src = open(os.path.join(root, "scripts", "audit.py"), encoding="utf-8").read()
+    check("     --strict actually exits 1 on a site-wide critical",
+          "opts.strict and (below or site_fails)" in src)
+
+    print("14. No review or rating markup anywhere, which is the other half")
+    # WHY. The count is published as visible text ON PURPOSE. Google's
+    # guidelines rule out self-serving review markup on a business's own
+    # site, and the standards allow no review or rating markup unless the
+    # data is real and the owner has decided to publish it. The number
+    # being true is not the same as the markup being allowed.
+    marked = []
+    for dirpath, _dirs, files in os.walk(os.path.join(root, "docs")):
+        for name in sorted(files):
+            if not name.endswith(".html"):
+                continue
+            full = os.path.join(dirpath, name)
+            with open(full, encoding="utf-8", errors="replace") as fh:
+                body = fh.read()
+            for script in re.findall(r"(?is)<script[^>]*ld\+json[^>]*>(.*?)</script>", body):
+                if re.search(r'"(aggregateRating|ratingValue|reviewCount|reviewRating)"',
+                             script):
+                    marked.append(os.path.relpath(full, root))
+    check("     no page carries aggregateRating, ratingValue or reviewCount in its schema",
+          not marked, marked)
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} check(s) failed:")

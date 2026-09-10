@@ -34,6 +34,8 @@ import os
 import re
 import sys
 import urllib.request
+from datetime import date
+from html import unescape
 from html.parser import HTMLParser
 from urllib.parse import urljoin, urlparse
 
@@ -188,6 +190,44 @@ NAP_STREET_CANON_RE = re.compile(re.escape(NAP_STREET_CANON) + r"(?![.\w])")
 # tags come off will fail every page, which is the correct alarm and not a
 # bug. Record the date here and in CLAUDE.md when it happens.
 STAGING = True
+
+# --- The review count, and the day it was counted ---------------------
+# A REVIEW COUNT IS THE ONE NUMBER ON THIS SITE THAT ROTS ON ITS OWN. It
+# is true on the day it is read and quietly wrong every week after, and
+# nothing on the page changes when it goes wrong. So it is recorded here
+# with the day it was counted, and the check below enforces both halves.
+#
+# 274 reviews and 4.9 stars, read off the shop's own GOOGLE BUSINESS
+# PROFILE on 2026-09-10 by Greg Quinn of Corcoran Communications, the
+# vendor. The standards make the client-owner the fact-checker of record,
+# so this is the same deliberate vendor-confirmation exception the NAP
+# block carries, recorded as one. OWNER SIGN-OFF IS STILL OUTSTANDING.
+#
+# It replaces 231 and "Rated Excellent", which came off the live site's
+# Trustindex widget on 2026-09-05. THE WIDGET AND THE PROFILE DISAGREED
+# BY 43 REVIEWS IN THE SAME WEEK. See proposed-changes.md 4.4.
+#
+# NO Review OR AggregateRating MARKUP GOES WITH IT, ever. Google's own
+# guidelines rule out self-serving review markup on a business's own
+# site, and the standards allow no review or rating markup unless the
+# data is real and the owner has decided to publish it. This number
+# lives in visible text and nowhere else.
+REVIEW_COUNT = 274
+REVIEW_RATING = "4.9"
+REVIEW_COUNTED_ON = "2026-09-10"
+
+# Past this many days the count is old enough that publishing it without
+# re-reading the profile is a guess. A WARNING, not a critical: the number
+# is not wrong yet, it is just no longer known to be right.
+REVIEW_STALE_DAYS = 35
+
+# "274 Google reviews", "based on 274 reviews", "274 reviews". Matched
+# against VISIBLE TEXT, after comments and scripts are stripped, so a
+# comment recording what the number used to be is history rather than a
+# contradiction. The trade is deliberate: a stale number in a comment
+# misleads the next person, but failing a build over a changelog line
+# would teach everyone to stop writing them.
+REVIEW_COUNT_RE = re.compile(r"\b(\d[\d,]{0,6})\s+(?:google\s+)?reviews?\b", re.I)
 
 # The site's own base URL, used to work out what URL a local file will
 # serve at. That is how the two checks below know whether a page is in
@@ -696,6 +736,115 @@ def check_staging_local(passes: list, warns: list, notes: list):
                      "the open one that names the sitemap and blocks no AI crawler.")
     else:
         passes.append("`docs/robots.txt` is open, so crawlers and AI agents can read the site.")
+
+
+def visible_text(html: str) -> str:
+    """What a reader actually sees: comments, scripts and styles removed,
+    tags stripped, entities decoded, whitespace collapsed. Comments come
+    out FIRST and on purpose, so an explanatory comment that records an
+    old number is not read as the page claiming it."""
+    s = re.sub(r"(?s)<!--.*?-->", " ", html)
+    s = re.sub(r"(?is)<(script|style)\b[^>]*>.*?</\1\s*>", " ", s)
+    s = re.sub(r"(?s)<[^>]+>", " ", s)
+    return re.sub(r"\s+", " ", unescape(s)).strip()
+
+
+def find_review_counts(root: str = SITE_DIR) -> list:
+    """Every visible review-count mention under docs/, as
+    (path, count, snippet). Walks .html and .txt, because llms.txt is
+    read by the same assistants the pages are written for and a number
+    that disagrees there disagrees just as loudly."""
+    hits = []
+    for dirpath, _dirs, files in os.walk(root):
+        for name in sorted(files):
+            if not name.endswith((".html", ".txt")):
+                continue
+            path = os.path.join(dirpath, name)
+            try:
+                with open(path, encoding="utf-8") as f:
+                    raw = f.read()
+            except OSError:
+                continue
+            text = visible_text(raw) if name.endswith(".html") else raw
+            for m in REVIEW_COUNT_RE.finditer(text):
+                hits.append((path, int(m.group(1).replace(",", "")),
+                             text[max(0, m.start() - 40):m.end() + 24].strip()))
+    return hits
+
+
+def check_review_count_local(passes: list, warns: list, fails: list,
+                             notes: list, today: date = None):
+    """THE REVIEW COUNT, ENFORCED RATHER THAN REMEMBERED.
+
+    Two failures, and they are different in kind:
+
+    DISAGREEMENT IS A CRITICAL. Two different review counts on one site
+    is one of them being wrong, and a visitor cannot tell which. The
+    recorded REVIEW_COUNT counts as one of the instances, so a page that
+    drifts from the constant fails even when it is the only page saying
+    anything.
+
+    AGE IS A WARNING. Past REVIEW_STALE_DAYS the number is not known to be
+    wrong, it is only no longer known to be right, and the fix is to read
+    the profile again rather than to edit the page.
+
+    Local runs only. It reads files under docs/, and on a live run the
+    target is the shop's WordPress site, where these files are not what
+    is being audited.
+    """
+    today = today or date.today()
+    hits = find_review_counts()
+
+    counts = {}
+    for path, n, snip in hits:
+        counts.setdefault(n, []).append((path, snip))
+
+    try:
+        counted_on = date.fromisoformat(REVIEW_COUNTED_ON)
+    except ValueError:
+        fails.append(f"**`REVIEW_COUNTED_ON` is not a date** (`{REVIEW_COUNTED_ON}`). "
+                     "It has to be ISO `YYYY-MM-DD`, because the staleness check "
+                     "subtracts it from today.")
+        return
+
+    seen = dict(counts)
+    seen.setdefault(REVIEW_COUNT, []).append(("scripts/audit.py", f"REVIEW_COUNT = {REVIEW_COUNT}"))
+    distinct = sorted(seen)
+
+    if len(distinct) > 1:
+        where = "; ".join(
+            f"**{n}** in " + ", ".join(sorted({f"`{pth}`" for pth, _ in seen[n]}))
+            for n in distinct)
+        fails.append(
+            f"**The site states {len(distinct)} different review counts: {where}.** "
+            "One business has one review count, and a visitor who spots two has no way "
+            "to tell which is the real one. Read the Google Business Profile, then "
+            "update `REVIEW_COUNT`, `REVIEW_COUNTED_ON` and every page in one commit.")
+    elif not hits:
+        notes.append(
+            f"**No page states a review count.** `REVIEW_COUNT` is {REVIEW_COUNT}, recorded "
+            f"{REVIEW_COUNTED_ON}, and nothing publishes it yet. Nothing to disagree.")
+
+    age = (today - counted_on).days
+    if age < 0:
+        warns.append(
+            f"**`REVIEW_COUNTED_ON` is in the future** ({REVIEW_COUNTED_ON}, {-age} day"
+            f"{'' if -age == 1 else 's'} from now). One of the date and the clock is wrong.")
+    elif age > REVIEW_STALE_DAYS:
+        warns.append(
+            f"**The review count is {age} days old.** {REVIEW_COUNT} reviews and "
+            f"{REVIEW_RATING} stars were counted on {REVIEW_COUNTED_ON}, and anything past "
+            f"{REVIEW_STALE_DAYS} days is a guess rather than a reading. Open the Google "
+            "Business Profile, read the current count, and update the constants and the "
+            "pages together. This is a warning, not a critical: the number is not known "
+            "to be wrong, it is no longer known to be right.")
+    elif hits:
+        notes.append(
+            f"**Review count agrees everywhere and is {age} day{'' if age == 1 else 's'} old.** "
+            f"{REVIEW_COUNT} reviews and {REVIEW_RATING} stars, counted {REVIEW_COUNTED_ON}, "
+            f"stated identically in {len(hits)} place{'' if len(hits) == 1 else 's'} under "
+            f"`{SITE_DIR}/`. Visible text only: there is no review or rating markup on this "
+            "site, deliberately.")
 
 
 def audit(source: str, coverage: dict = None):
@@ -1217,17 +1366,18 @@ def main():
                         "score": score_of(len(passes), len(warns), len(fails))})
 
     # Site-wide AEO checks run once, against the live site only.
-    site_passes, site_warns, site_notes = [], [], []
+    site_passes, site_warns, site_notes, site_fails = [], [], [], []
     if live:
         check_ai_access(live[0], site_warns, site_passes, site_notes)
     else:
         check_staging_local(site_passes, site_warns, site_notes)
+        check_review_count_local(site_passes, site_warns, site_fails, site_notes)
     if expand_note:
         site_notes.append(expand_note)
 
     total_pass = sum(len(r["passes"]) for r in results) + len(site_passes)
     total_warn = sum(len(r["warns"]) for r in results) + len(site_warns)
-    total_fail = sum(len(r["fails"]) for r in results)
+    total_fail = sum(len(r["fails"]) for r in results) + len(site_fails)
     site_score = score_of(total_pass, total_warn, total_fail)
     perfect = [r for r in results if r["score"] == 100]
 
@@ -1261,8 +1411,9 @@ def main():
                      f"{len(r['warns'])} | {len(r['fails'])} |")
     lines.append("")
 
-    if site_passes or site_warns or site_notes:
+    if site_passes or site_warns or site_notes or site_fails:
         lines += ["## Site-wide", ""]
+        lines += section("🔴 Critical — fix these first", site_fails)
         lines += section("🟡 Warnings — worth fixing", site_warns)
         lines += section("🟢 Passing", site_passes)
         lines += section("ℹ️ Notes (optional improvements)", site_notes)
@@ -1284,7 +1435,12 @@ def main():
     if below:
         print(f"{len(below)} page(s) under 100/100: "
               + ", ".join(r["source"] for r in below), file=sys.stderr)
-    return 1 if (opts.strict and below) else 0
+    # A SITE-WIDE CRITICAL HAS TO TRIP --strict TOO. Before the review-count
+    # check there were none, so strict only ever read per-page scores, and a
+    # site-wide critical would have printed a red heading and exited 0.
+    if site_fails:
+        print(f"{len(site_fails)} site-wide critical(s).", file=sys.stderr)
+    return 1 if (opts.strict and (below or site_fails)) else 0
 
 
 if __name__ == "__main__":

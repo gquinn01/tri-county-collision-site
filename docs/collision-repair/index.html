@@ -438,11 +438,23 @@
          page nobody can reason about later. On a phone the stats stack in
          source order, so leading with the warranty is what puts the single
          most load-bearing claim on the page on screen two.
-         THE REVIEW COUNT CARRIES THE DATE IT WAS TRUE. It was 231 on
-         2026-09-05, read off the live site's Trustindex widget, and it is
-         quietly wrong every week after that unless it is dated or made live.
-         See proposed-changes.md 4.4: dating it is the interim answer, not the
-         final one. NO Review OR AggregateRating MARKUP anywhere in the schema. -->
+         THE REVIEW COUNT CARRIES THE DAY IT WAS COUNTED. 274 reviews and
+         4.9 stars, read off the shop's own Google Business Profile on
+         2026-09-10. It replaces 231 and "Rated Excellent", which came off the
+         live site's Trustindex widget on 2026-09-05. THE WIDGET AND THE
+         PROFILE DISAGREED BY 43 REVIEWS IN THE SAME WEEK, which is the whole
+         argument for not carrying the widget through cutover: a third-party
+         script that is wrong about the shop's own numbers is worse than a
+         dated line of text that is right. See proposed-changes.md 4.4.
+         THE NUMBER IS ENFORCED NOW, not remembered. scripts/audit.py holds
+         REVIEW_COUNT and REVIEW_COUNTED_ON, reads every visible review-count
+         mention under docs/, fails when any two disagree, and warns once the
+         count is more than 35 days old. Change it there and here in the same
+         commit or the audit will say so.
+         NO Review OR AggregateRating MARKUP anywhere in the schema. Google's
+         own guidelines rule out self-serving review markup on a business's
+         own site, and the standards allow none unless the data is real and
+         the owner has decided to publish it. This is visible text. -->
     <section class="statband" id="proof" aria-label="Warranty, certifications and reviews">
       <div class="wrap">
         <div class="stats">
@@ -457,9 +469,9 @@
             <span class="stat-s">INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep.</span>
           </div>
           <div class="stat">
-            <span class="stat-n">231</span>
+            <span class="stat-n">274</span>
             <span class="stat-l">Google reviews</span>
-            <span class="stat-s">Rated Excellent, as of September 2026.</span>
+            <span class="stat-s">4.9 stars on Google, counted on September 10, 2026.</span>
           </div>
         </div>
       </div>

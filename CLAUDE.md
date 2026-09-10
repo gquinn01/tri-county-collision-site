@@ -141,6 +141,29 @@ invisible by eye.
   in writing, and check them character for character against the Google
   Business Profile.
 
+### The review count is a fact with a clock on it
+
+**274 Google reviews, 4.9 stars, read off the shop's own Google Business
+Profile on 2026-09-10.** Vendor-confirmed, like the NAP, and so the same
+deliberate exception: **owner sign-off is outstanding**.
+
+It replaced 231 and "Rated Excellent", which came off the live site's
+Trustindex widget on 2026-09-05. **The widget and the profile disagreed by
+43 reviews in the same week**, and a shop this size does not take 43 reviews
+in five days, so the widget was wrong rather than behind. That is the
+argument for not carrying it through cutover, and it is recorded in
+`proposed-changes.md` 4.4.
+
+`scripts/audit.py` now holds `REVIEW_COUNT`, `REVIEW_RATING` and
+`REVIEW_COUNTED_ON`, reads every visible review-count mention under `docs/`,
+**fails as a critical when any two disagree**, and **warns once the reading is
+more than 35 days old**. `--strict` exits 1 on a site-wide critical, which it
+did not do before, because there had never been one to raise.
+
+**No rating or review markup, ever**, on the strength of this or anything
+else. Google's guidelines rule out self-serving review markup on a business's
+own site. Visible text only.
+
 The proof line deserves its own warning. Years in business, I-CAR or ASE
 certifications, manufacturer approvals, insurer relationships, warranty
 terms: every one of those is checkable, and every one of them ships only
@@ -277,9 +300,9 @@ dark. That archive is the last copy of it that will ever exist.
 |---|---|
 | `pagemap.md` | **The build spec.** The page map of record. |
 | `.claude/skills/corcoran-site-standards/` | The law. Unedited copy of the firm's standards. |
-| `scripts/audit.py` | The SEO and AEO scanner. Scores every page separately. Its NAP block is the one place the canonical name, address and phone live. |
+| `scripts/audit.py` | The SEO and AEO scanner. Scores every page separately. Its NAP block is the one place the canonical name, address and phone live, and its review block is the one place the review count, the rating and the day they were counted live. |
 | `scripts/test-sitemap-expansion.py` | Tests the sitemap expansion. Run it before touching that code. |
-| `scripts/test-audit-checks.py` | Smoke tests for the NAP checks: the address spelling, the CallRail number, the one email. Written after the address check was caught scoring a wrong address as a pass. |
+| `scripts/test-audit-checks.py` | Smoke tests for the checks that must never drift back: the address spelling, the CallRail number, the one email, and the review count. Written after the address check was caught scoring a wrong address as a pass. |
 | `proposed-changes.md` | Every text change made during the migration, as before/after pairs, plus the claims the pages carry. Awaiting the owner's fact-check. |
 | `scripts/build-sitemap.py` | Generates `docs/sitemap.xml` from the pages themselves. `lastmod` comes from each page's own schema `dateModified`, never from a file mtime and never from today. |
 | `scripts/stamp-assets.py` | Cache-busting stamps for `docs/assets/site.css` and `site.js`. |

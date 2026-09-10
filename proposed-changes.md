@@ -235,7 +235,7 @@ stats and their words are unchanged; the warranty now leads.
 | Stat | Label | Supporting line |
 |---|---|---|
 | **12** | Vehicle brands, factory-certified | INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep. |
-| **231** | Google reviews | **Rated Excellent, as of September 2026.** |
+| **274** | Google reviews | **4.9 stars on Google, counted on September 10, 2026.** |
 | **Lifetime** | Warranty on all repair work | If anything isn't right, we'll make it right. |
 
 **Three, not four, and the third is a word.** There is no fourth honest number
@@ -351,10 +351,11 @@ the stat band reorder gains ground on its own, the chip swap gives more back.
 
 53px of that 221 is the chip row itself, see below.
 
-### 1.20 The stat band is reordered: Lifetime, 12, 231
+### 1.20 The stat band is reordered: Lifetime, 12, 274
 
-Supersedes the order in 1.16. Same three stats, same words, same date on the
-review count. **Reordered in the DOM**, so the markup, the screen reader, the
+Supersedes the order in 1.16. Same three stats, same words. The review count
+in the table below was refreshed on 2026-09-10, separately from the reorder;
+see 4.4. **Reordered in the DOM**, so the markup, the screen reader, the
 tab order and every viewport agree on the sequence. No `order`, no
 `row-reverse`, nothing that would make what a sighted reader sees disagree with
 what the document says.
@@ -363,7 +364,7 @@ what the document says.
 |---|---|---|
 | **Lifetime** | Warranty on all repair work | If anything isn't right, we'll make it right. |
 | **12** | Vehicle brands, factory-certified | INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep. |
-| **231** | Google reviews | **Rated Excellent, as of September 2026.** |
+| **274** | Google reviews | **4.9 stars on Google, counted on September 10, 2026.** |
 
 On a phone the three stack in source order, so the warranty is the first thing
 under the hero. On desktop they are three columns and the warranty is the left
@@ -417,7 +418,7 @@ and each is reversible.
 | `hasOfferCatalog` with two `Offer` nodes | Same rule. The two services it lists, minor and major collision repair, are on the page as prose instead. |
 | The blog feed, ten posts with excerpts | It belongs on `/blog/`, per the page map. |
 | ~~The testimonials carousel~~ | **Now carried**, as of 2026-09-06. The four quotes are migrated verbatim as quote cards on an ink band, moved up the page to sit after the insurance section. The carousel itself is not: they are four cards, all visible, no rotation. See 1.17 and 4.8. |
-| The Trustindex review widget | A third-party script. The rating it displays is carried as one line of visible text instead. See 4.4. |
+| The Trustindex review widget | A third-party script, and **it was wrong**: it showed 231 reviews on 2026-09-05 where the shop's own Google Business Profile showed 274 on 2026-09-10. The count is carried as one line of dated visible text instead, read from the profile. See 4.4. |
 | The link on "paintless dent repair (PDR)" | `/paintless-dent-repair/` has not been built. This site never writes a link to a page that does not exist, and `scripts/test-audit-checks.py` fails the build on one. It goes back when the page lands. |
 | The link in FAQ 5 to the anti-steering blog post | Same reason. The sentence stays; only the link waits. |
 | The rollover image pair | The live page's "Major Collision Repair" photo is a hover swap between two files. One image, shown always. |
@@ -631,25 +632,78 @@ but "do you actually do this":
 Both are in FAQ 1 and both are the kind of number a customer will hold the shop
 to.
 
-### 4.4 The rating, which is a point-in-time number
+### 4.4 The rating and the review count, refreshed 2026-09-10
 
-The hero badge reads **"Excellent, based on 231 reviews"**, migrated from the
-live page's Trustindex widget, which reads Google.
+**Current, and on the page now:**
 
-Two decisions:
+| | |
+|---|---|
+| **Before** | **231** Google reviews — "Rated Excellent, as of September 2026." |
+| **After** | **274** Google reviews — "4.9 stars on Google, counted on September 10, 2026." |
 
-1. **It is a static number in static HTML.** It was true on 2026-09-05 and it
-   is quietly wrong every week after that. Either it stays a live widget, or it
-   gets an "as of" date, or it comes off. A number that decays silently is a
-   stale-clock claim and the standards name it as a defect.
-   **Interim answer taken 2026-09-06**: it is dated. The stat band reads "Rated
-   Excellent, as of September 2026", so the number no longer lies silently.
-   That is not the end of the decision. A dated number still goes stale, it
-   just goes stale honestly, and somebody has to either refresh the date or
-   replace it with something live. **Owner's call.**
-2. **No rating or review markup is in the schema, deliberately**, and none
-   should be added on the strength of a widget. Rating markup needs real,
-   owned, publishable data and an owner who has decided to publish it.
+Read off the shop's **own Google Business Profile on 2026-09-10** by Greg Quinn
+of Corcoran Communications, **the vendor**. The standards make the client-owner
+the fact-checker of record, so this is the same deliberate vendor-confirmation
+exception the NAP carries, and it is recorded as one here and in
+`scripts/audit.py`. **Owner sign-off is still outstanding.**
+
+**"Rated Excellent" is retired.** It was the Trustindex widget's adjective. 4.9
+is the profile's own number, it is first-party, and it says more in less space.
+An adjective a third-party script chose is the weakest form of a rating claim
+available.
+
+#### The widget and the profile disagreed by 43 reviews in the same week
+
+This is the finding, and it is the argument for the decision below.
+
+```
+2026-09-05   Trustindex widget on the live site      231 reviews
+2026-09-10   the shop's Google Business Profile      274 reviews
+```
+
+Five days apart. A shop of this size does not take 43 Google reviews in five
+days, so **the widget was not merely behind, it was wrong**, and it was wrong
+in the direction that undersells the shop by 16%. Nobody would have caught that
+by eye, because a widget that renders a number looks authoritative in exactly
+the way a number typed into HTML does not.
+
+**So the widget does not come through cutover.** A third-party script that is
+wrong about the shop's own numbers is worse than a dated line of text that is
+right: it costs a request, it hands a vendor control of a claim the shop is
+accountable for, and it fails silently. See section 2, where the widget is
+already listed as not carried.
+
+#### What is now mechanism rather than memory
+
+`scripts/audit.py` holds `REVIEW_COUNT`, `REVIEW_RATING` and
+`REVIEW_COUNTED_ON`, and a site-wide check that:
+
+- reads **every visible review-count mention under `docs/`**, across `.html`
+  and `.txt`, with comments and scripts stripped so a comment recording the old
+  number is history rather than a contradiction;
+- **fails as a critical if any two disagree**, counting the recorded
+  `REVIEW_COUNT` as one of the instances, so a single page that drifts is
+  caught even when nothing else on the site contradicts it;
+- **warns once the count is more than 35 days old**, because past that the
+  number is not known to be wrong, it is only no longer known to be right.
+
+`--strict` now exits 1 on a site-wide critical too. It only read per-page
+scores before, because there had never been a site-wide critical to raise, so
+one would have printed a red heading and exited 0. `scripts/test-audit-checks.py`
+section 13 holds the cases, including the two-spans markup shape, the comment
+that must not count, the 35 and 36 day boundary, and a date in the future.
+
+#### Still open, and still the owner's
+
+1. **Refresh or go live.** A dated number goes stale honestly rather than
+   silently, but it still goes stale. The 35-day warning sets the pace; the
+   decision between re-reading the profile on that clock and putting something
+   live on the page is the owner's.
+2. **No rating or review markup is in the schema, deliberately**, and none gets
+   added on the strength of this. Google's own guidelines rule out self-serving
+   review markup on a business's own site, and the standards allow none unless
+   the data is real and the owner has decided to publish it. Both halves are
+   checked: the count for agreement, the schema for absence.
 
 ### 4.5 Ownership and history
 
