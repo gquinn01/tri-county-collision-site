@@ -460,9 +460,13 @@ section { padding: var(--pad) 0; }
 .proof { margin-top: 22px; font-size: .98rem; color: var(--ink-2); }
 
 .heroA { position: relative; padding: 0; background: var(--ink); overflow: hidden; }
+/* THE PHONE STRIP'S CROP. Full width, so cover fits the width exactly and
+   only the VERTICAL position is adjustable here. 42% rather than 50%
+   lifts the window a little so the gloved hand and the panel it is
+   working sit on the strip's own centre line instead of below it. */
 .heroA-photo {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: 72% 50%;
+  object-fit: cover; object-position: 50% 42%;
 }
 .heroA-panel {
   position: relative; z-index: 1; background: var(--ink);
@@ -475,17 +479,50 @@ section { padding: var(--pad) 0; }
   .heroA-photo { position: relative; height: 52vw; min-height: 200px; }
 }
 @media (min-width: 900px) {
-  .heroA { display: flex; align-items: stretch; min-height: 620px; }
-  .heroA-panel {
+  /* THE SUM MOVED UP TO .heroA so the photograph can read it too. It is
+     the same arithmetic, in one place, used by both children. */
+  .heroA {
     --edge: max(20px, calc((100% - var(--wrap)) / 2 + 20px));
     --col: min(560px, 46%);
     --pad-r: clamp(24px, 3.5vw, 52px);
+    --panel-w: calc(var(--edge) + var(--col) + var(--pad-r));
+    display: flex; align-items: stretch; min-height: 620px;
+  }
+  .heroA-panel {
     flex: 0 0 auto;
     width: 54%;
-    width: calc(var(--edge) + var(--col) + var(--pad-r));
+    width: var(--panel-w);
     padding-left: var(--edge);
     padding-right: var(--pad-r);
     display: flex; flex-direction: column; justify-content: center;
+  }
+
+  /* THE PHOTOGRAPH STOPS SPANNING THE WHOLE HERO, and this is the fix
+     rather than a tidy-up.
+
+     WHY object-position DID NOTHING BEFORE. The img spanned the full
+     width with the opaque panel over its left half. At 1440 that is a
+     1440x620 box against a 1200x800 source: cover scales to fit the
+     WIDTH exactly and crops the height, so there is no horizontal slack
+     and object-position's X value is inert. Every X ever typed here was
+     decoration. The subject sits at 46% of the frame, which mapped to
+     46% of the element, which is behind the panel. That is why the
+     uncovered strip was glossy paintwork and nothing else.
+
+     THE FIX IS GEOMETRY. The photograph now occupies only the region the
+     panel does not cover, plus 80px tucked underneath it so there can be
+     no seam. At 1440 that is a 728x620 box against the same source:
+     cover now fits the HEIGHT and crops the width, which gives about
+     200px of horizontal travel and makes object-position X live. 12%
+     puts the technician and the gloved hand in the middle of what the
+     reader can actually see.
+
+     It also stops the browser decoding and painting 790px of image that
+     was always going to be hidden behind an opaque panel. */
+  .heroA-photo {
+    left: auto; right: 0;
+    width: calc(100% - var(--panel-w) + 80px);
+    object-position: 12% 50%;
   }
 }
 .heroA h1, .heroA .eyebrow { color: var(--paper); }
