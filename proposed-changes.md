@@ -455,7 +455,7 @@ a claim.
 | | |
 |---|---|
 | **Before** | For major repairs, we also perform ADAS recalibration. This ensures your vehicle's advanced safety systems, like lane departure warnings and automatic braking, function correctly after structural work. |
-| **After** | We also perform ADAS recalibration in our facility whenever a repair calls for it. Structural work is the obvious case, but a replaced windshield or a repaired bumper can disturb the sensors behind it too. Recalibration ensures your vehicle's advanced safety systems, like lane departure warnings and automatic braking, work the way the manufacturer intended. |
+| **After** | We also perform ADAS recalibration whenever a repair calls for it. Structural work is the obvious case, but a replaced windshield or a repaired bumper can disturb the sensors behind it too. Recalibration ensures your vehicle's advanced safety systems, like lane departure warnings and automatic braking, work the way the manufacturer intended. |
 
 The rest of the block is untouched: the state-of-the-art equipment sentence,
 the environmentally friendly products, the lifetime warranty and the closing
@@ -469,7 +469,7 @@ source material for the gated ADAS page, so it is the right place to look.
 
 | New element | Basis |
 |---|---|
-| "in our facility" | **Published.** The glass page says "We perform ADAS recalibration at our Southampton facility". |
+| ~~"in our facility"~~ | **Dropped 2026-09-10, before the owner ever saw it.** It was published (the glass page says "We perform ADAS recalibration at our Southampton facility") but it is no longer in this sentence. See below. |
 | "work the way the manufacturer intended" | **Published, verbatim, twice.** Deliberately reused so the two pages say the same thing in the same words. |
 | a replaced windshield disturbing sensors | **Published.** "Many newer vehicles mount cameras and sensors behind the windshield to power safety features like lane departure warning and automatic emergency braking." |
 | **a repaired bumper disturbing sensors** | **NOT PUBLISHED ANYWHERE.** The glass page is about windshields and says nothing about bumpers. This is the new part. |
@@ -504,13 +504,29 @@ the live site on that point. But **this edit makes the claim broader and more
 prominent**, so if the answer is that calibration is sublet, more than one
 sentence changes and the ADAS page is settled at the same time.
 
-#### One thing deliberately not fixed
+#### "in our facility" came back out, 2026-09-10
 
-"in our facility" now appears **twice in the same paragraph**, once in the new
-first sentence and once in the untouched equipment sentence. It reads as a
-repetition. It is left alone because the instruction was that the rest of the
-block is unchanged, and because the fix depends on the answer above: if the
-sentence changes anyway, the repetition goes with it.
+The first sentence carried it for one commit and now reads "We also perform
+ADAS recalibration whenever a repair calls for it." Two things follow, and the
+second is worth being exact about.
+
+**The repetition is resolved.** The phrase appeared twice in one paragraph
+while it was in, once in the new sentence and once in the untouched equipment
+sentence. It appears once now.
+
+**The page no longer states in-house recalibration outright.** What is left is
+"we also perform ADAS recalibration", which says the shop does it and stops
+short of saying where, sitting two sentences above "We use state-of-the-art
+equipment in our facility". That equipment sentence is a general claim about
+the shop's tooling; it is adjacent to the calibration claim rather than a
+statement about it. **A reader will infer in-house. The page no longer asserts
+it.**
+
+That is a reduction in exposure while the claim is unconfirmed, and it changes
+nothing about the gate: `pagemap.md` rests the ADAS page on the **glass page's**
+in-house statement, which is untouched and still explicit. It does mean the
+line in 4.2 about this page asserting the claim is now weaker than it was, and
+4.2 says so.
 
 ---
 
@@ -707,11 +723,12 @@ unverified claim does not ship. **Confirm each one.**
 Rule 2, scope honesty. For each of these the question is not "is it plausible"
 but "do you actually do this":
 
-- **ADAS recalibration, in-house, on any repair that calls for it.** Broadened
-  2026-09-10 from "after major repairs"; see 1.23. `pagemap.md` gates the whole
-  ADAS calibration page on the owner confirming calibration happens in-house,
-  so **this page already makes the claim the other page is gated on**, and now
-  makes it for minor work too. **Does the shop recalibrate, or check the need,
+- **ADAS recalibration on any repair that calls for it.** Broadened 2026-09-10
+  from "after major repairs"; see 1.23. **This page no longer says "in our
+  facility"** in that sentence, so it implies in-house rather than asserting
+  it. `pagemap.md` gates the whole ADAS calibration page on the owner
+  confirming calibration happens in-house, and the explicit claim the gate
+  rests on is the **live glass page's**, which is unchanged. **Does the shop recalibrate, or check the need,
   on bumpers and mirrors as well as structural work?** If the answer is that it
   is sublet, or that minor jobs are checked rather than recalibrated, more than
   one sentence changes and the ADAS page is settled at the same time.
