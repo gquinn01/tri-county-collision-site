@@ -229,6 +229,9 @@ full stop on each. No words added, none dropped.
 Superseded 2026-09-06, when the photographic direction was picked. The band
 under the hero is now **three stats**, not four badges and a chip row.
 
+**The ORDER below is superseded again by 1.20, on 2026-09-10.** The three
+stats and their words are unchanged; the warranty now leads.
+
 | Stat | Label | Supporting line |
 |---|---|---|
 | **12** | Vehicle brands, factory-certified | INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep. |
@@ -297,6 +300,107 @@ right phrase for what the shop actually has with those insurers.
 
 The chip's icon is the umbrella step 02 already uses for insurance
 coordination. No new icon was drawn.
+
+### 1.19 The warranty chip becomes a detailing chip, and the warranty leads the stat band
+
+**Flagged for the owner's pass as a new visible promise**, like 1.18, and it
+carries a second scope question that 1.18 does not.
+
+| | |
+|---|---|
+| **Before** | ASE and I-CAR Gold certified &nbsp;•&nbsp; **Lifetime warranty** &nbsp;•&nbsp; Free estimates &nbsp;•&nbsp; Insurance paperwork handled |
+| **After** | ASE and I-CAR Gold certified &nbsp;•&nbsp; **Detailed after every repair** &nbsp;•&nbsp; Free estimates &nbsp;•&nbsp; Insurance paperwork handled |
+
+The detailing claim is already on the page twice in the live site's own words:
+step 06 of the process ("Then comes the detail: we thoroughly clean the
+interior and exterior") and the Why Choose list ("Vehicles detailed inside and
+out after every repair"). The chip's wording is the Why Choose line compressed,
+so "every repair" is the live site's own word and not an escalation of it. The
+icon is the sparkles step 06 already uses. No new icon was drawn.
+
+**THE SCOPE QUESTION, and it is the sharp one: every repair, including minor
+work and glass-only jobs?** 4.2 already flags that "every" is doing real work
+in the Why Choose sentence. Putting it in a hero chip strips away the sentence
+around it, so the chip promises a full interior and exterior clean on a bumper
+scuff and on a windshield swap as loudly as it does on a rebuild. If the honest
+answer is "on any job where the car has been in the shop long enough", the chip
+needs different words or it comes off, and the Why Choose sentence needs a look
+at the same time.
+
+**The lifetime warranty did not leave the page.** It now LEADS the stat band
+directly below the hero, and it is still in the Major Collision Repair card,
+the Why Choose list and FAQ 2. 4.1 calls it the single most load-bearing claim
+on the page, and it is still the only one of the three stats that is a word
+rather than a number.
+
+**What that cost it, measured at 390 after cutover, and it is not what the
+reorder was aiming at:**
+
+| Where "Lifetime" first appears on the page | y |
+|---|---|
+| Before, as the second hero chip | **681** |
+| After, as the stat band's leading numeral | **902** |
+
+The stat band reorder moved its own "Lifetime" up 310px, from 1212 to 902. But
+the hero chip was earlier than either of those, so dropping it cost 531px and
+the word ends up **221px LOWER than it started**. It is still on screen two on
+a phone, which is what the reorder was for, but it is mid screen two rather
+than at the top of it. **If the warranty leading on mobile is the goal, this
+change moved it the wrong way**, and the two halves want deciding separately:
+the stat band reorder gains ground on its own, the chip swap gives more back.
+
+53px of that 221 is the chip row itself, see below.
+
+### 1.20 The stat band is reordered: Lifetime, 12, 231
+
+Supersedes the order in 1.16. Same three stats, same words, same date on the
+review count. **Reordered in the DOM**, so the markup, the screen reader, the
+tab order and every viewport agree on the sequence. No `order`, no
+`row-reverse`, nothing that would make what a sighted reader sees disagree with
+what the document says.
+
+| Stat | Label | Supporting line |
+|---|---|---|
+| **Lifetime** | Warranty on all repair work | If anything isn't right, we'll make it right. |
+| **12** | Vehicle brands, factory-certified | INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep. |
+| **231** | Google reviews | **Rated Excellent, as of September 2026.** |
+
+On a phone the three stack in source order, so the warranty is the first thing
+under the hero. On desktop they are three columns and the warranty is the left
+one. The band's `aria-label` was updated to match: "Warranty, certifications
+and reviews".
+
+**One is a word rather than a number, and now it is the first one.** That does
+not change the rule in 1.16: three, never four, and no number gets invented to
+balance the row.
+
+### 1.21 The chip row is four stacked pills on a phone now, not three rows
+
+Not a wording change, a consequence of one, recorded because it is visible.
+
+"Detailed after every repair" renders 232px wide where "Lifetime warranty" was
+178px. At 390 the content column is 350px, so the old row two paired the
+warranty chip with "Free estimates" at 342px. The new chip cannot pair with
+anything:
+
+```
+    ASE and I-CAR Gold certified   244
+    Detailed after every repair    232
+    Free estimates                 154
+    Insurance paperwork handled    257
+```
+
+Every pair of those exceeds 350 once the 10px gap is added, so **no reordering
+of the four gets back to three rows**. The chip row goes from 3 rows to 4 at
+390 and 430, and stays at 4 at 360. It is 53px taller, which is what pushes the
+stat band from y=799 to y=852 and is 53 of the 221px in 1.19.
+
+Nothing overflows: the widest chip ends at x=277 against a 370px content edge,
+and the document scroll width is exactly the viewport at all three widths.
+
+**The CTA pair is untouched by all of this.** The chips render after it, so the
+fold numbers from 3.8 are identical before and after, at 360, 390 and 430, in
+both the staging and the post-cutover state.
 
 ---
 
@@ -478,10 +582,11 @@ unverified claim does not ship. **Confirm each one.**
 
 - **ASE and I-CAR Gold Class certified technicians.** Stated four times on the
   page and in the hero badge strip. Certifications lapse. Confirm current.
-- **Lifetime warranty on all repair work.** In the hero badges, the Major
-  Collision Repair copy, the Why Choose list and FAQ 2. **Lifetime of what,
-  covering what, transferable to a new owner or not?** This is the single most
-  load-bearing claim on the page.
+- **Lifetime warranty on all repair work.** Leads the stat band as of
+  2026-09-10, and is in the Major Collision Repair copy, the Why Choose list
+  and FAQ 2. It is no longer a hero chip; see 1.19 for what that cost its
+  position on a phone. **Lifetime of what, covering what, transferable to a new
+  owner or not?** This is the single most load-bearing claim on the page.
 - **Factory-certified for 12 vehicle brands**: INFINITI, Nissan, Hyundai, Kia,
   Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru, Jeep. The page also says
   "12+" in two places while the list has exactly 12. Confirm the number and the
@@ -502,7 +607,9 @@ but "do you actually do this":
 - **Computerized color matching** (FAQ 2).
 - **Paintless dent repair**, offered for qualifying dents.
 - **Vehicles detailed inside and out after every repair.** "Every" is doing
-  real work in that sentence.
+  real work in that sentence, and **now also a hero chip**, "Detailed after
+  every repair", which is the strongest form the claim takes anywhere on the
+  page. **Does it include minor work and glass-only jobs?** See 1.19.
 - **Environmentally friendly repair products** throughout the repair process.
 - **State-of-the-art equipment and facilities.**
 - **Direct repair relationships with all major insurance companies.** A "direct

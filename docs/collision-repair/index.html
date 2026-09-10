@@ -405,15 +405,20 @@
         <!-- Every one of these is a claim the live site already makes, and
              every one is on the claims list in proposed-changes.md. The review
              count moved to the stat band below, where it carries its date.
-             The fourth chip is a PLACEMENT, not a new fact: the paperwork claim
-             is already in the Why Choose list, step 02 and the insurance FAQ.
-             But the hero is the loudest place on the page, so it is recorded as
-             a new visible promise in proposed-changes.md 1.18 and it needs the
-             owner's yes before cutover like everything else here. Its umbrella
-             is the same icon step 02 uses for insurance coordination. -->
+             TWO OF THESE ARE PLACEMENTS, not new facts, and both are recorded
+             as new visible promises for the owner's pass, in 1.18 and 1.19:
+             the paperwork claim is already in the Why Choose list, step 02 and
+             the insurance FAQ, and the detailing claim is in the Why Choose
+             list and step 06. Their icons are the ones those steps already
+             use, the umbrella and the sparkles. No new icon was drawn.
+             THE LIFETIME WARRANTY LEFT THIS ROW AND DID NOT LEAVE THE PAGE.
+             It now LEADS the stat band directly below, which on a phone puts
+             it on screen two rather than at the end of a four-chip stack. It
+             is also in the Major card, the Why Choose list and FAQ 2. See
+             proposed-changes.md 1.19 for the measured before and after. -->
         <ul class="badges">
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l7.5 3.3v5c0 4.6-3.1 8.3-7.5 9.5-4.4-1.2-7.5-4.9-7.5-9.5v-5z"/><path d="M8.9 12.1l2.2 2.2 4.1-4.6"/></svg>ASE and I-CAR Gold certified</li>
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 11.1a8.8 8.8 0 1 1-3.4-6"/><path d="M8.6 11.6l3 3 8.4-9"/></svg>Lifetime warranty</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.2 3.4l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z"/><path d="M17.6 14.4l.8 2.1 2.1.8-2.1.8-.8 2.1-.8-2.1-2.1-.8 2.1-.8z"/></svg>Detailed after every repair</li>
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.8h4.5"/></svg>Free estimates</li>
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6v2M3.4 12a8.6 8.6 0 0 1 17.2 0z"/><path d="M12 12v6.4a2.3 2.3 0 0 0 4.6 0"/></svg>Insurance paperwork handled</li>
         </ul>
@@ -423,15 +428,29 @@
     <!-- ============ STAT BAND ============
          Three stats, and three is the rule rather than the leftover. A fourth
          would have to be invented, and inventing a number to balance a row is
-         the exact failure the prime law exists to stop. So the third is a word.
+         the exact failure the prime law exists to stop. So one of the three is
+         a word, and since 2026-09-10 it is the FIRST one.
+         THE WARRANTY LEADS, AND THE ORDER IS THE DOM ORDER. It reads
+         Lifetime, 12, 231 in the markup and it reads that way on every
+         viewport. No CSS reordering: `order` and `row-reverse` split what a
+         sighted reader sees from what the DOM, a screen reader and tab order
+         say, and a page that argues with itself about its own sequence is a
+         page nobody can reason about later. On a phone the stats stack in
+         source order, so leading with the warranty is what puts the single
+         most load-bearing claim on the page on screen two.
          THE REVIEW COUNT CARRIES THE DATE IT WAS TRUE. It was 231 on
          2026-09-05, read off the live site's Trustindex widget, and it is
          quietly wrong every week after that unless it is dated or made live.
          See proposed-changes.md 4.4: dating it is the interim answer, not the
          final one. NO Review OR AggregateRating MARKUP anywhere in the schema. -->
-    <section class="statband" id="proof" aria-label="Certifications, reviews and warranty">
+    <section class="statband" id="proof" aria-label="Warranty, certifications and reviews">
       <div class="wrap">
         <div class="stats">
+          <div class="stat">
+            <span class="stat-n">Lifetime</span>
+            <span class="stat-l">Warranty on all repair work</span>
+            <span class="stat-s">If anything isn't right, we'll make it right.</span>
+          </div>
           <div class="stat">
             <span class="stat-n">12</span>
             <span class="stat-l">Vehicle brands, factory-certified</span>
@@ -441,11 +460,6 @@
             <span class="stat-n">231</span>
             <span class="stat-l">Google reviews</span>
             <span class="stat-s">Rated Excellent, as of September 2026.</span>
-          </div>
-          <div class="stat">
-            <span class="stat-n">Lifetime</span>
-            <span class="stat-l">Warranty on all repair work</span>
-            <span class="stat-s">If anything isn't right, we'll make it right.</span>
           </div>
         </div>
       </div>
