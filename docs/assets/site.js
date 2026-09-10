@@ -140,13 +140,14 @@
   var statband = document.querySelector(".statband");
   if (statband) {
     var numerals = statband.querySelectorAll(".stat-n");
-    var rolled = false;
+    var moving = false;
     for (var n = 0; n < numerals.length; n++) {
-      if (buildOdometer(numerals[n])) { rolled = true; }
+      /* A number rolls. The one stat that is a word gets stamped. The
+         whole row is one event on one class, so it arrives as a row. */
+      if (buildOdometer(numerals[n])) { moving = true; }
+      else { numerals[n].classList.add("stamp"); moving = true; }
     }
-    /* One of the three stats is a word rather than a number, by design.
-       If none of them is a number there is nothing to roll. */
-    if (rolled) { sections.push(statband); }
+    if (moving) { sections.push(statband); }
   }
 
   var steps = document.querySelector(".steps");

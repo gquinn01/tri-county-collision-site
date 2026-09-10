@@ -263,9 +263,19 @@ fill is whichever dark the ground is not; the hairline is what gives the shape
 an edge. Labels read at 11.04 and 16.21. **The Email ghost button beside it is
 unchanged on either ground** — it is a border and a label already.
 
-**6. The palette is four colours and two text shades**, and gold is not one of
+**6. The palette is four colours, two text shades and one highlight ground**, and gold is not one of
 them any more. Oxblood means act and nothing else: two oxblood bands per page,
 each carrying the CTA row. Ink is structural. Solid colours only and no glows.
+
+**White is a ground, not a shade of paper.** Added 2026-09-10. `--paper` is
+#F9F7F4, a warm off-white, and it is what the page is made of. `--white` is
+#FFFFFF and it is used on exactly **one band**, the stat band under the hero,
+to lift the three proof figures off the run of the page. The two measure 1.07
+against each other, which is why it works: it is not a contrast switch, which
+the background rhythm says costs reading time. It is the same page, one shade
+cleaner, under the numbers that have to be believed. Every text pair gets
+slightly better on it: ink 17.33, oxblood 11.80, `--ink-2` 9.80, `--ox-tx`
+8.95.
 
 **One sanctioned section-background gradient, decided 2026-09-10.** The firm's
 palette law allows exactly this one exception, and only as a dated, recorded
@@ -332,8 +342,10 @@ disclosure and its chevron, the lift under a pointer, the press under a
 finger. Unremarkable.
 
 **Kind two, which is the actual amendment: motion may also fire once on a
-section's first arrival. A number counts. A lane draws. Never looping, never
-re-triggering.**
+section's first arrival. A number counts. A word stamps. A lane draws. Never
+looping, never re-triggering.** The stat band is one event, not three: the two
+numbers roll and the word presses on the same class, released by the same
+observer, so the row arrives as a row.
 
 Both are still evidence rather than costume, which is the only reason they
 were allowed in:

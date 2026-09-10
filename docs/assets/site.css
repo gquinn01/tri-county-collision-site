@@ -85,10 +85,32 @@
    | --ox      | #691C17  | ACT. Filled buttons, the call bar, the two bands.|
    | --ink     | #121B27  | Body text, headings, the header, the footer.     |
    | --paper   | #F9F7F4  | The default ground, and all type on dark.        |
+   | --white   | #FFFFFF  | THE HIGHLIGHT GROUND. One band, not the page.   |
    | --mark    | #E92424  | The logo, and nothing else. See the warning.     |
    | --ox-tx   | #8A2419  | Oxblood's shade for small text on paper.         |
    | --ink-2   | #3C4453  | Secondary text on paper.                         |
    | --paper-2 | #C9CCD3  | Secondary text on ink.                           |
+
+   WHITE IS A GROUND, NOT A SHADE OF PAPER. Added 2026-09-10. --paper is
+   #F9F7F4, a warm off-white, and it is what the page is made of. --white is
+   #FFFFFF and it is used on exactly ONE band, the stat band under the hero,
+   to lift the three proof figures off the run of the page. The two measure
+   1.07 against each other, which is why this works: it is not a contrast
+   switch, which the background rhythm says costs reading time. It is the
+   same page, one shade cleaner, under the numbers that have to be believed.
+
+   Every text pair gets slightly BETTER on white, never worse:
+
+       --ink   on --white  17.33     on --paper  16.21
+       --ox    on --white   11.80    on --paper  11.04
+       --ink-2 on --white    9.80    on --paper   9.16
+       --ox-tx on --white    8.95    on --paper   8.37
+
+   ONE HONEST DUPLICATE: --panel is also #FFFFFF and has been since the
+   first commit. It is the ground of a CARD, which sits ON the page; --white
+   is the ground of a BAND, which IS the page for its own height. Two names
+   for one hex is worth it while the two roles can diverge; if they never do,
+   collapsing them is a one-line change.
 
    GOLD IS GONE, removed 2026-09-06 on the client's call. #E5C549 used to
    carry the certification marks, the small-caps labels and the counters on
@@ -175,8 +197,12 @@
    them, and they are unremarkable.
 
    KIND TWO, WHICH IS THE ACTUAL AMENDMENT: MOTION MAY ALSO FIRE ONCE ON
-   A SECTION'S FIRST ARRIVAL. A NUMBER COUNTS. A LANE DRAWS. NEVER
-   LOOPING, NEVER RE-TRIGGERING.
+   A SECTION'S FIRST ARRIVAL. A NUMBER COUNTS. A WORD STAMPS. A LANE
+   DRAWS. NEVER LOOPING, NEVER RE-TRIGGERING.
+
+   The stat band is ONE event, not three. The two numbers roll and the
+   word presses on the same class, released by the same observer, so the
+   row arrives as a row.
 
    Both are still evidence rather than costume, which is the only reason
    they were allowed in:
@@ -239,6 +265,7 @@
   --mark: #E92424;
   --rule: #DED8D1;
   --panel: #FFFFFF;
+  --white: #FFFFFF;
 
   --wrap: 1120px;
   --pad: clamp(48px, 7vw, 88px);
@@ -692,6 +719,29 @@ section { padding: var(--pad) 0; }
   transition-delay: var(--odo-delay, 0ms);
 }
 
+/* ---------- The stamp: the one stat that is a word ----------
+   Restored from the motion sampler, where it was candidate B, and
+   attached to "Lifetime". It arrives on the SAME once-on-first-arrival
+   class as the odometer, so the whole row is ONE event: the numbers roll
+   and the word stamps.
+
+   The opacity snaps in at 90ms while the scale settles over 380ms, and
+   the gap between those two durations is what makes it read as a press
+   rather than a zoom. The 1.2 degrees of rotation is as built, because a
+   stamp is never square to the paper.
+
+   THE ORIGIN HAD TO MOVE, and it is the only thing that changed. The
+   sampler's stamp pressed from the left, which was right when the stat
+   was left-aligned. The band is centred now, so a left origin would
+   translate the word sideways as it scaled and read as a slide. It
+   presses from its own centre instead. */
+.stamp { transform-origin: center; }
+.motion-armed .stamp { opacity: 0; transform: scale(1.06) rotate(-1.2deg); }
+.motion-in .stamp {
+  opacity: 1; transform: none;
+  transition: opacity 90ms linear, transform 380ms cubic-bezier(.2, .9, .25, 1);
+}
+
 /* The drum is decoration and is aria-hidden. The number itself still has
    to reach a screen reader, once, as a number. */
 .sr-only {
@@ -741,8 +791,9 @@ section { padding: var(--pad) 0; }
    drawn. site.js is the first guard and never arms either one; this is
    the second, and it also covers the FAQ chevron and its answer. */
 @media (prefers-reduced-motion: reduce) {
-  .odo-strip, .lane-dash, .faq-ico { transition: none; }
-  .odo-strip { transform: none; }
+  .odo-strip, .lane-dash, .faq-ico, .stamp { transition: none; }
+  .odo-strip, .stamp { transform: none; }
+  .stamp { opacity: 1; }
   .lane-dash { transform: scaleY(1); }
   #faq details[open] > p { animation: none; }
 }
@@ -986,13 +1037,19 @@ footer.site a { color: var(--paper); }
    the prime law exists to stop.
    ANY NUMBER TRUE ONLY ON THE DAY IT WAS WRITTEN CARRIES ITS DATE, in .stat-s.
    The review count is the one on this page. */
-.statband { background: var(--paper); border-bottom: 1px solid var(--rule); }
+/* THE HIGHLIGHT GROUND. This is the one band on the site that is --white
+   rather than --paper. See the palette note for why 1.07 is the point. */
+.statband { background: var(--white); border-bottom: 1px solid var(--rule); }
 .stats { display: grid; gap: 34px; }
 @media (min-width: 820px) { .stats { grid-template-columns: repeat(3, 1fr); gap: 0; } }
-.stat { padding: 8px 0; }
+/* CENTRED AT EVERY WIDTH, numeral, label and supporting line together,
+   including the stacked phone layout. The padding is SYMMETRIC on purpose:
+   the old rule put 44px on one side only, which would pull centred text
+   off its own centre by 22px and look like a mistake nobody could find. */
+.stat { padding: 8px 0; text-align: center; }
 @media (min-width: 820px) {
-  .stat { padding-right: 44px; }
-  .stat + .stat { border-left: 1px solid var(--rule); padding-left: 44px; }
+  .stat { padding: 8px 22px; }
+  .stat + .stat { border-left: 1px solid var(--rule); }
 }
 .stat-n {
   display: block; font-family: var(--display); font-weight: 400;
