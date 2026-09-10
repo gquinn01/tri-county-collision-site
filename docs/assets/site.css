@@ -104,12 +104,31 @@
        --ox-tx  on --paper     8.37        --paper-2 on --ink     10.78
        --ink-2  on --paper     7.04        --paper-2 on --ox       7.34
 
-   AND ONE THAT FAILS ON PURPOSE: --ox on --ink is 1.47. An oxblood button
-   sitting on the ink header is all but invisible AS A SHAPE, even though its
-   paper label is perfectly readable at 11.04. That is why the header's call
-   button keeps its oxblood fill, because oxblood means act, and gains a paper
-   border so its edge is findable. Never put an oxblood shape on ink without
-   one.
+   AND TWO THAT FAIL ON PURPOSE. THEY ARE THE SAME NUMBER, WHICH IS WHY THE
+   RULE IS SYMMETRIC:
+
+       --ox  on --ink   1.47        --ink on --ox   1.47
+
+   An oxblood button on the ink header is all but invisible AS A SHAPE, even
+   though its paper label reads at 11.04. An ink button on an oxblood band is
+   invisible in exactly the same way and by exactly the same margin, with its
+   paper label reading at 16.21.
+
+   SO: THE ACT BUTTON ON ANY DARK GROUND WEARS THE PAPER HAIRLINE. Decided
+   2026-09-10, and it is one rule, not two exceptions. The fill changes to
+   whichever dark the ground is not, so the button still reads as a solid
+   object; the hairline is what gives it an edge. Never put a dark shape on a
+   dark ground without one.
+
+       ground        fill      label                 shape   label
+       --ink         --ox      --paper                1.47   11.04
+       --ox          --ink     --paper                1.47   16.21
+
+   The hover shades are darker still and therefore even less visible as
+   shapes, 1.24 and 1.21. THAT IS FINE AND IT IS THE POINT: the border draws
+   the shape, the fill only says the pointer is on it, and both hover labels
+   stay well clear at 9.16 and above. The ghost button beside the act button
+   is unaffected on either ground; it is a border and a label already.
 
    THE LOGO RED FAILS AS TEXT. #E92424 on paper is 4.14, under the 4.5 that
    normal-size text needs. That is why the mark's red and the text red are two
@@ -287,8 +306,21 @@ section { padding: var(--pad) 0; }
 .btn-sm { padding: 10px 18px; min-height: 44px; font-size: 1rem; }
 .btn-ghost { background: transparent; color: var(--ox); }
 .btn-ghost:hover { background: rgba(105, 28, 23, .08); border-color: var(--ox); }
-.dark .btn { background: var(--paper); color: var(--ox); border-color: var(--paper); }
-.dark .btn:hover { background: #FFFFFF; border-color: #FFFFFF; }
+/* THE ACT BUTTON ON A DARK GROUND. One rule, both grounds, and the
+   contrast note in the header carries the arithmetic. The fill is
+   whichever dark the ground is NOT, and the paper hairline is what gives
+   the shape an edge, because dark-on-dark measures 1.47 either way round.
+
+   :not(.btn-ghost) IS LOAD-BEARING. The ghost carries both classes, so an
+   unqualified .field-ox .btn would fill it in and destroy it. Excluding it
+   here also makes the rule order-independent, which matters more than the
+   two extra characters: this block no longer cares whether it sits above
+   or below the ghost's own rules. */
+.dark .btn:not(.btn-ghost) { color: var(--paper); border-color: var(--paper); }
+.field-ox .btn:not(.btn-ghost) { background: var(--ink); }
+.field-ox .btn:not(.btn-ghost):hover { background: var(--ink-2); border-color: var(--paper); }
+.field-ink .btn:not(.btn-ghost) { background: var(--ox); }
+.field-ink .btn:not(.btn-ghost):hover { background: var(--ox-dk); border-color: var(--paper); }
 .dark .btn-ghost { background: transparent; color: var(--paper); border-color: var(--paper); }
 .dark .btn-ghost:hover { background: rgba(249, 247, 244, .14); }
 .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin: 26px 0 0; }

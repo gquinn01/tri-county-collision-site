@@ -253,6 +253,16 @@ and carries a paper border: `--ox` on `--ink` measures **1.47**, so without
 the border the button is invisible as a shape even though its label reads at
 11.04.
 
+**The act button on any dark ground wears the paper hairline.** Decided
+2026-09-10, and it is one symmetric rule rather than two exceptions, because
+the two failures are **the same number**: `--ox` on `--ink` is 1.47 and
+`--ink` on `--ox` is also 1.47. So on the two oxblood bands the act button is
+now **ink filled with paper text and the paper hairline**, exactly as the
+header's button is oxblood filled with paper text and the paper hairline. The
+fill is whichever dark the ground is not; the hairline is what gives the shape
+an edge. Labels read at 11.04 and 16.21. **The Email ghost button beside it is
+unchanged on either ground** — it is a border and a label already.
+
 **6. The palette is four colours and two text shades**, and gold is not one of
 them any more. Oxblood means act and nothing else: two oxblood bands per page,
 each carrying the CTA row. Ink is structural. Solid colours only, no gradients
