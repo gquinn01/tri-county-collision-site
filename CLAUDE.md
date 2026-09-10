@@ -282,13 +282,60 @@ gave up `overflow: hidden` with the photo's rounding moving onto the image.
 **A component that wants the lift needs both of its own pseudo-elements
 free.**
 
-**Motion is no longer zero, and that is an amendment, dated.** It used to be
-zero except the FAQ accordion. What did not change is the reason: everything
-that moves on this site moves **because a person did something to it** —
-opened a disclosure, pointed at a card, pressed a button. Nothing animates on
-load, nothing loops, and nothing performs at a reader who is only arriving. An
-effect that broke that sentence would need its own amendment, dated, here and
-in the header of `docs/assets/site.css`.
+Under a pointer the step numeral also goes solid oxblood, on the same clock as
+the sweep, so a card answers as one gesture rather than two. **Colour only, no
+blur, no glow**, and it is the one property outside transform, opacity and the
+rule's width that the stylesheet animates.
+
+**8. Arrival motion, adopted 2026-09-10.** The odometer and the lane, both
+from the same sampler.
+
+---
+
+## The motion amendment, 2026-09-10
+
+**Motion used to be zero except the FAQ accordion. It is not zero any more.**
+Five candidates were built on a sampler, judged, and the sampler was deleted
+once every verdict was in. Two were cut. The reasoning is in the git history
+around this date. Four things move now, in two kinds.
+
+**Kind one, which was always allowed: motion that answers a reader.** The FAQ
+disclosure and its chevron, the lift under a pointer, the press under a
+finger. Unremarkable.
+
+**Kind two, which is the actual amendment: motion may also fire once on a
+section's first arrival. A number counts. A lane draws. Never looping, never
+re-triggering.**
+
+Both are still evidence rather than costume, which is the only reason they
+were allowed in:
+
+- **The number counts because the number is real.** The stat band carries
+  checked, dated figures, and an odometer is the one counting instrument that
+  belongs to a car. A counter over an invented number would be the prime law's
+  exact failure wearing a nice easing curve. **It reads its target from the
+  markup**, so the weekly review-count refresh edits one number in the HTML and
+  the effect follows. Nobody refreshing a count needs to know it exists.
+- **The lane draws because the section is a road.** Six steps from the phone
+  call to the keys, with a dashed centre line down them. A lane and not a
+  progress bar on purpose: no track, no state change once painted, constant
+  speed.
+
+**The lane's audience is a phone reader, and only a phone reader.** It exists
+only below 720px, the one width where `.steps` is a single column and a line
+from 01 to 06 is a road rather than a stray rule across a grid. A desktop
+reader never sees it. That is a deliberate scope, not an unfinished one.
+
+**Under `prefers-reduced-motion` both do nothing.** The number rests at its
+true value, which is what it was showing anyway, and the lane rests fully
+drawn. Nothing is hidden and nothing is pending, in that case or with
+JavaScript off. The strips are `[target, 0-9, target]`, so the true number is
+on screen before the roll, after it, and when no script runs at all.
+
+**The limit of this amendment:** once, on first arrival, then the observer
+stops watching. Anything that would move a second time, or move without a
+reader having either arrived or acted, is a different decision and needs its
+own amendment, dated, here and in the header of `docs/assets/site.css`.
 
 ## Staging ships noindexed on purpose
 
@@ -370,7 +417,6 @@ dark. That archive is the last copy of it that will ever exist.
 | `agents/site-auditor.md` | The weekly Monday report agent's job description. |
 | `agents/google-watcher.md` | The daily algorithm watch agent's job description. |
 | `.github/workflows/` | The two agent schedules. |
-| `drafts/motion/` | **Motion sampler.** Five candidates were judged 2026-09-10: the odometer and the stamp were **cut and deleted**, the lift was **adopted** into `docs/assets/site.css` as design rule 7, and the lane and the accordion are **still undecided** and still live here. Its README carries the hard rules and what keeping the lane would cost. `build.py --check` says whether the copy has gone stale. |
 | `docs/` | The site. |
 | `docs/assets/site.css` | **The design system.** The one place the palette and the type are defined. Its header carries the chosen direction, the type pairing, the flush-left hero arithmetic, the stat-band rule, the palette table with its provenance, and the measured contrast ratios. |
 | `docs/assets/fonts/` | Archivo Black and Source Sans 3, self-hosted, with their unedited SIL OFL 1.1 licence texts. No webfont CDN is contacted at runtime. |

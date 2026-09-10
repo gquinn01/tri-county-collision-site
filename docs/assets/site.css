@@ -48,7 +48,15 @@
       default is a soft grey glow that belongs to nobody. This shadow is
       --ink, so a card casts a shadow the colour of this site's own
       darkest value, and the response is --ox. See the lift section for
-      the mechanism and its two constraints.
+      the mechanism and its two constraints. Under a pointer the step
+      numeral goes solid oxblood on the same clock, so a card answers as
+      one gesture. That colour change is the ONE property outside
+      transform, opacity and the rule's width that this file animates.
+
+   7. ARRIVAL MOTION, ADOPTED 2026-09-10. A number counts and a lane
+      draws, once each, the first time their section comes into view. See
+      the motion amendment below for what that is allowed to mean and
+      what it is not.
 
    The palette table, its provenance and its measured ratios follow. Read all
    of it before writing a hex, a font-family or a hero.
@@ -117,22 +125,58 @@
    SOLID COLORS ONLY. No gradients on text, buttons, cards or accents, and no
    glows. There is no sanctioned section-background gradient on this site.
 
-   MOTION IS EVIDENCE, NOT COSTUME, and on this site there is almost no
-   evidence to show, so there is almost no motion: a hover state, a focus
-   ring, the FAQ disclosure, and since 2026-09-10 the lift. NOTHING
-   ANIMATES ON LOAD AND NOTHING LOOPS. Every moving thing on this site
-   moves because a person did something to it: opened a disclosure,
-   pointed at a card, pressed a button. The reader arrived here from a
+   MOTION IS EVIDENCE, NOT COSTUME. That is still the rule, and it is
+   still the reason for everything below. NOTHING ANIMATES ON LOAD,
+   NOTHING LOOPS, AND NOTHING RE-TRIGGERS. The reader arrived here from a
    collision and is holding a phone; a page that moves while they are
    trying to read a phone number is a page that costs them time.
 
-   THE 2026-09-10 AMENDMENT, RECORDED AS ONE. This file used to say
-   motion was zero except the FAQ disclosure. It is not zero any more.
-   The lift was chosen from a sampler at drafts/motion/, where it was
-   candidate C, and two other candidates were cut rather than kept. What
-   did NOT change is the reason the rule exists: a reader still cannot
-   be shown anything that moves on its own. If a future effect performs
-   as the reader arrives rather than answering them, it is a different
+   ---------------------------------------------------------------------
+   THE MOTION AMENDMENT, 2026-09-10. RECORDED AS ONE, IN FULL.
+
+   This file used to say motion was zero except the FAQ disclosure. It is
+   not zero any more. Five candidates were built on a sampler, judged,
+   and the sampler was deleted once every verdict was in; the build and
+   the judging are in the git history around this date if the reasoning
+   is ever wanted. Two were cut. Four things move now, and they divide
+   into two kinds.
+
+   KIND ONE, WHICH WAS ALWAYS ALLOWED: motion that ANSWERS A READER.
+   The FAQ disclosure and its chevron, the lift under a pointer, the
+   press under a finger. These move because a person did something to
+   them, and they are unremarkable.
+
+   KIND TWO, WHICH IS THE ACTUAL AMENDMENT: MOTION MAY ALSO FIRE ONCE ON
+   A SECTION'S FIRST ARRIVAL. A NUMBER COUNTS. A LANE DRAWS. NEVER
+   LOOPING, NEVER RE-TRIGGERING.
+
+   Both are still evidence rather than costume, which is the only reason
+   they were allowed in:
+
+     THE NUMBER COUNTS BECAUSE THE NUMBER IS REAL. The stat band carries
+     checked, dated figures, and an odometer is the one counting
+     instrument that belongs to a car. A counter over an invented number
+     would be the prime law's exact failure, wearing a nice easing curve.
+
+     THE LANE DRAWS BECAUSE THE SECTION IS A ROAD. Six steps from the
+     phone call to the keys, with a dashed centre line down them. It is
+     a lane and not a progress bar on purpose: no track, no state change
+     once painted, constant speed.
+
+   THE LANE'S AUDIENCE IS A PHONE READER, AND ONLY A PHONE READER. It
+   exists only below 720px, because that is the only width where .steps
+   is a single column and a line from 01 to 06 is a road rather than a
+   stray rule across a grid. A desktop reader never sees it. That is a
+   deliberate scope, not an unfinished one.
+
+   UNDER prefers-reduced-motion, BOTH DO NOTHING. The number rests at its
+   true value, which is what it was showing anyway, and the lane rests
+   fully drawn. Nothing is hidden and nothing is pending, in that case or
+   with JavaScript off.
+
+   THE LIMIT OF THIS AMENDMENT: once, on first arrival, and then the
+   observer stops watching. Anything that would move a second time, or
+   move without a reader having either arrived or acted, is a different
    decision and needs its own amendment, dated, here.
 
    BUTTON GRAMMAR. A filled button (.btn) means act, and on this site acting
@@ -495,6 +539,14 @@ section { padding: var(--pad) 0; }
   .card:hover::after, .step:hover::after, .svc:hover::after {
     width: 100%; opacity: 1;
   }
+  /* THE NUMERAL ANSWERS TOO, added 2026-09-10. At rest "01" is --rule,
+     structural and quiet. Under a pointer it goes solid oxblood on the
+     same clock as the sweep, so the whole card responds as one gesture
+     rather than two. COLOUR ONLY: no blur, no glow, no movement. This is
+     the one property outside transform, opacity and the rule's width
+     that this stylesheet animates, and it is listed as such above. */
+  .step h3::after { transition: color 260ms cubic-bezier(.2, .8, .3, 1); }
+  .step:hover h3::after { color: var(--ox); }
 }
 
 .btn, .callbar { transition: transform 90ms cubic-bezier(.3, .7, .4, 1); }
@@ -508,9 +560,124 @@ section { padding: var(--pad) 0; }
   .card, .step, .svc,
   .card::before, .step::before, .svc::before,
   .card::after, .step::after, .svc::after,
+  .step h3::after,
   .btn, .callbar { transition: none; }
   .card:hover, .step:hover, .svc:hover { transform: none; }
   .btn:active, .callbar:active { transform: none; }
+}
+
+/* ===========================================================================
+   ARRIVAL MOTION. ADOPTED 2026-09-10. TWO EFFECTS, ONE RULE.
+
+   These are the only things on this site that move without a reader
+   doing anything to them, and the motion law was amended for them. See
+   the amendment in the header of this file. The rule they live under:
+   ONCE, ON A SECTION'S FIRST ARRIVAL. Never looping, never re-triggering,
+   never on load.
+
+   The mechanism is shared. scripts add .motion-armed to a section when
+   the effect is actually going to run, and .motion-in when the section
+   first crosses into view. Then the observer stops watching it, which is
+   what makes "never re-triggering" a property of the code rather than a
+   promise in a comment.
+
+   THE "FROM" STATE IS NEVER IN CSS ALONE. Both effects are armed by
+   site.js and only when motion is allowed, so with JavaScript off, or
+   with prefers-reduced-motion set, nothing is ever hidden and nothing is
+   ever pending. This is the rule that keeps an entrance effect from
+   turning into a blank page when a script fails.
+   =========================================================================== */
+
+/* ---------- The odometer: a number counts because it is real ----------
+   The stat band's real, dated numbers roll up like a mechanical
+   odometer, once. A counter that counts is the most generic effect on
+   the web; what makes this one honest is that the numbers ARE checked
+   and dated, and what makes it this shop's is the metaphor, the one
+   counting instrument that belongs to a car.
+
+   IT READS ITS TARGET FROM THE MARKUP. site.js takes the number out of
+   .stat-n's own text. Nothing about the effect is written down anywhere
+   else, so the weekly review-count refresh edits one number in the HTML
+   and the odometer follows it. Nobody refreshing a count needs to know
+   this exists.
+
+   THE STRIP IS [target, 0-9, target]. It starts on the TRUE DIGIT and
+   lands on the true digit one revolution later, so the true number is on
+   screen before the roll, after it, and with JavaScript off. An odometer
+   parked on 000 waiting to be scrolled to would put a false number on a
+   site whose whole discipline is that numbers are true.
+
+   THE STEP IS 0.88em BECAUSE THAT IS .stat-n's LINE-HEIGHT. Matching it
+   means the band does not change height when the effect is present.
+
+   IT RESTS ON ONE MEASUREMENT: Archivo Black's digits are all exactly
+   0.667em wide, all ten identical, so the window needs no
+   tabular-figures hack and the number cannot jitter as it rolls. If the
+   display face ever changes, measure again before trusting this. */
+.odo { display: inline-flex; }
+.odo-d { display: block; width: .667em; height: .88em; overflow: hidden; }
+.odo-strip { display: block; will-change: transform; }
+.odo-strip > span { display: block; height: .88em; line-height: .88; }
+.motion-armed .odo-strip { transform: translateY(0); }
+.motion-in .odo-strip {
+  transform: translateY(var(--odo-end));
+  transition: transform 700ms cubic-bezier(.16, .84, .28, 1);
+  transition-delay: var(--odo-delay, 0ms);
+}
+
+/* The drum is decoration and is aria-hidden. The number itself still has
+   to reach a screen reader, once, as a number. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ---------- The lane: a road drawn down the process ----------
+   The six process steps gain a dashed centre line down the gaps between
+   them, painting once, top to bottom. The road to road-ready.
+
+   IT MUST READ AS A LANE, NOT A PROGRESS BAR. No track behind the
+   dashes, so nothing is being filled. No state change once painted, so
+   nothing is being completed. Constant speed, because easing toward a
+   stop is what a progress bar does and a road has no finish, only a next
+   dash.
+
+   THE COLOUR IS --rule, NOT OXBLOOD, AND THAT IS THE PALETTE LAW
+   TALKING. Oxblood means act, and since the lift shipped it also means
+   "you are pointing at this". A decorative line that answers neither
+   would be a third meaning, which is how a palette stops meaning
+   anything. --rule is what the step numerals already use at rest.
+
+   IT EXISTS ONLY BELOW 720px, WHICH MAKES IT A PHONE-READER'S MOMENT.
+   .steps is one column below 720, two to 1040, three above, and a line
+   from 01 to 06 only exists in the first of those. Above 720px it draws
+   nothing rather than drawing something that is not a road. Whoever
+   changes the .steps breakpoints owns this too. */
+.lane-host { position: relative; }
+.lane {
+  position: absolute; left: 50%; top: 0; width: 3px; margin-left: -1.5px;
+  pointer-events: none;
+}
+.lane-dash {
+  position: absolute; left: 0; width: 3px; background: var(--rule);
+  border-radius: 1.5px; transform: scaleY(0); transform-origin: top center;
+}
+.motion-in .lane-dash {
+  transform: scaleY(1);
+  transition: transform 220ms linear;
+  transition-delay: var(--dash-delay, 0ms);
+}
+@media (min-width: 720px) { .lane { display: none; } }
+
+/* REDUCED MOTION. NEITHER EFFECT DOES ANYTHING. The number rests at its
+   true value, which it was already showing, and the lane rests fully
+   drawn. site.js is the first guard and never arms either one; this is
+   the second, and it also covers the FAQ chevron and its answer. */
+@media (prefers-reduced-motion: reduce) {
+  .odo-strip, .lane-dash, .faq-ico { transition: none; }
+  .odo-strip { transform: none; }
+  .lane-dash { transform: scaleY(1); }
+  #faq details[open] > p { animation: none; }
 }
 
 /* ---------- Breadcrumb ---------- */
@@ -616,13 +783,30 @@ section { padding: var(--pad) 0; }
   font-size: 1.12rem; font-weight: 700; color: var(--ink);
 }
 #faq summary::-webkit-details-marker { display: none; }
+/* A CHEVRON, NOT A PLUS. Adopted 2026-09-10 from candidate E of the
+   motion sampler. Two bars at 45 degrees, and the whole mark turns over
+   when the answer opens, so the control says which way it is going
+   rather than swapping one symbol for another. */
 .faq-ico { flex: 0 0 auto; width: 20px; height: 20px; position: relative; margin-top: 5px; }
 .faq-ico::before, .faq-ico::after {
   content: ""; position: absolute; background: var(--ox); left: 50%; top: 50%;
+  width: 11px; height: 3px; border-radius: 2px;
 }
-.faq-ico::before { width: 16px; height: 3px; transform: translate(-50%, -50%); }
-.faq-ico::after { width: 3px; height: 16px; transform: translate(-50%, -50%); }
-#faq details[open] .faq-ico::after { display: none; }
+.faq-ico::before { transform: translate(-84%, -50%) rotate(45deg); }
+.faq-ico::after { transform: translate(-16%, -50%) rotate(-45deg); }
+.faq-ico { transition: transform 200ms cubic-bezier(.2, .8, .3, 1); }
+#faq details[open] .faq-ico { transform: rotate(180deg); }
+
+/* The answer's text arrives rather than appearing. THE PANEL'S HEIGHT
+   STILL SNAPS, and that is not an oversight: animating it is animating a
+   height, which this stylesheet does not do. The text fades and slides
+   four pixels; the box does not glide. A one-shot animation, never a
+   loop, and it runs because a person opened the disclosure. */
+@keyframes faq-answer-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: none; }
+}
+#faq details[open] > p { animation: faq-answer-in 180ms ease-out both; }
 #faq details > p { margin: 0 0 22px; max-width: 74ch; color: var(--ink-2); }
 
 /* ---------- Contact band ---------- */

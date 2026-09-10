@@ -441,6 +441,43 @@ def main():
     check("     and the repo's own comments are clean right now",
           not warns and len(notes) == 1, warns)
 
+    print("16. The odometer must not disturb the review count")
+    # WHY. The stat band's numbers now roll. Each digit is a strip of
+    # [target, 0-9, target], so at runtime the DOM holds a lot of digits
+    # that are not the review count. THE STRIPS ARE BUILT BY site.js AND
+    # NEVER EXIST IN THE FILE, which is what keeps the review-count check
+    # honest: it reads source, not a rendered page. These cases hold that
+    # invariant down, because the tempting "optimisation" later is to
+    # pre-render the strips into the HTML.
+    import tempfile as _tempfile2
+
+    site_js = open(os.path.join(root, "docs", "assets", "site.js"),
+                   encoding="utf-8").read()
+    check("     site.js reads the number from the markup, not a constant",
+          ".stat-n" in site_js and str(audit.REVIEW_COUNT) not in site_js)
+    check("     so a review-count refresh needs no knowledge of the effect",
+          "textContent.trim()" in site_js)
+
+    hits = audit.find_review_counts(os.path.join(root, "docs"))
+    check("     the count is still stated exactly once under docs/",
+          len(hits) == 1, hits)
+    check("     and it is still the recorded number",
+          bool(hits) and hits[0][1] == audit.REVIEW_COUNT, hits)
+
+    # And the guard would notice if someone ever baked the strips in.
+    with _tempfile2.TemporaryDirectory() as tmp:
+        strip = "".join("<span>%d</span>" % d for d in range(10))
+        with open(os.path.join(tmp, "p.html"), "w", encoding="utf-8") as fh:
+            fh.write('<span class="stat-n"><span class="odo">'
+                     '<span class="odo-d"><span class="odo-strip">'
+                     '<span>2</span>' + strip + '<span>4</span>'
+                     '</span></span></span></span>'
+                     '<span class="stat-l">Google reviews</span>')
+        baked = audit.find_review_counts(tmp)
+        nums = sorted({n for _p, n, _s in baked})
+        check("     a PRE-RENDERED strip would be caught, not silently accepted",
+              bool(baked) and nums != [audit.REVIEW_COUNT], nums)
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} check(s) failed:")
