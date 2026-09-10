@@ -72,3 +72,51 @@ page all came back 30/30 at 375px.
 3. If it is real, bisect by removing one section at a time. If removing
    every section individually fails to change the result, the page is
    not the cause and the tooling is.
+
+## The fold budget on a phone, and the 60px nobody counts
+
+Added 2026-09-10, after the hero CTA pair was found sitting below the
+fold on every phone.
+
+**The usable height is 604px, not 664.** A 390x664 viewport is what an
+iPhone 12, 13 or 14 shows in Safari with its own chrome around it. The
+call bar is `position: fixed; bottom: 0` and 60px tall, and it covers
+whatever is under it rather than pushing it up. So anything below 604
+is not on screen, and tuning a hero against 664 is tuning against 60px
+that are already spent.
+
+The staging banner spends another 57px at 390, because its sentence
+wraps to two lines. That comes off at cutover, so **measure both
+states**: it is the only difference between what a reviewer sees today
+and what a customer will see.
+
+## Measuring it, rather than judging it by eye
+
+Same iframe trick as above, plus same-origin measurement. The parent
+window can read the iframe's DOM, so the probe reports numbers instead
+of a picture:
+
+```js
+var d = f.contentDocument, w = f.contentWindow;
+function box(el) {
+  var r = el.getBoundingClientRect();
+  return {t: Math.round(r.top + w.scrollY), b: Math.round(r.bottom + w.scrollY)};
+}
+box(d.querySelector('.hero .cta-row')).b <= 604   // the whole test
+```
+
+Run it once as the page stands, then inject
+`.staging{display:none !important}` into the iframe's head and run it
+again. That second number is the real one.
+
+Read it back with `--dump-dom` and a marker string around the JSON,
+not with `--screenshot`. A screenshot tells you something looks wrong;
+these numbers tell you by how much, which is what you need to fix it.
+
+**Shoot one picture at the end anyway**, with a 2px line absolutely
+positioned at 604, and check that the line falls where the arithmetic
+said it would. The numbers catch the bug and the picture catches a
+wrong assumption in the numbers.
+
+Delete every probe file afterwards. A stray page in `docs/` is a page
+the audit scores and a crawler can find.

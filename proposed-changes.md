@@ -439,6 +439,33 @@ The last two are the ones to look at hardest: directory profiles are often
 auto-generated and unclaimed, and a wrong existing listing is a worse problem
 than a missing one.
 
+### 3.8 The phone hero was tightened so the CTA pair clears the fold
+
+**No words changed.** Spacing, the photograph's band height on phones, and
+the buttons' own padding. Recorded here because it is a visible change to
+what a customer sees first, and because the numbers should not have to be
+rediscovered.
+
+At 390x664, which is an iPhone 12, 13 or 14 in Safari, the hero's CTA pair
+ran 613 to 751 on the real page. Neither button was on screen. The fixed
+call bar owns the bottom 60px of that viewport, so the usable height is 604,
+not 664, and the pair was 147px past it.
+
+After the change the pair ends at 596. Both buttons clear, at 360, 390 and
+430. During staging the banner adds 57px and pushes the second button under
+the call bar; the Call button still clears with 19px to spare, and the banner
+comes off at cutover.
+
+What it cost: the photograph's band on phones goes from 52vw to 36vw, 203px
+to 140px at 390. It is still full-bleed and still the first thing on the
+page. Above 599px nothing changed at all. The arithmetic is in the header of
+`docs/assets/site.css`, and `scripts/mobile-check.md` now carries the 604px
+budget and how to measure it.
+
+**The reader could always call**, throughout. The call bar is fixed to the
+bottom of every phone viewport and that is exactly what it is for. What was
+wrong is that the hero asked for an action and then hid its own button.
+
 ---
 
 ## 4. The claims list

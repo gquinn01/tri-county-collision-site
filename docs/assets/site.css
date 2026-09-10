@@ -338,6 +338,66 @@ section { padding: var(--pad) 0; }
 .heroA .badges li { background: transparent; border-color: rgba(249, 247, 244, .42); color: var(--paper); }
 .heroA .badges svg { stroke: var(--paper); }
 
+/* ---------- THE PHONE HERO AND THE FOLD, added 2026-09-10 ----------
+   MEASURED WITH THE IFRAME METHOD IN scripts/mobile-check.md. Not eyeballed,
+   and not with a window screenshot, which lies below about 500px.
+
+   THE BUDGET IS 604px, NOT 664. A 390x664 viewport is what an iPhone 12, 13
+   or 14 shows in Safari with its own chrome. THE FIXED CALL BAR OWNS THE
+   BOTTOM 60px of it and covers whatever is under it, so the hero has 604px of
+   usable height and not a pixel more. Anyone tuning this block against 664 is
+   tuning against 60px that do not exist.
+
+   WHAT WAS WRONG. The hero CTA pair ran 613 to 751 on the real page, so
+   neither of its buttons was on screen. The reader could still call, because
+   that is exactly what the call bar is for, but the hero was asking for an
+   action and then hiding it.
+
+   THE BUDGET, at 390 wide, after cutover, measured:
+
+       header                        0 ->  65     65
+       photograph, 36vw             65 -> 205    140
+       panel padding-top           205 -> 221     16
+       breadcrumb                  221 -> 246     25 + 10
+       eyebrow                     256 -> 278     22 +  8
+       h1                          286 -> 327     40 +  8
+       lead                        335 -> 458    123 + 14
+       CTA pair, 56 + 12 + 56      472 -> 596    124
+                                                 ---
+                                   ends at 596, and the budget is 604
+
+   DURING STAGING the banner adds 57px and pushes the second button under the
+   call bar. The Call button, which is the one that matters, still clears with
+   19px to spare. That resolves itself at cutover when the banner comes off,
+   and it is not a reason to compress this further.
+
+   Checked at 360, 390 and 430. The Call button clears in every state at every
+   one of them; the pair clears at all three after cutover, and at 430 during
+   staging too.
+
+   WHAT THIS BLOCK DOES NOT TOUCH: a word, a colour, a typeface, the flush
+   left panel, or the rule that the hero is a full-bleed photograph. The
+   photograph still runs edge to edge and is still the first thing on the
+   page. It gives up band height on phones only, where the fold is real.
+   Above 599px none of this applies and the hero is unchanged.
+
+   PLACED AFTER the .heroA overrides above ON PURPOSE: .heroA .lead and
+   .heroA .badges up there are the same specificity as the rules in here, so
+   source order is what decides them. Move this block up the file and half of
+   it silently reverts. */
+@media (max-width: 599px) {
+  .heroA-photo { height: 36vw; min-height: 128px; }
+  .heroA-panel { padding-top: 16px; padding-bottom: 32px; }
+  .heroA .crumb { margin-bottom: 10px; }
+  .heroA .eyebrow { margin-bottom: 8px; }
+  .heroA h1 { margin-bottom: .22em; }
+  .heroA .lead { font-size: 1.0625rem; line-height: 1.45; margin-bottom: 12px; }
+  .heroA .cta-row { margin-top: 14px; gap: 12px; }
+  /* 48px still clears the 44px minimum tap target, with the label at 17px. */
+  .heroA .cta-row .btn { padding: 12px 22px; min-height: 48px; }
+  .heroA .badges { margin-top: 22px; }
+}
+
 /* ---------- Reassurance strip: certifications and rating ---------- */
 .badges { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 0; padding: 0; list-style: none; }
 .badges li {
