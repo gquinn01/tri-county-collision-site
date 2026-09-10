@@ -39,6 +39,17 @@
       cutover. The call button keeps its oxblood fill and gains a paper
       border. See the contrast note below for why the border is not optional.
 
+   6. THE LIFT, ADOPTED 2026-09-10. A MOLD BEHAVIOUR: every card on every
+      page gets it, and nobody re-decides it per page. A card rises 3px
+      under a pointer, an ink shadow comes up under it, and the oxblood
+      rule along its base sharpens and sweeps to the card's full width.
+      The lift is generic on purpose, because feedback to a hand should
+      feel familiar; THE MATERIALS ARE WHAT MAKE IT THIS SITE'S. The
+      default is a soft grey glow that belongs to nobody. This shadow is
+      --ink, so a card casts a shadow the colour of this site's own
+      darkest value, and the response is --ox. See the lift section for
+      the mechanism and its two constraints.
+
    The palette table, its provenance and its measured ratios follow. Read all
    of it before writing a hex, a font-family or a hero.
    ---------------------------------------------------------------------------
@@ -108,9 +119,21 @@
 
    MOTION IS EVIDENCE, NOT COSTUME, and on this site there is almost no
    evidence to show, so there is almost no motion: a hover state, a focus
-   ring, and the FAQ disclosure. Nothing animates on load. The reader arrived
-   here from a collision and is holding a phone; a page that moves while they
-   are trying to read a phone number is a page that costs them time.
+   ring, the FAQ disclosure, and since 2026-09-10 the lift. NOTHING
+   ANIMATES ON LOAD AND NOTHING LOOPS. Every moving thing on this site
+   moves because a person did something to it: opened a disclosure,
+   pointed at a card, pressed a button. The reader arrived here from a
+   collision and is holding a phone; a page that moves while they are
+   trying to read a phone number is a page that costs them time.
+
+   THE 2026-09-10 AMENDMENT, RECORDED AS ONE. This file used to say
+   motion was zero except the FAQ disclosure. It is not zero any more.
+   The lift was chosen from a sampler at drafts/motion/, where it was
+   candidate C, and two other candidates were cut rather than kept. What
+   did NOT change is the reason the rule exists: a reader still cannot
+   be shown anything that moves on its own. If a future effect performs
+   as the reader arrives rather than answering them, it is a different
+   decision and needs its own amendment, dated, here.
 
    BUTTON GRAMMAR. A filled button (.btn) means act, and on this site acting
    means calling (215) 322-5350. A text link means read more. Navigation is
@@ -407,6 +430,89 @@ section { padding: var(--pad) 0; }
 }
 .badges svg { width: 17px; height: 17px; fill: none; stroke: var(--ox); stroke-width: 2.1; }
 
+/* ===========================================================================
+   THE LIFT. ADOPTED 2026-09-10, FROM CANDIDATE C OF drafts/motion/.
+   A MOLD BEHAVIOUR: every .card, .step and .svc on every page gets it,
+   and nobody re-decides it per page.
+
+   WHAT HAPPENS. The card rises 3px. An ink shadow comes up underneath
+   it. The oxblood rule along its base sharpens from quiet to solid and
+   sweeps from a short mark to the card's full width. That sweep is the
+   branded half: the lift says "this is a thing", the rule says whose.
+
+   WHAT MAY MOVE, AND IT IS A SHORT LIST: transform, opacity, and the
+   rule's width. Nothing else. No colour animates, no shadow animates,
+   no height animates. The shadow is painted ONCE on a layer that sits
+   at opacity 0 and only its opacity moves, because animating box-shadow
+   is expensive and lands on the main thread.
+
+   NO BLUR ON THE RULE AND NO GLOW ANYWHERE. The rule is a solid 2px bar
+   of --ox with no shadow of its own. The palette law allows solid
+   colours and this is one.
+
+   TWO PSEUDO-ELEMENTS PER CARD, WHICH IS WHY THE STEP NUMERAL MOVED.
+   ::before is the shadow, ::after is the rule. .step::before used to
+   carry the "01" and now .step h3::after does. If a future component
+   wants the lift, it needs both of its own pseudo-elements free.
+
+   HOVER ONLY, AND ONLY WHERE HOVERING IS REAL. Everything below is
+   inside @media (hover: hover), so a touch device never gets a hover
+   state welded on by a tap and left there.
+
+   THE PRESS IS NOT A HOVER and sits outside that query on purpose. On a
+   phone it is the only confirmation a finger gets that the button took
+   the tap.
+   =========================================================================== */
+.card, .svc { position: relative; }
+
+.card::before, .step::before, .svc::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  box-shadow: 0 12px 26px -10px rgba(18, 27, 39, .34);
+  opacity: 0; pointer-events: none;
+}
+/* At rest the rule is present but quiet: a short mark at the base, not a
+   full underline. A card at rest should still read as flat. */
+.card::after, .step::after, .svc::after {
+  content: ""; position: absolute; left: 0; bottom: 0;
+  width: 28px; height: 2px; background: var(--ox); opacity: .4;
+  pointer-events: none;
+}
+/* On ink and oxblood grounds the rule would be invisible against its own
+   band, so it answers in paper instead. Same behaviour, readable ground. */
+.dark .card::after { background: var(--paper); }
+
+@media (hover: hover) {
+  .card, .step, .svc { transition: transform 160ms cubic-bezier(.2, .8, .3, 1); }
+  .card::before, .step::before, .svc::before {
+    transition: opacity 160ms cubic-bezier(.2, .8, .3, 1);
+  }
+  .card::after, .step::after, .svc::after {
+    transition: width 260ms cubic-bezier(.2, .8, .3, 1),
+                opacity 160ms cubic-bezier(.2, .8, .3, 1);
+  }
+  .card:hover, .step:hover, .svc:hover { transform: translateY(-3px); }
+  .card:hover::before, .step:hover::before, .svc:hover::before { opacity: 1; }
+  .card:hover::after, .step:hover::after, .svc:hover::after {
+    width: 100%; opacity: 1;
+  }
+}
+
+.btn, .callbar { transition: transform 90ms cubic-bezier(.3, .7, .4, 1); }
+.btn:active, .callbar:active { transform: translateY(1px); }
+
+/* REDUCED MOTION. The hover STATE still changes, because that is
+   feedback and a reader who asked for less motion still needs to know
+   the pointer is on something. What goes is the movement: no rise, no
+   sweep, no travel. The shadow and the rule simply are, or are not. */
+@media (prefers-reduced-motion: reduce) {
+  .card, .step, .svc,
+  .card::before, .step::before, .svc::before,
+  .card::after, .step::after, .svc::after,
+  .btn, .callbar { transition: none; }
+  .card:hover, .step:hover, .svc:hover { transform: none; }
+  .btn:active, .callbar:active { transform: none; }
+}
+
 /* ---------- Breadcrumb ---------- */
 .crumb { margin: 0 0 22px; font-size: .95rem; }
 .crumb ol { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; color: var(--ink-2); }
@@ -610,7 +716,15 @@ footer.site a { color: var(--paper); }
   background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius);
   padding: 26px 24px 24px;
 }
-.step::before {
+/* THE NUMERAL HANGS OFF THE HEADING, NOT OFF .step, and that is not a
+   style choice. The lift needs both of .step's pseudo-elements, one for
+   the shadow and one for the rule, and the numeral was sitting on
+   ::before. h3 is static, so its containing block is .step, which is
+   positioned: the numeral lands in exactly the same place it always
+   did. The counter increments on .step and descendants can read it.
+   A step without an h3 would lose its numeral. There is no such step,
+   and a step without a heading is a bug worth seeing. */
+.step h3::after {
   content: "0" counter(step);
   position: absolute; top: 20px; right: 22px;
   font-family: var(--display); font-size: 1.45rem; color: var(--rule); letter-spacing: -.02em;
@@ -621,11 +735,17 @@ footer.site a { color: var(--paper); }
 /* ---------- Minor and Major, side by side ---------- */
 .svc-grid { display: grid; gap: 26px; align-items: start; }
 @media (min-width: 900px) { .svc-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; } }
+/* NO overflow: hidden HERE ANY MORE. It used to clip the photo to the
+   card's corners, and it would clip the lift's shadow layer just as
+   happily, which is the one adoption cost the sampler flagged. The
+   rounding moved onto the image instead, which is where it can stay. */
 .svc {
   background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius);
-  overflow: hidden;
 }
-.svc-photo { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+.svc-photo {
+  display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
 .svc-body { padding: 28px 26px 30px; }
 .svc-body > h3 { margin-bottom: .6em; }
 .svc-body h4, .sec-sub, .eyebrow, .foot-head, .contact-grid h3 { font-family: var(--font); }

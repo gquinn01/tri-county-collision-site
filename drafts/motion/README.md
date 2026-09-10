@@ -3,10 +3,16 @@
 **Candidates only. Nothing in this folder ships, and nothing in `docs/`
 changed to make it work.**
 
-`docs/assets/site.css` says motion on this site is zero except the FAQ
-disclosure, "because a person opened it". That law still stands. This is
-where five candidate effects can be judged **on the real page**, at real
-sizes, instead of argued about in the abstract.
+Five candidates were built here on 2026-09-10 and judged the same day.
+**Two were cut, one was adopted, two are still open.** The verdict table
+is below.
+
+`docs/assets/site.css` no longer says motion is zero: adopting the lift
+amended that, and the amendment is recorded there and in `CLAUDE.md`,
+dated. What did not change is the reason the rule exists, that everything
+which moves does so **because a person did something to it**. This folder
+is where anything that wants to move gets judged **on the real page**, at
+real sizes, before it goes anywhere near that sentence.
 
 ```
 python3 drafts/motion/build.py          # regenerate index.html
@@ -16,15 +22,18 @@ python3 -m http.server 8800             # from the repo root, then open
 ```
 
 `index.html` is **generated**, not hand-maintained, so it cannot drift
-away from the page it is supposed to be showing. Everything else is done
-at runtime by `motion.js`: no odometer markup, no stamp markup, no lane
-markup exists in the file. That is deliberate. The question is what these
-effects cost on the page as built, not on a page rebuilt to flatter them.
+away from the page it is supposed to be showing. No lane markup exists in
+it: `motion.js` builds that at runtime. That is deliberate. The question
+is what an effect costs on the page as built, not on a page rebuilt to
+flatter it.
+
+**The adopted lift is not in this folder.** The sampler shows it anyway,
+because the sampler loads `site.css`. What you see here is what ships.
 
 ## The sampler bar
 
 Not a candidate, and it does not ship. **Replay entrances** re-runs
-everything that runs once, because otherwise you reload to see it twice.
+the lane, which runs once, because otherwise you reload to see it twice.
 **Force reduced motion** switches on the reduced path without going into
 System Settings, so the hard rule can be checked in place.
 
@@ -56,112 +65,83 @@ Banned outright and not present: scroll fade-ups on everything, parallax,
 mouse-tilt cards, floating shapes, particles, shimmer and skeletons,
 typing animations, glassmorphism.
 
-## The five
+## The verdict, 2026-09-10
 
-### A. The odometer
+| | |
+|---|---|
+| **A. Odometer** | **CUT.** Deleted, not archived. |
+| **B. Stamp** | **CUT.** Deleted, not archived. |
+| **C. Lift** | **ADOPTED**, into `docs/assets/site.css` as design rule 7. |
+| **D. Lane line** | **UNDECIDED.** Still here. |
+| **E. Accordion** | **UNDECIDED.** Still here. |
 
-The stat band's **274** and **12** roll up like a mechanical odometer,
-once, when the band enters view. ~880ms for a three-digit number.
+The cut two were **deleted rather than commented out**. A second direction
+sitting in the repo is a second direction someone builds from later.
 
-*How it earns its place.* A counting number is the most generic effect on
-the web, and on a SaaS page it is decoration over a figure nobody checked.
-Two things make this one specific. The numbers **are** real and dated,
-which is the only reason this site is allowed to move them at all under
-"motion is evidence, not costume". And the metaphor is the one counting
-instrument that belongs to a car: digits on a drum, through a window,
-landing.
+### C, and what changed on the way in
 
-*Two decisions worth knowing.* Each strip is `[target, 0-9, target]`, so
-the number on screen is **the true number before the roll and after it**.
-An odometer parked on `000` waiting to be scrolled into view would put a
-false number on a site whose whole discipline is that numbers are true.
-And the step is `0.88em` because that is `.stat-n`'s line-height, so the
-band does not change height: **measured at 390, the stat band is 594px
-with and without the effect, and each numeral's box is 44 x 350 in both.**
+The sampler's version injected its two layers with JavaScript. **The shipped
+version is pure CSS**, `::before` for the shadow and `::after` for the rule,
+so the lift works with JavaScript off. And the rule changed as directed: it is
+now **present at rest** as a short quiet mark, and on hover it sharpens to
+solid and **sweeps to the card's full width**. Solid `--ox`, no blur, no glow.
 
-*The measurement it rests on:* Archivo Black's digits are all exactly
-0.667em wide, all ten identical. So the window needs no tabular-figures
-hack and the number cannot jitter as it rolls. **If the display face
-changes, measure again before trusting this.**
+What may move is a short list: **transform, opacity, and the rule's width.**
 
-### B. The stamp
+Two costs, both paid rather than deferred:
 
-**Lifetime** arrives as a warranty stamp pressed onto the page: one
-settle from 1.06 to rest, opacity snapping in at 90ms while the scale
-takes 380ms. The gap between those two durations is what makes it read as
-a press rather than a zoom.
+- **The step numeral moved** from `.step::before` to `.step h3::after`. The
+  lift needs both of a card's pseudo-elements and the numeral was sitting on
+  one. It lands in the same place, because `h3` is static so its containing
+  block is the positioned `.step`.
+- **`.svc` gave up `overflow: hidden`**, with the photo's rounding moving onto
+  the image. That was the adoption cost flagged when C was first built.
 
-*Where this went past the brief, and it is easy to undo.* A scale-down
-settle with a fade is the SaaS modal entrance. A stamp is not square to
-the paper, so this one carries **1.2 degrees of rotation** settling to
-zero, with its origin at the left edge where a hand would press hardest.
-That rotation is mine, not the brief's. **If it reads as a wobble rather
-than as paperwork, delete the `rotate()` and what is left is exactly what
-was asked for.**
+**It is not in this folder any more.** The sampler still shows it, because the
+sampler loads `site.css` — which is the point: what you see here is what
+ships. Hover any card.
 
-### C. Lift, in house materials
-
-Cards rise 3px, an ink shadow deepens beneath them, a 2px oxblood rule
-sharpens along the base. Buttons and the call bar take a 1px press.
-
-*How it earns its place.* The lift is the most generic gesture here and is
-not trying to be otherwise: it is feedback to a hand, and feedback should
-be familiar. **What is tuned is the material.** The default is a soft grey
-glow that belongs to nobody. This shadow is `--ink` at low alpha, so a
-card casts a shadow the colour of this site's own darkest value, and the
-base rule is `--ox`.
-
-*Adoption cost, stated plainly.* `.svc` clips its photo with
-`overflow: hidden`, which would clip an outside shadow layer too. The
-sampler moves the rounding onto the image instead. **Adopting C means
-adopting that one-line change with it.**
+## The two still undecided
 
 ### D. The lane line — **the flagged one**
 
-The six process steps gain a dashed centre line down the gaps between
-them, painting once, top to bottom, as the section enters view. The road
-to road-ready, literally.
+The six process steps gain a dashed centre line down the gaps between them,
+painting once, top to bottom, as the section enters view.
 
-**THIS IS THE ONLY STAGING-TYPE MOTION IN THE SET.** Everything else
-answers a reader: a hover, a tap, a disclosure. This one performs as the
-reader arrives, which is precisely what `site.css`'s header rules out.
-**If it is kept it is a deliberate amendment to that law and has to be
-written down as one**, in `site.css`'s header and in `CLAUDE.md`, with the
-date. Nobody should find it later and conclude the rule was always softer
-than it reads.
+**Now that C has shipped, this is the only thing left that performs as a
+reader ARRIVES rather than answering something they did.** `site.css`'s header
+was amended on 2026-09-10 to say motion is no longer zero, and it was careful
+to say that everything which moves does so because a person did something to
+it. **D would break that sentence.** Keeping it is a second amendment, dated,
+in `site.css` and `CLAUDE.md` both.
 
-*It must read as a lane, not a progress bar.* Three things hold that
-line: **no track** behind the dashes, so nothing is being filled; **no
-state change** once painted, so nothing is being completed; and it paints
-at **constant speed**, because easing toward a stop is what a progress bar
-does. A road has no finish, only a next dash.
+*It must read as a lane, not a progress bar.* No track behind the dashes, so
+nothing is being filled. No state change once painted, so nothing is being
+completed. Constant speed, because easing toward a stop is what a progress bar
+does; a road has no finish, only a next dash.
 
-*The colour is `--rule`, not oxblood, and that is the palette law
-talking.* A real lane line is white or yellow, and oxblood is the obvious
-"make it feel like us" choice. But **oxblood means act on this site and
-nothing else**, and a decorative line nobody can click would be the first
-thing to break that. `--rule` is what the step numerals already use. The
-cost is that the lane is quiet. Look at it before deciding that is wrong.
+*The colour is `--rule`, not oxblood, and that is the palette law talking.*
+Oxblood means act, and **since C shipped it also means "you are pointing at
+this"**. A decorative line that answers neither would be a third meaning,
+which is how a palette stops meaning anything.
 
-*Its real limitation: it is a single-column effect.* `.steps` is one
-column below 720px, two to 1040, three above. A line from 01 to 06 only
-exists in the first of those, so **above 720px it renders nothing at
-all** rather than drawing something that is not a road. On a desktop this
-effect does not exist. That is not a detail to discover later.
+*Its real limitation: it is a single-column effect.* `.steps` is one column
+below 720px, two to 1040, three above. **Above 720px it draws nothing at all**
+rather than drawing something that is not a road. On a desktop this effect
+does not exist.
 
 ### E. Accordion polish
 
-The plus becomes a chevron, the chevron turns over on open, and the
-answer's text arrives rather than appearing. Micro-feedback on a control
-the reader just operated, on the one moving part the site already allows.
-The safest candidate here, and no signature attempted.
+The plus becomes a chevron, the chevron turns over on open, and the answer's
+text arrives rather than appearing. Micro-feedback on a control the reader
+just operated. The safest candidate here, and no signature attempted.
 
 *One honest limitation.* **The panel's height still snaps.** Animating it
 means animating a height, which rule 1 forbids, and the alternatives are a
-library or `::details-content`, which is not reliable yet. So the text
-fades and slides four pixels; the box does not glide. If a gliding box is
-the requirement, this candidate has to be **re-scoped against rule 1**
-rather than quietly excepted from it.
+library or `::details-content`, which is not reliable yet. So the text fades
+and slides four pixels; the box does not glide. If a gliding box is the
+requirement, this has to be **re-scoped against rule 1** rather than quietly
+excepted from it.
 
 ## How this was verified, and what was not verified
 

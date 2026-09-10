@@ -44,8 +44,8 @@ BAR = '''
 <div class="mo-bar" role="region" aria-label="Motion sampler controls">
   <strong>MOTION SAMPLER</strong>
   <span class="mo-bar-list">
-    <a href="#proof">A odometer</a><a href="#proof">B stamp</a>
-    <a href="#process">C lift</a><a href="#process">D lane</a><a href="#faq">E accordion</a>
+    <a href="#process">D lane, undecided</a><a href="#faq">E accordion, undecided</a>
+    <span>C lift: ADOPTED, ships from site.css, hover any card</span>
   </span>
   <button type="button" class="mo-replay">Replay entrances</button>
   <label class="mo-reduce"><input type="checkbox"> Force reduced motion</label>

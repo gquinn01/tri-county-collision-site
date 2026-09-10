@@ -256,8 +256,39 @@ the border the button is invisible as a shape even though its label reads at
 **6. The palette is four colours and two text shades**, and gold is not one of
 them any more. Oxblood means act and nothing else: two oxblood bands per page,
 each carrying the CTA row. Ink is structural. Solid colours only, no gradients
-and no glows. **Motion is zero** except the FAQ accordion, which moves because
-a person opened it.
+and no glows.
+
+**7. The lift, adopted 2026-09-10. A mold behaviour: every card on every page
+gets it and nobody re-decides it per page.** A `.card`, `.step` or `.svc`
+rises 3px under a pointer, an ink shadow comes up beneath it, and the oxblood
+rule along its base sharpens from quiet to solid and sweeps to the card's full
+width. The lift is generic on purpose, because feedback to a hand should feel
+familiar. **The materials are what make it this site's**: the default is a
+soft grey glow that belongs to nobody, and this shadow is `--ink`, so a card
+casts a shadow the colour of the site's own darkest value. The sweep is the
+branded half.
+
+What may move is a short list: **transform, opacity, and the rule's width.**
+No colour animates, no shadow animates, no height animates. It is pure CSS,
+so it works with JavaScript off. It is hover-only, behind
+`@media (hover: hover)`, so a tap never welds a hover state on. Under
+`prefers-reduced-motion` the hover **state** still changes, because a reader
+who asked for less motion still needs to know the pointer is on something;
+what goes is the movement.
+
+Two costs, both paid: the step numeral moved from `.step::before` to
+`.step h3::after`, because the lift needs both pseudo-elements, and `.svc`
+gave up `overflow: hidden` with the photo's rounding moving onto the image.
+**A component that wants the lift needs both of its own pseudo-elements
+free.**
+
+**Motion is no longer zero, and that is an amendment, dated.** It used to be
+zero except the FAQ accordion. What did not change is the reason: everything
+that moves on this site moves **because a person did something to it** —
+opened a disclosure, pointed at a card, pressed a button. Nothing animates on
+load, nothing loops, and nothing performs at a reader who is only arriving. An
+effect that broke that sentence would need its own amendment, dated, here and
+in the header of `docs/assets/site.css`.
 
 ## Staging ships noindexed on purpose
 
@@ -339,7 +370,7 @@ dark. That archive is the last copy of it that will ever exist.
 | `agents/site-auditor.md` | The weekly Monday report agent's job description. |
 | `agents/google-watcher.md` | The daily algorithm watch agent's job description. |
 | `.github/workflows/` | The two agent schedules. |
-| `drafts/motion/` | **Motion sampler. Candidates only, nothing ships.** Five effects on a generated copy of the pattern page, so they can be judged on the real thing. Its README carries the hard rules, how each effect earns its place, and the one that would amend the motion law if kept. `build.py --check` says whether the copy has gone stale. |
+| `drafts/motion/` | **Motion sampler.** Five candidates were judged 2026-09-10: the odometer and the stamp were **cut and deleted**, the lift was **adopted** into `docs/assets/site.css` as design rule 7, and the lane and the accordion are **still undecided** and still live here. Its README carries the hard rules and what keeping the lane would cost. `build.py --check` says whether the copy has gone stale. |
 | `docs/` | The site. |
 | `docs/assets/site.css` | **The design system.** The one place the palette and the type are defined. Its header carries the chosen direction, the type pairing, the flush-left hero arithmetic, the stat-band rule, the palette table with its provenance, and the measured contrast ratios. |
 | `docs/assets/fonts/` | Archivo Black and Source Sans 3, self-hosted, with their unedited SIL OFL 1.1 licence texts. No webfont CDN is contacted at runtime. |

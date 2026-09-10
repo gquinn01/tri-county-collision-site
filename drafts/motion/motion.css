@@ -1,44 +1,36 @@
 /* ===========================================================================
-   MOTION SAMPLER. CANDIDATES ONLY. NOTHING HERE SHIPS.
+   MOTION SAMPLER. TWO CANDIDATES LEFT, BOTH UNDECIDED.
 
-   docs/assets/site.css says motion is zero on this site except the FAQ
-   disclosure. This file does not change that. It is loaded only by
-   drafts/motion/index.html so the candidates can be judged on the real
-   page instead of argued about in the abstract.
+   HISTORY, because a sampler that quietly loses effects is worse than no
+   sampler. Five candidates were built here on 2026-09-10 and judged the
+   same day:
 
-   THE HARD RULES, and every one of them is checkable by reading this file:
+     A  odometer   CUT. Deleted, not archived.
+     B  stamp      CUT. Deleted, not archived.
+     C  lift       ADOPTED. It lives in docs/assets/site.css now, as a
+                   mold behaviour for every page, with one change: the
+                   oxblood rule is present at rest and sweeps to full
+                   card width on hover. IT IS NOT IN THIS FILE. The
+                   sampler shows it because the sampler loads site.css,
+                   which is the point: what you see here is what ships.
+     D  lane       UNDECIDED. Below.
+     E  accordion  UNDECIDED. Below.
 
-     1. TRANSFORM AND OPACITY ONLY. Nothing here animates a colour, a
-        width, a height, a shadow or a background. Where an effect needs
-        a shadow to change, a separate layer's OPACITY changes instead.
-     2. prefers-reduced-motion IS RESPECTED, twice over. motion.js does
-        not arm anything when it is set, and the block at the bottom of
-        this file neutralises the rest.
-     3. HOVER EFFECTS SIT BEHIND @media (hover: hover), so a touch device
-        never gets a hover state welded on by a tap.
-     4. NOTHING LOOPS. Every entrance runs once. There is no animation
-        here with an iteration count above 1 and no infinite anything.
-     5. NO GRADIENTS AND NO GLOWS. Solid colours, per the palette law.
-     6. NO LIBRARY.
-     7. PHONE COST NEAR ZERO. Transform and opacity only means the
-        compositor does the work. Nothing animates on load; everything
-        waits for an IntersectionObserver.
+   The cut two were deleted rather than left commented out. A second
+   direction sitting in the repo is a second direction someone builds
+   from later.
 
-   THE DIFFERENTIATION RULE, WHICH OUTRANKS TASTE: if an effect could
-   appear unchanged on a generic SaaS landing page, it gets redesigned
-   around this shop's world or dropped. Each block below says how it
-   earns its place, and where it does not, it says that instead.
+   THE HARD RULES STILL APPLY TO WHAT IS LEFT: transform and opacity
+   only, prefers-reduced-motion respected twice over, hover behind
+   @media (hover: hover), nothing loops, no gradients, no glows, no
+   library, nothing on load.
 
-   THE STATE MACHINE. Every entrance is armed by motion.js adding
-   .mo-armed to the element, and released by .mo-in. THE "FROM" STATE IS
-   NEVER IN CSS ALONE. With JavaScript off, or with reduced motion set,
-   no element is ever armed, so nothing is ever hidden and the page is
-   exactly the production page. An entrance effect that hides content
-   until a script says otherwise is a broken page waiting for a script
-   error.
+   THE STATE MACHINE. An entrance is armed by motion.js adding .mo-armed
+   and released by .mo-in. THE "FROM" STATE IS NEVER IN CSS ALONE, so
+   with JavaScript off or reduced motion on, nothing is ever hidden.
    =========================================================================== */
 
-/* ---------- Sampler furniture. Not a candidate. ---------- */
+/* ---------- Sampler furniture. Not a candidate, does not ship. ---------- */
 .mo-bar {
   position: sticky; top: 0; z-index: 90;
   display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
@@ -56,162 +48,36 @@
   padding: 5px 12px; cursor: pointer; min-height: 32px;
 }
 .mo-bar .mo-state { color: var(--paper-2); }
-.mo-sr {
-  position: absolute; width: 1px; height: 1px; overflow: hidden;
-  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
-}
 
 /* ===========================================================================
-   A. THE ODOMETER
-   The stat band's real numbers roll up like a mechanical odometer, once,
-   when the band first enters view.
+   D. THE LANE LINE. THE FLAGGED ONE. STILL UNDECIDED.
+   The six process steps gain a dashed centre line down the gaps between
+   them, painting once, top to bottom, as the section first enters view.
+   The road to road-ready, literally.
 
-   HOW IT EARNS ITS PLACE. A counter that counts up is the most generic
-   effect on the web, and on a SaaS page it is decoration over a number
-   nobody checked. Two things make this one specific. The numbers ARE
-   real and dated, which is the only reason the site is allowed to move
-   them at all under "motion is evidence". And the metaphor is the one
-   counting instrument that belongs to a car: digits on a drum, rolling
-   through a window, landing with the last digit still settling. It is
-   not a number ticking up in a box.
+   THIS IS THE ONLY STAGING-TYPE MOTION LEFT IN THE SET, and now that C
+   has been adopted it is the only thing here that performs as a reader
+   ARRIVES rather than answering something they did. site.css's header
+   was amended on 2026-09-10 to say motion is no longer zero, and it was
+   careful to say that everything that moves does so because a person
+   did something to it. THIS WOULD BREAK THAT SENTENCE. Keeping it is a
+   second amendment, dated, in site.css and CLAUDE.md both.
 
-   HOW IT IS BUILT. Each digit is a strip of 0-9 with the target digit
-   repeated at the end, inside a window of exactly one digit's height.
-   The strip translates one full revolution and lands. Uniform distance
-   for every digit, so they move at one speed like a real drum, and the
-   cascade comes from staggering the start left to right.
-
-   THE ONE MEASUREMENT THIS RESTS ON: Archivo Black's digits are all
-   exactly 0.667em wide. Measured, all ten identical, so the window
-   needs no tabular-figures hack and the number cannot jitter as it
-   rolls. If the display face ever changes, measure again before
-   trusting this.
-
-   THE STEP IS 0.88em, NOT 1em, because that is .stat-n's line-height in
-   site.css. Matching it means the odometer occupies exactly the box the
-   static number did and the stat band does not change height. */
-.odo { display: inline-flex; }
-.odo-d {
-  display: block; width: .667em; height: .88em; overflow: hidden;
-}
-.odo-strip { display: block; will-change: transform; }
-.odo-strip > span {
-  display: block; height: .88em; line-height: .88;
-}
-/* Armed: showing the head of the strip. Released: one revolution down. */
-.mo-armed .odo-strip { transform: translateY(0); }
-.mo-in .odo-strip {
-  transform: translateY(var(--odo-end));
-  transition: transform 700ms cubic-bezier(.16, .84, .28, 1);
-  transition-delay: var(--odo-delay, 0ms);
-}
-
-/* ===========================================================================
-   B. THE STAMP
-   "Lifetime" arrives as a warranty stamp pressed onto the page. One
-   settle from 1.06 to rest, with the opacity snapping in far faster
-   than the scale settles, which is what makes it read as a press rather
-   than a zoom.
-
-   HOW IT EARNS ITS PLACE, AND WHERE I WENT PAST THE BRIEF. A scale-down
-   settle with a fade is generic; it is the SaaS modal entrance. What is
-   NOT generic is a stamp, and a stamp is never perfectly square to the
-   paper. So this carries 1.2 degrees of rotation that settles to zero,
-   and its origin is the left edge, where a hand would press hardest.
-   That rotation is my addition, not the brief's. If it reads as a
-   wobble rather than as paperwork, delete the rotate() and the effect
-   is exactly what was asked for.
-
-   The warranty is the single most load-bearing claim on the page. It is
-   the one word that has earned a moment. */
-.mo-armed .mo-stamp { opacity: 0; transform: scale(1.06) rotate(-1.2deg); }
-.mo-stamp { transform-origin: left center; }
-.mo-in .mo-stamp {
-  opacity: 1; transform: none;
-  transition: opacity 90ms linear, transform 380ms cubic-bezier(.2, .9, .25, 1);
-}
-
-/* ===========================================================================
-   C. LIFT, IN HOUSE MATERIALS
-   Cards rise 3px, an ink shadow deepens under them, and a 2px oxblood
-   rule sharpens along the base.
-
-   HOW IT EARNS ITS PLACE. The lift itself is the most generic gesture
-   in the set and it is not trying to be otherwise: it is feedback to a
-   hand, and feedback should be familiar. What is tuned is the material.
-   The default is a soft grey glow, which belongs to no one. This shadow
-   is --ink at low alpha, so the card casts a shadow the colour of this
-   site's own darkest value, and the base rule is --ox.
-
-   WHY THE SHADOW IS A CHILD ELEMENT. Animating box-shadow is off the
-   rules and expensive. The shadow is painted once on a layer that sits
-   at rest with opacity 0, and only its opacity moves.
-
-   ONE ADOPTION COST, STATED PLAINLY: .svc clips its photo with
-   overflow:hidden, which would clip an outside shadow layer too. The
-   sampler moves the rounding onto the image instead. Adopting C means
-   adopting that one-line change with it. */
-.mo-lift { position: relative; }
-.mo-shade {
-  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  box-shadow: 0 12px 26px -10px rgba(18, 27, 39, .34);
-  opacity: 0;
-}
-.mo-rule {
-  position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
-  background: var(--ox); pointer-events: none;
-  transform: scaleX(0); transform-origin: left center;
-}
-/* The one-line cost of giving .svc the same treatment as the others. */
-.svc.mo-lift { overflow: visible; }
-.svc.mo-lift .svc-photo { border-radius: var(--radius) var(--radius) 0 0; }
-
-@media (hover: hover) {
-  .mo-lift { transition: transform 160ms cubic-bezier(.2, .8, .3, 1); }
-  .mo-shade { transition: opacity 160ms cubic-bezier(.2, .8, .3, 1); }
-  .mo-rule { transition: transform 210ms cubic-bezier(.2, .8, .3, 1); }
-  .mo-lift:hover { transform: translateY(-3px); }
-  .mo-lift:hover .mo-shade { opacity: 1; }
-  .mo-lift:hover .mo-rule { transform: scaleX(1); }
-}
-
-/* The press is not a hover. It belongs on touch too, where it is the
-   only confirmation a finger gets that the button took the tap. */
-.btn, .callbar { transition: transform 90ms cubic-bezier(.3, .7, .4, 1); }
-.btn:active, .callbar:active { transform: translateY(1px); }
-
-/* ===========================================================================
-   D. THE LANE LINE. THE FLAGGED ONE.
-   The six process steps gain a dashed centre line running down the gaps
-   between them, and it paints once, top to bottom, as the section first
-   enters view. The road to road-ready, literally.
-
-   THIS IS THE ONLY STAGING-TYPE MOTION IN THE SET. Everything else here
-   responds to a reader: a hover, a tap, a disclosure. This one performs
-   as the reader arrives, which is the exact thing site.css's header
-   rules out. IF IT IS KEPT IT IS A DELIBERATE AMENDMENT TO THAT LAW AND
-   HAS TO BE WRITTEN DOWN AS ONE. Nobody should discover it later and
-   assume the rule was always softer than it reads.
-
-   IT MUST READ AS A LANE, NOT A PROGRESS BAR. Three things keep it on
-   the right side of that line: there is no track behind the dashes, so
-   nothing is being filled; the dashes never change colour or state once
-   painted, so nothing is being completed; and it paints at a constant
-   speed rather than easing toward a finish, because a road does not
-   have a finish, it has a next dash.
+   IT MUST READ AS A LANE, NOT A PROGRESS BAR. No track behind the
+   dashes, so nothing is being filled. No state change once painted, so
+   nothing is being completed. Constant speed, because easing toward a
+   stop is what a progress bar does; a road has no finish, only a next
+   dash.
 
    THE COLOUR IS --rule, NOT OXBLOOD, AND THAT IS THE PALETTE LAW
-   TALKING. A real lane line would be white or yellow, and oxblood is
-   the obvious "make it feel like the brand" choice. But oxblood means
-   ACT on this site and nothing else, and a decorative line that cannot
-   be clicked would be the first thing to break that. --rule is what the
-   step numerals already use.
+   TALKING. Oxblood means act, and since C shipped it also means "you
+   are pointing at this". A decorative line that answers neither would
+   be the third meaning, which is how a palette stops meaning anything.
 
    IT IS A SINGLE-COLUMN EFFECT. .steps is one column below 720px, two
-   up to 1040, three above. A line from 01 to 06 only exists in the
-   first of those. Above 720px this renders nothing at all rather than
-   drawing something that is not a road. That is a real limitation, not
-   a detail: on a desktop the effect does not exist. */
+   to 1040, three above. A line from 01 to 06 only exists in the first
+   of those, so above 720px this draws nothing rather than drawing
+   something that is not a road. On a desktop the effect does not exist. */
 .mo-lane-host { position: relative; }
 .mo-lane { position: absolute; left: 50%; top: 0; width: 3px; margin-left: -1.5px;
            pointer-events: none; }
@@ -221,27 +87,27 @@
 }
 .mo-in .mo-dash {
   transform: scaleY(1);
-  /* Linear on purpose. Easing toward a stop is what a progress bar does. */
   transition: transform 220ms linear;
   transition-delay: var(--dash-delay, 0ms);
 }
 @media (min-width: 720px) { .mo-lane { display: none; } }
 
 /* ===========================================================================
-   E. ACCORDION POLISH
+   E. ACCORDION POLISH. STILL UNDECIDED.
    The plus becomes a chevron, the chevron turns over when the answer
    opens, and the answer's text arrives rather than appearing.
 
    NO SIGNATURE NEEDED AND NONE ATTEMPTED. This is micro-feedback on a
-   control the reader just operated, and the FAQ disclosure is already
-   the one moving part site.css allows. It is the safest candidate here.
+   control the reader just operated, and the FAQ disclosure was the one
+   moving part the site allowed even before C.
 
    ONE HONEST LIMITATION. The panel's HEIGHT still snaps. Animating it
    is animating a height, which is off the rules, and the alternatives
    are a library or ::details-content, which is not reliable yet. So the
    text fades and slides four pixels; the box does not glide. If a
    gliding box is the requirement, this candidate has to be re-scoped
-   against rule 1 rather than quietly excepted from it. */
+   against the transform-and-opacity rule rather than quietly excepted
+   from it. */
 #faq .faq-ico::before,
 #faq .faq-ico::after {
   width: 11px; height: 3px; border-radius: 2px;
@@ -263,27 +129,21 @@
 #faq details[open] > p { animation: mo-faq-in 180ms ease-out both; }
 
 /* ===========================================================================
-   REDUCED MOTION. THE SECOND OF THE TWO GUARDS.
-   motion.js is the first: it never arms anything when this is set, so
-   nothing is ever hidden and no entrance is ever pending. This block
-   catches the rest, including the hover transitions and the accordion,
-   and it also answers the sampler's own "force reduced motion" switch
-   so the rule can be checked without leaving the page.
+   REDUCED MOTION, the second of the two guards. motion.js is the first:
+   it never arms anything when this is set. This block catches the rest,
+   and also answers the sampler's own "force reduced motion" switch so
+   the rule can be checked without leaving the page.
+
+   It deliberately does NOT restate what site.css already does for the
+   lift. That file carries its own reduced-motion block now, which is
+   where it belongs.
    =========================================================================== */
 @media (prefers-reduced-motion: reduce) {
-  .odo-strip, .mo-stamp, .mo-lift, .mo-shade, .mo-rule, .mo-dash,
-  .btn, .callbar, #faq .faq-ico {
-    transition: none !important;
-  }
+  .mo-dash, #faq .faq-ico { transition: none !important; }
   #faq details[open] > p { animation: none !important; }
-  .mo-lift:hover { transform: none !important; }
   .mo-dash { transform: scaleY(1) !important; }
 }
-.mo-force-reduce .odo-strip, .mo-force-reduce .mo-stamp,
-.mo-force-reduce .mo-lift, .mo-force-reduce .mo-shade,
-.mo-force-reduce .mo-rule, .mo-force-reduce .mo-dash,
-.mo-force-reduce .btn, .mo-force-reduce .callbar,
+.mo-force-reduce .mo-dash,
 .mo-force-reduce #faq .faq-ico { transition: none !important; }
 .mo-force-reduce #faq details[open] > p { animation: none !important; }
-.mo-force-reduce .mo-lift:hover { transform: none !important; }
 .mo-force-reduce .mo-dash { transform: scaleY(1) !important; }
