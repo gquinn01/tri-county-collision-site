@@ -528,6 +528,66 @@ in-house statement, which is untouched and still explicit. It does mean the
 line in 4.2 about this page asserting the claim is now weaker than it was, and
 4.2 says so.
 
+### 1.24 The process kicker, and what the kicker register is
+
+**Not a before/after pair, because there is no "before" from the live site.**
+Section kickers are builder-authored; the live page has none. This is recorded
+as a **voice decision** rather than a text change, because the register is a
+mold element and pages 2 through 37 inherit it.
+
+```
+was   What happens between the phone call and the keys
+now   What we do, in the order we do it
+```
+
+**Why it changed.** The old line framed a span, and the H2 above it already
+frames the same span: "Our Collision Repair Process: From Accident to
+Road-Ready". A kicker that restates its own heading spends a line saying
+nothing.
+
+#### The register, which is the part that generalizes
+
+All nine kickers on this page, so the rule is visible rather than asserted:
+
+```
+Two kinds of damage, one shop
+The moments right after a collision can feel chaotic
+We talk to the adjuster so you do not have to
+In their words, not ours
+Twelve manufacturers, and the procedures that come with them
+You are choosing who cares for your vehicle during a stressful time
+One phone number, one email address, one shop
+The questions drivers actually call and ask
+What we do, in the order we do it
+```
+
+What holds across them:
+
+- **Short, and no terminal punctuation.** A kicker is a label, not a sentence
+  the reader finishes.
+- **Usually a contrast or a parallel.** "X, not Y". "One, one, one".
+- **Never a command and never marketing-speak.** No "discover", no
+  "solutions", no verb-first instruction to the reader.
+- **It says something the H2 does not.** That is the whole job. A kicker that
+  paraphrases its heading is the failure mode, and it is the one that just got
+  fixed.
+- **It carries no claim the page does not already carry.** Three of the nine
+  are reader-facing ("We talk to the adjuster so you do not have to"), and each
+  restates something stated at length below it.
+
+#### What was rejected, and why it is worth writing down
+
+Three other lines were on the table:
+
+| Candidate | Why not |
+|---|---|
+| Six steps, from the first call to the keys | True, and closest to the old line, but it still overlaps the H2's span, and as a mold every page would have to supply its own step count. |
+| The order it actually happens in | Plain and short, and "actually" is already in the register. Implies the page is not an idealized version, which is a quiet claim about candor. |
+| You will know which step your car is on | The strongest line of the four and **the only one that is a claim**. It restates FAQ 1's progress-updates promise as a heading, so it would need the owner's pass, and as a mold it would push future kickers toward promises rather than labels. |
+
+**The one that shipped adds no claim at all**, which is why it needs nothing
+from the owner and why it fits any service page unchanged.
+
 ---
 
 ## 2. What the live page carries that this page does not
