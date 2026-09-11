@@ -31,7 +31,7 @@
       THE SUPPORTING COLOURS WERE RE-MEASURED AGAINST THE GRADIENT'S LIGHTEST
       STOP, which is --ox and therefore the worst case:
 
-          h1, eyebrow        --silver      9.60
+          h1, eyebrow        --silver     10.50
           lead, breadcrumb   --silver-2    7.34
           breadcrumb rule    --rule        7.20
           chip border        see .badges, re-tuned from .42 to .50
@@ -116,10 +116,21 @@
    WHICH STOP BECOMES THE GROUND IS A JUDGEMENT, AND IT IS RECORDED AS ONE.
    The median is what the eye calls "the silver", and it is unusable as a
    ground: --ink-2 on #ABABAB measures 4.27 and --ox-tx 3.90, so the
-   secondary text and the small accent text both fail. The rule taken was
-   THE LIGHTEST STOP THE WORDMARK ACTUALLY CONTAINS, the highlight where the
-   chrome catches the light, and that is #E6E8E8. Sampled, not invented, and
-   every text pair clears on it.
+   secondary text and the small accent text both fail.
+
+   The first rule taken was THE LIGHTEST STOP THE WORDMARK ACTUALLY
+   CONTAINS, #E6E8E8, and the ground shipped at that on 2026-09-10. It was
+   lifted the same day because black type did not stand off it hard enough:
+   --ink measured 14.09 where the old cream gave 16.21.
+
+   SO THE RULE IS NOW ONE STEP LONGER, and the second step is the honest
+   part: TAKE THE WORDMARK'S HIGHLIGHT AND LIFT ITS LIGHTNESS, KEEPING ITS
+   CHANNEL RELATIONSHIP EXACTLY. The highlight is rgb(230,232,232), neutral
+   with a +2 cool cast in green and blue. The ground is rgb(240,242,242):
+   ten lighter, the same +2 cast, the same hue. It is no longer a pixel the
+   wordmark contains, and pretending otherwise would be the kind of
+   provenance claim this file exists to prevent. What it still is: the
+   logo's silver, brighter. --ink reads 15.42 on it.
 
    --rule COMES OUT OF THE SAME SAMPLE, at the wordmark's p75, #CACACA. It
    had to move: the old warm #DED8D1 measured 1.32 against the cream ground
@@ -128,17 +139,21 @@
 
    THE TEMPERATURE CHANGED ON PURPOSE, AND IT IS A BRAND DECISION RATHER
    THAN A TASTE ONE. #F9F7F4 was a warm cream: red highest, blue lowest.
-   #E6E8E8 is the logo's own neutral-to-cool chrome. The page now stands on
-   a colour the mark is actually made of, which is the same argument that
-   put #691C17 and #E92424 in this table. WHAT IT COSTS: every ratio on the
-   ground drops a little, because the ground got darker. Nothing dropped
-   below its floor, and the numbers below are the new ones.
+   #F0F2F2 carries the logo's own neutral-to-cool chrome cast, green and
+   blue two above red. The page now stands on the mark's temperature, which
+   is the same argument that put #691C17 and #E92424 in this table.
+
+   WHAT IT COSTS, AND IT IS ALMOST NOTHING NOW. The first silver was darker
+   than the cream and every ratio on the ground dropped with it. Lifting the
+   ground put them back: --ink reads 15.42 against the cream's 16.21, --ink-2
+   8.72 against 9.16, --ox-tx 7.96 against 8.37. The temperature moved and
+   the contrast very nearly did not.
 
    | Token     | Hex      | Role                                            |
    |-----------|----------|-------------------------------------------------|
    | --ox      | #691C17  | ACT. Filled buttons, the call bar, the two bands.|
    | --ink     | #121B27  | Body text, headings, the header, the footer.     |
-   | --silver   | #E6E8E8  | THE DEFAULT GROUND, and all type on dark.       |
+   | --silver   | #F0F2F2  | THE DEFAULT GROUND, and all type on dark.       |
    | --white   | #FFFFFF  | THE HIGHLIGHT GROUND. One band, not the page.   |
    | --mark    | #E92424  | The logo, and nothing else. See the warning.     |
    | --ox-tx   | #8A2419  | Oxblood's shade for small text on the silver ground.         |
@@ -153,17 +168,16 @@
    THE BAND SEPARATES MORE THAN IT USED TO, AND THAT WAS NOT THE PLAN. It
    measured 1.07 against the old cream ground, which was chosen so it would
    read as the same page one shade cleaner rather than as a contrast switch.
-   Against the silver it measures 1.23. Still nothing like a band change,
-   but the highlight does more work now than it was asked to. Watch it: if
-   it ever starts reading as a separate slab, the ground moved, not the
-   band.
+   Against the first silver it measured 1.23, which was more separation
+   than the band was ever asked for. The ground was lifted on 2026-09-10
+   and it is 1.12 now, back within sight of the 1.07 it was tuned to.
 
    Every text pair gets better on white, and by more than before:
 
-       --ink   on --white  17.33     on --silver  14.09
-       --ox    on --white   11.80    on --silver   9.60
-       --ink-2 on --white    9.80    on --silver   7.96
-       --ox-tx on --white    8.95    on --silver   7.27
+       --ink   on --white  17.33     on --silver  15.42
+       --ox    on --white   11.80    on --silver  10.50
+       --ink-2 on --white    9.80    on --silver   8.72
+       --ox-tx on --white    8.95    on --silver   7.96
 
    ONE HONEST DUPLICATE: --panel is also #FFFFFF and has been since the
    first commit. It is the ground of a CARD, which sits ON the page; --white
@@ -180,11 +194,11 @@
 
    MEASURED CONTRAST, machine-counted against WCAG's formula, never eyeballed:
 
-       --ink    on --silver    14.09        --silver   on --ink     14.09
-       --ox     on --silver     9.60        --silver   on --ox       9.60
-       --ox-tx  on --silver     7.27        --silver-2 on --ink     10.78
-       --ink-2  on --silver     7.96        --silver-2 on --ox       7.34
-       --rule   on --silver     1.33        --silver   on the deep  12.50
+       --ink    on --silver    15.42        --silver   on --ink     15.42
+       --ox     on --silver    10.50        --silver   on --ox      10.50
+       --ox-tx  on --silver     7.96        --silver-2 on --ink     10.78
+       --ink-2  on --silver     8.72        --silver-2 on --ox       7.34
+       --rule   on --silver     1.46        --silver   on the deep  13.68
 
    AND TWO THAT FAIL ON PURPOSE. THEY ARE THE SAME NUMBER, WHICH IS WHY THE
    RULE IS SYMMETRIC:
@@ -192,9 +206,9 @@
        --ox  on --ink   1.47        --ink on --ox   1.47
 
    An oxblood button on the ink header is all but invisible AS A SHAPE, even
-   though its silver label reads at 9.60. An ink button on an oxblood band is
+   though its silver label reads at 10.50. An ink button on an oxblood band is
    invisible in exactly the same way and by exactly the same margin, with its
-   silver label reading at 14.09.
+   silver label reading at 15.42.
 
    SO: THE ACT BUTTON ON ANY DARK GROUND WEARS THE PAPER HAIRLINE. Decided
    2026-09-10, and it is one rule, not two exceptions. The fill changes to
@@ -203,16 +217,16 @@
    dark ground without one.
 
        ground        fill      label                 shape   label
-       --ink         --ox      --silver                1.47    9.60
-       --ox          --ink     --silver                1.47   14.09
+       --ink         --ox      --silver                1.47   10.50
+       --ox          --ink     --silver                1.47   15.42
 
    The hover shades are darker still and therefore even less visible as
    shapes, 1.24 and 1.21. THAT IS FINE AND IT IS THE POINT: the border draws
    the shape, the fill only says the pointer is on it, and both hover labels
-   stay well clear at 7.96 and above. The ghost button beside the act button
+   stay well clear at 8.72 and above. The ghost button beside the act button
    is unaffected on either ground; it is a border and a label already.
 
-   THE LOGO RED FAILS AS TEXT. #E92424 on the silver ground is 3.60, further under the 4.5 that
+   THE LOGO RED FAILS AS TEXT. #E92424 on the silver ground is 3.94, under the 4.5 that
    normal-size text needs. That is why the mark's red and the text red are two
    separate tokens rather than one "brand red": --mark is for the logo file
    and --ox-tx is for words. Do not set type in --mark, at any size, on any
@@ -320,7 +334,12 @@
   --ox-tx: #8A2419;
   --ink: #121B27;
   --ink-2: #3C4453;
-  --silver: #E6E8E8;
+  --silver: #F0F2F2;
+  /* THE SAME COLOUR AS CHANNELS. Every translucent wash of the ground
+     reads from here, so a future ground change cannot leave a stale
+     literal behind. It already did once: renaming the token left ten
+     rgba(249,247,244,a) washes still warm. */
+  --silver-rgb: 240 242 242;
   --silver-2: #C9CCD3;
   --mark: #E92424;
   --rule: #CACACA;
@@ -418,7 +437,7 @@ section { padding: var(--pad) 0; }
 .field-ink .btn:not(.btn-ghost) { background: var(--ox); }
 .field-ink .btn:not(.btn-ghost):hover { background: var(--ox-dk); border-color: var(--silver); }
 .dark .btn-ghost { background: transparent; color: var(--silver); border-color: var(--silver); }
-.dark .btn-ghost:hover { background: rgba(230, 232, 232, .14); }
+.dark .btn-ghost:hover { background: rgb(var(--silver-rgb) / .14); }
 .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin: 26px 0 0; }
 /* The two act bands centre their CTA row under a centred heading. The hero
    row is not in a .dark band and stays left, with the copy it belongs to. */
@@ -431,7 +450,7 @@ section { padding: var(--pad) 0; }
    like chrome. */
 .nav {
   position: sticky; top: 0; z-index: 40;
-  background: var(--ink); border-bottom: 1px solid rgba(230, 232, 232, .16);
+  background: var(--ink); border-bottom: 1px solid rgb(var(--silver-rgb) / .16);
 }
 /* THE LOGO NEEDS CLEAR SPACE, AND IT HAD NONE. The mark's PNG is cropped
    tight to the artwork, so the <img> box IS the mark: at 1440 the logo
@@ -600,12 +619,12 @@ section { padding: var(--pad) 0; }
 /* RE-TUNED FOR THE OX GROUND, 2026-09-10, and the number is not a guess.
    At .42 alpha this border measured 3.85 against ink, which is what it
    was set for. The same .42 over --ox measures 3.11: the ground got
-   lighter, so the same wash reads weaker on it. RE-TUNED TWICE for the
-   same reason: .50 held 3.85 while the wash was the warm cream, and when
-   the cream became the logo silver on 2026-09-10 the same .50 fell to
-   3.47, because the silver is darker than the cream was. .55 puts it
-   back to 3.89. Same strength through two ground changes. */
-.heroA .badges li { background: transparent; border-color: rgba(230, 232, 232, .55); color: var(--silver); }
+   lighter, so the same wash reads weaker on it. RE-TUNED EACH TIME THE
+   GROUND MOVED, to hold the one number: .50 held 3.85 on the warm cream,
+   fell to 3.47 on the first silver, went to .55 for 3.89, and sits at .52
+   for 3.87 now the ground is lighter. Same strength through three grounds,
+   which is the only reason this comment is worth its length. */
+.heroA .badges li { background: transparent; border-color: rgb(var(--silver-rgb) / .52); color: var(--silver); }
 .heroA .badges svg { stroke: var(--silver); }
 
 /* ---------- THE PHONE HERO AND THE FOLD, added 2026-09-10 ----------
@@ -958,9 +977,9 @@ section { padding: var(--pad) 0; }
    MEASURED, at every stop:
 
        ground        silver text     ink button AS A SHAPE
-       --ox               9.60                       1.47
-       --ox-dk          11.34                       1.24
-       deep end         12.50                       1.13
+       --ox              10.50                       1.47
+       --ox-dk          12.39                       1.24
+       deep end         13.68                       1.13
 
    Text gets MORE readable toward the ends, not less. The act button sits
    mid-band on --ox, and its silver hairline is what draws its shape in
@@ -996,12 +1015,12 @@ section { padding: var(--pad) 0; }
 }
 .card h3 { margin-bottom: .45em; }
 .card p { font-size: 1rem; color: var(--ink-2); }
-.dark .card { background: rgba(230, 232, 232, .08); border-color: rgba(230, 232, 232, .28); }
+.dark .card { background: rgb(var(--silver-rgb) / .08); border-color: rgb(var(--silver-rgb) / .28); }
 .dark .card p { color: var(--silver); }
 
 .tile { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-bottom: 16px; border: 2px solid var(--ox); border-radius: var(--radius); }
 .tile svg { width: 24px; height: 24px; fill: none; stroke: var(--ox); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.tile-dark { border-color: rgba(230, 232, 232, .5); }
+.tile-dark { border-color: rgb(var(--silver-rgb) / .5); }
 .tile-dark svg { stroke: var(--silver); }
 .tile-dark svg .ico-accent { stroke: var(--silver); }
 
@@ -1102,7 +1121,7 @@ footer.site a { color: var(--silver); }
 .foot-nap { margin-top: 18px; line-height: 1.8; }
 .foot-head { font-size: .84rem; letter-spacing: .1em; text-transform: uppercase; color: var(--silver); margin: 0 0 14px; }
 .foot-links { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
-.foot-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(230, 232, 232, .18); font-size: .93rem; color: var(--silver-2); }
+.foot-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid rgb(var(--silver-rgb) / .18); font-size: .93rem; color: var(--silver-2); }
 .foot-bottom a { color: var(--silver-2); }
 
 /* ---------- The staging banner. Removed at cutover with the noindex. ----------
@@ -1114,7 +1133,7 @@ footer.site a { color: var(--silver); }
   background: var(--ink); color: var(--silver-2);
   font-size: .8rem; font-weight: 600; letter-spacing: .02em;
   text-align: center; padding: 7px 16px; margin: 0;
-  border-bottom: 1px solid rgba(230, 232, 232, .14);
+  border-bottom: 1px solid rgb(var(--silver-rgb) / .14);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1150,7 +1169,7 @@ footer.site a { color: var(--silver); }
    ANY NUMBER TRUE ONLY ON THE DAY IT WAS WRITTEN CARRIES ITS DATE, in .stat-s.
    The review count is the one on this page. */
 /* THE HIGHLIGHT GROUND. This is the one band on the site that is --white
-   rather than --silver. See the palette note for why 1.23 is the point. */
+   rather than --silver. See the palette note for why 1.12 is the point. */
 .statband { background: var(--white); border-bottom: 1px solid var(--rule); }
 .stats { display: grid; gap: 34px; }
 @media (min-width: 820px) { .stats { grid-template-columns: repeat(3, 1fr); gap: 0; } }
@@ -1224,7 +1243,7 @@ footer.site a { color: var(--silver); }
 .quote-grid { display: grid; gap: 22px; align-items: start; }
 @media (min-width: 760px) { .quote-grid { grid-template-columns: repeat(2, 1fr); } }
 .quote {
-  background: rgba(230, 232, 232, .07); border: 1px solid rgba(230, 232, 232, .2);
+  background: rgb(var(--silver-rgb) / .07); border: 1px solid rgb(var(--silver-rgb) / .2);
   border-radius: var(--radius); padding: 26px 24px; margin: 0;
 }
 .quote svg { width: 26px; height: 26px; fill: none; stroke: var(--silver); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 12px; }

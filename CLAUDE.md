@@ -291,14 +291,14 @@ each carrying the CTA row. Ink is structural. Solid colours only and no glows.
 **White is a ground, not a shade of the ground.** Added 2026-09-10. `--silver`
 is the page; `--white` is used on exactly **one band**, the stat band under the
 hero, to lift the three proof figures off the run of the page. Every text pair
-gets better on it: ink 17.33 against 14.09, oxblood 11.80 against 9.60,
-`--ink-2` 9.80 against 7.96, `--ox-tx` 8.95 against 7.27.
+gets better on it: ink 17.33 against 15.42, oxblood 11.80 against 10.50,
+`--ink-2` 9.80 against 8.72, `--ox-tx` 8.95 against 7.96.
 
 **The band separates more than it used to, and that was not the plan.** It
 measured 1.07 against the old cream ground, chosen so it would read as the same
-page one shade cleaner rather than as a contrast switch. Against the silver it
-measures **1.23**. Still nothing like a band change, but the highlight does more
-work now than it was asked to.
+page one shade cleaner rather than as a contrast switch. The first silver took
+it to 1.23, which was more separation than the band was ever asked for; lifting
+the ground brought it back to **1.12**.
 
 **The ground is the logo's silver, decided 2026-09-10.** 40,515 opaque hueless
 letterform pixels were sampled out of the TRI-COUNTY wordmark, the same method
@@ -309,18 +309,32 @@ median is what the eye calls the silver and it is unusable as a ground:
 `--ink-2` measures 4.27 on it and `--ox-tx` 3.90, so secondary and small accent
 text both fail. The rule taken was **the lightest stop the wordmark actually
 contains** — the highlight where the chrome catches the light — which is
-**#E6E8E8**. Sampled, not invented, and every text pair clears on it.
+**#E6E8E8**.
+
+**The ground was then lifted, and the rule is one step longer for it.** At
+#E6E8E8 black type did not stand off the page hard enough: `--ink` measured
+14.09 where the cream gave 16.21. The second step: **take the highlight and
+lift its lightness, keeping its channel relationship exactly.** The highlight
+is rgb(230,232,232), neutral with a +2 cool cast; the ground is
+**rgb(240,242,242)** — ten lighter, same cast, same hue, `--ink` at **15.42**.
+It is no longer a pixel the wordmark contains, and saying otherwise would be
+the kind of provenance claim these records exist to prevent. What it still is:
+the logo's silver, brighter.
 
 `--rule` came out of the same sample at the wordmark's p75, **#CACACA**. It had
 to move: the old warm #DED8D1 measured 1.32 on the cream and only **1.15** on
-the silver, which is a hairline nobody can see. #CACACA measures 1.33.
+the silver, which is a hairline nobody can see. #CACACA measures **1.46** on the
+lifted ground. That is slightly stronger than the 1.32 it had, and it was left
+there deliberately: the sampled stop that lands nearer 1.32 is #DBDBDD at 1.23,
+and on a light ground the safer error is a hairline you can see.
 
 **The temperature change is a brand decision, not a taste one.** #F9F7F4 was a
 warm cream, red highest and blue lowest. #E6E8E8 is the logo's own
 neutral-to-cool chrome. The page now stands on a colour the mark is actually
 made of, which is the same argument that put #691C17 and #E92424 in the table.
-**What it costs:** every ratio on the ground drops a little, because the ground
-got darker. Nothing dropped below its floor.
+**What it costs is almost nothing now.** The first silver was darker than the
+cream and every ratio dropped with it; lifting the ground put them back within
+a point. The temperature moved and the contrast very nearly did not.
 
 **One sanctioned section-background gradient, decided 2026-09-10.** The firm's
 palette law allows exactly this one exception, and only as a dated, recorded
