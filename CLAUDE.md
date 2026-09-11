@@ -243,6 +243,32 @@ border's alpha changed**, from .42 to .50, and not to make it stronger: .42
 measured 3.85 on ink and only 3.11 on the lighter oxblood ground, so .50 puts
 it back to exactly 3.85. Same strength, on a ground that changed under it.
 
+**Home is full-bleed. Service pages are split.** Decided 2026-09-10, and it is
+architectural rather than decorative. The flush-left panel hero is now the
+**service-page signature**; the front door does not wear it. A visitor should
+be able to tell which kind of page they landed on before reading a word.
+
+What diverges on `/` is only shape: a photograph edge to edge with the content
+on a full-width ink panel at its foot and an H1 one display scale larger; the
+stat band worn as a **white card overlapping the hero's bottom edge** rather
+than a band beneath it; a **photographic router grid** of services; and **one**
+oxblood act band instead of two. What does not diverge is the palette, the
+type, the motion laws, the lift, the arrival motion, the button grammar, the
+NAP, the staging exception and every check that enforces them. **A different
+shape is not a different site.**
+
+Two departures from the rules below, recorded rather than left to be found.
+**The hero panel is ink there, not oxblood**: a full-width oxblood band at the
+top of the page spends the act colour before the page has asked for anything,
+and ink is structural, which is what a panel under a photograph is. **Home
+carries one oxblood band**: two is right on a long service page a reader
+scrolls through deciding, but a front door routes rather than argues.
+
+**The panel is opaque, which is why it is a panel and not a scrim.** The
+readability half of rule 1 is not shape and does not diverge. The photograph
+runs full-bleed and undimmed *above* the panel; the panel is `--ink` at full
+strength with `--silver` on it at 15.42.
+
 **2. The panel is flush to the left viewport edge.** No gap, no float, no
 rounded corner. Its **left padding equals the page grid's left margin**, so
 the type inside it lines up with the first character of every band below it.

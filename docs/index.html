@@ -60,7 +60,7 @@
        SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
   <link rel="preload" href="assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/site.css?v=ce94cd32">
+  <link rel="stylesheet" href="assets/site.css?v=97487e16">
   <script src="assets/site.js?v=78d33e7f" defer></script>
 
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
@@ -319,21 +319,24 @@
   </header>
 
   <main id="main">
-    <!-- ============ HERO ============
-         Same mold as the pattern page: full-bleed photograph, opaque panel
-         on the oxblood ground, flush to the left edge. NO BREADCRUMB, and
-         no BreadcrumbList in the schema either: this is the root, and a
-         breadcrumb whose only rung is the page you are on is furniture.
-         THE PHOTOGRAPH IS THE PATTERN PAGE'S. There are three real photos
-         in this repo and all three are already on /collision-repair/. The
-         homepage should have its own, and that is on the claims list with
-         the rest of the photography. -->
-    <section class="hero heroA">
-      <img class="heroA-photo" src="assets/img/accent-minor-collision-repair.jpg" alt="Final collision repair touch-ups being completed on a black automobile." width="1200" height="800" fetchpriority="high" decoding="async">
-      <div class="heroA-panel field-ox">
-        <p class="eyebrow">Family owned and operated</p>
-        <h1>Auto Body &amp; Collision Repair in Southampton, PA</h1>
-        <p class="lead">Your insurance claim handled for you. Your repair done right the first time and guaranteed for life. Your car back detailed inside and out, looking like the accident never happened.</p>
+    <!-- ============ FULL-BLEED HERO ============
+         HOME IS FULL-BLEED, SERVICE PAGES ARE SPLIT. The flush-left panel
+         is the service-page signature and this page does not wear it. See
+         THE HOMEPAGE'S ARCHITECTURE in assets/site.css for the rule, the
+         two departures it takes from the design-system rules, and why the
+         panel is opaque rather than a wash over the image.
+         NO BREADCRUMB and no BreadcrumbList: this is the root.
+         THE PHOTOGRAPH IS THE STRONGEST OF THE THREE CARRIED, which is
+         why it moved off the Major card and onto the front door. It is
+         still a stock image and still on the claims list at 4.9. -->
+    <section class="hero heroB">
+      <img class="heroB-photo" src="assets/img/accent-major-collision-repair.jpg" alt="A technician grinding a damaged front end in the shop while sparks fall." width="1200" height="800" fetchpriority="high" decoding="async">
+      <div class="heroB-frame">
+        <div class="heroB-scrim field-ink">
+          <div class="wrap">
+            <p class="eyebrow">Family owned and operated</p>
+            <h1>Auto Body &amp; Collision Repair in Southampton, PA</h1>
+            <p class="lead">Your insurance claim handled for you. Your repair done right the first time and guaranteed for life. Your car back detailed inside and out, looking like the accident never happened.</p>
         <div class="cta-row">
           <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
           <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
@@ -344,15 +347,19 @@
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.8h4.5"/></svg>Free estimates</li>
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6v2M3.4 12a8.6 8.6 0 0 1 17.2 0z"/><path d="M12 12v6.4a2.3 2.3 0 0 0 4.6 0"/></svg>Insurance paperwork handled</li>
         </ul>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ============ STAT BAND ============
-         The mold's band, and the same three stats the pattern page carries.
-         The count, the rating and the day they were read live in
-         scripts/audit.py; this comment quotes none of them, by convention. -->
-    <section class="statband" id="proof" aria-label="Warranty, reviews and certifications">
+    <!-- ============ THE STAT CARD ============
+         The band, worn as jewellery: same three stats, same class so the
+         odometer and the letter roll find them, overlapping the hero's
+         bottom edge instead of sitting under it. Home wears the card;
+         service pages keep the band. -->
+    <section class="statband statcard" id="proof" aria-label="Warranty, reviews and certifications">
       <div class="wrap">
+        <div class="statcard-inner">
         <div class="stats">
           <div class="stat">
             <span class="stat-n">Lifetime</span>
@@ -370,20 +377,79 @@
             <span class="stat-s">INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep.</span>
           </div>
         </div>
+        </div>
       </div>
     </section>
 
-    <!-- ============ WE FIX IT ALL ============
-         The live homepage's hero list, carried as its own section. It is a
-         SCOPE list, so every line on it is on the claims list: the shop may
-         only sell what it actually does. -->
-    <section id="what-we-fix">
+    <!-- ============ THE ROUTER ============
+         The centrepiece of a front door. One card is a real link and
+         three are not, and NONE of them says "learn more": a label that
+         looks like a link and is not one is worse than no label. The
+         lift is on the linked card only, so nothing rises under a
+         pointer that cannot be clicked.
+         FOUR CARDS, THREE PHOTOGRAPHS. One image is used twice and one is
+         also the hero. That is a gap, not a design: see
+         proposed-changes.md 3.17. -->
+    <section id="services">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">What We Do</h2>
+          <p class="sec-sub">Four services, one shop</p>
+        </div>
+        <div class="svc-cards">
+          <a class="svc-card" href="collision-repair/">
+            <img src="assets/img/accent-minor-collision-repair.jpg" alt="Final collision repair touch-ups being completed on a black automobile." width="1200" height="800" loading="lazy" decoding="async">
+            <div class="svc-card-body">
+              <h3>Collision Repair</h3>
+              <p>Minor and major damage, repaired to manufacturer standards.</p>
+            </div>
+          </a>
+          <div class="svc-card" data-pending-href="commercial-collision-repair/">
+            <img src="assets/img/accent-major-collision-repair.jpg" alt="A technician grinding a damaged front end during major collision repair." width="1200" height="800" loading="lazy" decoding="async">
+            <div class="svc-card-body">
+              <h3>Commercial Collision Repair</h3>
+              <p>Commercial and fleet vehicles.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="paintless-dent-repair/">
+            <img src="assets/img/accent-collision-repair-1.jpg" alt="A technician working on a vehicle panel during a collision repair." width="1200" height="800" loading="lazy" decoding="async">
+            <div class="svc-card-body">
+              <h3>Paintless Dent Repair</h3>
+              <p>Dents removed without touching your paint.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="auto-glass-repair-replacement/">
+            <img src="assets/img/accent-minor-collision-repair.jpg" alt="A repaired vehicle panel being finished after glass and body work." width="1200" height="800" loading="lazy" decoding="async">
+            <div class="svc-card-body">
+              <h3>Auto Glass Repair</h3>
+              <p>Cracked windshields and broken side windows.</p>
+            </div>
+          </div>
+        </div>
+        <div class="prose" style="margin-top:34px;text-align:center">
+          <p>Serving <span data-pending-href="areas-served/">Bucks and Montgomery County</span> from one shop in Southampton.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ THE INTAKE DIAGRAM ============
+         "We fix it all" as the drawing every customer has seen at
+         intake, with the checklist's own words pointing at the panels
+         they name. Solid single-colour line art, no fill, no motion.
+         The five lines are also a list in the DOM at every width,
+         visually hidden above 900px, because SVG labels do not survive a
+         phone and a screen reader should not depend on the viewport. -->
+    <section id="what-we-fix" class="band-panel">
       <div class="wrap">
         <div class="sec-head">
           <h2 class="sec-title">We Fix It All</h2>
           <p class="sec-sub">What comes through the door</p>
         </div>
-        <ul class="ticks">
+        <svg class="diagram-svg" viewBox="0 0 900 400" aria-hidden="true" focusable="false">
+          <g transform="translate(150,100)"><path class="dg-line" d="M42 198V170c0-14 9-22 24-24l60-6c14-26 34-37 60-39l80-4c12-28 38-42 70-43h62c34 2 54 16 68 40l82 12c28 6 42 28 42 56v36z"/><path class="dg-line" d="M111 198a39 39 0 0 1 78 0"/><path class="dg-line" d="M431 198a39 39 0 0 1 78 0"/><circle class="dg-line" cx="150" cy="198" r="33"/><circle class="dg-line" cx="150" cy="198" r="13"/><circle class="dg-line" cx="470" cy="198" r="33"/><circle class="dg-line" cx="470" cy="198" r="13"/><path class="dg-line" d="M210 105V186"/><path class="dg-line" d="M336 58V186"/><path class="dg-line" d="M440 92V186"/><path class="dg-line" d="M272 92L330 66H396L452 92"/><path class="dg-line" d="M336 66V92"/><path class="dg-line" d="M296 120h20"/><path class="dg-line" d="M362 120h20"/></g>
+          <g class="dg-notes"><path class="dg-lead" d="M350 72L444 174"/><text class="dg-label" x="330" y="60" text-anchor="middle">Cracked windshields</text><path class="dg-lead" d="M628 72L524 150"/><text class="dg-label" x="620" y="60" text-anchor="start">Hail damage</text><path class="dg-lead" d="M158 322L192 292"/><text class="dg-label" x="150" y="332" text-anchor="end">Deer strikes</text><path class="dg-lead" d="M424 358L430 262"/><text class="dg-label" x="424" y="374" text-anchor="middle">Door dings and dents</text><path class="dg-lead" d="M706 344L716 252"/><text class="dg-label" x="884" y="356" text-anchor="end">Minor and major collisions</text></g>
+        </svg>
+        <ul class="ticks diagram-list">
           <li><strong>Minor and major collisions.</strong></li>
           <li><strong>Cracked windshields.</strong></li>
           <li><strong>Door dings and dents.</strong></li>
@@ -394,15 +460,12 @@
     </section>
 
     <!-- ============ WHO YOU ARE HANDING THE KEYS TO ============
-         The live homepage's main description, migrated. Two changes, both
-         recorded in proposed-changes.md: the business name takes the
-         canonical spelling, and THE REVIEW CLAIM COMES OUT. The live page
+         The live homepage's main description, migrated. The name takes
+         the canonical spelling, the street takes the canonical
+         abbreviation, and the review claim comes out: the live page
          makes a claim in this paragraph that its own widget on the same
-         page contradicts; both figures and the profile's are recorded in
-         proposed-changes.md 3.12, and neither is repeated here, per the
-         convention that a comment names the record and not the number.
-         The stat band above is the only place this site quantifies
-         reviews, and it carries the day it was counted. -->
+         page contradicts. Both figures and the profile's are in
+         proposed-changes.md 3.12, and none is repeated here. -->
     <section id="who-we-are">
       <div class="wrap">
         <div class="sec-head">
@@ -416,67 +479,11 @@
       </div>
     </section>
 
-    <!-- ============ ACT BAND 1 ============
-         Oxblood means act, so this band carries a CTA row. The line is the
-         live page's own services subhead. -->
-    <section class="dark field-ox" id="get-started">
-      <div class="wrap">
-        <div class="sec-head">
-          <h2 class="sec-title">We will get you back on the road with your vehicle restored to its pre-accident condition.</h2>
-          <p class="sec-sub">Estimates are free and there is no obligation</p>
-        </div>
-        <div class="cta-row">
-          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
-          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ SERVICES ============
-         Four services, in the live page's order. ONE IS A REAL LINK and
-         three are not: /collision-repair/ is built, the other three are
-         not, and this site never writes a link to a page that has not been
-         built. Each carries data-pending-href with the URL it becomes, and
-         the link test fails the day that page exists. -->
-    <section id="services" class="band-panel">
-      <div class="wrap">
-        <div class="sec-head">
-          <h2 class="sec-title">What We Do</h2>
-          <p class="sec-sub">Four services, one shop</p>
-        </div>
-        <div class="grid4">
-          <article class="card">
-            <h3>Collision Repair</h3>
-            <p>Minor scuffs to major structural work, on a frame bench, to manufacturer specifications. Most of what we do.</p>
-            <p class="svc-more"><a href="collision-repair/">Learn more</a></p>
-          </article>
-          <article class="card">
-            <h3>Commercial Collision Repair</h3>
-            <p>Fleet and commercial vehicles, handled with the downtime in mind.</p>
-            <p class="svc-more"><span data-pending-href="commercial-collision-repair/">Learn more</span></p>
-          </article>
-          <article class="card">
-            <h3>Paintless Dent Repair</h3>
-            <p>Say goodbye to unsightly dents with Tri-County Collision&#x27;s paintless dent repair services. Our skilled technicians use advanced techniques to remove dents without affecting your vehicle&#x27;s paint job. Get fast and affordable solutions for all types of dents.</p>
-            <p class="svc-more"><span data-pending-href="paintless-dent-repair/">Learn more</span></p>
-          </article>
-          <article class="card">
-            <h3>Auto Glass Repair</h3>
-            <p>Get professional auto glass repair and replacement services at Tri-County Collision. Our certified technicians provide high-quality solutions for cracked windshields, broken side windows, and more.</p>
-            <p class="svc-more"><span data-pending-href="auto-glass-repair-replacement/">Learn more</span></p>
-          </article>
-        </div>
-        <div class="prose" style="margin-top:34px;text-align:center">
-          <p>Serving <span data-pending-href="areas-served/">Bucks and Montgomery County</span> from one shop in Southampton.</p>
-        </div>
-      </div>
-    </section>
-
     <!-- ============ TESTIMONIALS ============
-         Four of the eight the live homepage publishes, byte for byte,
-         typos and loose punctuation included: a testimonial is somebody
-         else's words and tidying one is not a style fix. Which four, and
-         why four, is recorded in proposed-changes.md.
+         TWO, not the four this page carried before and not the eight the
+         live page publishes. A front door quotes its best and moves on.
+         Byte for byte, typos included. NONE IS OWNER-APPROVED YET: 4.8 is
+         open and applies to these two as much as to the rest.
          NO Review OR AggregateRating MARKUP, deliberately. -->
     <section class="dark field-ink" id="testimonials">
       <div class="wrap">
@@ -495,26 +502,19 @@
             <p>Tri-county recently took care of my vehicle after I had hit a deer. The staff was incredibly friendly and did an amazing job with my car. It looks brand new again you would never even know it was just in an accident. On top of that they also detailed my car inside and out after the repair so it was spotless when I came to pick it up. Couldn&#x27;t be happier with the service!</p>
             <figcaption>Joe Chiclets</figcaption>
           </figure>
-          <figure class="quote">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.3 6.8c-2.9 1.5-4.6 4.1-4.6 7.1V17h5.6v-5.5H8.5c.2-1.7 1-2.9 2.4-3.8z"/><path d="M19.3 6.8c-2.9 1.5-4.6 4.1-4.6 7.1V17h5.6v-5.5h-2.8c.2-1.7 1-2.9 2.4-3.8z"/></svg>
-            <p>Excellent example of quality work and customer service. Armando and his team were very helpful from setting up the tow to the shop to delivering the finished work on my car. Blended the paint nicely from the replacement parts to the original panels.</p>
-            <figcaption>Chuck Willoughby</figcaption>
-          </figure>
-          <figure class="quote">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.3 6.8c-2.9 1.5-4.6 4.1-4.6 7.1V17h5.6v-5.5H8.5c.2-1.7 1-2.9 2.4-3.8z"/><path d="M19.3 6.8c-2.9 1.5-4.6 4.1-4.6 7.1V17h5.6v-5.5h-2.8c.2-1.7 1-2.9 2.4-3.8z"/></svg>
-            <p>Car looks great! They kept me updated throughout the process, and the car was ready when when they said it would be.</p>
-            <figcaption>Patricia Swope</figcaption>
-          </figure>
         </div>
       </div>
     </section>
 
-    <!-- ============ ACT BAND 2 ============ -->
+    <!-- ============ THE ONE ACT BAND ============
+         One, not two. A front door routes rather than argues: it asks
+         once, here, and its other asks are the services grid and the
+         call bar. See THE HOMEPAGE'S ARCHITECTURE in site.css. -->
     <section class="dark field-ox" id="start">
       <div class="wrap">
         <div class="sec-head">
-          <h2 class="sec-title">Ready When You Are</h2>
-          <p class="sec-sub">One phone call starts it</p>
+          <h2 class="sec-title">We will get you back on the road with your vehicle restored to its pre-accident condition.</h2>
+          <p class="sec-sub">Estimates are free and there is no obligation</p>
         </div>
         <div class="cta-row">
           <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
@@ -525,8 +525,8 @@
 
     <!-- ============ CONTACT ============
          Same block as the pattern page, and the same reason there is no
-         form: the new one posts to an endpoint in the CLIENT'S own account
-         and lands on /contact-us/, per pagemap.md. -->
+         form: the new one posts to an endpoint in the CLIENT'S own
+         account and lands on /contact-us/, per pagemap.md. -->
     <section class="dark field-ink contact" id="contact">
       <div class="wrap">
         <div class="sec-head" style="margin-bottom:0">
@@ -552,13 +552,10 @@
     </section>
 
     <!-- ============ FAQ ============
-         Six questions curated from the Q&amp;As already published on the
-         live site, carried BYTE-IDENTICAL to the way /collision-repair/
-         carries them, because a house answer renders as one string on
-         every page that holds it. Every selection and its source page is
-         listed in proposed-changes.md.
-         THE VISIBLE TEXT AND THE FAQPage SCHEMA ARE THE SAME STRINGS,
-         generated from one source. -->
+         Six questions curated from the Q&amp;As the live site already
+         publishes, carried BYTE-IDENTICAL to /collision-repair/. Every
+         selection and its source page is in proposed-changes.md 3.13.
+         The visible text and the FAQPage schema are one set of strings. -->
     <section id="faq">
       <div class="wrap">
         <div class="sec-head">

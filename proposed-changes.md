@@ -633,6 +633,24 @@ grammar is one filled button meaning act, and act means the phone. The words
 to `/contact-us/`, so the sentence returns to being a link the day that page
 ships.
 
+### 1.26 The services grid's one-line promises, composed
+
+The live homepage gives two of its four services a blurb and the other two
+nothing but a "Learn More" button. The grid needs one line per card, so two
+were composed and two were shortened. **None adds a claim.**
+
+| Service | Line | Where it comes from |
+|---|---|---|
+| Collision Repair | Minor and major damage, repaired to manufacturer standards. | **Composed.** "Minor and major" is the live site's own split; "to manufacturer standards" is step 04 on /collision-repair/ verbatim. |
+| Commercial Collision Repair | Commercial and fleet vehicles. | **Composed, and deliberately empty of promise.** The live page gives this service no words at all. Rather than invent a benefit, this restates the service name. **If the shop wants this card to say something, the owner supplies it.** |
+| Paintless Dent Repair | Dents removed without touching your paint. | Shortened from the live blurb, "remove dents without affecting your vehicle's paint job". |
+| Auto Glass Repair | Cracked windshields and broken side windows. | Shortened from the live blurb, "cracked windshields, broken side windows, and more". **"And more" was dropped**: it is scope with no edges. |
+
+**No card says "Learn more" any more.** Three of the four have no page to link
+to, and a label that looks like a link and is not one is worse than no label.
+The linked card is the whole card; the unlinked cards are not clickable and do
+not pretend to be, including the lift, which is on the linked card only.
+
 ---
 
 ## 2. What the live page carries that this page does not
@@ -1088,6 +1106,66 @@ the homepage's shape is the correct one.
 **No `BreadcrumbList` on the root**, deliberately: a breadcrumb whose only
 rung is the page you are standing on is furniture. The visible page has no
 breadcrumb either, so the mirror holds.
+
+### 3.17 Four service cards, three photographs
+
+The router grid wants a photograph per card and this repo has three real ones.
+**One image is used twice in the grid and one of those is also the hero.**
+
+```
+hero                          accent-major-collision-repair.jpg
+Collision Repair              accent-minor-collision-repair.jpg
+Commercial Collision Repair   accent-major-collision-repair.jpg   <- also the hero
+Paintless Dent Repair         accent-collision-repair-1.jpg
+Auto Glass Repair             accent-minor-collision-repair.jpg   <- repeat
+```
+
+Not a design decision. **Real photos only** is a standing rule, so the
+alternative was stock or nothing, and both are worse than a repeat that is
+written down. **The grid needs four distinct photographs**, and really wants
+one per service showing that service. This joins 4.9, which is already a
+cutover blocker.
+
+**3.15 is resolved differently than it said.** It flagged that the homepage
+reused the pattern page's hero. The two pages now use different photographs
+and different hero architectures, so they no longer read as the same page. The
+underlying shortage did not go away; it moved into this note.
+
+### 3.18 The homepage carries two testimonials, not four
+
+The live homepage publishes eight and the first build of this page carried
+four. It carries two now: Theresa Helt and Joe Chiclets, the two that name the
+most checkable things, a tow arranged and an insurer dealt with, a deer strike
+and a car detailed inside and out.
+
+A front door quotes its best and moves on; the four-up grid belongs on a page
+someone is already reading. Both are byte for byte, typos included. **Neither
+is owner-approved**: 4.8 is open and applies to these two exactly as it
+applies to the rest.
+
+### 3.19 "We Fix It All" is a diagram now, and the drawing was redrawn
+
+The five-line checklist is the estimator's car profile with the checklist's own
+words pointing at the panels they name: windshield to the glass, hail to the
+roof, dings to the door, deer to the front, collisions to the rear quarter.
+**The labels are the checklist's words and nothing was added.**
+
+**The band-art drawing did not survive being the centrepiece.** It was drawn
+for 7 percent opacity at the edge of a band, and at full strength and full
+size its outline was open at the front, with a stray tail where the bumper
+should close. One leader line landed on that tail. So it was redrawn: closed
+outline with a bottom edge, wheels sitting on the sill, panel seams stopping at
+the rocker rather than running to the ground. Same idea, drawn to be looked at.
+
+**It is a diagram, so it does not move.** Solid single colour, no fill, no
+motion, no arrival effect. The arrival amendment covers a number counting, a
+word rolling and a lane drawing, and this is none of those.
+
+**The labels do not survive a phone**, which is a real limit rather than a
+detail. At 390 the drawing scales to about a third and a 19px label becomes
+6px. Below 900px the callouts are hidden and the same five lines render as an
+ordinary list. **The list is in the DOM at every width**, visually hidden above
+900, so a screen reader gets the words whatever the viewport is.
 
 ---
 
