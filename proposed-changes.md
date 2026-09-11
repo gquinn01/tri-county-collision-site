@@ -1150,12 +1150,36 @@ words pointing at the panels they name: windshield to the glass, hail to the
 roof, dings to the door, deer to the front, collisions to the rear quarter.
 **The labels are the checklist's words and nothing was added.**
 
-**The band-art drawing did not survive being the centrepiece.** It was drawn
-for 7 percent opacity at the edge of a band, and at full strength and full
-size its outline was open at the front, with a stray tail where the bumper
-should close. One leader line landed on that tail. So it was redrawn: closed
-outline with a bottom edge, wheels sitting on the sill, panel seams stopping at
-the rocker rather than running to the ground. Same idea, drawn to be looked at.
+**The drawing has been redrawn twice, and the second time properly.** The
+band-art version was made for 7 percent opacity at the edge of a band; at full
+size its outline was open at the front with a stray tail where the bumper
+should close, and one leader landed on that tail. Closing it made it usable but
+it still read as elementary, which is not good enough for the page's signature
+section.
+
+**The current drawing is built from measured ratios rather than eyeballed.**
+Overall length 620 units: wheelbase 372, which is **60 percent** of length;
+body height 186, **30 percent**; front overhang 110 against a rear overhang of
+138, so the front is the shorter one; cabin centred 75 units **rearward** of
+the car's midpoint; tyre diameter 13.5 percent of length.
+
+**Three line weights in one ink**, which is how a sheet like this is drawn: the
+silhouette at 3.2, panel seams at 2.0, details and dimensions at 1.2. The
+hierarchy is weight, not tone.
+
+**The details are the ones an estimator would look for**: A, B and C pillars
+with the glass inset inside them, a rear quarter window, a side mirror seated
+on the beltline, both door handles, the rocker crease with the door cuts
+stopping **on** it, wheel arches concentric with the wheels, hub circles, a
+ground line, and a dimension run with arrowheads under the wheelbase. The rear
+door cut terminates on the arch curve at its computed intersection rather than
+near it.
+
+**Judged at full size every time, never zoomed**, which is the only reason the
+faults were caught: the first pass ran door cuts through the wheel arches and
+doubled the outline with the sill; the second crossed the rocker instead of
+stopping at it and left the mirror reading as a floating flag. None of that is
+visible at a thumbnail.
 
 **It is a diagram, so it does not move.** Solid single colour, no fill, no
 motion, no arrival effect. The arrival amendment covers a number counting, a

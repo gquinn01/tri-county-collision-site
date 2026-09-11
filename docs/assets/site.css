@@ -1084,7 +1084,13 @@ a.svc-card h3 { color: var(--ox-tx); }
    list. THE LIST IS IN THE DOM AT EVERY WIDTH, visually hidden above
    900, so a screen reader gets the words whatever the viewport is. */
 .diagram-svg { display: block; width: 100%; height: auto; }
-.diagram-svg .dg-line { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+/* THREE LINE WEIGHTS, ONE INK. An intake sheet is drawn that way: the
+   silhouette carries the eye, the panel seams sit under it, and the
+   details and dimensions sit under those. Same colour throughout; the
+   hierarchy is weight, not tone. */
+.diagram-svg .dg-1 { fill: none; stroke: var(--ink); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.diagram-svg .dg-2 { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.diagram-svg .dg-3 { fill: none; stroke: var(--ink); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
 .diagram-svg .dg-lead { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
 .diagram-svg .dg-label { fill: var(--ink); font-family: var(--font); font-size: 19px; font-weight: 700; }
 @media (max-width: 899px) { .diagram-svg .dg-notes { display: none; } }
