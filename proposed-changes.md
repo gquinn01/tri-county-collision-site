@@ -6,8 +6,8 @@ the **client-owner the fact-checker of record**, and this file is how that role
 gets exercised: read it, say yes or no to each line, and anything that gets a
 no comes off the page.
 
-**Status: 1 page migrated.** `/collision-repair/`, built 2026-09-05 from
-`https://tricountycollision.com/collision-repair/` read the same day.
+**Status: 2 pages migrated.** `/collision-repair/`, built 2026-09-05, and `/`,
+built 2026-09-10 from `https://tricountycollision.com/` read the same day.
 
 The rule this migration ran on: the live page is the content source of record,
 no fact was invented, and the new page claims nothing the old page does not
@@ -588,6 +588,51 @@ Three other lines were on the table:
 **The one that shipped adds no claim at all**, which is why it needs nothing
 from the owner and why it fits any service page unchanged.
 
+### 1.25 The homepage, four changes to the live copy
+
+Everything else on `/` is the live homepage's own words, in its own order.
+
+**a. The business name, 2 changes.**
+
+| | |
+|---|---|
+| **Before** | Tri County Collision Center |
+| **After** | Tri-County Collision |
+
+Same open question as 1.1. **Whatever the Google Business Profile says is the
+answer**, and it is still the swap of record for every page built so far.
+
+**b. The street, in the "who you are handing the keys to" paragraph.**
+
+| | |
+|---|---|
+| **Before** | a family-owned shop on Jaymor **Road** in Southampton |
+| **After** | a family-owned shop on Jaymor **Rd** in Southampton |
+
+Not a style choice. `scripts/audit.py` fails any page that spells the street a
+second way, and "Jaymor Road" is the variant the live site's own schema uses
+against its own footer. See 3.1.
+
+**c. The review claim comes out of the paragraph entirely.** See 3.12.
+
+| | |
+|---|---|
+| **Before** | ...on Jaymor Road in Southampton, **with more than 1,500 five-star reviews from drivers across Bucks and Montgomery County**. |
+| **After** | ...on Jaymor Rd in Southampton, **serving drivers across Bucks and Montgomery County**. |
+
+**d. The hero CTA.**
+
+| | |
+|---|---|
+| **Before** | GET MY FREE ESTIMATE |
+| **After** | Call (215) 322-5350 &nbsp;/&nbsp; Email the shop |
+
+The live button posts to a form this site does not have yet. The house
+grammar is one filled button meaning act, and act means the phone. The words
+"request an estimate online" survive in FAQ 4 carrying a `data-pending-href`
+to `/contact-us/`, so the sentence returns to being a link the day that page
+ships.
+
 ---
 
 ## 2. What the live page carries that this page does not
@@ -933,6 +978,117 @@ was reverted in `5d30750`** and the band carries the gradient now, so there is
 nothing left to echo. The icon is right on its own terms, and the shared
 language is a separate decision about bringing the drawing back.
 
+### 3.12 The live homepage disagrees with itself about the review count
+
+**This is the finding, and it is why the claim could not be migrated.**
+
+```
+live homepage, body copy      "more than 1,500 five-star reviews"
+live homepage, its own widget "Based on 231 reviews"      (same page)
+the Google Business Profile   274 reviews, 4.9 stars      (read 2026-09-10)
+```
+
+The prose and the widget are **on the same page** and differ by a factor of
+six. So this was never a question of our number being newer than theirs: the
+live page already contradicted itself, and one of its two figures was wrong
+before we arrived.
+
+`scripts/audit.py` would have caught it anyway. The site-wide check criticals
+on any two review counts that disagree, counting `REVIEW_COUNT` as one of the
+instances, so shipping 1,500 would have failed the build. **That is the check
+doing the job it was written for on the first page it was pointed at.**
+
+**What shipped instead**: the verified stat band from the mold, 274 and 4.9,
+carrying the day it was counted. The homepage paragraph now makes no
+quantified review claim at all, because one page should not state a number
+its own stat band already states, and because the only honest version of the
+sentence is the one the band already says better.
+
+**For the owner:** 1,500 is not a small rounding. If the shop has 1,500
+five-star reviews somewhere other than Google, that is a real asset and it
+should be named and linked. If it does not, the claim should come off the
+live site too, not just out of this migration.
+
+### 3.13 The homepage FAQ, and where each question came from
+
+`pagemap.md`'s Home row asks for "5 to 7 questions from the phone log, owner
+supplies". **There is no phone log in this repo and the owner has not supplied
+one**, so this is an interim built from Q&As the live site already publishes,
+and it should be replaced or confirmed when the real list arrives.
+
+Six questions, all from `/collision-repair/`, carried **byte-identical** to
+the way that page carries them, because a house answer renders as one string
+on every page that holds it:
+
+| # | Question | Source | Why it made the cut |
+|---|---|---|---|
+| 1 | Can I choose my own collision repair shop after an accident in Pennsylvania? | /collision-repair/ | Anti-steering. The most valuable thing this shop can tell a driver an insurer will not. |
+| 2 | Do you work with my insurance company? | /collision-repair/ | The first question on the phone. |
+| 3 | How long does collision repair take? | /collision-repair/ | The second question on the phone. |
+| 4 | How much does collision repair cost? | /collision-repair/ | Estimates, and it carries "free" and "no obligation". |
+| 5 | Will my car look the same after collision repair? | /collision-repair/ | The lifetime warranty lives in this answer. |
+| 6 | What certifications do your technicians have? | /collision-repair/ | ASE and I-CAR, stated at length rather than as a chip. |
+
+**All six already passed the standalone test** when they were fixed on
+`/collision-repair/` (see 1.2 to 1.4), so none needed comma-merging here. The
+visible text and the FAQPage schema are generated from one set of strings, so
+the mirror cannot drift.
+
+**One consequence to weigh:** six answers now appear word for word on two
+pages. That is what the house-canonical rule requires, and it is the opposite
+of what a duplicate-content instinct would say. If the two pages ever need to
+differ, the rule is that a page omits a question rather than writing a variant
+of its answer.
+
+### 3.14 Four of the live homepage's eight testimonials were carried
+
+The live homepage publishes eight. Four are carried, byte for byte, typos and
+loose punctuation included. The four dropped are the shortest: "My car looks
+beautiful. They went above and beyond.", "Very easy to deal with. Justin does
+exceptional work.", "Excellent service, repair was perfect.", and the "only
+place i will take my car" one, which is strong but overlaps the Joe Chiclets
+quote on detailing.
+
+The four carried were chosen for specificity: each names something checkable,
+a tow arranged, a deer strike, paint blended between new and original panels,
+updates that arrived when promised. **None of them is edited.** See 4.8 for
+what still needs confirming about testimonials generally; the same questions
+apply to these.
+
+### 3.15 The homepage reuses the pattern page's hero photograph
+
+There are three real photographs in this repo and all three are already on
+`/collision-repair/`. The homepage hero is the same image as that page's hero.
+**It should have its own**, and that sits with the rest of the photography
+question in 4.9, which is already a cutover blocker.
+
+### 3.15b The llms.txt check cannot fail on the root page
+
+Noticed while building `/`. The audit reported the homepage as "listed in
+llms.txt" before it was listed: the check looks for the page's URL anywhere in
+the file, and the root URL `https://tricountycollision.com/` appears in the
+paragraph that tells an agent the live site is the one to read today. **The
+root page can never fail that check**, because any mention of the domain
+satisfies it.
+
+The homepage is properly listed under Key pages now, so the pass is honest.
+**The check's blind spot is not fixed**, and it is recorded here rather than
+left to be rediscovered: it wants to read the Key pages list rather than the
+whole file, the same way the dead-link scan learned to require an attribute
+boundary rather than a substring.
+
+### 3.16 The homepage's WebPage node points at a WebSite node
+
+`/` carries a `WebSite` node and its `WebPage` is `isPartOf` that node.
+`/collision-repair/` has no `WebSite` node and its `WebPage` is `isPartOf` the
+**business** node, which is how it was built. Both are valid and neither
+breaks anything today. **They should agree before the third page ships**, and
+the homepage's shape is the correct one.
+
+**No `BreadcrumbList` on the root**, deliberately: a breadcrumb whose only
+rung is the page you are standing on is furniture. The visible page has no
+breadcrumb either, so the mirror holds.
+
 ---
 
 ## 4. The claims list
@@ -954,6 +1110,30 @@ unverified claim does not ship. **Confirm each one.**
   Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru, Jeep. The page also says
   "12+" in two places while the list has exactly 12. Confirm the number and the
   list, and pick one of "12" or "12+".
+
+### 4.1b Claims the homepage adds
+
+- **"We fix it all", and the five damage types under it**: minor and major
+  collisions, cracked windshields, door dings and dents, deer strikes, hail
+  damage. Rule 2, scope honesty: **does the shop do all five, in house?**
+  Hail and deer strikes in particular are the kind of work a shop either
+  takes or sublets.
+- **"Your insurance claim handled for you."** The hero says it as a flat
+  promise. Same scope question as 1.18 and 4.2.
+- **"Your repair done right the first time and guaranteed for life."**
+  The warranty again, in its strongest wording anywhere on the site.
+- **"Family owned and operated."** Also in the Why Choose list on
+  /collision-repair/.
+- **"Factory training for a dozen vehicle brands."** The 12 again; see 4.1.
+- **"Today's cars hide cameras and sensors in the bumpers, the mirrors, even
+  the windshield glass."** A statement about cars rather than about the shop,
+  but it sits next to the claim that this shop puts them back right.
+- **"Collision work is most of what we do, but we also handle auto glass,
+  paintless dent repair, and commercial fleets."** Four services, and the
+  services grid names the same four. Confirm all four are in house.
+- **Hours: Monday to Friday, 8 a.m. to 6 p.m., Saturday by appointment
+  only.** In the contact block and in the schema's
+  `openingHoursSpecification`. Confirm they are current.
 
 ### 4.2 Scope of work
 

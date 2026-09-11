@@ -916,6 +916,13 @@ def find_pending_links(root: str = SITE_DIR) -> list:
                     raw = f.read()
             except OSError:
                 continue
+            # COMMENTS COME OUT FIRST, the same way the dead-link scan
+            # drops them. A pending attribute QUOTED IN A COMMENT is not a
+            # pending attribute, it is an explanation of one, and on
+            # 2026-09-10 an explanation of the mechanism tripped the
+            # mechanism. The two halves of the link rule now agree about
+            # what a comment is.
+            raw = re.sub(r"(?s)<!--.*?-->", " ", raw)
             for m in PENDING_HREF_RE.finditer(raw):
                 href = m.group(1)
                 target = resolve_local_link(path, href)

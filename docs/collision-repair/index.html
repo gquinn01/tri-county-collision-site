@@ -352,14 +352,12 @@
 
   <header class="nav">
     <div class="wrap inner">
-      <!-- The logo is not a link yet, because docs/index.html does not exist
-           yet and this site never writes a link to a page that has not been
-           built. THE WAITING IS MECHANIZED: data-pending-href carries the URL
-           it will point to, and scripts/test-audit-checks.py fails the build
-           the day docs/index.html appears and this is still a span. The check
-           cuts both ways, a real href to a missing file and a pending href to
-           a file that now exists. See proposed-changes.md 3.10. -->
-      <span class="nav-home" data-pending-href="../"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></span>
+      <!-- THE LOGO IS A LINK AGAIN, 2026-09-10. It was a span carrying
+           data-pending-href="../" because docs/index.html did not exist.
+           The homepage was built, the link test demanded the conversion by
+           failing, and this is the conversion. That is the mechanism in
+           3.10 working end to end rather than being described. -->
+      <a class="nav-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
       <nav class="nav-main" aria-label="Main"><ul>
         <li><a href="./" aria-current="page">Collision Repair</a></li>
       </ul></nav>
@@ -387,15 +385,14 @@
     <section class="hero heroA">
       <img class="heroA-photo" src="../assets/img/accent-minor-collision-repair.jpg" alt="Final collision repair touch-ups being completed on a black automobile." width="1200" height="800" fetchpriority="high" decoding="async">
       <div class="heroA-panel field-ox">
-        <!-- Mirrors the BreadcrumbList, same labels and same order. "Home" is
-             text rather than a link because docs/index.html does not exist
-             yet, and this site never writes a link to a page that has not
-             been built. data-pending-href holds the URL it becomes, and the
-             link test fails once that file exists. See proposed-changes.md
-             3.10. -->
+        <!-- Mirrors the BreadcrumbList, same labels and same order. "Home"
+             is a real link as of 2026-09-10, converted when the homepage
+             landed and the link test failed on the pending attribute. The
+             BreadcrumbList's first item already pointed at the root, so the
+             visible crumb and the schema agree on where Home is. -->
         <nav class="crumb" aria-label="Breadcrumb">
           <ol>
-            <li data-pending-href="../">Home</li>
+            <li><a href="../">Home</a></li>
             <li>Collision Repair</li>
           </ol>
         </nav>
@@ -859,7 +856,7 @@
     <div class="wrap">
       <div class="foot-grid">
         <div>
-          <span class="foot-home" data-pending-href="../"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></span>
+          <a class="foot-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
           <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
           <p class="foot-nap">
             Tri-County Collision<br>

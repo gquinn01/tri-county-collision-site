@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       COLLISION REPAIR. Built 2026-09-05 from templates/service-page-template.html.
+
+       THE SOURCE OF EVERY WORD ON THIS PAGE is the shop's own live
+       WordPress page at https://tricountycollision.com/,
+       read on 2026-09-05. Nothing here was written for the shop and
+       nothing here claims anything the live page does not already claim.
+       Every place the wording changed is recorded as a before/after pair
+       in proposed-changes.md at the repo root, awaiting the owner's
+       fact-check. Do not edit copy here without adding the pair there.
+
+       STAGING, DELIBERATE, AND NOT A DEFECT:
+       this page carries <meta name="robots" content="noindex, nofollow">,
+       docs/robots.txt disallows everything, and the canonical below is
+       absolute to the production domain. All three are on purpose, all
+       three come off together at cutover, and scripts/audit.py enforces
+       them through its STAGING switch. See CLAUDE.md.
+
+       THE FAQ IS MIRRORED. Each visible answer is byte-identical to its
+       acceptedAnswer in the FAQPage node. Edit one, edit both, then run
+       python3 scripts/audit.py --strict, which scores a mismatch as a
+       critical rather than a note.
+
+       NO PRICE, OFFER, REVIEW OR RATING MARKUP. The live site publishes a
+       priceRange and an offer catalog; neither is carried here. Both are
+       on the claims list as an owner decision.
+       ============================================================ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Ink. The palette lives in assets/site.css; a meta tag cannot read a
+       custom property, which is why this one hex is duplicated. -->
+  <meta name="theme-color" content="#121B27">
+
+  <title>Auto Body Shop in Southampton, PA | Tri-County Collision</title>
+  <meta name="description" content="Family-owned auto body shop in Southampton, PA. Collision repair, auto glass, dent repair &amp; fleet work. Free estimates, lifetime warranty. (215) 322-5350.">
+
+  <link rel="canonical" href="https://tricountycollision.com/">
+  <meta name="robots" content="noindex, nofollow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Auto Body Shop in Southampton, PA | Tri-County Collision">
+  <meta property="og:description" content="Family-owned auto body shop in Southampton, PA. Collision repair, auto glass, dent repair &amp; fleet work. Free estimates, lifetime warranty. (215) 322-5350.">
+  <meta property="og:url" content="https://tricountycollision.com/">
+  <meta property="og:image" content="https://tricountycollision.com/assets/img/accent-minor-collision-repair.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="800">
+  <meta property="og:image:alt" content="Final collision repair touch-ups being completed on a black automobile.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- No analytics tag yet. GA4 goes in the CLIENT'S OWN Google account at
+       cutover, and the CallRail snippet goes in beside it. Neither is here,
+       because a measurement ID nobody has given us is a fact nobody has
+       confirmed. docs/privacy/ ships in the same commit as the first tag. -->
+
+  <!-- Both faces are self-hosted and both are needed above the fold, so they
+       are preloaded rather than discovered inside the stylesheet. They are
+       SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
+  <link rel="preload" href="assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/site.css?v=ce94cd32">
+  <script src="assets/site.js?v=78d33e7f" defer></script>
+
+  <!-- One @graph. The AutoBodyShop node repeats in full on every page under
+       the SAME @id, so the whole site resolves to one business entity: a
+       bare @id reference carries no type and no sameAs, which is what
+       search engines and the audit both read.
+       sameAs IS DELIBERATELY ABSENT. The live site publishes five profile
+       URLs and they are listed in proposed-changes.md, but a sameAs claims
+       "this profile is us" and only profiles the shop actually controls
+       belong in it. The verified list is coming from the client. Until it
+       lands the property is not here, and the audit says so out loud rather
+       than the page quietly claiming an entity signal it does not have. -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "AutoBodyShop",
+            "@id": "https://tricountycollision.com/#business",
+            "name": "Tri-County Collision",
+            "url": "https://tricountycollision.com/",
+            "telephone": "+12153225350",
+            "email": "contact@tricountycollision.com",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "995 Jaymor Rd",
+              "addressLocality": "Southampton",
+              "addressRegion": "PA",
+              "postalCode": "18966",
+              "addressCountry": "US"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 40.1660232,
+              "longitude": -75.0538596
+            },
+            "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday"
+                ],
+                "opens": "08:00",
+                "closes": "18:00"
+              }
+            ],
+            "areaServed": [
+              {
+                "@type": "AdministrativeArea",
+                "@id": "https://tricountycollision.com/#area-bucks-county",
+                "name": "Bucks County, Pennsylvania"
+              },
+              {
+                "@type": "AdministrativeArea",
+                "@id": "https://tricountycollision.com/#area-montgomery-county",
+                "name": "Montgomery County, Pennsylvania"
+              },
+              {
+                "@type": "AdministrativeArea",
+                "@id": "https://tricountycollision.com/#area-philadelphia",
+                "name": "Philadelphia, Pennsylvania"
+              },
+              {
+                "@type": "City",
+                "name": "Southampton, Pennsylvania",
+                "containedInPlace": {
+                  "@id": "https://tricountycollision.com/#area-bucks-county"
+                }
+              },
+              {
+                "@type": "City",
+                "name": "Feasterville-Trevose, Pennsylvania",
+                "containedInPlace": {
+                  "@id": "https://tricountycollision.com/#area-bucks-county"
+                }
+              },
+              {
+                "@type": "City",
+                "name": "Richboro, Pennsylvania",
+                "containedInPlace": {
+                  "@id": "https://tricountycollision.com/#area-bucks-county"
+                }
+              },
+              {
+                "@type": "City",
+                "name": "Warminster, Pennsylvania",
+                "containedInPlace": {
+                  "@id": "https://tricountycollision.com/#area-bucks-county"
+                }
+              },
+              {
+                "@type": "City",
+                "name": "Langhorne, Pennsylvania",
+                "containedInPlace": {
+                  "@id": "https://tricountycollision.com/#area-bucks-county"
+                }
+              },
+              {
+                "@type": "City",
+                "name": "Bensalem, Pennsylvania",
+                "containedInPlace": {
+                  "@id": "https://tricountycollision.com/#area-bucks-county"
+                }
+              },
+              {
+                "@type": "City",
+                "name": "Huntingdon Valley, Pennsylvania",
+                "containedInPlace": {
+                  "@id": "https://tricountycollision.com/#area-montgomery-county"
+                }
+              },
+              {
+                "@type": "City",
+                "name": "Hatboro, Pennsylvania",
+                "containedInPlace": {
+                  "@id": "https://tricountycollision.com/#area-montgomery-county"
+                }
+              },
+              {
+                "@type": "City",
+                "name": "Willow Grove, Pennsylvania",
+                "containedInPlace": {
+                  "@id": "https://tricountycollision.com/#area-montgomery-county"
+                }
+              },
+              {
+                "@type": "City",
+                "name": "Horsham, Pennsylvania",
+                "containedInPlace": {
+                  "@id": "https://tricountycollision.com/#area-montgomery-county"
+                }
+              },
+              {
+                "@type": "City",
+                "name": "Jenkintown, Pennsylvania",
+                "containedInPlace": {
+                  "@id": "https://tricountycollision.com/#area-montgomery-county"
+                }
+              },
+              {
+                "@type": "Place",
+                "name": "Northeast Philadelphia, Pennsylvania",
+                "containedInPlace": {
+                  "@id": "https://tricountycollision.com/#area-philadelphia"
+                }
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://tricountycollision.com/#website",
+            "url": "https://tricountycollision.com/",
+            "name": "Tri-County Collision",
+            "inLanguage": "en-US",
+            "publisher": {
+              "@id": "https://tricountycollision.com/#business"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://tricountycollision.com/#webpage",
+            "url": "https://tricountycollision.com/",
+            "name": "Auto Body Shop in Southampton, PA | Tri-County Collision",
+            "description": "Family-owned auto body shop in Southampton, PA. Collision repair, auto glass, dent repair & fleet work. Free estimates, lifetime warranty. (215) 322-5350.",
+            "inLanguage": "en-US",
+            "dateModified": "2026-09-10",
+            "isPartOf": {
+              "@id": "https://tricountycollision.com/#website"
+            },
+            "about": {
+              "@id": "https://tricountycollision.com/#business"
+            },
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "url": "https://tricountycollision.com/assets/img/accent-minor-collision-repair.jpg"
+            }
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://tricountycollision.com/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Can I choose my own collision repair shop after an accident in Pennsylvania?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, Pennsylvania law protects your right to choose your own collision shop for repairs. Your insurance company cannot require you to use their preferred facility or steer you elsewhere. This is an important consumer right. When you choose Tri-County Collision, you're choosing based on our reputation, expertise, and commitment to quality. Not because your insurer told you to. Learn more about your right to choose by reading our blog post on the topic."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do you work with my insurance company?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "We work with all major insurance companies. We have direct repair relationships with them, so we communicate with adjusters on your behalf. We handle all the paperwork, coordinate authorizations, and keep your insurer updated on repair progress. We'll also advocate for you if we believe your vehicle needs more extensive repairs than initially approved. You don't need to navigate the claims process alone, we've got you covered."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How long does collision repair take?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "How long collision repair takes depends on the severity of the damage. Minor repairs, like small dents, scratches, or bumper damage, typically take 2 to 5 days. Major structural work, frame straightening, or extensive panel replacement can take 2 to 4 weeks. We provide a detailed timeline estimate upfront so you know exactly what to expect. Throughout the repair process, we keep you updated on progress. And if your insurance provides for a loaner or rental car, we'll coordinate that with them to minimize the impact on your life."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How much does collision repair cost?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Repair costs vary significantly based on the extent of damage. That's why we offer free estimates. There's no obligation and no surprises. You can request an estimate online or call us at (215) 322-5350. If your vehicle is covered by insurance, your policy typically covers most repair costs minus your deductible. We provide transparent pricing with no hidden fees. We'll walk you through the estimate and answer any questions about the repair process and costs."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Will my car look the same after collision repair?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, your car will look the same after collision repair, and that is our standard. Our ASE/I-CAR® Gold certified technicians are trained to factory specifications and have the expertise to restore your vehicle to its pre-accident condition. We use computerized color matching to ensure paint blends perfectly. We source OEM parts whenever possible to maintain your vehicle's integrity. And behind all of this is our lifetime warranty. If anything isn't right, we'll make it right. When you drive away from our shop, no one will know your vehicle was ever in an accident."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What certifications do your technicians have?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Our technicians are ASE (Automotive Service Excellence) and I-CAR® Gold Class certified, the highest level of collision repair certification in the industry. These certifications require extensive training, hands-on experience, and rigorous testing. We also maintain factory certifications from the vehicle manufacturers we service, which ensures we stay current with the latest repair techniques and have access to manufacturer-specific procedures and tooling. When you bring your vehicle to us, you're working with some of the most qualified collision repair professionals in the region."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+</head>
+<body>
+
+  <!-- Removed at cutover, with the noindex tag and the robots.txt disallow.
+       A human who opens this page should not have to guess why it is not
+       indexed. -->
+  <p class="staging">Staging build. Not the live site. The shop's live site is at tricountycollision.com</p>
+
+  <header class="nav">
+    <div class="wrap inner">
+      <a class="nav-home" href="./" aria-label="Tri-County Collision, home"><img src="logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+      <nav class="nav-main" aria-label="Main"><ul>
+        <li><a href="collision-repair/">Collision Repair</a></li>
+      </ul></nav>
+      <a class="btn btn-sm" href="tel:+12153225350">Call (215) 322-5350</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============ HERO ============
+         Same mold as the pattern page: full-bleed photograph, opaque panel
+         on the oxblood ground, flush to the left edge. NO BREADCRUMB, and
+         no BreadcrumbList in the schema either: this is the root, and a
+         breadcrumb whose only rung is the page you are on is furniture.
+         THE PHOTOGRAPH IS THE PATTERN PAGE'S. There are three real photos
+         in this repo and all three are already on /collision-repair/. The
+         homepage should have its own, and that is on the claims list with
+         the rest of the photography. -->
+    <section class="hero heroA">
+      <img class="heroA-photo" src="assets/img/accent-minor-collision-repair.jpg" alt="Final collision repair touch-ups being completed on a black automobile." width="1200" height="800" fetchpriority="high" decoding="async">
+      <div class="heroA-panel field-ox">
+        <p class="eyebrow">Family owned and operated</p>
+        <h1>Auto Body &amp; Collision Repair in Southampton, PA</h1>
+        <p class="lead">Your insurance claim handled for you. Your repair done right the first time and guaranteed for life. Your car back detailed inside and out, looking like the accident never happened.</p>
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+        </div>
+        <ul class="badges">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l7.5 3.3v5c0 4.6-3.1 8.3-7.5 9.5-4.4-1.2-7.5-4.9-7.5-9.5v-5z"/><path d="M8.9 12.1l2.2 2.2 4.1-4.6"/></svg>ASE and I-CAR Gold certified</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.2 3.4l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z"/><path d="M17.6 14.4l.8 2.1 2.1.8-2.1.8-.8 2.1-.8-2.1-2.1-.8 2.1-.8z"/></svg>Detailed after every repair</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.8h4.5"/></svg>Free estimates</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6v2M3.4 12a8.6 8.6 0 0 1 17.2 0z"/><path d="M12 12v6.4a2.3 2.3 0 0 0 4.6 0"/></svg>Insurance paperwork handled</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ STAT BAND ============
+         The mold's band, and the same three stats the pattern page carries.
+         The count, the rating and the day they were read live in
+         scripts/audit.py; this comment quotes none of them, by convention. -->
+    <section class="statband" id="proof" aria-label="Warranty, reviews and certifications">
+      <div class="wrap">
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-n">Lifetime</span>
+            <span class="stat-l">Warranty on all repair work</span>
+            <span class="stat-s">If anything isn't right, we'll make it right.</span>
+          </div>
+          <div class="stat">
+            <span class="stat-n">274</span>
+            <span class="stat-l">Google reviews</span>
+            <span class="stat-s">4.9 stars on Google, counted on September 10, 2026.</span>
+          </div>
+          <div class="stat">
+            <span class="stat-n">12</span>
+            <span class="stat-l">Vehicle brands, factory-certified</span>
+            <span class="stat-s">INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WE FIX IT ALL ============
+         The live homepage's hero list, carried as its own section. It is a
+         SCOPE list, so every line on it is on the claims list: the shop may
+         only sell what it actually does. -->
+    <section id="what-we-fix">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">We Fix It All</h2>
+          <p class="sec-sub">What comes through the door</p>
+        </div>
+        <ul class="ticks">
+          <li><strong>Minor and major collisions.</strong></li>
+          <li><strong>Cracked windshields.</strong></li>
+          <li><strong>Door dings and dents.</strong></li>
+          <li><strong>Deer strikes.</strong></li>
+          <li><strong>Hail damage.</strong></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ WHO YOU ARE HANDING THE KEYS TO ============
+         The live homepage's main description, migrated. Two changes, both
+         recorded in proposed-changes.md: the business name takes the
+         canonical spelling, and THE REVIEW CLAIM COMES OUT. The live page
+         makes a claim in this paragraph that its own widget on the same
+         page contradicts; both figures and the profile's are recorded in
+         proposed-changes.md 3.12, and neither is repeated here, per the
+         convention that a comment names the record and not the number.
+         The stat band above is the only place this site quantifies
+         reviews, and it carries the day it was counted. -->
+    <section id="who-we-are">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Family Owned and Operated, on Jaymor Rd</h2>
+          <p class="sec-sub">Who you are handing the keys to</p>
+        </div>
+        <div class="prose">
+          <p>Nobody plans a trip to the body shop. One minute you're driving down Street Road, the next you're trading insurance information in a parking lot. When it happens, here's who you're handing the keys to.</p>
+          <p>Tri-County Collision is a family-owned shop on Jaymor Rd in Southampton, serving drivers across Bucks and Montgomery County. Our technicians hold ASE and I-CAR Gold Class certifications and factory training for a dozen vehicle brands. That matters more than it used to, because today's cars hide cameras and sensors in the bumpers, the mirrors, even the windshield glass, and putting them back right takes real training and real equipment. Collision work is most of what we do, but we also handle auto glass, paintless dent repair, and commercial fleets.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACT BAND 1 ============
+         Oxblood means act, so this band carries a CTA row. The line is the
+         live page's own services subhead. -->
+    <section class="dark field-ox" id="get-started">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">We will get you back on the road with your vehicle restored to its pre-accident condition.</h2>
+          <p class="sec-sub">Estimates are free and there is no obligation</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SERVICES ============
+         Four services, in the live page's order. ONE IS A REAL LINK and
+         three are not: /collision-repair/ is built, the other three are
+         not, and this site never writes a link to a page that has not been
+         built. Each carries data-pending-href with the URL it becomes, and
+         the link test fails the day that page exists. -->
+    <section id="services" class="band-panel">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">What We Do</h2>
+          <p class="sec-sub">Four services, one shop</p>
+        </div>
+        <div class="grid4">
+          <article class="card">
+            <h3>Collision Repair</h3>
+            <p>Minor scuffs to major structural work, on a frame bench, to manufacturer specifications. Most of what we do.</p>
+            <p class="svc-more"><a href="collision-repair/">Learn more</a></p>
+          </article>
+          <article class="card">
+            <h3>Commercial Collision Repair</h3>
+            <p>Fleet and commercial vehicles, handled with the downtime in mind.</p>
+            <p class="svc-more"><span data-pending-href="commercial-collision-repair/">Learn more</span></p>
+          </article>
+          <article class="card">
+            <h3>Paintless Dent Repair</h3>
+            <p>Say goodbye to unsightly dents with Tri-County Collision&#x27;s paintless dent repair services. Our skilled technicians use advanced techniques to remove dents without affecting your vehicle&#x27;s paint job. Get fast and affordable solutions for all types of dents.</p>
+            <p class="svc-more"><span data-pending-href="paintless-dent-repair/">Learn more</span></p>
+          </article>
+          <article class="card">
+            <h3>Auto Glass Repair</h3>
+            <p>Get professional auto glass repair and replacement services at Tri-County Collision. Our certified technicians provide high-quality solutions for cracked windshields, broken side windows, and more.</p>
+            <p class="svc-more"><span data-pending-href="auto-glass-repair-replacement/">Learn more</span></p>
+          </article>
+        </div>
+        <div class="prose" style="margin-top:34px;text-align:center">
+          <p>Serving <span data-pending-href="areas-served/">Bucks and Montgomery County</span> from one shop in Southampton.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TESTIMONIALS ============
+         Four of the eight the live homepage publishes, byte for byte,
+         typos and loose punctuation included: a testimonial is somebody
+         else's words and tidying one is not a style fix. Which four, and
+         why four, is recorded in proposed-changes.md.
+         NO Review OR AggregateRating MARKUP, deliberately. -->
+    <section class="dark field-ink" id="testimonials">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Testimonials</h2>
+          <p class="sec-sub">In their words, not ours</p>
+        </div>
+        <div class="quote-grid">
+          <figure class="quote">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.3 6.8c-2.9 1.5-4.6 4.1-4.6 7.1V17h5.6v-5.5H8.5c.2-1.7 1-2.9 2.4-3.8z"/><path d="M19.3 6.8c-2.9 1.5-4.6 4.1-4.6 7.1V17h5.6v-5.5h-2.8c.2-1.7 1-2.9 2.4-3.8z"/></svg>
+            <p>Armando is the best, He took care of us right away! From the tow to the insurance company and beyond! Tri county cleaned the whole car so well that it smells and looks like it&#x27;s fresh off the sales lot! Cannot recommend enough - Such an accommodating team with great communication!</p>
+            <figcaption>Theresa Helt</figcaption>
+          </figure>
+          <figure class="quote">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.3 6.8c-2.9 1.5-4.6 4.1-4.6 7.1V17h5.6v-5.5H8.5c.2-1.7 1-2.9 2.4-3.8z"/><path d="M19.3 6.8c-2.9 1.5-4.6 4.1-4.6 7.1V17h5.6v-5.5h-2.8c.2-1.7 1-2.9 2.4-3.8z"/></svg>
+            <p>Tri-county recently took care of my vehicle after I had hit a deer. The staff was incredibly friendly and did an amazing job with my car. It looks brand new again you would never even know it was just in an accident. On top of that they also detailed my car inside and out after the repair so it was spotless when I came to pick it up. Couldn&#x27;t be happier with the service!</p>
+            <figcaption>Joe Chiclets</figcaption>
+          </figure>
+          <figure class="quote">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.3 6.8c-2.9 1.5-4.6 4.1-4.6 7.1V17h5.6v-5.5H8.5c.2-1.7 1-2.9 2.4-3.8z"/><path d="M19.3 6.8c-2.9 1.5-4.6 4.1-4.6 7.1V17h5.6v-5.5h-2.8c.2-1.7 1-2.9 2.4-3.8z"/></svg>
+            <p>Excellent example of quality work and customer service. Armando and his team were very helpful from setting up the tow to the shop to delivering the finished work on my car. Blended the paint nicely from the replacement parts to the original panels.</p>
+            <figcaption>Chuck Willoughby</figcaption>
+          </figure>
+          <figure class="quote">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.3 6.8c-2.9 1.5-4.6 4.1-4.6 7.1V17h5.6v-5.5H8.5c.2-1.7 1-2.9 2.4-3.8z"/><path d="M19.3 6.8c-2.9 1.5-4.6 4.1-4.6 7.1V17h5.6v-5.5h-2.8c.2-1.7 1-2.9 2.4-3.8z"/></svg>
+            <p>Car looks great! They kept me updated throughout the process, and the car was ready when when they said it would be.</p>
+            <figcaption>Patricia Swope</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACT BAND 2 ============ -->
+    <section class="dark field-ox" id="start">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Ready When You Are</h2>
+          <p class="sec-sub">One phone call starts it</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============
+         Same block as the pattern page, and the same reason there is no
+         form: the new one posts to an endpoint in the CLIENT'S own account
+         and lands on /contact-us/, per pagemap.md. -->
+    <section class="dark field-ink contact" id="contact">
+      <div class="wrap">
+        <div class="sec-head" style="margin-bottom:0">
+          <h2 class="sec-title">Contact Us for Your Free Estimate</h2>
+          <p class="sec-sub">One phone number, one email address, one shop</p>
+        </div>
+        <div class="contact-grid">
+          <div>
+            <h3>Address</h3>
+            <p><a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd<br>Southampton, PA 18966</a></p>
+          </div>
+          <div>
+            <h3>Phone and email</h3>
+            <p><a href="tel:+12153225350">(215) 322-5350</a><br><a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a></p>
+          </div>
+          <div>
+            <h3>Hours</h3>
+            <p>Monday to Friday, 8 a.m. to 6 p.m.<br>Saturday by appointment only</p>
+          </div>
+        </div>
+        <p class="contact-alt">Estimates are free. Call <a href="tel:+12153225350">(215) 322-5350</a>, email <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>, or <span data-pending-href="contact-us/">send us your details online</span>.</p>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============
+         Six questions curated from the Q&amp;As already published on the
+         live site, carried BYTE-IDENTICAL to the way /collision-repair/
+         carries them, because a house answer renders as one string on
+         every page that holds it. Every selection and its source page is
+         listed in proposed-changes.md.
+         THE VISIBLE TEXT AND THE FAQPage SCHEMA ARE THE SAME STRINGS,
+         generated from one source. -->
+    <section id="faq">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Frequently Asked Questions</h2>
+          <p class="sec-sub">The questions drivers actually call and ask</p>
+        </div>
+        <details>
+          <summary>Can I choose my own collision repair shop after an accident in Pennsylvania?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Yes, Pennsylvania law protects your right to choose your own collision shop for repairs. Your insurance company cannot require you to use their preferred facility or steer you elsewhere. This is an important consumer right. When you choose Tri-County Collision, you&#x27;re choosing based on our reputation, expertise, and commitment to quality. Not because your insurer told you to. Learn more about your right to choose by reading our blog post on the topic.</p>
+        </details>
+        <details>
+          <summary>Do you work with my insurance company?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>We work with all major insurance companies. We have direct repair relationships with them, so we communicate with adjusters on your behalf. We handle all the paperwork, coordinate authorizations, and keep your insurer updated on repair progress. We&#x27;ll also advocate for you if we believe your vehicle needs more extensive repairs than initially approved. You don&#x27;t need to navigate the claims process alone, we&#x27;ve got you covered.</p>
+        </details>
+        <details>
+          <summary>How long does collision repair take?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>How long collision repair takes depends on the severity of the damage. Minor repairs, like small dents, scratches, or bumper damage, typically take 2 to 5 days. Major structural work, frame straightening, or extensive panel replacement can take 2 to 4 weeks. We provide a detailed timeline estimate upfront so you know exactly what to expect. Throughout the repair process, we keep you updated on progress. And if your insurance provides for a loaner or rental car, we&#x27;ll coordinate that with them to minimize the impact on your life.</p>
+        </details>
+        <details>
+          <summary>How much does collision repair cost?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Repair costs vary significantly based on the extent of damage. That&#x27;s why we offer free estimates. There&#x27;s no obligation and no surprises. You can <span data-pending-href="contact-us/">request an estimate online</span> or call us at <a href="tel:+12153225350">(215) 322-5350</a>. If your vehicle is covered by insurance, your policy typically covers most repair costs minus your deductible. We provide transparent pricing with no hidden fees. We&#x27;ll walk you through the estimate and answer any questions about the repair process and costs.</p>
+        </details>
+        <details>
+          <summary>Will my car look the same after collision repair?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Yes, your car will look the same after collision repair, and that is our standard. Our ASE/I-CAR® Gold certified technicians are trained to factory specifications and have the expertise to restore your vehicle to its pre-accident condition. We use computerized color matching to ensure paint blends perfectly. We source OEM parts whenever possible to maintain your vehicle&#x27;s integrity. And behind all of this is our lifetime warranty. If anything isn&#x27;t right, we&#x27;ll make it right. When you drive away from our shop, no one will know your vehicle was ever in an accident.</p>
+        </details>
+        <details>
+          <summary>What certifications do your technicians have?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Our technicians are ASE (Automotive Service Excellence) and I-CAR® Gold Class certified, the highest level of collision repair certification in the industry. These certifications require extensive training, hands-on experience, and rigorous testing. We also maintain factory certifications from the vehicle manufacturers we service, which ensures we stay current with the latest repair techniques and have access to manufacturer-specific procedures and tooling. When you bring your vehicle to us, you&#x27;re working with some of the most qualified collision repair professionals in the region.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <a class="foot-home" href="./" aria-label="Tri-County Collision, home"><img src="logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+          <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
+          <p class="foot-nap">
+            Tri-County Collision<br>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd<br>
+            Southampton, PA 18966</a><br>
+            <a href="tel:+12153225350">(215) 322-5350</a><br>
+            <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>
+          </p>
+        </div>
+        <div>
+          <!-- These columns list only pages that exist. They grow as pages
+               land, and never before. -->
+          <h2 class="foot-head">Services</h2>
+          <ul class="foot-links">
+            <li><a href="collision-repair/">Collision Repair</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="foot-head">Get Started</h2>
+          <ul class="foot-links">
+            <li><a href="tel:+12153225350">Call (215) 322-5350</a></li>
+            <li><a href="mailto:contact@tricountycollision.com">Email the shop</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <!-- The year is written into the markup so it is right with
+             JavaScript off, and assets/site.js updates it so it is right
+             next January. A hard-coded year is a stale-clock claim. -->
+        <p>&copy; <span data-year>2026</span> Tri-County Collision &middot; <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> &middot; <a href="tel:+12153225350">(215) 322-5350</a> &middot; <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a></p>
+        <p>Hours: Monday to Friday, 8 a.m. to 6 p.m. Saturday by appointment only.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- The one element the whole design turns on. Fixed to the bottom of
+       every phone viewport, hidden above 900px where the header's own call
+       button is always visible. -->
+  <a class="callbar" href="tel:+12153225350">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h3l1.5 3.8-2 1.4a12.5 12.5 0 0 0 6.2 6.2l1.4-2 3.8 1.5v3a1.8 1.8 0 0 1-2 1.8A16.5 16.5 0 0 1 4.8 5.5a1.8 1.8 0 0 1 1.8-2z"/></svg>
+    Call (215) 322-5350
+  </a>
+
+</body>
+</html>

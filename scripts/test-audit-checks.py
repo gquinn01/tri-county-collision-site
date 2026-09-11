@@ -459,10 +459,15 @@ def main():
           "textContent.trim()" in site_js)
 
     hits = audit.find_review_counts(os.path.join(root, "docs"))
-    check("     the count is still stated exactly once under docs/",
-          len(hits) == 1, hits)
-    check("     and it is still the recorded number",
-          bool(hits) and hits[0][1] == audit.REVIEW_COUNT, hits)
+    # NOT "exactly once". This asserted a count of 1 while docs/ held one
+    # page, and a second page stating the same true number failed it on the
+    # day the homepage landed. The invariant was never "one mention", it is
+    # "every mention agrees with the recorded count".
+    check("     every stated count under docs/ is the recorded number",
+          bool(hits) and all(h[1] == audit.REVIEW_COUNT for h in hits),
+          [(h[0], h[1]) for h in hits])
+    check("     and at least one page states it",
+          len(hits) >= 1, len(hits))
 
     # And the guard would notice if someone ever baked the strips in.
     with _tempfile2.TemporaryDirectory() as tmp:
