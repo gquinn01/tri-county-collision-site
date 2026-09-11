@@ -982,10 +982,15 @@ section { padding: var(--pad) 0; }
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; object-position: 50% 40%;
 }
+/* THE FRAME HAS TO BE TALLER THAN THE PANEL, which is the whole point
+   and was the whole bug. Built at 66vh the panel filled the frame and
+   the photograph showed 36px at 1440 and NOTHING at 390: a full-bleed
+   hero with no visible photograph. The frame is sized so the image gets
+   a band of its own above the panel at every width. */
 .heroB-frame {
   position: relative; z-index: 1;
   display: flex; flex-direction: column; justify-content: flex-end;
-  min-height: clamp(440px, 66vh, 720px);
+  min-height: clamp(600px, 92vh, 1040px);
 }
 .heroB-scrim { padding: clamp(28px, 3.6vw, 50px) 0 clamp(40px, 4.6vw, 64px); }
 /* ONE DISPLAY SCALE LARGER THAN ANY SERVICE PAGE. A service h1 is
@@ -999,6 +1004,22 @@ section { padding: var(--pad) 0; }
 .heroB .badges { margin-top: 26px; }
 .heroB .badges li { background: transparent; border-color: rgb(var(--silver-rgb) / .55); color: var(--silver); }
 .heroB .badges svg { stroke: var(--silver); }
+
+/* THE PHONE PANEL IS TIGHTENED, because on a phone it is the panel that
+   decides whether this is a full-bleed hero or a coloured box with a
+   stripe on top. Measured at 390x844: the panel was 690 of a 776 hero
+   and the photograph got 87px. H1 drops from 2.9rem to 2.5rem, which is
+   still a scale above a service page's 2.3rem floor and is the point of
+   the rule; the lead comes down with it; the padding tightens.
+   IT IS STILL DESKTOP-FAVOURING AND THAT IS INHERENT. A display H1, a
+   three-line lead and two stacked buttons will always fill most of a
+   664px phone viewport. The photograph gets a band, not a backdrop. */
+@media (max-width: 599px) {
+  .heroB h1 { font-size: 2.5rem; margin-bottom: .24em; }
+  .heroB .lead { font-size: 1.06rem; line-height: 1.5; margin-bottom: 14px; }
+  .heroB-scrim { padding: 20px 0 30px; }
+  .heroB .cta-row { margin-top: 18px; gap: 12px; }
+}
 
 /* ---------- The stat band, worn as jewellery ----------
    SAME .statband CLASS ON PURPOSE. site.js finds the stats through it, so
