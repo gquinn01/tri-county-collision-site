@@ -993,6 +993,17 @@ section { padding: var(--pad) 0; }
   min-height: clamp(600px, 92vh, 1040px);
 }
 .heroB-scrim { padding: clamp(28px, 3.6vw, 50px) 0 clamp(40px, 4.6vw, 64px); }
+
+/* MORE PHOTOGRAPH AT DESKTOP WIDTHS. The frame's base height gives the
+   image a band; at desktop it should give it a presence. The panel is
+   about 616px at 1440 and does not move, so the photograph is whatever
+   the frame is minus that, and this clamp is sized to land it near 400.
+   SCOPED TO 900px AND UP ON PURPOSE. The phone hero is right as it
+   stands and the base rule is what makes it right; this must not reach
+   it. */
+@media (min-width: 900px) {
+  .heroB-frame { min-height: clamp(940px, 112vh, 1200px); }
+}
 /* ONE DISPLAY SCALE LARGER THAN ANY SERVICE PAGE. A service h1 is
    clamp(2.3rem, 6.2vw, 3.9rem); this is the step above it and it is the
    only place on the site that uses it. */

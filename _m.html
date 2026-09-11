@@ -1,0 +1,15 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html,body{margin:0}iframe{border:0;display:block}</style></head><body>
+<iframe id="f" src="/docs/index.html"></iframe>
+<script>var q=new URLSearchParams(location.search);var f=document.getElementById('f');
+f.style.width=(q.get('w')||'1440')+'px';f.style.height=(q.get('h')||'900')+'px';</script>
+<pre id="o">pending</pre><script>
+document.getElementById('f').onload=function(){var f=this;setTimeout(function(){
+ var d=f.contentDocument,w=f.contentWindow;
+ var st=d.createElement('style');st.textContent='.staging{display:none!important}';d.head.appendChild(st);
+ setTimeout(function(){
+ function r(s){var e=d.querySelector(s);var b=e.getBoundingClientRect();
+  return {t:Math.round(b.top+w.scrollY),b:Math.round(b.bottom+w.scrollY),h:Math.round(b.height)};}
+ var hero=r('.heroB'),scrim=r('.heroB-scrim'),cta=r('.heroB .cta-row'),card=r('.statcard');
+ document.getElementById('o').textContent='RESULT'+JSON.stringify({vw:w.innerWidth,vh:w.innerHeight,
+  hero:hero.h,panel:scrim.h,photo:scrim.t-hero.t,ctaBottom:cta.b,overlap:hero.b-card.t})+'END';},300);},1400);};
+</script></body></html>
