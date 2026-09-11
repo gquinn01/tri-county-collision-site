@@ -60,7 +60,7 @@
        SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
   <link rel="preload" href="assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/site.css?v=8f09a180">
+  <link rel="stylesheet" href="assets/site.css?v=16ca8ad2">
   <script src="assets/site.js?v=78d33e7f" defer></script>
 
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
@@ -319,35 +319,28 @@
   </header>
 
   <main id="main">
-    <!-- ============ FULL-BLEED HERO ============
-         HOME IS FULL-BLEED, SERVICE PAGES ARE SPLIT. The flush-left panel
-         is the service-page signature and this page does not wear it. See
-         THE HOMEPAGE'S ARCHITECTURE in assets/site.css for the rule, the
-         two departures it takes from the design-system rules, and why the
-         panel is opaque rather than a wash over the image.
-         NO BREADCRUMB and no BreadcrumbList: this is the root.
-         THE PHOTOGRAPH IS THE STRONGEST OF THE THREE CARRIED, which is
-         why it moved off the Major card and onto the front door. It is
-         still a stock image and still on the claims list at 4.9. -->
+    <!-- ============ THE HERO: TEXT OVER PHOTOGRAPH ============
+         Rebuilt 2026-09-10 on the client's ruling. The photograph no
+         longer sits above a panel; the type sits ON it, inside a scrim
+         anchored left at 600px and up and to the bottom edge below that,
+         so part of the frame is always clear photograph. It echoes the
+         live site's hero without its carousel.
+         COPY UNCHANGED. This was arrangement and motion.
+         THE SCRIM STOPS ARE MEASURED, not chosen: see the readability
+         amendment in the site.css header, and the per-element worst-case
+         numbers in proposed-changes.md 3.20.
+         NO BREADCRUMB and no BreadcrumbList: this is the root. -->
     <section class="hero heroB">
       <img class="heroB-photo" src="assets/img/accent-major-collision-repair.jpg" alt="A technician grinding a damaged front end in the shop while sparks fall." width="1200" height="800" fetchpriority="high" decoding="async">
-      <div class="heroB-frame">
-        <div class="heroB-scrim field-ink">
-          <div class="wrap">
-            <p class="eyebrow">Family owned and operated</p>
-            <h1>Auto Body &amp; Collision Repair in Southampton, PA</h1>
-            <!-- NO CHIP ROW HERE. The reassurance strip is a service-page
-                 device: on a page a reader is already deep in, it repeats the
-                 proof beside the copy. On the front door the proof is the
-                 stat card twelve pixels below, and four chips in the panel
-                 cost 90px of photograph at 1440 and 210px at 390, which is
-                 the whole photograph on a phone. Shape diverges; the chips
-                 are still the mold's, still on every service page. -->
-            <p class="lead">Your insurance claim handled for you. Your repair done right the first time and guaranteed for life. Your car back detailed inside and out, looking like the accident never happened.</p>
-        <div class="cta-row">
-          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
-          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
-        </div>
+      <div class="heroB-veil" aria-hidden="true"></div>
+      <div class="heroB-copy">
+        <div class="wrap">
+          <p class="eyebrow">Family owned and operated</p>
+          <h1>Auto Body &amp; Collision Repair in Southampton, PA</h1>
+          <p class="lead">Your insurance claim handled for you. Your repair done right the first time and guaranteed for life. Your car back detailed inside and out, looking like the accident never happened.</p>
+          <div class="cta-row">
+            <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+            <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
           </div>
         </div>
       </div>

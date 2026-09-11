@@ -240,7 +240,12 @@
    SOLID COLORS ONLY. No gradients on text, buttons, cards or accents, and no
    glows.
 
-   ONE SANCTIONED SECTION-BACKGROUND GRADIENT, DECIDED 2026-09-10. The palette
+   TWO SANCTIONED SECTION-BACKGROUND GRADIENTS, BOTH DATED 2026-09-10.
+   The second is the homepage hero's scrim, the ground its type sits on;
+   see THE HERO and the readability amendment. It is not a gradient on
+   text, a button, a card or an accent, which is what the law forbids.
+
+   THE FIRST, DECIDED 2026-09-10. The palette
    law allows exactly this one exception and only as a dated, recorded
    decision, so this is the record. The two oxblood act bands carry a gradient
    derived from the logo's own swoosh: deep at the ends, --ox exactly through
@@ -302,10 +307,61 @@
    fully drawn. Nothing is hidden and nothing is pending, in that case or
    with JavaScript off.
 
-   THE LIMIT OF THIS AMENDMENT: once, on first arrival, and then the
-   observer stops watching. Anything that would move a second time, or
-   move without a reader having either arrived or acted, is a different
-   decision and needs its own amendment, dated, here.
+   KIND THREE, ADDED 2026-09-10: ONE FADE ON PAGE LOAD, IN THE HERO
+   ONLY. The photograph fades up over 500ms and the copy follows 200ms
+   behind it over 500ms. OPACITY ONLY: no translation, no scale, no Ken
+   Burns, no parallax, no carousel. Once per load, never on scroll,
+   never on a loop.
+
+   This one contradicts a sentence that was written above it: "nothing
+   animates on load". That sentence is amended rather than quietly
+   broken. The reason it held is still the reason it holds everywhere
+   else: a page that moves while a reader is trying to find a phone
+   number costs them time. A single fade of the thing they are already
+   looking at, finished before the fold is read, does not.
+
+   THE GUARD IS THE WHOLE IMPLEMENTATION. Base opacity is 1 in the
+   cascade. The fade exists ONLY as keyframes inside
+   prefers-reduced-motion: no-preference, starting from 0 INSIDE the
+   keyframes. Reduced motion, an old browser, a stylesheet that half
+   loaded, JavaScript off: every one of them rests with everything
+   visible. Nothing on this site is ever hidden waiting for an animation
+   to reveal it.
+
+   THE LIMIT OF THIS AMENDMENT: once, on first arrival or on load, and
+   then nothing watches it again. Anything that would move a second
+   time, or move without a reader having arrived, loaded or acted, is a
+   different decision and needs its own amendment, dated, here.
+
+   ---------------------------------------------------------------------
+   THE READABILITY AMENDMENT, 2026-09-10.
+
+   TYPE MAY SIT OVER PHOTOGRAPHY, AND ONLY INSIDE A SCRIM ZONE WHOSE
+   COMPOSITE HAS BEEN MEASURED. Design rule 1 used to require an opaque
+   panel, which was a way of guaranteeing readability without measuring
+   it. The guarantee stays; the method is now the measurement.
+
+   THE METHOD, and it is not eyeballing with a squint:
+
+     1. Render the page at the viewport in question.
+     2. Render it again with the overlaid copy set to visibility:hidden,
+        which keeps the layout and removes the glyphs, so what is
+        sampled is the GROUND and not the type.
+     3. Take each overlaid text element's GLYPH RUNS, not its block box:
+        Range.getClientRects() over its text nodes. A block box spans the
+        whole column and would sample photograph the type never touches.
+     4. Sample every composited pixel inside those runs and compute the
+        contrast against the element's own computed colour.
+
+   THE FLOOR IS 4.5:1 ANYWHERE UNDER A GLYPH BOX. The target is 7:1 for
+   body-size text. IF THE PHOTOGRAPH DEFEATS THE SCRIM, THE SCRIM
+   DEEPENS. The standard does not move, the type does not get a shadow,
+   and the photograph does not get blurred.
+
+   The hero's measured worst cases are in proposed-changes.md 3.20. They
+   were not all passes first time: the phone eyebrow measured 2.13 and
+   the 360 H1 measured 4.25 against a scrim that had faded out above the
+   copy, and the scrim was deepened until every element cleared 7.
 
    BUTTON GRAMMAR. A filled button (.btn) means act, and on this site acting
    means calling (215) 322-5350. A text link means read more. Navigation is
@@ -340,6 +396,7 @@
      literal behind. It already did once: renaming the token left ten
      rgba(249,247,244,a) washes still warm. */
   --silver-rgb: 240 242 242;
+  --ink-rgb: 18 27 39;
   --silver-2: #C9CCD3;
   --mark: #E92424;
   --rule: #CACACA;
@@ -434,8 +491,9 @@ section { padding: var(--pad) 0; }
 .dark .btn:not(.btn-ghost) { color: var(--silver); border-color: var(--silver); }
 .field-ox .btn:not(.btn-ghost) { background: var(--ink); }
 .field-ox .btn:not(.btn-ghost):hover { background: var(--ink-2); border-color: var(--silver); }
-.field-ink .btn:not(.btn-ghost) { background: var(--ox); }
-.field-ink .btn:not(.btn-ghost):hover { background: var(--ox-dk); border-color: var(--silver); }
+.field-ink .btn:not(.btn-ghost), .heroB .btn:not(.btn-ghost) { background: var(--ox); }
+.field-ink .btn:not(.btn-ghost):hover,
+.heroB .btn:not(.btn-ghost):hover { background: var(--ox-dk); border-color: var(--silver); }
 .dark .btn-ghost { background: transparent; color: var(--silver); border-color: var(--silver); }
 .dark .btn-ghost:hover { background: rgb(var(--silver-rgb) / .14); }
 .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin: 26px 0 0; }
@@ -977,59 +1035,105 @@ section { padding: var(--pad) 0; }
    translucent wash over the image would have read as the same idea and
    would have been the one part of rule 1 that is not negotiable.
    =========================================================================== */
-.heroB { position: relative; background: var(--ink); padding: 0; overflow: hidden; }
+.heroB {
+  position: relative; overflow: hidden; background: var(--ink); padding: 0;
+  display: flex; align-items: flex-end;
+  min-height: clamp(420px, 84vh, 600px);
+}
 .heroB-photo {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: 50% 40%;
+  object-fit: cover; object-position: 50% 42%;
 }
-/* THE FRAME HAS TO BE TALLER THAN THE PANEL, which is the whole point
-   and was the whole bug. Built at 66vh the panel filled the frame and
-   the photograph showed 36px at 1440 and NOTHING at 390: a full-bleed
-   hero with no visible photograph. The frame is sized so the image gets
-   a band of its own above the panel at every width. */
-.heroB-frame {
-  position: relative; z-index: 1;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  min-height: clamp(600px, 92vh, 1040px);
-}
-.heroB-scrim { padding: clamp(28px, 3.6vw, 50px) 0 clamp(40px, 4.6vw, 64px); }
 
-/* MORE PHOTOGRAPH AT DESKTOP WIDTHS. The frame's base height gives the
-   image a band; at desktop it should give it a presence. The panel is
-   about 616px at 1440 and does not move, so the photograph is whatever
-   the frame is minus that, and this clamp is sized to land it near 400.
-   SCOPED TO 900px AND UP ON PURPOSE. The phone hero is right as it
-   stands and the base rule is what makes it right; this must not reach
-   it. */
-@media (min-width: 900px) {
-  .heroB-frame { min-height: clamp(940px, 112vh, 1200px); }
+/* THE SCRIM IS A SECOND SANCTIONED SECTION-BACKGROUND GRADIENT, dated
+   2026-09-10, and it is recorded in the palette note with the first one.
+   It is not a gradient on text, a button, a card or an accent; it is the
+   ground a section's type sits on, which is the one exception the
+   palette law carves out.
+
+   PARTIALLY OVER THE IMAGE, NOT A FULL-FRAME DARKENING. On a phone it
+   anchors to the BOTTOM edge and fades upward, so the top of the frame
+   stays clear photograph; at 600px and up it anchors LEFT and fades
+   rightward, so the right of the frame stays clear. Either way the
+   photograph is doing work somewhere in the frame.
+
+   THE STOPS ARE MEASURED, NOT CHOSEN. See the readability amendment in
+   this file's header: every overlaid text element's composited pixels
+   are sampled out of a real render and the worst case under any glyph
+   box has to clear 4.5, with 7 the target for body-size type. If the
+   photograph defeats the scrim, the scrim deepens. The standard does
+   not move. */
+.heroB-veil {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(0deg,
+    rgb(var(--ink-rgb) / .96) 0%,
+    rgb(var(--ink-rgb) / .95) 72%,
+    rgb(var(--ink-rgb) / .92) 95%,
+    rgb(var(--ink-rgb) / 0) 100%);
 }
-/* ONE DISPLAY SCALE LARGER THAN ANY SERVICE PAGE. A service h1 is
-   clamp(2.3rem, 6.2vw, 3.9rem); this is the step above it and it is the
-   only place on the site that uses it. */
-.heroB h1 { font-size: clamp(2.9rem, 7.4vw, 5rem); color: var(--silver); margin-bottom: .28em; }
+/* THE BOTTOM PADDING IS THE STAT CARD'S OVERLAP PLUS AIR, not a taste
+   value. The card is opaque white and overlaps the hero's bottom seam by
+   78px at desktop and 44px on a phone; without this the card sits ON the
+   CTA buttons. The contrast probe found it before the eye did: the ghost
+   button's glyph run measured 1.12 against silver, which is silver on
+   white, which is the card. */
+.heroB-copy {
+  position: relative; z-index: 1; width: 100%;
+  padding: clamp(10px, 4vh, 44px) 0 clamp(50px, 7vh, 58px);
+}
+.heroB h1 { font-size: clamp(2.5rem, 5.2vw, 4rem); color: var(--silver); margin-bottom: .26em; }
 .heroB .eyebrow { color: var(--silver); }
-.heroB .lead { color: var(--silver-2); font-size: 1.18rem; max-width: 54ch; }
+.heroB .lead { color: var(--silver-2); font-size: 1.12rem; max-width: 46ch; }
 .heroB .btn { border-color: var(--silver); }
 .heroB .btn-ghost { color: var(--silver); }
-.heroB .badges { margin-top: 26px; }
-.heroB .badges li { background: transparent; border-color: rgb(var(--silver-rgb) / .55); color: var(--silver); }
-.heroB .badges svg { stroke: var(--silver); }
+.heroB .cta-row { margin-top: 24px; }
 
-/* THE PHONE PANEL IS TIGHTENED, because on a phone it is the panel that
-   decides whether this is a full-bleed hero or a coloured box with a
-   stripe on top. Measured at 390x844: the panel was 690 of a 776 hero
-   and the photograph got 87px. H1 drops from 2.9rem to 2.5rem, which is
-   still a scale above a service page's 2.3rem floor and is the point of
-   the rule; the lead comes down with it; the padding tightens.
-   IT IS STILL DESKTOP-FAVOURING AND THAT IS INHERENT. A display H1, a
-   three-line lead and two stacked buttons will always fill most of a
-   664px phone viewport. The photograph gets a band, not a backdrop. */
+/* THE PHONE COPY BLOCK IS TIGHTENED, because on a phone the block's own
+   height is what decides whether the CTA clears the fold, not the hero's
+   min-height. Measured at 360x640 the block came to 600px on its own.
+   H1 stays above a service page's 2.3rem floor, which is the rule; the
+   lead, the gaps and the bottom padding come in around it. */
 @media (max-width: 599px) {
-  .heroB h1 { font-size: 2.5rem; margin-bottom: .24em; }
-  .heroB .lead { font-size: 1.06rem; line-height: 1.5; margin-bottom: 14px; }
-  .heroB-scrim { padding: 20px 0 30px; }
-  .heroB .cta-row { margin-top: 18px; gap: 12px; }
+  .heroB { min-height: clamp(380px, 76vh, 560px); }
+  .heroB h1 { font-size: 2.4rem; margin-bottom: .16em; }
+  .heroB .eyebrow { margin-bottom: 6px; }
+  .heroB .lead { font-size: .98rem; line-height: 1.46; margin-bottom: 0; }
+  .heroB .cta-row { margin-top: 12px; gap: 12px; }
+  .heroB-copy { padding: clamp(10px, 4vh, 44px) 0 clamp(50px, 7vh, 58px); }
+}
+
+@media (min-width: 600px) {
+  /* Text sits in the left third to half; the right of the frame is
+     photograph and stays that way. */
+  .heroB { align-items: center; min-height: clamp(480px, 58vh, 560px); }
+  .heroB-veil {
+    background: linear-gradient(90deg,
+      rgb(var(--ink-rgb) / .96) 0%,
+      rgb(var(--ink-rgb) / .93) 52%,
+      rgb(var(--ink-rgb) / .60) 68%,
+      rgb(var(--ink-rgb) / 0) 86%);
+  }
+  .heroB-copy { padding: clamp(18px, 1.8vw, 24px) 0 clamp(86px, 6.4vw, 90px); }
+  .heroB h1 { max-width: 17ch; }
+  .heroB .lead { max-width: 50ch; }
+}
+@media (min-width: 1100px) {
+  .heroB .lead { max-width: 52ch; }
+}
+
+/* THE ENTRANCE. One-time, on load, CSS only, opacity only.
+   THE GUARD IS THE POINT: base opacity is 1 in the cascade and the fade
+   exists ONLY as keyframes inside prefers-reduced-motion: no-preference,
+   starting from 0 INSIDE the keyframes. So reduced motion, an old
+   browser, a failed stylesheet or any no-animation context all rest with
+   everything visible. Nothing is ever hidden waiting for an animation to
+   un-hide it, which is the same rule the arrival motion follows.
+   Fires once per load. Never on scroll, never on a loop. */
+.heroB-photo, .heroB-veil, .heroB-copy { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes heroB-in { from { opacity: 0; } to { opacity: 1; } }
+  .heroB-photo, .heroB-veil { animation: heroB-in 500ms ease-out both; }
+  .heroB-copy { animation: heroB-in 500ms ease-out 200ms both; }
 }
 
 /* ---------- The stat band, worn as jewellery ----------

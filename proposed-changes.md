@@ -1191,6 +1191,74 @@ detail. At 390 the drawing scales to about a third and a 19px label becomes
 ordinary list. **The list is in the DOM at every width**, visually hidden above
 900, so a screen reader gets the words whatever the viewport is.
 
+### 3.20 The hero is text over photograph, and the scrim is measured
+
+Rebuilt 2026-09-10 on the client's ruling: the photo-above-panel arrangement
+is out. **Copy unchanged.** This was arrangement and motion.
+
+**The measured worst cases**, sampled out of real renders per the readability
+amendment: the page is rendered twice, once normally and once with the copy at
+`visibility: hidden` so the ground can be sampled without the glyphs, and each
+element's **glyph runs** are measured rather than its block box.
+
+| Element | 1440x900 | 1920x1080 | 390x664 | 360x640 | Needs |
+|---|---|---|---|---|---|
+| Eyebrow | 13.56 | 13.40 | 12.40 | 11.72 | 7 |
+| H1 | 11.17 | 12.03 | 12.57 | 12.54 | 4.5 |
+| Lead | 9.02 | 9.02 | 9.47 | 9.51 | 7 |
+| Ghost button label | 13.23 | 13.07 | 13.77 | 13.77 | 7 |
+
+**Every element clears the 7:1 target, not just the 4.5 floor.**
+
+**They were not all passes first time, and that is the point of measuring.**
+The phone eyebrow measured **2.13** and the 360 H1 **4.25** against a scrim
+that had faded to nothing above the copy. The scrim was deepened until they
+cleared. The standard was not touched.
+
+**The measurement also found a layout bug the geometry probe missed.** The
+ghost button's glyph run measured 1.12 against silver, which is silver on
+white, which is the stat card: **the card was sitting on top of the CTA
+buttons**. The hero copy's bottom padding is now the card's overlap plus air,
+at both breakpoints.
+
+#### Geometry
+
+| Viewport | Photo depth | CTA ends | Fold budget | |
+|---|---|---|---|---|
+| 1440 x 900 | 550 | 553 | 900 | clears by 347 |
+| 1920 x 1080 | 560 | 558 | 1080 | clears by 522 |
+| 430 x 745 | 560 | 573 | 685 | clears by 112 |
+| 390 x 664 | 519 | 534 | 604 | **clears by 70** |
+| 360 x 640 | 560 | 575 | 580 | clears by 5 |
+
+**Both recorded exceptions are retired.** The desktop trade, CTA at ~1037
+against a 900px viewport, is gone: 553. The phone exception, CTA at 646
+against the 604 budget, is gone: 534.
+
+#### What the phone scrim costs, stated rather than hidden
+
+On a phone the copy fills the frame, so **the scrim is strong across almost
+all of it**: 0.96 at the bottom easing to 0.92 at 95 percent and clearing only
+in the top 5 percent. The clear band is roughly 25 to 30 pixels. **On a phone
+the photograph is a texture, not a picture.**
+
+That is not what the brief pictured, and the arithmetic is why: for the
+eyebrow to clear 7:1 over the brightest pixel in this photograph the scrim
+needs alpha 0.745 under it, and at 360x640 the copy's top sits 26px below the
+hero top. Pushing it down far enough for a real clear band costs about 40px,
+and 360x640 clears the fold by 5. **The fold and the readability floor were
+held; the clear band is what gave.** At 390 and above there is more room, and
+if the phone photograph matters more than the phone fold, that is a trade
+worth naming rather than one to discover.
+
+#### The entrance
+
+One fade on load, opacity only, photo then copy 200ms behind, 500ms each.
+CSS-only so it runs with JavaScript off. Base opacity is 1 and the fade lives
+only inside `prefers-reduced-motion: no-preference`, so every no-animation
+context rests with everything visible. It amends "nothing animates on load",
+and the amendment is dated in `site.css` and `CLAUDE.md`.
+
 ---
 
 ## 4. The claims list

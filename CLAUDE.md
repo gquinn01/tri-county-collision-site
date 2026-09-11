@@ -264,10 +264,49 @@ and ink is structural, which is what a panel under a photograph is. **Home
 carries one oxblood band**: two is right on a long service page a reader
 scrolls through deciding, but a front door routes rather than argues.
 
-**The panel is opaque, which is why it is a panel and not a scrim.** The
-readability half of rule 1 is not shape and does not diverge. The photograph
-runs full-bleed and undimmed *above* the panel; the panel is `--ink` at full
-strength with `--silver` on it at 15.42.
+**Superseded 2026-09-10 on the client's ruling: the hero is text over
+photograph.** The photo-above-panel arrangement is gone. The type sits on the
+image inside a scrim — anchored left at 600px and up so the right of the frame
+stays photograph, anchored to the bottom edge below that. Copy unchanged; this
+was arrangement and motion.
+
+### The readability amendment, 2026-09-10
+
+**Type may sit over photography, and only inside a scrim zone whose composite
+has been measured.** Rule 1 used to require an opaque panel, which guaranteed
+readability without measuring it. The guarantee stays; the method is now the
+measurement.
+
+**The method:** render the page; render it again with the overlaid copy at
+`visibility: hidden` so the layout holds and the glyphs go, leaving the ground;
+take each text element's **glyph runs** via `Range.getClientRects()` rather
+than its block box, because a block box spans the whole column and samples
+photograph the type never touches; sample every composited pixel in those runs
+against the element's own computed colour.
+
+**Floor 4.5:1 anywhere under a glyph box. Target 7:1 for body-size text.** If
+the photograph defeats the scrim, **the scrim deepens** — the standard does not
+move, the type gets no shadow, the photograph gets no blur. Measured worst
+cases live in `proposed-changes.md` 3.20.
+
+### The load-entrance amendment, 2026-09-10
+
+**Motion may also fire once on page load, in the hero only.** The photograph
+fades up over 500ms and the copy follows 200ms behind over 500ms. **Opacity
+only** — no translation, scale, Ken Burns, parallax or carousel. Once per load,
+never on scroll, never on a loop.
+
+This contradicts "nothing animates on load", which is amended rather than
+quietly broken. The reason that sentence held still holds everywhere else: a
+page that moves while a reader hunts for a phone number costs them time. A
+single fade of the thing they are already looking at does not.
+
+**The guard is the whole implementation.** Base opacity is 1 in the cascade;
+the fade exists only as keyframes inside `prefers-reduced-motion:
+no-preference`, starting from 0 *inside* the keyframes. Reduced motion, an old
+browser, a half-loaded stylesheet, JavaScript off — all rest with everything
+visible. **Nothing on this site is ever hidden waiting for an animation to
+reveal it.**
 
 **2. The panel is flush to the left viewport edge.** No gap, no float, no
 rounded corner. Its **left padding equals the page grid's left margin**, so
