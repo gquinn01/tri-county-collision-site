@@ -1259,6 +1259,87 @@ only inside `prefers-reduced-motion: no-preference`, so every no-animation
 context rests with everything visible. It amends "nothing animates on load",
 and the amendment is dated in `site.css` and `CLAUDE.md`.
 
+### 3.21 /collision-repair/ gets the same hero, grounded in ox
+
+Rebuilt 2026-09-10. **Copy unchanged.** Arrangement and motion only, and the
+same `.heroB` machinery the homepage uses with one modifier class for the
+scrim colour. The entrance keyframes exist once for both pages.
+
+#### Measured composite, worst case under any glyph run
+
+| Element | 1440 | 1920 | 430 | 390 | 360 | Needs |
+|---|---|---|---|---|---|---|
+| Breadcrumb | 9.66 | 9.65 | 9.53 | 9.20 | 9.07 | 7 |
+| Eyebrow | 9.66 | 9.46 | 9.66 | 9.39 | 9.21 | 7 |
+| H1 | 9.33 | 9.46 | 9.53 | 9.52 | 9.33 | 4.5 |
+| Lead | 9.40 | 9.40 | 9.59 | 9.53 | 9.53 | 7 |
+| Ghost button label | 10.18 | 9.53 | 9.66 | 10.18 | 10.18 | 7 |
+| Chips (desktop) | 9.85 | 9.72 | n/a | n/a | n/a | 7 |
+
+**Everything clears 7:1.** It took four corrections to get there and every one
+was found by the probe rather than by looking:
+
+1. **The breadcrumb link was inheriting the page link colour**, which is
+   oxblood, on an oxblood scrim. That is 1.42: oxblood on oxblood.
+2. **The lead in `--silver-2` measured 6.57.** `--silver-2` on *solid* ox is
+   7.34, so against a 7:1 target it has 0.34 of headroom and any photograph
+   showing through takes it under. Deepening the scrim to opaque would just
+   about reach 7.34 and would put no photograph under the lead at all, which
+   is the thing this hero exists to do. **The lead is `--silver` on ox**, which
+   reads 10.50 on solid ox, so the scrim can stay short of opaque. The standard
+   did not move; the tone with headroom did. The breadcrumb went the same way
+   for the same arithmetic. **There is no secondary text tone on an ox ground.**
+3. **The chip row reached 76% of a 1440 frame**, inside the scrim's fade, and
+   its rightmost glyphs measured 1.06. Capped to 620px it wraps to two rows
+   that end at 46%.
+4. **Two of the "failures" were the probe, not the page.** It read the
+   *container's* colour, but a `<nav>` and a `<ul>` inherit the page colour
+   while the `<ol>` and `<li>` inside carry the real one — so silver type was
+   being measured against ink. The probe now takes the colour from each text
+   node's own parent. **A measurement that reports a false failure is as
+   dangerous as one that reports a false pass**, and this one nearly bought a
+   scrim deepening that nothing needed.
+
+#### Geometry
+
+| Viewport | Depth | CTA ends | Budget | | CTA to stat band |
+|---|---|---|---|---|---|
+| 1440 x 900 | 575 | 502 | 900 | clears by 398 | 166 |
+| 1920 x 1080 | 575 | 502 | 1080 | clears by 578 | 166 |
+| 430 x 745 | 560 | 573 | 685 | clears by 112 | 278 |
+| 390 x 664 | 505 | 520 | 604 | clears by 84 | 276 |
+| 360 x 640 | 510 | 525 | 580 | clears by 55 | 276 |
+
+**The stat band sits clear of the buttons at every width**, by 166px at
+desktop and 276 on a phone. That check exists because of the home lesson: the
+stat card sat *on* the CTA buttons there and only the contrast probe saw it.
+
+#### The chips shipped in the hero on desktop, in a strip on phones
+
+**Desktop holds them: depth 575, inside the 600 ceiling, and every chip glyph
+run clears 7:1.** Two things bought the room. The chips are capped at 620px so
+they wrap to two rows inside the scrim's strong zone rather than running one
+row into the fade. And **the ox hero's foot comes in**, because this page sits
+above a stat *band* rather than the homepage's floating card, so there is no
+overlap to clear.
+
+On phones they move to a strip directly below the hero, on the page ground.
+Four rows of chips over a phone photograph costs about 210px and fails both
+the fold and the picture.
+
+**There are two chip lists in the markup and exactly one renders at any
+width.** A single element cannot occupy two DOM positions, and `display: none`
+keeps the hidden one out of the accessibility tree as well as off the screen.
+All four chips are verbatim in both. **The strip does not animate**: it is
+page, not hero, and the entrance stops at the hero's edge.
+
+#### The photograph
+
+No change was needed. `/` wears `accent-major-collision-repair.jpg` and this
+page wears `accent-minor-collision-repair.jpg`; **two front doors were never
+going to wear the same picture.** The shortage recorded in 3.17 is unchanged:
+four service cards still share three photographs.
+
 ---
 
 ## 4. The claims list

@@ -243,7 +243,26 @@ border's alpha changed**, from .42 to .50, and not to make it stronger: .42
 measured 3.85 on ink and only 3.11 on the lighter oxblood ground, so .50 puts
 it back to exactly 3.85. Same strength, on a ground that changed under it.
 
-**Home is full-bleed. Service pages are split.** Decided 2026-09-10, and it is
+**Amended 2026-09-10: every hero is text over photograph.** The rule below
+stood for four days and is superseded.
+
+**Every hero is text over photograph, inside a measured scrim, with the
+one-time entrance. The page type lives in the scrim's colour: ink on the front
+door, ox on a service page.** One implementation, not a copy: `.heroB` is the
+hero and `.heroB--ox` is a modifier that sets the scrim colour, so both pages
+ride the same structure, the same scrim geometry, the same button grammar, and
+**the entrance keyframes exist once**. The split hero is deleted, with a
+tombstone in `site.css` naming what went with it.
+
+**The ox ground is weaker than ink, and everything follows from that.**
+Measured over a white photo pixel, `--silver` needs alpha .758 on ink to clear
+7:1 and .849 on ox; `--silver-2` needs .858 on ink and **.981 on ox**, because
+`--silver-2` on solid ox is only 7.34 to begin with. **So there is no secondary
+text tone on an ox hero** — the lead and the breadcrumb are `--silver` there.
+On ink, where `--silver-2` reads 10.78, the hierarchy stays.
+
+**Superseded rule, kept for the record: home is full-bleed, service pages are
+split.** It was decided 2026-09-10 and was
 architectural rather than decorative. The flush-left panel hero is now the
 **service-page signature**; the front door does not wear it. A visitor should
 be able to tell which kind of page they landed on before reading a word.

@@ -60,7 +60,7 @@
        SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
   <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/site.css?v=16ca8ad2">
+  <link rel="stylesheet" href="../assets/site.css?v=5294a69d">
   <script src="../assets/site.js?v=78d33e7f" defer></script>
 
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
@@ -382,47 +382,62 @@
          SEE THE CLAIMS LIST: all three photographs on this page need the owner
          to confirm they are this shop, its people or its work, and this one
          wants a bigger file than 1200px whatever the answer is. -->
-    <section class="hero heroA">
-      <img class="heroA-photo" src="../assets/img/accent-minor-collision-repair.jpg" alt="Final collision repair touch-ups being completed on a black automobile." width="1200" height="800" fetchpriority="high" decoding="async">
-      <div class="heroA-panel field-ox">
-        <!-- Mirrors the BreadcrumbList, same labels and same order. "Home"
-             is a real link as of 2026-09-10, converted when the homepage
-             landed and the link test failed on the pending attribute. The
-             BreadcrumbList's first item already pointed at the root, so the
-             visible crumb and the schema agree on where Home is. -->
-        <nav class="crumb" aria-label="Breadcrumb">
-          <ol>
-            <li><a href="../">Home</a></li>
-            <li>Collision Repair</li>
-          </ol>
-        </nav>
-        <p class="eyebrow">Southampton, PA</p>
-        <h1>Collision Repair</h1>
-        <p class="lead">When you've been in a collision, the last thing you want is to deal with a faceless, impersonal repair chain. At Tri-County Collision, we understand that your vehicle isn't just transportation, it's part of your life.</p>
-        <div class="cta-row">
-          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
-          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
-        </div>
-        <!-- Every one of these is a claim the live site already makes, and
-             every one is on the claims list in proposed-changes.md. The review
-             count moved to the stat band below, where it carries its date.
-             TWO OF THESE ARE PLACEMENTS, not new facts, and both are recorded
-             as new visible promises for the owner's pass, in 1.18 and 1.19:
-             the paperwork claim is already in the Why Choose list, step 02 and
-             the insurance FAQ, and the detailing claim is in the Why Choose
-             list and step 06. Their icons are the ones those steps already
-             use, the umbrella and the sparkles. No new icon was drawn.
-             THE LIFETIME WARRANTY LEFT THIS ROW AND DID NOT LEAVE THE PAGE.
-             It now LEADS the stat band directly below, which on a phone puts
-             it on screen two rather than at the end of a four-chip stack. It
-             is also in the Major card, the Why Choose list and FAQ 2. See
-             proposed-changes.md 1.19 for the measured before and after. -->
+    <!-- ============ THE HERO: TEXT OVER PHOTOGRAPH ============
+         Rebuilt 2026-09-10. EVERY HERO IS THIS NOW, front door and
+         service page alike; the page type lives in the scrim's colour,
+         ink on / and ox here. Same .heroB machinery, a modifier class,
+         the same entrance keyframes. See THE HOMEPAGE'S ARCHITECTURE in
+         assets/site.css, which is now the hero architecture.
+         THE OX SCRIM IS DEEPER THAN THE INK ONE, and that is measured
+         rather than taste: --silver-2 on solid ox is 7.34, so the lead's
+         zone has almost no headroom and the scrim runs near-solid where
+         the copy sits. Worst cases per element are in
+         proposed-changes.md 3.21.
+         THE PHOTOGRAPH IS NOT THE HOME HERO'S. Two front doors must not
+         wear the same picture; see 3.17. -->
+    <section class="hero heroB heroB--ox">
+      <img class="heroB-photo" src="../assets/img/accent-minor-collision-repair.jpg" alt="Final collision repair touch-ups being completed on a black automobile." width="1200" height="800" fetchpriority="high" decoding="async">
+      <div class="heroB-veil" aria-hidden="true"></div>
+      <div class="heroB-copy">
+        <div class="wrap">
+          <!-- Mirrors the BreadcrumbList, same labels and same order. -->
+          <nav class="crumb" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="../">Home</a></li>
+              <li>Collision Repair</li>
+            </ol>
+          </nav>
+          <p class="eyebrow">Southampton, PA</p>
+          <h1>Collision Repair</h1>
+          <p class="lead">When you've been in a collision, the last thing you want is to deal with a faceless, impersonal repair chain. At Tri-County Collision, we understand that your vehicle isn't just transportation, it's part of your life.</p>
+          <div class="cta-row">
+            <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+            <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+          </div>
         <ul class="badges">
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l7.5 3.3v5c0 4.6-3.1 8.3-7.5 9.5-4.4-1.2-7.5-4.9-7.5-9.5v-5z"/><path d="M8.9 12.1l2.2 2.2 4.1-4.6"/></svg>ASE and I-CAR Gold certified</li>
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.2 3.4l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z"/><path d="M17.6 14.4l.8 2.1 2.1.8-2.1.8-.8 2.1-.8-2.1-2.1-.8 2.1-.8z"/></svg>Detailed after every repair</li>
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.8h4.5"/></svg>Free estimates</li>
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6v2M3.4 12a8.6 8.6 0 0 1 17.2 0z"/><path d="M12 12v6.4a2.3 2.3 0 0 0 4.6 0"/></svg>Insurance paperwork handled</li>
         </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ THE PROOF STRIP ============
+         The same four chips, verbatim, for phones only. Four rows of them
+         over a phone photograph costs about 210px and fails both the fold
+         and the picture, so below 600px they live here instead, on the
+         page ground. Exactly one of the two lists renders at any width.
+         IT DOES NOT ANIMATE: it is page, not hero. -->
+    <section class="proofstrip">
+      <div class="wrap">
+          <ul class="badges">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l7.5 3.3v5c0 4.6-3.1 8.3-7.5 9.5-4.4-1.2-7.5-4.9-7.5-9.5v-5z"/><path d="M8.9 12.1l2.2 2.2 4.1-4.6"/></svg>ASE and I-CAR Gold certified</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.2 3.4l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z"/><path d="M17.6 14.4l.8 2.1 2.1.8-2.1.8-.8 2.1-.8-2.1-2.1-.8 2.1-.8z"/></svg>Detailed after every repair</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 16.8h4.5"/></svg>Free estimates</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6v2M3.4 12a8.6 8.6 0 0 1 17.2 0z"/><path d="M12 12v6.4a2.3 2.3 0 0 0 4.6 0"/></svg>Insurance paperwork handled</li>
+          </ul>
       </div>
     </section>
 

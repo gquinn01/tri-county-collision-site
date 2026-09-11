@@ -397,6 +397,7 @@
      rgba(249,247,244,a) washes still warm. */
   --silver-rgb: 240 242 242;
   --ink-rgb: 18 27 39;
+  --ox-rgb: 105 28 23;
   --silver-2: #C9CCD3;
   --mark: #E92424;
   --rule: #CACACA;
@@ -492,8 +493,10 @@ section { padding: var(--pad) 0; }
 .field-ox .btn:not(.btn-ghost) { background: var(--ink); }
 .field-ox .btn:not(.btn-ghost):hover { background: var(--ink-2); border-color: var(--silver); }
 .field-ink .btn:not(.btn-ghost), .heroB .btn:not(.btn-ghost) { background: var(--ox); }
+.heroB--ox .btn:not(.btn-ghost) { background: var(--ink); }
 .field-ink .btn:not(.btn-ghost):hover,
 .heroB .btn:not(.btn-ghost):hover { background: var(--ox-dk); border-color: var(--silver); }
+.heroB--ox .btn:not(.btn-ghost):hover { background: var(--ink-2); border-color: var(--silver); }
 .dark .btn-ghost { background: transparent; color: var(--silver); border-color: var(--silver); }
 .dark .btn-ghost:hover { background: rgb(var(--silver-rgb) / .14); }
 .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin: 26px 0 0; }
@@ -569,181 +572,23 @@ section { padding: var(--pad) 0; }
 .callbar svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; }
 @media (min-width: 900px) { .callbar { display: none; } }
 
-/* ---------- Hero: full-bleed photograph, opaque ink panel ----------
-   The panel is FLUSH TO THE LEFT VIEWPORT EDGE. No gap, no float, no rounded
-   corner, and it does not detach from the edge when the viewport gets wide.
+/* ---------- The split hero: REMOVED 2026-09-10 ----------
+   .heroA and its panel, the flush-left arrangement with the photograph
+   beside it, are gone. They were the service-page signature for four
+   days; the architecture amendment made every hero text-over-photograph
+   and /collision-repair/ was their only user.
 
-   THE SUM, because it is the one piece of arithmetic on this site that has to
-   be right on every page:
+   WHAT WENT WITH THEM, so a future reader knows what to look for in the
+   history rather than wondering what the gap was: .heroA, .heroA-photo,
+   .heroA-panel and the panel-width arithmetic (--edge + --col + --pad-r),
+   which is the sum that kept the panel welded to the left glass and grew
+   it with the grid. That arithmetic was the design system's one real
+   piece of geometry and it is worth reading before anything like it is
+   built again: git show f13adbf:docs/assets/site.css.
 
-     --edge  = the page grid's left margin, measured from the glass. It is the
-               same distance .wrap puts between the viewport edge and the first
-               character of every other section, so type in the panel lines up
-               with type all the way down the page.
-     --col   = the content column inside the panel.
-     width   = --edge + --col + the right padding.
-
-   Because the width CONTAINS --edge, the panel grows as the margin grows. At
-   1440 the margin is 180px and the panel is 792px; at 1920 the margin is 420px
-   and the panel is 1032px. It stays welded to the edge and only the column
-   inside it moves with the grid. A plain percentage fallback sits in front of
-   the calc so a browser that cannot parse nested math still gets a panel. */
-.hero { padding-top: clamp(32px, 5vw, 60px); }
-.eyebrow {
-  font-size: .82rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--ox-tx); margin: 0 0 12px;
-}
-.lead { font-size: 1.2rem; color: var(--ink-2); max-width: 60ch; }
-.proof { margin-top: 22px; font-size: .98rem; color: var(--ink-2); }
-
-.heroA { position: relative; padding: 0; background: var(--ink); overflow: hidden; }
-/* THE PHONE STRIP'S CROP. Full width, so cover fits the width exactly and
-   only the VERTICAL position is adjustable here. 42% rather than 50%
-   lifts the window a little so the gloved hand and the panel it is
-   working sit on the strip's own centre line instead of below it. */
-.heroA-photo {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: 50% 42%;
-}
-/* NO BACKGROUND HERE. The panel carries .field-ox in the markup and takes
-   the act bands' ground from it, gradient and all. Declaring a background
-   here as well would be a second answer to the same question, decided by
-   source order, which is how a panel ends up ink again by accident. */
-.heroA-panel {
-  position: relative; z-index: 1;
-  padding: clamp(34px, 5vw, 64px) clamp(24px, 3.5vw, 52px) clamp(40px, 5vw, 64px) 20px;
-}
-@media (max-width: 899px) {
-  /* Stacked: photograph on top at a fixed band height, panel full width under
-     it. The panel is still flush left, because at this width the grid margin
-     IS 20px. */
-  .heroA-photo { position: relative; height: 52vw; min-height: 200px; }
-}
-@media (min-width: 900px) {
-  /* THE SUM MOVED UP TO .heroA so the photograph can read it too. It is
-     the same arithmetic, in one place, used by both children. */
-  .heroA {
-    --edge: max(20px, calc((100% - var(--wrap)) / 2 + 20px));
-    --col: min(560px, 46%);
-    --pad-r: clamp(24px, 3.5vw, 52px);
-    --panel-w: calc(var(--edge) + var(--col) + var(--pad-r));
-    display: flex; align-items: stretch; min-height: 620px;
-  }
-  .heroA-panel {
-    flex: 0 0 auto;
-    width: 54%;
-    width: var(--panel-w);
-    padding-left: var(--edge);
-    padding-right: var(--pad-r);
-    display: flex; flex-direction: column; justify-content: center;
-  }
-
-  /* THE PHOTOGRAPH STOPS SPANNING THE WHOLE HERO, and this is the fix
-     rather than a tidy-up.
-
-     WHY object-position DID NOTHING BEFORE. The img spanned the full
-     width with the opaque panel over its left half. At 1440 that is a
-     1440x620 box against a 1200x800 source: cover scales to fit the
-     WIDTH exactly and crops the height, so there is no horizontal slack
-     and object-position's X value is inert. Every X ever typed here was
-     decoration. The subject sits at 46% of the frame, which mapped to
-     46% of the element, which is behind the panel. That is why the
-     uncovered strip was glossy paintwork and nothing else.
-
-     THE FIX IS GEOMETRY. The photograph now occupies only the region the
-     panel does not cover, plus 80px tucked underneath it so there can be
-     no seam. At 1440 that is a 728x620 box against the same source:
-     cover now fits the HEIGHT and crops the width, which gives about
-     200px of horizontal travel and makes object-position X live. 12%
-     puts the technician and the gloved hand in the middle of what the
-     reader can actually see.
-
-     It also stops the browser decoding and painting 790px of image that
-     was always going to be hidden behind an opaque panel. */
-  .heroA-photo {
-    left: auto; right: 0;
-    width: calc(100% - var(--panel-w) + 80px);
-    object-position: 12% 50%;
-  }
-}
-.heroA h1, .heroA .eyebrow { color: var(--silver); }
-.heroA h1 { margin-bottom: .3em; }
-.heroA .lead { color: var(--silver-2); font-size: 1.16rem; max-width: 46ch; }
-.heroA .proof { color: var(--silver-2); }
-.heroA .crumb ol { color: var(--silver-2); }
-.heroA .btn { border-color: var(--silver); }
-.heroA .btn-ghost { color: var(--silver); }
-.heroA .badges { margin-top: 30px; }
-/* RE-TUNED FOR THE OX GROUND, 2026-09-10, and the number is not a guess.
-   At .42 alpha this border measured 3.85 against ink, which is what it
-   was set for. The same .42 over --ox measures 3.11: the ground got
-   lighter, so the same wash reads weaker on it. RE-TUNED EACH TIME THE
-   GROUND MOVED, to hold the one number: .50 held 3.85 on the warm cream,
-   fell to 3.47 on the first silver, went to .55 for 3.89, and sits at .52
-   for 3.87 now the ground is lighter. Same strength through three grounds,
-   which is the only reason this comment is worth its length. */
-.heroA .badges li { background: transparent; border-color: rgb(var(--silver-rgb) / .52); color: var(--silver); }
-.heroA .badges svg { stroke: var(--silver); }
-
-/* ---------- THE PHONE HERO AND THE FOLD, added 2026-09-10 ----------
-   MEASURED WITH THE IFRAME METHOD IN scripts/mobile-check.md. Not eyeballed,
-   and not with a window screenshot, which lies below about 500px.
-
-   THE BUDGET IS 604px, NOT 664. A 390x664 viewport is what an iPhone 12, 13
-   or 14 shows in Safari with its own chrome. THE FIXED CALL BAR OWNS THE
-   BOTTOM 60px of it and covers whatever is under it, so the hero has 604px of
-   usable height and not a pixel more. Anyone tuning this block against 664 is
-   tuning against 60px that do not exist.
-
-   WHAT WAS WRONG. The hero CTA pair ran 613 to 751 on the real page, so
-   neither of its buttons was on screen. The reader could still call, because
-   that is exactly what the call bar is for, but the hero was asking for an
-   action and then hiding it.
-
-   THE BUDGET, at 390 wide, after cutover, measured:
-
-       header                        0 ->  65     65
-       photograph, 36vw             65 -> 205    140
-       panel padding-top           205 -> 221     16
-       breadcrumb                  221 -> 246     25 + 10
-       eyebrow                     256 -> 278     22 +  8
-       h1                          286 -> 327     40 +  8
-       lead                        335 -> 458    123 + 14
-       CTA pair, 56 + 12 + 56      472 -> 596    124
-                                                 ---
-                                   ends at 596, and the budget is 604
-
-   DURING STAGING the banner adds 57px and pushes the second button under the
-   call bar. The Call button, which is the one that matters, still clears with
-   19px to spare. That resolves itself at cutover when the banner comes off,
-   and it is not a reason to compress this further.
-
-   Checked at 360, 390 and 430. The Call button clears in every state at every
-   one of them; the pair clears at all three after cutover, and at 430 during
-   staging too.
-
-   WHAT THIS BLOCK DOES NOT TOUCH: a word, a colour, a typeface, the flush
-   left panel, or the rule that the hero is a full-bleed photograph. The
-   photograph still runs edge to edge and is still the first thing on the
-   page. It gives up band height on phones only, where the fold is real.
-   Above 599px none of this applies and the hero is unchanged.
-
-   PLACED AFTER the .heroA overrides above ON PURPOSE: .heroA .lead and
-   .heroA .badges up there are the same specificity as the rules in here, so
-   source order is what decides them. Move this block up the file and half of
-   it silently reverts. */
-@media (max-width: 599px) {
-  .heroA-photo { height: 36vw; min-height: 128px; }
-  .heroA-panel { padding-top: 16px; padding-bottom: 32px; }
-  .heroA .crumb { margin-bottom: 10px; }
-  .heroA .eyebrow { margin-bottom: 8px; }
-  .heroA h1 { margin-bottom: .22em; }
-  .heroA .lead { font-size: 1.0625rem; line-height: 1.45; margin-bottom: 12px; }
-  .heroA .cta-row { margin-top: 14px; gap: 12px; }
-  /* 48px still clears the 44px minimum tap target, with the label at 17px. */
-  .heroA .cta-row .btn { padding: 12px 22px; min-height: 48px; }
-  .heroA .badges { margin-top: 22px; }
-}
+   Deleted rather than commented out, per the rule that a second
+   direction left in the repo is a second direction somebody builds from.
+   =========================================================================== */
 
 /* ---------- Reassurance strip: certifications and rating ---------- */
 .badges { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 0; padding: 0; list-style: none; }
@@ -988,23 +833,41 @@ section { padding: var(--pad) 0; }
 }
 
 /* ===========================================================================
-   THE HOMEPAGE'S ARCHITECTURE. ADOPTED 2026-09-10.
+   THE HERO ARCHITECTURE. AMENDED 2026-09-10.
 
-   HOME IS FULL-BLEED. SERVICE PAGES ARE SPLIT. Architectural, not
-   decorative: the flush-left panel hero (.heroA) is now the SERVICE-PAGE
-   SIGNATURE and the front door does not wear it. A visitor should be
-   able to tell which kind of page they landed on before reading a word.
+   EVERY HERO IS TEXT OVER PHOTOGRAPH, inside a measured scrim, with the
+   one-time entrance. THE PAGE TYPE LIVES IN THE SCRIM'S COLOUR: INK on
+   the front door, OX on a service page.
 
-   WHAT DIVERGES, and it is only shape:
+   THIS SUPERSEDES "HOME IS FULL-BLEED, SERVICE PAGES ARE SPLIT", which
+   stood for four days. The split hero is gone; see the tombstone above
+   .heroB for what went with it. The distinction it was drawing is worth
+   keeping and is now drawn in colour instead of in shape, which costs
+   one variable rather than two hero implementations.
 
-     .heroB      photograph edge to edge, content on a full-width ink
-                 panel at its foot, H1 one display scale larger.
-     .statcard   the same three stats, worn as a white card overlapping
-                 the hero's bottom edge. Home wears the card; service
-                 pages keep the band.
+   ONE IMPLEMENTATION, NOT A COPY. .heroB is the hero; .heroB--ox is a
+   modifier that sets --scrim-rgb and --scrim-ground. Both pages ride the
+   same structure, the same scrim geometry, the same button grammar, and
+   THE ENTRANCE KEYFRAMES EXIST ONCE.
+
+   THE OX GROUND IS WEAKER THAN INK AND EVERYTHING FOLLOWS FROM THAT.
+   Measured over a white photo pixel: silver needs alpha .758 on ink to
+   clear 7:1 and .849 on ox. --silver-2, the secondary tone, needs .858
+   on ink and .981 on ox, because --silver-2 on solid ox is only 7.34 to
+   begin with. SO THERE IS NO SECONDARY TEXT TONE ON AN OX HERO: the lead
+   and the breadcrumb are --silver there. On ink, where --silver-2 reads
+   10.78, the hierarchy stays.
+
+   WHAT STILL DIVERGES BETWEEN THE TWO PAGE TYPES, and it is only shape:
+
+     scrim       ink on the front door, ox on a service page.
+     .statcard   the home stats worn as a white card overlapping the
+                 hero's seam. Service pages keep the band, which is why
+                 the ox hero's foot can come in: no card to clear.
      .svc-cards  a photographic router grid, which is what a front door
                  is for.
-     rhythm      ONE oxblood act band, not two.
+     .proofstrip the hero's chips, on a phone, below the hero.
+     rhythm      home carries ONE oxblood act band, not two.
 
    WHAT DOES NOT DIVERGE, and this list is the reason the rule is
    written down: the palette, the type, the motion laws, the lift, the
@@ -1036,10 +899,23 @@ section { padding: var(--pad) 0; }
    would have been the one part of rule 1 that is not negotiable.
    =========================================================================== */
 .heroB {
-  position: relative; overflow: hidden; background: var(--ink); padding: 0;
+  /* THE PAGE TYPE LIVES IN THIS ONE VARIABLE. Ink on the front door, ox
+     on a service page. Everything else about the hero is shared: the
+     structure, the scrim geometry, the entrance keyframes, the button
+     grammar. One implementation, a modifier, not a copy. */
+  --scrim-rgb: var(--ink-rgb);
+  --scrim-ground: var(--ink);
+  position: relative; overflow: hidden; background: var(--scrim-ground); padding: 0;
   display: flex; align-items: flex-end;
   min-height: clamp(420px, 84vh, 600px);
 }
+/* OX IS A WEAKER GROUND THAN INK AND THE SCRIM IS DEEPER FOR IT. Measured:
+   over a white photo pixel, silver needs alpha .758 on ink to clear 7:1 and
+   .849 on ox; the lead in --silver-2 needs .858 on ink and .981 on ox,
+   because --silver-2 on solid ox is only 7.34 to begin with. So the ox
+   scrim runs near-solid where the copy sits and does its fading further
+   out. The standard did not move; the scrim did. */
+.heroB--ox { --scrim-rgb: var(--ox-rgb); --scrim-ground: var(--ox); }
 .heroB-photo {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; object-position: 50% 42%;
@@ -1066,10 +942,10 @@ section { padding: var(--pad) 0; }
 .heroB-veil {
   position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(0deg,
-    rgb(var(--ink-rgb) / .96) 0%,
-    rgb(var(--ink-rgb) / .95) 72%,
-    rgb(var(--ink-rgb) / .92) 95%,
-    rgb(var(--ink-rgb) / 0) 100%);
+    rgb(var(--scrim-rgb) / .97) 0%,
+    rgb(var(--scrim-rgb) / .96) 72%,
+    rgb(var(--scrim-rgb) / .94) 95%,
+    rgb(var(--scrim-rgb) / 0) 100%);
 }
 /* THE BOTTOM PADDING IS THE STAT CARD'S OVERLAP PLUS AIR, not a taste
    value. The card is opaque white and overlaps the hero's bottom seam by
@@ -1084,9 +960,42 @@ section { padding: var(--pad) 0; }
 .heroB h1 { font-size: clamp(2.5rem, 5.2vw, 4rem); color: var(--silver); margin-bottom: .26em; }
 .heroB .eyebrow { color: var(--silver); }
 .heroB .lead { color: var(--silver-2); font-size: 1.12rem; max-width: 46ch; }
+/* ON OX THE LEAD IS --silver, NOT --silver-2, AND THAT IS ARITHMETIC.
+   --silver-2 on SOLID ox is 7.34, so against a 7:1 target it has 0.34 of
+   headroom and any photograph showing through at all takes it under; it
+   measured 6.57. Deepening the scrim to opaque would just about reach 7.34
+   and would put no photograph under the lead at all, which is the thing
+   this hero exists to do. --silver on solid ox is 10.50, so the scrim can
+   stay short of opaque and the picture still reads. The standard did not
+   move: the type colour with headroom on this ground did.
+   THE BREADCRUMB GOES WITH IT for the same arithmetic: it measured 6.34
+   to 7.07 in --silver-2 and clears comfortably in --silver. ON AN OX
+   GROUND THERE IS NO SECONDARY TEXT TONE, because --silver-2 tops out at
+   7.34 there and a target of 7 leaves nothing for a photograph. On ink,
+   where --silver-2 reads 10.78, the hierarchy stays. */
+.heroB--ox .lead { color: var(--silver); }
 .heroB .btn { border-color: var(--silver); }
 .heroB .btn-ghost { color: var(--silver); }
 .heroB .cta-row { margin-top: 24px; }
+.heroB .crumb ol { color: var(--silver-2); }
+/* THE CRUMB'S LINK WAS INHERITING THE PAGE LINK COLOUR, which is oxblood,
+   and on the ox hero that measured 1.42: oxblood on oxblood. Caught by the
+   probe, not the eye. */
+.heroB .crumb a { color: var(--silver); }
+/* SOURCE ORDER, NOT SPECIFICITY, decides this one: .heroB .crumb ol and
+   .heroB--ox .crumb ol are both (0,2,1), so the override has to sit after
+   the rule it overrides. It did not, the first time, and the probe read
+   the same 6.34 twice, which is how the mistake announced itself. */
+.heroB--ox .crumb ol { color: var(--silver); }
+.heroB .crumb li + li::before { color: rgb(var(--silver-rgb) / .5); }
+.heroB .badges { margin-top: 22px; }
+.heroB .badges li { background: transparent; border-color: rgb(var(--silver-rgb) / .55); color: var(--silver); }
+.heroB .badges svg { stroke: var(--silver); }
+/* CHIPS IN THE HERO ARE A DESKTOP ARRANGEMENT ONLY. Four rows of them
+   over a phone photograph costs about 210px, which fails the fold and
+   buries the picture. Below 600px the strip below the hero carries them
+   instead. See .proofstrip. */
+@media (max-width: 599px) { .heroB .badges { display: none; } }
 
 /* THE PHONE COPY BLOCK IS TIGHTENED, because on a phone the block's own
    height is what decides whether the CTA clears the fold, not the hero's
@@ -1108,12 +1017,21 @@ section { padding: var(--pad) 0; }
   .heroB { align-items: center; min-height: clamp(480px, 58vh, 560px); }
   .heroB-veil {
     background: linear-gradient(90deg,
-      rgb(var(--ink-rgb) / .96) 0%,
-      rgb(var(--ink-rgb) / .93) 52%,
-      rgb(var(--ink-rgb) / .60) 68%,
-      rgb(var(--ink-rgb) / 0) 86%);
+      rgb(var(--scrim-rgb) / .97) 0%,
+      rgb(var(--scrim-rgb) / .95) 52%,
+      rgb(var(--scrim-rgb) / .62) 68%,
+      rgb(var(--scrim-rgb) / 0) 86%);
   }
   .heroB-copy { padding: clamp(18px, 1.8vw, 24px) 0 clamp(86px, 6.4vw, 90px); }
+  /* THE CHIP ROW IS HELD INSIDE THE SCRIM'S STRONG ZONE. Unconstrained,
+     four chips run 917px and reach 76% of a 1440 frame, which is inside
+     the fade: the rightmost glyphs measured 1.06. Capped, they wrap to
+     two rows that end at 46% and clear comfortably. */
+  .heroB .badges { max-width: 620px; }
+  /* The ox hero sits above a stat BAND, not the home page's floating
+     card, so there is no overlap to clear and the foot can come in. That
+     is what buys the second chip row without passing 600px of depth. */
+  .heroB--ox .heroB-copy { padding-bottom: clamp(36px, 3.4vw, 48px); }
   .heroB h1 { max-width: 17ch; }
   .heroB .lead { max-width: 50ch; }
 }
@@ -1135,6 +1053,20 @@ section { padding: var(--pad) 0; }
   .heroB-photo, .heroB-veil { animation: heroB-in 500ms ease-out both; }
   .heroB-copy { animation: heroB-in 500ms ease-out 200ms both; }
 }
+
+/* ---------- The proof strip: the hero's chips, on a phone ----------
+   ONE LIST, TWO PLACES, AND ONLY ONE OF THEM RENDERED AT A TIME. The
+   chips are a desktop hero arrangement and a phone band, which is two
+   arrangements of the same four claims. A single element cannot occupy
+   two DOM positions, so there are two lists and exactly one is displayed
+   at any width; display:none keeps the hidden one out of the
+   accessibility tree as well as off the screen.
+
+   THE STRIP IS PAGE, NOT HERO, so it does not animate. The entrance
+   belongs to the hero and stops at its edge. */
+.proofstrip { padding: 20px 0 4px; }
+.proofstrip .badges { margin: 0; }
+@media (min-width: 600px) { .proofstrip { display: none; } }
 
 /* ---------- The stat band, worn as jewellery ----------
    SAME .statband CLASS ON PURPOSE. site.js finds the stats through it, so
