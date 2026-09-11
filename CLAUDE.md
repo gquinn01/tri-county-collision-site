@@ -229,8 +229,8 @@ section backgrounds. Still opaque: a gradient between two solid stops is not a
 wash, and nothing of the photograph shows through.
 
 **It is the same class, not a copy of it.** The act-button rule is keyed to
-`.field-ox`, so the hero's Call button became ink-filled with paper text and
-the paper hairline **on its own**, and the Email ghost stayed a paper outline,
+`.field-ox`, so the hero's Call button became ink-filled with silver text and
+the silver hairline **on its own**, and the Email ghost stayed a silver outline,
 with nothing written for the hero specifically. One class, one ground, one
 button grammar. A hand-copied gradient would have needed its own button rule
 and would have drifted from the bands the first time either changed.
@@ -270,16 +270,16 @@ the browser fakes it, which looks like a mistake because it is one.
 
 **5. Ink sticky header**, with the slim ink staging bar above it until
 cutover. The call button keeps its oxblood fill, because oxblood means act,
-and carries a paper border: `--ox` on `--ink` measures **1.47**, so without
+and carries a silver border: `--ox` on `--ink` measures **1.47**, so without
 the border the button is invisible as a shape even though its label reads at
 11.04.
 
-**The act button on any dark ground wears the paper hairline.** Decided
+**The act button on any dark ground wears the silver hairline.** Decided
 2026-09-10, and it is one symmetric rule rather than two exceptions, because
 the two failures are **the same number**: `--ox` on `--ink` is 1.47 and
 `--ink` on `--ox` is also 1.47. So on the two oxblood bands the act button is
-now **ink filled with paper text and the paper hairline**, exactly as the
-header's button is oxblood filled with paper text and the paper hairline. The
+now **ink filled with silver text and the silver hairline**, exactly as the
+header's button is oxblood filled with silver text and the silver hairline. The
 fill is whichever dark the ground is not; the hairline is what gives the shape
 an edge. Labels read at 11.04 and 16.21. **The Email ghost button beside it is
 unchanged on either ground** — it is a border and a label already.
@@ -288,15 +288,39 @@ unchanged on either ground** — it is a border and a label already.
 them any more. Oxblood means act and nothing else: two oxblood bands per page,
 each carrying the CTA row. Ink is structural. Solid colours only and no glows.
 
-**White is a ground, not a shade of paper.** Added 2026-09-10. `--paper` is
-#F9F7F4, a warm off-white, and it is what the page is made of. `--white` is
-#FFFFFF and it is used on exactly **one band**, the stat band under the hero,
-to lift the three proof figures off the run of the page. The two measure 1.07
-against each other, which is why it works: it is not a contrast switch, which
-the background rhythm says costs reading time. It is the same page, one shade
-cleaner, under the numbers that have to be believed. Every text pair gets
-slightly better on it: ink 17.33, oxblood 11.80, `--ink-2` 9.80, `--ox-tx`
-8.95.
+**White is a ground, not a shade of the ground.** Added 2026-09-10. `--silver`
+is the page; `--white` is used on exactly **one band**, the stat band under the
+hero, to lift the three proof figures off the run of the page. Every text pair
+gets better on it: ink 17.33 against 14.09, oxblood 11.80 against 9.60,
+`--ink-2` 9.80 against 7.96, `--ox-tx` 8.95 against 7.27.
+
+**The band separates more than it used to, and that was not the plan.** It
+measured 1.07 against the old cream ground, chosen so it would read as the same
+page one shade cleaner rather than as a contrast switch. Against the silver it
+measures **1.23**. Still nothing like a band change, but the highlight does more
+work now than it was asked to.
+
+**The ground is the logo's silver, decided 2026-09-10.** 40,515 opaque hueless
+letterform pixels were sampled out of the TRI-COUNTY wordmark, the same method
+that produced `--mark`. **The wordmark is chrome, so it is a range, not a
+colour**: darkest #676767, median #ABABAB, p75 #CACACA, highlight #E6E8E8.
+**Which stop becomes the ground is a judgement and it is recorded as one.** The
+median is what the eye calls the silver and it is unusable as a ground:
+`--ink-2` measures 4.27 on it and `--ox-tx` 3.90, so secondary and small accent
+text both fail. The rule taken was **the lightest stop the wordmark actually
+contains** — the highlight where the chrome catches the light — which is
+**#E6E8E8**. Sampled, not invented, and every text pair clears on it.
+
+`--rule` came out of the same sample at the wordmark's p75, **#CACACA**. It had
+to move: the old warm #DED8D1 measured 1.32 on the cream and only **1.15** on
+the silver, which is a hairline nobody can see. #CACACA measures 1.33.
+
+**The temperature change is a brand decision, not a taste one.** #F9F7F4 was a
+warm cream, red highest and blue lowest. #E6E8E8 is the logo's own
+neutral-to-cool chrome. The page now stands on a colour the mark is actually
+made of, which is the same argument that put #691C17 and #E92424 in the table.
+**What it costs:** every ratio on the ground drops a little, because the ground
+got darker. Nothing dropped below its floor.
 
 **One sanctioned section-background gradient, decided 2026-09-10.** The firm's
 palette law allows exactly this one exception, and only as a dated, recorded

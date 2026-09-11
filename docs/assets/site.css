@@ -22,8 +22,8 @@
 
       WHY IT IS THE SAME CLASS RATHER THAN A COPY OF IT. The act-button rule
       is keyed to .field-ox, so the hero's Call button became ink-filled with
-      paper text and the paper hairline on its own, and the Email ghost stayed
-      a paper outline, with nothing written for the hero specifically. One
+      silver text and the silver hairline on its own, and the Email ghost stayed
+      a silver outline, with nothing written for the hero specifically. One
       class, one ground, one button grammar. A hand-copied gradient would
       have needed its own button rule and would have drifted from the bands
       the first time either changed.
@@ -31,9 +31,9 @@
       THE SUPPORTING COLOURS WERE RE-MEASURED AGAINST THE GRADIENT'S LIGHTEST
       STOP, which is --ox and therefore the worst case:
 
-          h1, eyebrow        --paper     11.04
-          lead, breadcrumb   --paper-2    7.34
-          breadcrumb rule    --rule       8.35
+          h1, eyebrow        --silver      9.60
+          lead, breadcrumb   --silver-2    7.34
+          breadcrumb rule    --rule        7.20
           chip border        see .badges, re-tuned from .42 to .50
 
       Text needs 4.5 and the chip border needs 3 as a shape. Everything
@@ -47,7 +47,7 @@
       margin rather than detaching from the edge: it is pinned to the glass,
       and only its content column is centred. See .heroA-panel for the sum.
 
-   3. STAT BAND directly under the hero, on paper. THREE stats, big numeral,
+   3. STAT BAND directly under the hero, on the silver ground. THREE stats, big numeral,
       label, one supporting line. Three, not four: a fourth would have to be
       invented, and inventing a statistic to balance a row is exactly the
       failure the prime law exists to stop. Any number that is true only on
@@ -107,31 +107,63 @@
    than an accent. #E92424 was decoded out of the logo PNG's own palette, so
    the mark's red is the mark's actual red and not a lookalike.
 
+   THE GROUND IS THE LOGO'S SILVER NOW, SAMPLED THE SAME WAY, 2026-09-10.
+   40,515 opaque, hueless letterform pixels were read out of the TRI-COUNTY
+   wordmark. THE WORDMARK IS CHROME, SO IT IS A RANGE AND NOT A COLOUR:
+
+       darkest #676767   median #ABABAB   p75 #CACACA   highlight #E6E8E8
+
+   WHICH STOP BECOMES THE GROUND IS A JUDGEMENT, AND IT IS RECORDED AS ONE.
+   The median is what the eye calls "the silver", and it is unusable as a
+   ground: --ink-2 on #ABABAB measures 4.27 and --ox-tx 3.90, so the
+   secondary text and the small accent text both fail. The rule taken was
+   THE LIGHTEST STOP THE WORDMARK ACTUALLY CONTAINS, the highlight where the
+   chrome catches the light, and that is #E6E8E8. Sampled, not invented, and
+   every text pair clears on it.
+
+   --rule COMES OUT OF THE SAME SAMPLE, at the wordmark's p75, #CACACA. It
+   had to move: the old warm #DED8D1 measured 1.32 against the cream ground
+   and only 1.15 against the silver, which is a hairline nobody can see.
+   #CACACA measures 1.33. The same line, on a ground that changed under it.
+
+   THE TEMPERATURE CHANGED ON PURPOSE, AND IT IS A BRAND DECISION RATHER
+   THAN A TASTE ONE. #F9F7F4 was a warm cream: red highest, blue lowest.
+   #E6E8E8 is the logo's own neutral-to-cool chrome. The page now stands on
+   a colour the mark is actually made of, which is the same argument that
+   put #691C17 and #E92424 in this table. WHAT IT COSTS: every ratio on the
+   ground drops a little, because the ground got darker. Nothing dropped
+   below its floor, and the numbers below are the new ones.
+
    | Token     | Hex      | Role                                            |
    |-----------|----------|-------------------------------------------------|
    | --ox      | #691C17  | ACT. Filled buttons, the call bar, the two bands.|
    | --ink     | #121B27  | Body text, headings, the header, the footer.     |
-   | --paper   | #F9F7F4  | The default ground, and all type on dark.        |
+   | --silver   | #E6E8E8  | THE DEFAULT GROUND, and all type on dark.       |
    | --white   | #FFFFFF  | THE HIGHLIGHT GROUND. One band, not the page.   |
    | --mark    | #E92424  | The logo, and nothing else. See the warning.     |
-   | --ox-tx   | #8A2419  | Oxblood's shade for small text on paper.         |
-   | --ink-2   | #3C4453  | Secondary text on paper.                         |
-   | --paper-2 | #C9CCD3  | Secondary text on ink.                           |
+   | --ox-tx   | #8A2419  | Oxblood's shade for small text on the silver ground.         |
+   | --ink-2   | #3C4453  | Secondary text on the silver ground.                         |
+   | --silver-2 | #C9CCD3  | Secondary text on ink.                           |
 
-   WHITE IS A GROUND, NOT A SHADE OF PAPER. Added 2026-09-10. --paper is
-   #F9F7F4, a warm off-white, and it is what the page is made of. --white is
-   #FFFFFF and it is used on exactly ONE band, the stat band under the hero,
-   to lift the three proof figures off the run of the page. The two measure
-   1.07 against each other, which is why this works: it is not a contrast
-   switch, which the background rhythm says costs reading time. It is the
-   same page, one shade cleaner, under the numbers that have to be believed.
+   WHITE IS A GROUND, NOT A SHADE OF THE GROUND. Added 2026-09-10.
+   --silver is the page and --white is used on exactly ONE band, the stat
+   band under the hero, to lift the three proof figures off the run of the
+   page.
 
-   Every text pair gets slightly BETTER on white, never worse:
+   THE BAND SEPARATES MORE THAN IT USED TO, AND THAT WAS NOT THE PLAN. It
+   measured 1.07 against the old cream ground, which was chosen so it would
+   read as the same page one shade cleaner rather than as a contrast switch.
+   Against the silver it measures 1.23. Still nothing like a band change,
+   but the highlight does more work now than it was asked to. Watch it: if
+   it ever starts reading as a separate slab, the ground moved, not the
+   band.
 
-       --ink   on --white  17.33     on --paper  16.21
-       --ox    on --white   11.80    on --paper  11.04
-       --ink-2 on --white    9.80    on --paper   9.16
-       --ox-tx on --white    8.95    on --paper   8.37
+   Every text pair gets better on white, and by more than before:
+
+       --ink   on --white  17.33     on --silver  14.09
+       --ox    on --white   11.80    on --silver   9.60
+       --ink-2 on --white    9.80    on --silver   7.96
+       --ox-tx on --white    8.95    on --silver   7.27
 
    ONE HONEST DUPLICATE: --panel is also #FFFFFF and has been since the
    first commit. It is the ground of a CARD, which sits ON the page; --white
@@ -141,17 +173,18 @@
 
    GOLD IS GONE, removed 2026-09-06 on the client's call. #E5C549 used to
    carry the certification marks, the small-caps labels and the counters on
-   dark grounds. Everything it did is now done by --paper or --ox: a badge on
-   ink is paper, a counter on oxblood is a paper disc with oxblood numerals.
+   dark grounds. Everything it did is now done by --silver or --ox: a badge on
+   ink is silver, a counter on oxblood is a silver disc with oxblood numerals.
    The palette is four colors and two text shades, and it is easier to hold
    the line on four.
 
    MEASURED CONTRAST, machine-counted against WCAG's formula, never eyeballed:
 
-       --ink    on --paper    16.21        --paper   on --ink     16.21
-       --ox     on --paper    11.04        --paper   on --ox      11.04
-       --ox-tx  on --paper     8.37        --paper-2 on --ink     10.78
-       --ink-2  on --paper     7.04        --paper-2 on --ox       7.34
+       --ink    on --silver    14.09        --silver   on --ink     14.09
+       --ox     on --silver     9.60        --silver   on --ox       9.60
+       --ox-tx  on --silver     7.27        --silver-2 on --ink     10.78
+       --ink-2  on --silver     7.96        --silver-2 on --ox       7.34
+       --rule   on --silver     1.33        --silver   on the deep  12.50
 
    AND TWO THAT FAIL ON PURPOSE. THEY ARE THE SAME NUMBER, WHICH IS WHY THE
    RULE IS SYMMETRIC:
@@ -159,9 +192,9 @@
        --ox  on --ink   1.47        --ink on --ox   1.47
 
    An oxblood button on the ink header is all but invisible AS A SHAPE, even
-   though its paper label reads at 11.04. An ink button on an oxblood band is
+   though its silver label reads at 9.60. An ink button on an oxblood band is
    invisible in exactly the same way and by exactly the same margin, with its
-   paper label reading at 16.21.
+   silver label reading at 14.09.
 
    SO: THE ACT BUTTON ON ANY DARK GROUND WEARS THE PAPER HAIRLINE. Decided
    2026-09-10, and it is one rule, not two exceptions. The fill changes to
@@ -170,16 +203,16 @@
    dark ground without one.
 
        ground        fill      label                 shape   label
-       --ink         --ox      --paper                1.47   11.04
-       --ox          --ink     --paper                1.47   16.21
+       --ink         --ox      --silver                1.47    9.60
+       --ox          --ink     --silver                1.47   14.09
 
    The hover shades are darker still and therefore even less visible as
    shapes, 1.24 and 1.21. THAT IS FINE AND IT IS THE POINT: the border draws
    the shape, the fill only says the pointer is on it, and both hover labels
-   stay well clear at 9.16 and above. The ghost button beside the act button
+   stay well clear at 7.96 and above. The ghost button beside the act button
    is unaffected on either ground; it is a border and a label already.
 
-   THE LOGO RED FAILS AS TEXT. #E92424 on paper is 4.14, under the 4.5 that
+   THE LOGO RED FAILS AS TEXT. #E92424 on the silver ground is 3.60, further under the 4.5 that
    normal-size text needs. That is why the mark's red and the text red are two
    separate tokens rather than one "brand red": --mark is for the logo file
    and --ox-tx is for words. Do not set type in --mark, at any size, on any
@@ -271,7 +304,7 @@
    the header's own call button is always visible instead, and the body gets
    bottom padding to match so it never covers the last line of the footer.
 
-   BACKGROUND RHYTHM. --paper by default, --ox for the two bands that ask the
+   BACKGROUND RHYTHM. --silver by default, --ox for the two bands that ask the
    reader to act, --ink for the contact band and the footer. That is the whole
    system, and it is deliberately quieter than an alternating dark/light
    rhythm, because every contrast switch costs reading time.
@@ -287,10 +320,10 @@
   --ox-tx: #8A2419;
   --ink: #121B27;
   --ink-2: #3C4453;
-  --paper: #F9F7F4;
-  --paper-2: #C9CCD3;
+  --silver: #E6E8E8;
+  --silver-2: #C9CCD3;
   --mark: #E92424;
-  --rule: #DED8D1;
+  --rule: #CACACA;
   --panel: #FFFFFF;
   --white: #FFFFFF;
 
@@ -329,7 +362,7 @@ body {
   font-size: 1.0625rem;
   line-height: 1.65;
   color: var(--ink);
-  background: var(--paper);
+  background: var(--silver);
   /* Room for the fixed call bar, so it never sits on the last line. */
   padding-bottom: 68px;
 }
@@ -360,7 +393,7 @@ section { padding: var(--pad) 0; }
 /* ---------- Buttons: filled means act, and act means call ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  background: var(--ox); color: var(--paper);
+  background: var(--ox); color: var(--silver);
   font-size: 1.0625rem; font-weight: 700; text-decoration: none;
   padding: 15px 26px; border: 2px solid var(--ox); border-radius: var(--radius);
   min-height: 52px; transition: background-color .12s ease, border-color .12s ease;
@@ -371,7 +404,7 @@ section { padding: var(--pad) 0; }
 .btn-ghost:hover { background: rgba(105, 28, 23, .08); border-color: var(--ox); }
 /* THE ACT BUTTON ON A DARK GROUND. One rule, both grounds, and the
    contrast note in the header carries the arithmetic. The fill is
-   whichever dark the ground is NOT, and the paper hairline is what gives
+   whichever dark the ground is NOT, and the silver hairline is what gives
    the shape an edge, because dark-on-dark measures 1.47 either way round.
 
    :not(.btn-ghost) IS LOAD-BEARING. The ghost carries both classes, so an
@@ -379,13 +412,13 @@ section { padding: var(--pad) 0; }
    here also makes the rule order-independent, which matters more than the
    two extra characters: this block no longer cares whether it sits above
    or below the ghost's own rules. */
-.dark .btn:not(.btn-ghost) { color: var(--paper); border-color: var(--paper); }
+.dark .btn:not(.btn-ghost) { color: var(--silver); border-color: var(--silver); }
 .field-ox .btn:not(.btn-ghost) { background: var(--ink); }
-.field-ox .btn:not(.btn-ghost):hover { background: var(--ink-2); border-color: var(--paper); }
+.field-ox .btn:not(.btn-ghost):hover { background: var(--ink-2); border-color: var(--silver); }
 .field-ink .btn:not(.btn-ghost) { background: var(--ox); }
-.field-ink .btn:not(.btn-ghost):hover { background: var(--ox-dk); border-color: var(--paper); }
-.dark .btn-ghost { background: transparent; color: var(--paper); border-color: var(--paper); }
-.dark .btn-ghost:hover { background: rgba(249, 247, 244, .14); }
+.field-ink .btn:not(.btn-ghost):hover { background: var(--ox-dk); border-color: var(--silver); }
+.dark .btn-ghost { background: transparent; color: var(--silver); border-color: var(--silver); }
+.dark .btn-ghost:hover { background: rgba(230, 232, 232, .14); }
 .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin: 26px 0 0; }
 /* The two act bands centre their CTA row under a centred heading. The hero
    row is not in a .dark band and stays left, with the copy it belongs to. */
@@ -398,7 +431,7 @@ section { padding: var(--pad) 0; }
    like chrome. */
 .nav {
   position: sticky; top: 0; z-index: 40;
-  background: var(--ink); border-bottom: 1px solid rgba(249, 247, 244, .16);
+  background: var(--ink); border-bottom: 1px solid rgba(230, 232, 232, .16);
 }
 /* THE LOGO NEEDS CLEAR SPACE, AND IT HAD NONE. The mark's PNG is cropped
    tight to the artwork, so the <img> box IS the mark: at 1440 the logo
@@ -431,12 +464,12 @@ section { padding: var(--pad) 0; }
 .nav-home img { width: 168px; height: auto; object-fit: contain; }
 .nav-main { margin-left: auto; }
 .nav-main ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; }
-.nav-main a { color: var(--paper); font-weight: 600; text-decoration: none; font-size: 1rem; }
+.nav-main a { color: var(--silver); font-weight: 600; text-decoration: none; font-size: 1rem; }
 .nav-main a:hover { text-decoration: underline; }
-/* Oxblood fill, because oxblood means act, plus a paper edge because
+/* Oxblood fill, because oxblood means act, plus a silver edge because
    --ox on --ink is 1.47 and the shape would otherwise disappear. */
-.nav .btn { flex: 0 0 auto; border-color: var(--paper); }
-.nav .btn:hover { background: var(--ox-dk); border-color: var(--paper); }
+.nav .btn { flex: 0 0 auto; border-color: var(--silver); }
+.nav .btn:hover { background: var(--ox-dk); border-color: var(--silver); }
 .navtoggle { display: none; }
 
 @media (max-width: 899px) {
@@ -452,7 +485,7 @@ section { padding: var(--pad) 0; }
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
   display: flex; align-items: center; justify-content: center; gap: 10px;
   min-height: 60px; padding: 10px 16px;
-  background: var(--ox); color: var(--paper);
+  background: var(--ox); color: var(--silver);
   font-size: 1.15rem; font-weight: 800; text-decoration: none;
   border-top: 2px solid var(--ox-dk);
 }
@@ -556,22 +589,24 @@ section { padding: var(--pad) 0; }
     object-position: 12% 50%;
   }
 }
-.heroA h1, .heroA .eyebrow { color: var(--paper); }
+.heroA h1, .heroA .eyebrow { color: var(--silver); }
 .heroA h1 { margin-bottom: .3em; }
-.heroA .lead { color: var(--paper-2); font-size: 1.16rem; max-width: 46ch; }
-.heroA .proof { color: var(--paper-2); }
-.heroA .crumb ol { color: var(--paper-2); }
-.heroA .btn { border-color: var(--paper); }
-.heroA .btn-ghost { color: var(--paper); }
+.heroA .lead { color: var(--silver-2); font-size: 1.16rem; max-width: 46ch; }
+.heroA .proof { color: var(--silver-2); }
+.heroA .crumb ol { color: var(--silver-2); }
+.heroA .btn { border-color: var(--silver); }
+.heroA .btn-ghost { color: var(--silver); }
 .heroA .badges { margin-top: 30px; }
 /* RE-TUNED FOR THE OX GROUND, 2026-09-10, and the number is not a guess.
    At .42 alpha this border measured 3.85 against ink, which is what it
    was set for. The same .42 over --ox measures 3.11: the ground got
-   lighter, so the same wash of paper reads weaker on it. .50 puts it
-   back to exactly 3.85 on --ox, and 4.58 on the gradient's deep end.
-   Same strength as it always had, on a ground that changed under it. */
-.heroA .badges li { background: transparent; border-color: rgba(249, 247, 244, .50); color: var(--paper); }
-.heroA .badges svg { stroke: var(--paper); }
+   lighter, so the same wash reads weaker on it. RE-TUNED TWICE for the
+   same reason: .50 held 3.85 while the wash was the warm cream, and when
+   the cream became the logo silver on 2026-09-10 the same .50 fell to
+   3.47, because the silver is darker than the cream was. .55 puts it
+   back to 3.89. Same strength through two ground changes. */
+.heroA .badges li { background: transparent; border-color: rgba(230, 232, 232, .55); color: var(--silver); }
+.heroA .badges svg { stroke: var(--silver); }
 
 /* ---------- THE PHONE HERO AND THE FOLD, added 2026-09-10 ----------
    MEASURED WITH THE IFRAME METHOD IN scripts/mobile-check.md. Not eyeballed,
@@ -690,8 +725,8 @@ section { padding: var(--pad) 0; }
   pointer-events: none;
 }
 /* On ink and oxblood grounds the rule would be invisible against its own
-   band, so it answers in paper instead. Same behaviour, readable ground. */
-.dark .card::after { background: var(--paper); }
+   band, so it answers in silver instead. Same behaviour, readable ground. */
+.dark .card::after { background: var(--silver); }
 
 @media (hover: hover) {
   .card, .step, .svc { transition: transform 160ms cubic-bezier(.2, .8, .3, 1); }
@@ -891,8 +926,8 @@ section { padding: var(--pad) 0; }
    .field-ox or .field-ink, so the two never get confused.
    OXBLOOD MEANS ACT AND NOTHING ELSE. A .field-ox band always carries the
    CTA row; there are exactly two on a page. Ink is structural: it breaks
-   the paper run under proof and quotes, where there is nothing to click. */
-.dark { color: var(--paper); }
+   the silver run under proof and quotes, where there is nothing to click. */
+.dark { color: var(--silver); }
 /* THE ONE SANCTIONED GRADIENT ON THIS SITE. Decided 2026-09-10, and the
    palette law's own exception: section backgrounds may carry a gradient
    when it is a dated, recorded decision. This is that record. Everything
@@ -922,13 +957,13 @@ section { padding: var(--pad) 0; }
 
    MEASURED, at every stop:
 
-       ground        paper text     ink button AS A SHAPE
-       --ox              11.04                       1.47
-       --ox-dk           13.02                       1.24
-       deep end          14.38                       1.13
+       ground        silver text     ink button AS A SHAPE
+       --ox               9.60                       1.47
+       --ox-dk          11.34                       1.24
+       deep end         12.50                       1.13
 
    Text gets MORE readable toward the ends, not less. The act button sits
-   mid-band on --ox, and its paper hairline is what draws its shape in
+   mid-band on --ox, and its silver hairline is what draws its shape in
    any case, which is the rule recorded in the contrast note above. */
 .field-ox {
   background: var(--ox);
@@ -939,8 +974,8 @@ section { padding: var(--pad) 0; }
       color-mix(in srgb, var(--ox-dk) 72%, var(--ink)) 100%);
 }
 .field-ink { background: var(--ink); }
-.dark .sec-sub, .dark .eyebrow { color: var(--paper); }
-.dark a { color: var(--paper); }
+.dark .sec-sub, .dark .eyebrow { color: var(--silver); }
+.dark a { color: var(--silver); }
 .band-panel { background: var(--panel); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 
 /* THE MEASURE IS CENTERED, not pinned left. At 1440 a 68ch column inside an
@@ -961,14 +996,14 @@ section { padding: var(--pad) 0; }
 }
 .card h3 { margin-bottom: .45em; }
 .card p { font-size: 1rem; color: var(--ink-2); }
-.dark .card { background: rgba(249, 247, 244, .08); border-color: rgba(249, 247, 244, .28); }
-.dark .card p { color: var(--paper); }
+.dark .card { background: rgba(230, 232, 232, .08); border-color: rgba(230, 232, 232, .28); }
+.dark .card p { color: var(--silver); }
 
 .tile { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-bottom: 16px; border: 2px solid var(--ox); border-radius: var(--radius); }
 .tile svg { width: 24px; height: 24px; fill: none; stroke: var(--ox); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.tile-dark { border-color: rgba(249, 247, 244, .5); }
-.tile-dark svg { stroke: var(--paper); }
-.tile-dark svg .ico-accent { stroke: var(--paper); }
+.tile-dark { border-color: rgba(230, 232, 232, .5); }
+.tile-dark svg { stroke: var(--silver); }
+.tile-dark svg .ico-accent { stroke: var(--silver); }
 
 /* ---------- Numbered process steps ---------- */
 .step { counter-increment: step; }
@@ -996,14 +1031,14 @@ section { padding: var(--pad) 0; }
 .numbered li::before {
   content: counter(n); position: absolute; left: 0; top: 0;
   width: 36px; height: 36px; border-radius: 50%;
-  background: var(--ox); color: var(--paper);
+  background: var(--ox); color: var(--silver);
   display: flex; align-items: center; justify-content: center;
   font-weight: 800; font-size: 1rem;
 }
 /* On an oxblood band an oxblood counter would vanish, so it inverts: a paper
    disc with oxblood numerals. Same idea for the tick marks in .ticks. */
-.dark .numbered li::before { background: var(--paper); color: var(--ox); }
-.dark .ticks li::before { border-color: var(--paper); }
+.dark .numbered li::before { background: var(--silver); color: var(--ox); }
+.dark .ticks li::before { border-color: var(--silver); }
 
 /* ---------- Figures ---------- */
 .figure { margin: 34px 0 0; }
@@ -1049,26 +1084,26 @@ section { padding: var(--pad) 0; }
 #faq details > p { margin: 0 0 22px; max-width: 74ch; color: var(--ink-2); }
 
 /* ---------- Contact band ---------- */
-.contact { background: var(--ink); color: var(--paper); }
-.contact .sec-sub { color: var(--paper); }
-.contact a { color: var(--paper); }
+.contact { background: var(--ink); color: var(--silver); }
+.contact .sec-sub { color: var(--silver); }
+.contact a { color: var(--silver); }
 .contact-grid { display: grid; gap: 26px; margin-top: 34px; }
 @media (min-width: 800px) { .contact-grid { grid-template-columns: repeat(3, 1fr); } }
-.contact-grid h3 { font-size: .84rem; letter-spacing: .1em; text-transform: uppercase; color: var(--paper); margin-bottom: .6em; }
+.contact-grid h3 { font-size: .84rem; letter-spacing: .1em; text-transform: uppercase; color: var(--silver); margin-bottom: .6em; }
 .contact-alt { margin-top: 30px; }
 
 /* ---------- Footer ---------- */
-footer.site { background: var(--ink); color: var(--paper); padding: var(--pad) 0 34px; }
-footer.site a { color: var(--paper); }
+footer.site { background: var(--ink); color: var(--silver); padding: var(--pad) 0 34px; }
+footer.site a { color: var(--silver); }
 .foot-grid { display: grid; gap: 34px; }
 @media (min-width: 760px) { .foot-grid { grid-template-columns: 1.4fr 1fr 1fr; } }
 .foot-home img { width: 200px; height: 80px; object-fit: contain; }
-.foot-tag { margin-top: 16px; max-width: 38ch; color: var(--paper-2); }
+.foot-tag { margin-top: 16px; max-width: 38ch; color: var(--silver-2); }
 .foot-nap { margin-top: 18px; line-height: 1.8; }
-.foot-head { font-size: .84rem; letter-spacing: .1em; text-transform: uppercase; color: var(--paper); margin: 0 0 14px; }
+.foot-head { font-size: .84rem; letter-spacing: .1em; text-transform: uppercase; color: var(--silver); margin: 0 0 14px; }
 .foot-links { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
-.foot-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(249, 247, 244, .18); font-size: .93rem; color: var(--paper-2); }
-.foot-bottom a { color: var(--paper-2); }
+.foot-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(230, 232, 232, .18); font-size: .93rem; color: var(--silver-2); }
+.foot-bottom a { color: var(--silver-2); }
 
 /* ---------- The staging banner. Removed at cutover with the noindex. ----------
    A slim ink bar, not a coloured stripe. It used to be a gold band across the
@@ -1076,10 +1111,10 @@ footer.site a { color: var(--paper); }
    loudest thing on the page. It is chrome now: same ink as the header it sits
    above, small type, one hairline between them. */
 .staging {
-  background: var(--ink); color: var(--paper-2);
+  background: var(--ink); color: var(--silver-2);
   font-size: .8rem; font-weight: 600; letter-spacing: .02em;
   text-align: center; padding: 7px 16px; margin: 0;
-  border-bottom: 1px solid rgba(249, 247, 244, .14);
+  border-bottom: 1px solid rgba(230, 232, 232, .14);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1115,7 +1150,7 @@ footer.site a { color: var(--paper); }
    ANY NUMBER TRUE ONLY ON THE DAY IT WAS WRITTEN CARRIES ITS DATE, in .stat-s.
    The review count is the one on this page. */
 /* THE HIGHLIGHT GROUND. This is the one band on the site that is --white
-   rather than --paper. See the palette note for why 1.07 is the point. */
+   rather than --silver. See the palette note for why 1.23 is the point. */
 .statband { background: var(--white); border-bottom: 1px solid var(--rule); }
 .stats { display: grid; gap: 34px; }
 @media (min-width: 820px) { .stats { grid-template-columns: repeat(3, 1fr); gap: 0; } }
@@ -1169,7 +1204,7 @@ footer.site a { color: var(--paper); }
    happily, which is the one adoption cost the sampler flagged. The
    rounding moved onto the image instead, which is where it can stay. */
 .svc {
-  background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius);
+  background: var(--silver); border: 1px solid var(--rule); border-radius: var(--radius);
 }
 .svc-photo {
   display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover;
@@ -1189,12 +1224,12 @@ footer.site a { color: var(--paper); }
 .quote-grid { display: grid; gap: 22px; align-items: start; }
 @media (min-width: 760px) { .quote-grid { grid-template-columns: repeat(2, 1fr); } }
 .quote {
-  background: rgba(249, 247, 244, .07); border: 1px solid rgba(249, 247, 244, .2);
+  background: rgba(230, 232, 232, .07); border: 1px solid rgba(230, 232, 232, .2);
   border-radius: var(--radius); padding: 26px 24px; margin: 0;
 }
-.quote svg { width: 26px; height: 26px; fill: none; stroke: var(--paper); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 12px; }
+.quote svg { width: 26px; height: 26px; fill: none; stroke: var(--silver); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 12px; }
 .quote p { font-size: 1rem; line-height: 1.6; }
-.quote figcaption { margin-top: 14px; font-weight: 700; font-size: .96rem; color: var(--paper-2); }
+.quote figcaption { margin-top: 14px; font-weight: 700; font-size: .96rem; color: var(--silver-2); }
 
 /* ---------- Three-card stack for the factory-certification payoff ---------- */
 .payoff { display: grid; gap: 20px; margin-top: 34px; }
