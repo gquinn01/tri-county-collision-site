@@ -480,6 +480,34 @@ h3 { font-size: 1.2rem; }
 p { margin: 0 0 1.1em; }
 p:last-child { margin-bottom: 0; }
 
+/* THE EYEBROW IS SITE TYPE, NOT HERO TYPE, and it lives here to say so.
+   Small, heavy, tracked, upper case: the line that names the page's
+   subject before the H1 makes its claim.
+
+   SWEPT 2026-09-10, RESTORED 2026-09-13, VERBATIM. The commit that
+   deleted the old split hero deleted this rule along with it, because
+   the rule happened to sit next to the .heroA block rather than because
+   it belonged to it. For three days both heroes rendered their eyebrow
+   as plain 1rem sentence case: no size, no weight, no tracking, no
+   caps. It cost 6px of eyebrow height on a phone and slid the 360x640
+   CTA from 575 to 582, past a 580 fold budget, which is how it was
+   found.
+
+   THE LESSON, and it is a discipline rather than a mechanism: A SWEEP
+   MAY DELETE ONLY RULES SCOPED TO THE THING BEING SWEPT. Before
+   deleting a rule in a cleanup, grep its selector across every page. A
+   base-class rule that merely lives near a section's block belongs to
+   the site, not the section, and nothing but reading the diff or
+   measuring the render will tell you which one you are holding.
+
+   The overrides on top of this are untouched and still apply: .heroB
+   .eyebrow takes it to silver, the phone block tightens its margin to
+   6px, and .dark .eyebrow carries it on any dark ground. */
+.eyebrow {
+  font-size: .82rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ox-tx); margin: 0 0 12px;
+}
+
 .wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 20px; }
 
 section { padding: var(--pad) 0; }

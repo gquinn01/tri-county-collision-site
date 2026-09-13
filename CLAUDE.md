@@ -471,6 +471,26 @@ rule's width that the stylesheet animates.
 **8. Arrival motion, adopted 2026-09-10.** The odometer and the lane, both
 from the same sampler.
 
+### A sweep deletes only what it owns, 2026-09-13
+
+**A cleanup may delete only rules SCOPED to the thing being swept. Before
+deleting a rule, grep its selector across every page.** A base-class rule that
+merely lives near a section's block in the file belongs to the site, not the
+section, and the stylesheet does not say which one you are holding.
+
+The commit that deleted the old split hero took the base `.eyebrow` rule with
+it, because that rule sat next to the `.heroA` block. For three days both
+heroes rendered their eyebrow as plain 1rem sentence case instead of small,
+heavy, tracked caps. It grew the eyebrow 6px on a phone, slid everything under
+it down 7px, and pushed the 360x640 CTA past its fold budget.
+
+**This one gets no check.** A rule that a page needs and does not have is
+invisible to a scanner reading markup, and nothing short of rendering the page
+would have seen it. **The net is the habit: render and measure, do not judge by
+eye, and diff what a cleanup actually removed.** Two values that must agree are
+one value plus a derivation; a rule that a section merely sits beside is not
+that section's to delete.
+
 ---
 
 ## The motion amendment, 2026-09-10

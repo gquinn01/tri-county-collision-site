@@ -1201,14 +1201,24 @@ amendment: the page is rendered twice, once normally and once with the copy at
 `visibility: hidden` so the ground can be sampled without the glyphs, and each
 element's **glyph runs** are measured rather than its block box.
 
+**Re-measured 2026-09-13** at the eyebrow's restored size, and these are the
+numbers that stand. The first set was taken on 2026-09-10, and between those
+two dates the eyebrow was rendering at the wrong size; see "The eyebrow was
+swept and restored" below.
+
 | Element | 1440x900 | 1920x1080 | 390x664 | 360x640 | Needs |
 |---|---|---|---|---|---|
-| Eyebrow | 13.56 | 13.40 | 12.40 | 11.72 | 7 |
-| H1 | 11.17 | 12.03 | 12.57 | 12.54 | 4.5 |
-| Lead | 9.02 | 9.02 | 9.47 | 9.51 | 7 |
-| Ghost button label | 13.23 | 13.07 | 13.77 | 13.77 | 7 |
+| Eyebrow | 13.93 | 13.89 | 13.09 | 9.94 | 7 |
+| H1 | 11.86 | 13.19 | 13.23 | 13.23 | 4.5 |
+| Lead | 9.47 | 9.47 | 9.72 | 9.72 | 7 |
+| Ghost button label | 13.87 | 13.57 | 14.28 | 14.28 | 7 |
 
-**Every element clears the 7:1 target, not just the 4.5 floor.**
+**Every element clears the 7:1 target, not just the 4.5 floor.** The eyebrow is
+small tracked caps, so 7 is the number it has to clear and not 4.5, and it
+clears it at its restored size at every width. **The scrim did not move for
+this.** Smaller glyphs sample less photograph, not more, so the restore cost
+the composite nothing; the 360x640 worst case is the tightest at 9.94 and has
+almost three points of headroom.
 
 **They were not all passes first time, and that is the point of measuring.**
 The phone eyebrow measured **2.13** and the 360 H1 **4.25** against a scrim
@@ -1223,17 +1233,71 @@ at both breakpoints.
 
 #### Geometry
 
-| Viewport | Photo depth | CTA ends | Fold budget | |
-|---|---|---|---|---|
-| 1440 x 900 | 550 | 553 | 900 | clears by 347 |
-| 1920 x 1080 | 560 | 558 | 1080 | clears by 522 |
-| 430 x 745 | 560 | 573 | 685 | clears by 112 |
-| 390 x 664 | 519 | 534 | 604 | **clears by 70** |
-| 360 x 640 | 560 | 575 | 580 | clears by 5 |
+**Measured 2026-09-13**, staging banner hidden, which is the post-cutover
+state. The CTA-to-card column is new and it is now a construction invariant
+rather than a measurement: see "The card's overlap is one number now" below.
+
+| Viewport | Hero depth | CTA ends | Fold budget | | CTA to stat card |
+|---|---|---|---|---|---|
+| 1440 x 900 | 566 | 553 | 900 | clears by 347 | 28 |
+| 1920 x 1080 | 566 | 553 | 1080 | clears by 527 | 28 |
+| 430 x 745 | 560 | 553 | 685 | clears by 132 | 28 |
+| 390 x 664 | 541 | 534 | 604 | **clears by 70** | 28 |
+| 360 x 640 | 582 | 575 | 580 | clears by 5 | 28 |
 
 **Both recorded exceptions are retired.** The desktop trade, CTA at ~1037
 against a 900px viewport, is gone: 553. The phone exception, CTA at 646
 against the 604 budget, is gone: 534.
+
+#### The card's overlap is one number now
+
+Changed 2026-09-13. The card's overlap and the hero copy's bottom padding used
+to be two independent clamps tuned to approximately agree, and the air between
+the buttons and the card's top edge was the leftover: **12px at 1440, about 8px
+near 1300, 6px at 390.** The overlap is now `--statcard-overlap`, the card
+takes its negative and the hero copy takes `overlap + 28px`, so **the air is
+28px by construction** at every width where the hero is content driven, and
+more where min-height governs. Two values that must agree are one value plus a
+derivation.
+
+The CTA moved up or held everywhere when this landed: 566 to 553 at desktop,
+573 to 553 at 430x745, unchanged at 390 and 360. All of the added padding sits
+below the buttons.
+
+#### The eyebrow was swept and restored
+
+**Swept 2026-09-10 in the commit that deleted the old split hero. Restored
+2026-09-13, verbatim.** The base `.eyebrow` rule, which is site type and not
+hero type, happened to sit beside the `.heroA` block in the stylesheet and went
+out with it. For three days both heroes rendered their eyebrow as plain 1rem
+sentence case: no `.82rem`, no 800 weight, no `.12em` tracking, no caps. **The
+home page read "Family owned and operated" in sentence case** where the
+signed-off pages read it small, bold, tracked and upper case.
+
+What it cost, measured: the eyebrow grew from **22px to 28px** tall on a phone,
+and everything under it slid 7px. The h1 top went 118 to 125, the lead 336 to
+342, and **the 360x640 CTA went from 575 to 582 against a 580 budget**, so the
+tightest phone in the record stopped clearing the fold. The restore puts all of
+it back: 22px, and 575 again.
+
+**The two contrast tables in 3.20 and 3.21 changed twice for this reason**, once
+on 2026-09-10 at the regressed size and once on 2026-09-13 at the restored one.
+The numbers that stand are the 2026-09-13 ones.
+
+**The lesson, which is a discipline and not a mechanism: a sweep may delete
+only rules scoped to the thing being swept.** Before deleting a rule in a
+cleanup, grep its selector across every page. A base-class rule that merely
+lives near a section's block belongs to the site, not the section. Nothing
+would have caught this but reading the diff or measuring the render, and it was
+the render that caught it.
+
+**Two other base rules went out in the same sweep and are not restored here.**
+`.hero { padding-top }` and `.lead { font-size / color / max-width }`. Neither
+shows on either page today: `.heroB` sets its own padding, and both leads are
+inside heroes where `.heroB .lead` sets size and colour. They would show on the
+first page that uses `.lead` outside a hero, which is what
+`templates/service-page-template.html` does. **This is an open item, not a
+finding that was dismissed.**
 
 #### What the phone scrim costs, stated rather than hidden
 
@@ -1267,16 +1331,24 @@ scrim colour. The entrance keyframes exist once for both pages.
 
 #### Measured composite, worst case under any glyph run
 
+**Re-measured 2026-09-13** at the eyebrow's restored size, with the whole copy
+block sitting 6 or 7px higher for the same reason, so every row was taken
+again rather than just the eyebrow's.
+
 | Element | 1440 | 1920 | 430 | 390 | 360 | Needs |
 |---|---|---|---|---|---|---|
-| Breadcrumb | 9.66 | 9.65 | 9.53 | 9.20 | 9.07 | 7 |
-| Eyebrow | 9.66 | 9.46 | 9.66 | 9.39 | 9.21 | 7 |
-| H1 | 9.33 | 9.46 | 9.53 | 9.52 | 9.33 | 4.5 |
-| Lead | 9.40 | 9.40 | 9.59 | 9.53 | 9.53 | 7 |
-| Ghost button label | 10.18 | 9.53 | 9.66 | 10.18 | 10.18 | 7 |
-| Chips (desktop) | 9.85 | 9.72 | n/a | n/a | n/a | 7 |
+| Breadcrumb | 9.65 | 9.65 | 9.52 | 9.21 | 9.01 | 7 |
+| Eyebrow | 9.65 | 9.52 | 9.59 | 9.39 | 9.21 | 7 |
+| H1 | 9.27 | 9.33 | 9.59 | 9.52 | 9.27 | 4.5 |
+| Lead | 9.39 | 9.39 | 9.53 | 9.46 | 9.46 | 7 |
+| Ghost button label | 9.73 | 9.40 | 9.66 | 10.18 | 10.18 | 7 |
+| Chips (desktop) | 9.99 | 9.72 | n/a | n/a | n/a | 7 |
 
-**Everything clears 7:1.** It took four corrections to get there and every one
+**Everything clears 7:1**, and nothing moved by more than half a point from the
+2026-09-10 reading. The ox scrim is near solid where the copy sits, so what the
+type is standing on barely changes when the type changes size or shifts a few
+pixels. That is the opposite of the home hero, where the scrim fades and the
+numbers move with the glyphs. It took four corrections to get there and every one
 was found by the probe rather than by looking:
 
 1. **The breadcrumb link was inheriting the page link colour**, which is
@@ -1302,13 +1374,17 @@ was found by the probe rather than by looking:
 
 #### Geometry
 
+**Measured 2026-09-13**, after the eyebrow restore. Nothing on this page was
+changed for the stat card's derivation: a service page sits above a stat
+*band*, so `.heroB--ox` keeps its own foot at both breakpoints.
+
 | Viewport | Depth | CTA ends | Budget | | CTA to stat band |
 |---|---|---|---|---|---|
-| 1440 x 900 | 575 | 502 | 900 | clears by 398 | 166 |
-| 1920 x 1080 | 575 | 502 | 1080 | clears by 578 | 166 |
+| 1440 x 900 | 562 | 489 | 900 | clears by 411 | 166 |
+| 1920 x 1080 | 562 | 489 | 1080 | clears by 591 | 166 |
 | 430 x 745 | 560 | 573 | 685 | clears by 112 | 278 |
 | 390 x 664 | 505 | 520 | 604 | clears by 84 | 276 |
-| 360 x 640 | 510 | 525 | 580 | clears by 55 | 276 |
+| 360 x 640 | 503 | 518 | 580 | clears by 62 | 277 |
 
 **The stat band sits clear of the buttons at every width**, by 166px at
 desktop and 276 on a phone. That check exists because of the home lesson: the
