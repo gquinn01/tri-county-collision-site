@@ -406,6 +406,23 @@
 
   --wrap: 1120px;
   --pad: clamp(48px, 7vw, 88px);
+  /* THE STAT CARD'S OVERLAP, DEFINED ONCE. The home card rides up over
+     the hero's bottom seam by this much, and the hero copy's bottom
+     padding is DERIVED from it: overlap plus 28px of air. See
+     .heroB-copy and .statband.statcard, which are the only two places
+     this is read.
+
+     THE LESSON, and it is the same one .statband.statcard carries in a
+     different key: TWO VALUES THAT MUST AGREE ARE ONE VALUE PLUS A
+     DERIVATION. Until 2026-09-13 the overlap and the padding were two
+     independent clamps, tuned to approximately agree, and the air
+     between them was whatever was left over after they disagreed: 12px
+     at 1440, about 8px near 1300, 6px at 390. That is a white card
+     butting into the hero's CTA buttons, and no amount of care on either
+     clamp fixes it, because neither one can see the other. Now the
+     padding cannot drift, because it is not a second opinion about the
+     same number. */
+  --statcard-overlap: clamp(44px, 6vw, 78px);
   --radius: 4px;
   --font: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --display: "Archivo Black", Impact, "Arial Black", sans-serif;
@@ -947,15 +964,23 @@ section { padding: var(--pad) 0; }
     rgb(var(--scrim-rgb) / .94) 95%,
     rgb(var(--scrim-rgb) / 0) 100%);
 }
-/* THE BOTTOM PADDING IS THE STAT CARD'S OVERLAP PLUS AIR, not a taste
-   value. The card is opaque white and overlaps the hero's bottom seam by
-   78px at desktop and 44px on a phone; without this the card sits ON the
-   CTA buttons. The contrast probe found it before the eye did: the ghost
-   button's glyph run measured 1.12 against silver, which is silver on
-   white, which is the card. */
+/* THE BOTTOM PADDING IS THE STAT CARD'S OVERLAP PLUS AIR, and since
+   2026-09-13 it says so in arithmetic rather than in a comment. The card
+   is opaque white and rides up over the hero's bottom seam by
+   --statcard-overlap; without this padding it sits ON the CTA buttons.
+   The contrast probe found that before the eye did: the ghost button's
+   glyph run measured 1.12 against silver, which is silver on white,
+   which is the card.
+
+   THE AIR IS 28px, and that is the only number typed here. Everything
+   else comes from the overlap, so the gap between the buttons and the
+   card's top edge is 28px by construction at every width where the hero
+   is content driven, and more where min-height governs. It used to be
+   whatever two independent clamps happened to leave: 12px at 1440, 6px
+   at 390. See --statcard-overlap for the whole lesson. */
 .heroB-copy {
   position: relative; z-index: 1; width: 100%;
-  padding: clamp(10px, 4vh, 44px) 0 clamp(50px, 7vh, 58px);
+  padding: clamp(10px, 4vh, 44px) 0 calc(var(--statcard-overlap) + 28px);
 }
 .heroB h1 { font-size: clamp(2.5rem, 5.2vw, 4rem); color: var(--silver); margin-bottom: .26em; }
 .heroB .eyebrow { color: var(--silver); }
@@ -1008,7 +1033,14 @@ section { padding: var(--pad) 0; }
   .heroB .eyebrow { margin-bottom: 6px; }
   .heroB .lead { font-size: .98rem; line-height: 1.46; margin-bottom: 0; }
   .heroB .cta-row { margin-top: 12px; gap: 12px; }
-  .heroB-copy { padding: clamp(10px, 4vh, 44px) 0 clamp(50px, 7vh, 58px); }
+  .heroB-copy { padding: clamp(10px, 4vh, 44px) 0 calc(var(--statcard-overlap) + 28px); }
+  /* THE OX HERO SITS ABOVE A BAND, NOT THE CARD, so its foot is its own
+     value and derives from nothing. This is the phone half of the pair;
+     the desktop half is in the min-600 block below, and it is unchanged.
+     The value is what a service page has always had on a phone, stated
+     here rather than inherited from the rule above it, because that rule
+     now belongs to the page that carries the card. */
+  .heroB--ox .heroB-copy { padding-bottom: clamp(50px, 7vh, 58px); }
 }
 
 @media (min-width: 600px) {
@@ -1022,7 +1054,7 @@ section { padding: var(--pad) 0; }
       rgb(var(--scrim-rgb) / .62) 68%,
       rgb(var(--scrim-rgb) / 0) 86%);
   }
-  .heroB-copy { padding: clamp(18px, 1.8vw, 24px) 0 clamp(86px, 6.4vw, 90px); }
+  .heroB-copy { padding: clamp(18px, 1.8vw, 24px) 0 calc(var(--statcard-overlap) + 28px); }
   /* THE CHIP ROW IS HELD INSIDE THE SCRIM'S STRONG ZONE. Unconstrained,
      four chips run 917px and reach 76% of a 1440 frame, which is inside
      the fade: the rightmost glyphs measured 1.06. Capped, they wrap to
@@ -1086,7 +1118,10 @@ section { padding: var(--pad) 0; }
    answered here by name. */
 .statband.statcard {
   background: transparent; border-bottom: 0; padding: 0;
-  margin-top: clamp(-78px, -6vw, -44px); position: relative; z-index: 2;
+  /* THE OVERLAP IS NOT WRITTEN HERE. It is --statcard-overlap, because
+     the hero copy's foot has to be the same number plus air, and the
+     two used to be separate clamps that drifted. */
+  margin-top: calc(-1 * var(--statcard-overlap)); position: relative; z-index: 2;
 }
 .statcard-inner {
   background: var(--white); border-radius: var(--radius);
