@@ -1291,13 +1291,18 @@ lives near a section's block belongs to the site, not the section. Nothing
 would have caught this but reading the diff or measuring the render, and it was
 the render that caught it.
 
-**Two other base rules went out in the same sweep and are not restored here.**
-`.hero { padding-top }` and `.lead { font-size / color / max-width }`. Neither
-shows on either page today: `.heroB` sets its own padding, and both leads are
-inside heroes where `.heroB .lead` sets size and colour. They would show on the
-first page that uses `.lead` outside a hero, which is what
-`templates/service-page-template.html` does. **This is an open item, not a
-finding that was dismissed.**
+**Two other base rules went out in the same sweep and were restored the same
+day**, in the commit after the eyebrow's. `.hero { padding-top }` and
+`.lead { font-size / color / max-width }`. **Neither changes either page**, and
+that was verified rather than assumed: `.hero`'s padding computes to 0 on both
+heroes because `.heroB` zeroes it, both leads take their size, colour and
+measure from `.heroB .lead`, and the document heights and hero and CTA boxes
+are identical at 1440 and 390 on both pages before and after.
+
+They are restored because a base rule that is invisible today is not a base
+rule that is unused: it is the default every future page inherits, and the
+sweep took the default away. `templates/service-page-template.html` already
+puts a `.lead` outside a hero.
 
 #### What the phone scrim costs, stated rather than hidden
 
@@ -1416,6 +1421,96 @@ page wears `accent-minor-collision-repair.jpg`; **two front doors were never
 going to wear the same picture.** The shortage recorded in 3.17 is unchanged:
 four service cards still share three photographs.
 
+### 3.22 We Fix It All: the render and six items. PROPOSED, NOT BUILT
+
+Direction chosen 2026-09-13: the drawn intake diagram is replaced by a centred
+top-down **ghosted car render**, photographic, with the damage types flanking it
+in two columns of three, each item a small line icon, a bold heading and one
+short supporting line. **The drawn diagram stays dead.** Section head grammar is
+unchanged: eyebrow kicker plus centred H2.
+
+**Nothing here is on a page yet, and the reason is recorded in "What is
+blocking it" below.** The copy, the two measurements the direction depends on
+and the rhythm decision are settled, so that the only thing still outstanding
+is the asset.
+
+#### The six items and where every word comes from
+
+Four of the six can be built entirely out of what the shop already publishes.
+Two cannot, and they are the two the claims list already flagged.
+
+| Item | Supporting line | Source |
+|---|---|---|
+| Minor collisions | Scratches, scuffs, small dents, bumper damage and fender benders. | `/collision-repair/`, "What counts as minor", already on this site |
+| Major collisions | Frame straightening, structural repair and full panel replacement. | `/collision-repair/`, "What counts as major", already on this site |
+| Cracked windshields | Small chips and short cracks can often be repaired rather than replaced. | live `/auto-glass-repair-replacement/`, read 2026-09-13 |
+| Door dings and dents | No filler, no sanding, no spraying. Your original finish stays untouched. | live `/paintless-dent-repair/`, read 2026-09-13 |
+| Hail damage | Often lifted out with paintless dent repair, so the finish stays untouched. | **composed** from the live PDR page, which lists hail among what PDR fixes |
+| Deer strikes | **none yet** | **no published supporting line exists anywhere** |
+
+The four sourced lines are trimmed from published sentences, not invented, and
+each is a before/after pair against the source above. **The two marked lines are
+the ones that need the owner**:
+
+- **Hail damage.** The live PDR page lists "Hail damage" among what PDR can fix,
+  so the composed line is supported by the shop's own page rather than by us.
+  It still asserts a method, so it is an owner question and not a writer's.
+- **Deer strikes.** The live homepage names it in the same five-item list and
+  **says nothing else about it anywhere on the site.** Any supporting line would
+  be the first sentence this business has ever published about deer work, and it
+  would assert scope: panel, glass and lighting, in house or sublet. Rule 2 says
+  we do not write it. **Either the owner supplies the line, or the item ships as
+  a heading with no supporting line, which is honest and reads fine in a
+  six-item grid.**
+
+**The split from five items to six is ours**, not the shop's: the live list says
+"Minor & Major Collisions" as one item and this section makes it two, which the
+collision page's own two-column Minor and Major treatment already supports.
+Recorded in 4.1b.
+
+#### Two measurements the direction needed
+
+**The icons may be logo red.** `--mark` #E92424 on `--ink` #121B27 measures
+**3.91**, and a non-text graphic needs 3. So the marks clear the floor on this
+ground with headroom, and the mark-only rule is satisfied: they are marks, not
+text and not decoration. For the record of what does not work on ink, `--ox`
+measures 1.47 and `--ox-tx` 1.94, so oxblood icons were never available.
+
+**The type clears on ink as it does everywhere else.** Headings in `--silver`
+measure **15.42** and supporting lines in `--silver-2` measure **10.78**,
+against a 4.5 floor and a 7 target. The ink band is a flat ground, so unlike the
+hero there is no photograph under the glyphs and no composite to sample.
+
+#### The rhythm, and a correction to the brief
+
+The brief expected this to put an ink band directly above the ink quote band.
+**It does not**, and the section order is why: services, then We Fix It All,
+then `#who-we-are`, then testimonials. `#who-we-are` is a silver prose section
+and it sits between the two. Today's order and grounds are hero, stat card,
+services on silver, We Fix It All, who we are on silver, testimonials on ink,
+the one act band on ox, contact on ink, FAQ on silver.
+
+**So nothing has to move, and the quote band keeps its ink.** Both changes the
+brief offered are refused for cause: giving the quote band `--white` would break
+the written rule that white is exactly one band, the stat card, and that rule is
+worth more than this; reordering to fix an adjacency that does not exist would
+be churn.
+
+**What the change actually fixes is a palette inconsistency.** The section sits
+on `.band-panel` today, which is `--panel`, which is `#FFFFFF`. That is a second
+white band on a page whose palette note says white is used on exactly one.
+Putting this section on ink retires it.
+
+#### What is blocking it
+
+**The licensed render is not in the repo.** `docs/assets/img/car-xray-top.jpg`
+does not exist in the working tree, in git, or anywhere the file could have been
+dropped by mistake. Nothing about the section can be built honestly without it:
+its aspect ratio decides the two-column geometry, its height decides the phone
+cap, and a real photograph is the one thing the standards will not let us stand
+in for. **No placeholder was shipped and no substitute was chosen.** The
+section still carries the drawn diagram until the asset lands.
+
 ---
 
 ## 4. The claims list
@@ -1444,7 +1539,19 @@ unverified claim does not ship. **Confirm each one.**
   collisions, cracked windshields, door dings and dents, deer strikes, hail
   damage. Rule 2, scope honesty: **does the shop do all five, in house?**
   Hail and deer strikes in particular are the kind of work a shop either
-  takes or sublets.
+  takes or sublets. **Updated 2026-09-13**: the rebuild in 3.22 makes it six
+  items by splitting minor from major, which the collision page's own two
+  column treatment supports, and proposes a one line description under each.
+  Four of those lines are trimmed from published copy. **The hail line is
+  composed and the deer strikes line does not exist**, because the shop has
+  never published a sentence about deer work. Both are owner questions, and
+  the deer item ships without a supporting line unless the owner supplies one.
+- **"We perform ADAS recalibration at our Southampton facility."** Read off
+  the live auto glass page on 2026-09-13. It is not carried on any page here
+  yet, and it matters beyond its own sentence: `pagemap.md` gates the ADAS
+  calibration page on the owner confirming calibration happens in house, and
+  **the shop's own live site already says it does.** That is evidence for the
+  gate, not the owner's confirmation of it. Ask the question anyway.
 - **"Your insurance claim handled for you."** The hero says it as a flat
   promise. Same scope question as 1.18 and 4.2.
 - **"Your repair done right the first time and guaranteed for life."**

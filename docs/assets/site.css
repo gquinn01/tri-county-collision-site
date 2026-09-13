@@ -508,6 +508,22 @@ p:last-child { margin-bottom: 0; }
   color: var(--ox-tx); margin: 0 0 12px;
 }
 
+/* THE OTHER TWO RULES FROM THE SAME SWEEP, restored 2026-09-13 with the
+   eyebrow and for the same reason: they are site type, they sat beside
+   the .heroA block, and they went out with it on 2026-09-10.
+
+   NEITHER SHOWS ON EITHER PAGE TODAY, and they are restored anyway. A
+   .lead inside a hero takes its size, colour and measure from .heroB
+   .lead, which outranks this on specificity and not on file order; .hero
+   is only ever worn alongside .heroB, which zeroes the padding. What
+   they are for is the first page that puts a .lead outside a hero, which
+   is what templates/service-page-template.html already does. A base rule
+   that is invisible today is not a base rule that is unused: it is the
+   default every future page inherits, and the sweep took the default
+   away. */
+.hero { padding-top: clamp(32px, 5vw, 60px); }
+.lead { font-size: 1.2rem; color: var(--ink-2); max-width: 60ch; }
+
 .wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 20px; }
 
 section { padding: var(--pad) 0; }
