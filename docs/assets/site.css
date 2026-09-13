@@ -1072,8 +1072,19 @@ section { padding: var(--pad) 0; }
    SAME .statband CLASS ON PURPOSE. site.js finds the stats through it, so
    the odometer and the letter roll arrive here exactly as they do on a
    service page, on the same once-on-first-arrival class and under the
-   same amendment. .statcard only changes where the white sits. */
-.statcard {
+   same amendment. .statcard only changes where the white sits.
+
+   COMPOUNDED, SO IT WINS ON SPECIFICITY AND NOT ON FILE ORDER. .statband
+   declares its own background and border-bottom about 300 lines below
+   this block, and .statcard alone ties it at (0,1,0), so until
+   2026-09-13 the base won on source order: the section painted white
+   edge to edge with a full-width hairline, the negative margin pulled it
+   up over a photograph it then erased, and the card never floated over
+   anything. THE LESSON, one line: an override that wins only because of
+   where it sits in the file is a trap waiting to re-arm, so a modifier
+   compounds with the class it modifies. Every property the base sets is
+   answered here by name. */
+.statband.statcard {
   background: transparent; border-bottom: 0; padding: 0;
   margin-top: clamp(-78px, -6vw, -44px); position: relative; z-index: 2;
 }
@@ -1378,6 +1389,8 @@ footer.site a { color: var(--silver); }
    The review count is the one on this page. */
 /* THE HIGHLIGHT GROUND. This is the one band on the site that is --white
    rather than --silver. See the palette note for why 1.12 is the point. */
+/* ANYTHING ADDED HERE HAS TO BE ANSWERED in .statband.statcard above, which
+   is the home page wearing this band as a floating card. */
 .statband { background: var(--white); border-bottom: 1px solid var(--rule); }
 .stats { display: grid; gap: 34px; }
 @media (min-width: 820px) { .stats { grid-template-columns: repeat(3, 1fr); gap: 0; } }
