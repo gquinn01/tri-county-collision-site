@@ -60,7 +60,7 @@
        SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
   <link rel="preload" href="assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/site.css?v=7683acb8">
+  <link rel="stylesheet" href="assets/site.css?v=7d41b12a">
   <script src="assets/site.js?v=9b1fd397" defer></script>
 
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
@@ -699,6 +699,94 @@
             <p>Tri-county recently took care of my vehicle after I had hit a deer. The staff was incredibly friendly and did an amazing job with my car. It looks brand new again you would never even know it was just in an accident. On top of that they also detailed my car inside and out after the repair so it was spotless when I came to pick it up. Couldn&#x27;t be happier with the service!</p>
             <figcaption>Joe Chiclets</figcaption>
           </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BRAND STRIP ============
+         The manufacturer marks from the live homepage's carousel,
+         migrated on the client's ruling and placed directly after the
+         testimonials.
+
+         TWELVE, NOT THE FOURTEEN THE LIVE STRIP SHOWS. The live
+         carousel carries RAM and Fiat as well, while the live site's
+         own prose says a dozen and this build says twelve in four
+         places, the stat band included. The strip ships what the site
+         claims in words. Whether the shop is certified for fourteen is
+         an owner question, section 5 of proposed-changes.md, and if the
+         answer is yes the count moves everywhere in one commit:
+         scripts/audit.py now fails the build when the marks, the text
+         and the schema disagree.
+
+         NO HEADING, like the live site. The stat band already carries
+         the twelve-brands claim in text and /collision-repair/ names
+         every brand in prose. THE STRIP IS RECOGNITION, NOT A SECOND
+         CLAIM, so it gets a plain aria-label and no H2.
+
+         THE MARKS ARE THE CLIENT'S OWN PUBLISHED FILES, read off the
+         live site on 2026-09-17, provenance checked before they landed
+         and normalised by scripts/prepare-brand-logos.py: black alpha
+         masks at one height, no baked ground and no baked tone. The
+         stylesheet owns how dark they sit.
+
+         THE MARQUEE IS THE MOTION LAW'S THIRD KIND, amended and dated
+         2026-09-17 in site.css and CLAUDE.md: the one sanctioned
+         continuous motion on this site, this strip only. It pauses
+         under a pointer and on focus-within, and under
+         prefers-reduced-motion it does not run at all.
+
+         THE RESTING STATE IS THE BASE AND THE MOTION IS THE ADDITION.
+         With no stylesheet, an old browser, reduced motion or
+         JavaScript off, the twelve marks are a wrapped, centred, static
+         row. There is no JavaScript here at all, so JS-off is identical
+         by construction rather than by a fallback. The two extra tracks
+         exist only to make the drift seamless and are aria-hidden;
+         they are hidden outright when the strip is not moving. -->
+    <section id="brands" aria-label="Manufacturer logos">
+      <div class="brandstrip">
+        <div class="brandmarquee">
+          <ul class="brandtrack">
+            <li><img src="assets/img/brands/subaru.png" width="120" height="60" loading="lazy" decoding="async" alt="Subaru"></li>
+            <li><img src="assets/img/brands/nissan.png" width="71" height="60" loading="lazy" decoding="async" alt="Nissan"></li>
+            <li><img src="assets/img/brands/kia.png" width="115" height="60" loading="lazy" decoding="async" alt="Kia"></li>
+            <li><img src="assets/img/brands/jeep.png" width="137" height="60" loading="lazy" decoding="async" alt="Jeep"></li>
+            <li><img src="assets/img/brands/infiniti.png" width="124" height="60" loading="lazy" decoding="async" alt="INFINITI"></li>
+            <li><img src="assets/img/brands/hyundai.png" width="99" height="60" loading="lazy" decoding="async" alt="Hyundai"></li>
+            <li><img src="assets/img/brands/gm.png" width="61" height="60" loading="lazy" decoding="async" alt="GM"></li>
+            <li><img src="assets/img/brands/ford.png" width="159" height="60" loading="lazy" decoding="async" alt="Ford"></li>
+            <li><img src="assets/img/brands/dodge.png" width="53" height="60" loading="lazy" decoding="async" alt="Dodge"></li>
+            <li><img src="assets/img/brands/chrysler.png" width="161" height="56" loading="lazy" decoding="async" alt="Chrysler"></li>
+            <li><img src="assets/img/brands/acura.png" width="106" height="60" loading="lazy" decoding="async" alt="Acura"></li>
+            <li><img src="assets/img/brands/honda.png" width="91" height="60" loading="lazy" decoding="async" alt="Honda"></li>
+          </ul>
+          <ul class="brandtrack" aria-hidden="true">
+            <li><img src="assets/img/brands/subaru.png" width="120" height="60" loading="lazy" decoding="async" alt="Subaru"></li>
+            <li><img src="assets/img/brands/nissan.png" width="71" height="60" loading="lazy" decoding="async" alt="Nissan"></li>
+            <li><img src="assets/img/brands/kia.png" width="115" height="60" loading="lazy" decoding="async" alt="Kia"></li>
+            <li><img src="assets/img/brands/jeep.png" width="137" height="60" loading="lazy" decoding="async" alt="Jeep"></li>
+            <li><img src="assets/img/brands/infiniti.png" width="124" height="60" loading="lazy" decoding="async" alt="INFINITI"></li>
+            <li><img src="assets/img/brands/hyundai.png" width="99" height="60" loading="lazy" decoding="async" alt="Hyundai"></li>
+            <li><img src="assets/img/brands/gm.png" width="61" height="60" loading="lazy" decoding="async" alt="GM"></li>
+            <li><img src="assets/img/brands/ford.png" width="159" height="60" loading="lazy" decoding="async" alt="Ford"></li>
+            <li><img src="assets/img/brands/dodge.png" width="53" height="60" loading="lazy" decoding="async" alt="Dodge"></li>
+            <li><img src="assets/img/brands/chrysler.png" width="161" height="56" loading="lazy" decoding="async" alt="Chrysler"></li>
+            <li><img src="assets/img/brands/acura.png" width="106" height="60" loading="lazy" decoding="async" alt="Acura"></li>
+            <li><img src="assets/img/brands/honda.png" width="91" height="60" loading="lazy" decoding="async" alt="Honda"></li>
+          </ul>
+          <ul class="brandtrack" aria-hidden="true">
+            <li><img src="assets/img/brands/subaru.png" width="120" height="60" loading="lazy" decoding="async" alt="Subaru"></li>
+            <li><img src="assets/img/brands/nissan.png" width="71" height="60" loading="lazy" decoding="async" alt="Nissan"></li>
+            <li><img src="assets/img/brands/kia.png" width="115" height="60" loading="lazy" decoding="async" alt="Kia"></li>
+            <li><img src="assets/img/brands/jeep.png" width="137" height="60" loading="lazy" decoding="async" alt="Jeep"></li>
+            <li><img src="assets/img/brands/infiniti.png" width="124" height="60" loading="lazy" decoding="async" alt="INFINITI"></li>
+            <li><img src="assets/img/brands/hyundai.png" width="99" height="60" loading="lazy" decoding="async" alt="Hyundai"></li>
+            <li><img src="assets/img/brands/gm.png" width="61" height="60" loading="lazy" decoding="async" alt="GM"></li>
+            <li><img src="assets/img/brands/ford.png" width="159" height="60" loading="lazy" decoding="async" alt="Ford"></li>
+            <li><img src="assets/img/brands/dodge.png" width="53" height="60" loading="lazy" decoding="async" alt="Dodge"></li>
+            <li><img src="assets/img/brands/chrysler.png" width="161" height="56" loading="lazy" decoding="async" alt="Chrysler"></li>
+            <li><img src="assets/img/brands/acura.png" width="106" height="60" loading="lazy" decoding="async" alt="Acura"></li>
+            <li><img src="assets/img/brands/honda.png" width="91" height="60" loading="lazy" decoding="async" alt="Honda"></li>
+          </ul>
         </div>
       </div>
     </section>

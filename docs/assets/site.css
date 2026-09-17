@@ -342,6 +342,36 @@
    time, or move without a reader having arrived, loaded or acted, is a
    different decision and needs its own amendment, dated, here.
 
+   KIND FOUR, ADDED 2026-09-17 ON THE CLIENT'S RULING: ONE CONTINUOUS
+   MOTION, THE BRAND STRIP, AND NOTHING ELSE EVER. This is the
+   amendment the sentence above asked for, and it is the largest one
+   this file carries, because "nothing loops" was written twice above
+   and a loop is now allowed.
+
+   IT IS ONE SECTION, NOT A PERMISSION. #brands, the twelve
+   manufacturer marks, drifting left at about 40 seconds a cycle. No
+   second strip, no ticker, no carousel, no autoplaying anything, on
+   this page or any other. A thing that wants to loop needs its own
+   amendment with its own date, here and in CLAUDE.md, and the answer
+   is expected to be no.
+
+   WHY THIS ONE. Twelve marks cannot be shown legibly across a phone,
+   and the two alternatives are worse than motion: shrink them until
+   nobody recognises them, or hide some behind a control, which is the
+   failure the Real Repairs pairs were rebuilt to avoid. The drift
+   shows every mark at full size at every width. It is recognition
+   rather than decoration, which is the same test kinds two and three
+   had to pass: MOTION IS EVIDENCE, NOT COSTUME.
+
+   THE LIMITS ARE THE PERMISSION. Transform only, so nothing fades,
+   resizes, recolours, appears or disappears. It pauses under a pointer
+   and on focus-within, so a reader who wants to look at one mark can
+   stop it. Under prefers-reduced-motion it does not run AT ALL and the
+   strip rests as a wrapped static row with every mark visible, which
+   is the base state in the cascade rather than a state the media query
+   restores. See the brand strip block below for the geometry and for
+   why nothing here is ever hidden waiting for an animation.
+
    ---------------------------------------------------------------------
    THE READABILITY AMENDMENT, 2026-09-10.
 
@@ -1412,6 +1442,128 @@ a.svc-card h3 { color: var(--ox-tx); }
 
 @media (max-width: 599px) {
   .ba-stack { grid-template-columns: 1fr; gap: 12px; }
+}
+
+/* ---------- The brand strip: twelve marks, drifting ----------
+   Added 2026-09-17 on the client's ruling, migrating the live
+   homepage's manufacturer carousel. It sits between the ink
+   testimonials band and the oxblood act band, on silver.
+
+   THIS IS THE MOTION LAW'S THIRD KIND AND IT IS AN AMENDMENT. Kind one
+   answers a reader, kind two fires once on arrival, and both are
+   recorded in this file's header. CONTINUOUS MOTION WAS FORBIDDEN:
+   "nothing loops" is written twice up there. It is now allowed in
+   exactly one place, this strip, and the amendment is dated in the
+   header and in CLAUDE.md. Anything else that wants to loop needs its
+   own amendment, dated, in both places.
+
+   WHY THIS ONE EARNS IT. A row of twelve marks is a row of twelve
+   claims a reader recognises rather than reads, and there is no honest
+   way to fit twelve legible marks across a phone. The alternatives are
+   worse: shrink them until they are unreadable, or hide some behind a
+   control, which fails the same test the Real Repairs pairs failed.
+   The drift shows every mark at full size on every width, and it is
+   slow enough to read rather than to watch.
+
+   THE LIMITS, and they are the whole reason this is allowed:
+
+     one strip     this section only, never a second one
+     ~40s          a cycle, which is a drift and not a carousel
+     pauses        under a pointer, and on focus-within
+     stops         entirely under prefers-reduced-motion
+     transform     the only property that animates. No opacity, no
+                   colour, no size, and nothing appears or disappears.
+
+   THE RESTING STATE IS THE BASE AND THE MOTION IS THE ADDITION, which
+   is the same construction the hero entrance uses and for the same
+   reason. The rules outside the media query lay the twelve marks out
+   as a wrapped, centred, static row with the duplicate tracks
+   DISPLAYED NONE. So reduced motion, an old browser, a stylesheet that
+   half loaded, or a browser that never heard of @keyframes all rest
+   with all twelve marks visible and nothing moving. NOTHING HERE IS
+   EVER HIDDEN WAITING FOR AN ANIMATION.
+
+   NO JAVASCRIPT AT ALL. Not a fallback, not an enhancement: there is
+   no script, so a page with scripting off renders exactly this.
+
+   THE GEOMETRY, and it is arithmetic rather than taste. The marquee
+   holds THREE identical tracks and translates by exactly one third of
+   its own width, which is one track plus one gap, so the second track
+   lands precisely where the first began and the loop has no seam. The
+   gap lives on the track's own padding-right rather than on the flex
+   gap between tracks, because -33.333% has to equal ONE WHOLE UNIT and
+   a gap that sits between units is not inside that unit.
+
+   WHY THREE TRACKS AND NOT TWO. What is on screen at the end of a
+   cycle is the total width less one unit, so two tracks cover a
+   viewport only while one unit is wider than it. A unit is 654px of
+   marks plus twelve gaps: 1866px at 1440 and 2094px at 1920, which
+   covers those but not a 2560 monitor. THREE tracks cover twice a unit,
+   4188px, which covers any screen this site will meet. The third track
+   costs twelve <img> elements that the browser has already downloaded.
+
+   THE MARKS CARRY NO GROUND AND NO TONE. They are black alpha masks at
+   60px tall, 2x of the 30px they render at, written by
+   scripts/prepare-brand-logos.py. How dark they sit on the page is
+   --brand-ink here and nowhere else: one number, not twelve baked
+   greys in twelve files. MEASURED ON THE RENDER, not predicted: at .72
+   over --silver the darkest composited pixel in the strip is
+   rgb(67,68,68) and reads 8.70:1, well past the 3:1 a graphic needs,
+   and the marks read as the live site's grayscale strip rather than as
+   twelve black stamps.
+
+   THE GAP IS FLUID because the unit has to stay wider than the
+   viewport at the top of the range and has to not be absurd at the
+   bottom: 40px on a phone, 7vw through the middle, 120px at 1714 and
+   up. */
+#brands {
+  padding: calc(var(--pad) * .55) 0;
+  --brand-gap: clamp(40px, 7vw, 120px);
+  --brand-ink: .72;
+}
+.brandstrip { overflow: hidden; }
+
+/* THE RESTING STATE. A wrapped, centred, static row of all twelve. */
+.brandmarquee { display: flex; justify-content: center; }
+.brandtrack {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 22px var(--brand-gap);
+  margin: 0; padding: 0; list-style: none;
+}
+.brandtrack[aria-hidden="true"] { display: none; }
+.brandtrack img {
+  display: block; height: 30px; width: auto;
+  opacity: var(--brand-ink);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .brandmarquee {
+    width: max-content; justify-content: flex-start;
+    animation: brand-drift 40s linear infinite;
+  }
+  .brandtrack, .brandtrack[aria-hidden="true"] {
+    display: flex; flex-wrap: nowrap; flex: 0 0 auto;
+    gap: var(--brand-gap); padding-right: var(--brand-gap);
+  }
+  /* PAUSE UNDER A POINTER, and only where a pointer exists. A tap on a
+     touch screen can weld :hover on, which would leave the strip
+     stopped for the rest of the visit; the lift is behind the same
+     query for the same reason. Both halves were verified on the
+     rendered page: pointer on pauses, pointer off resumes, and a
+     focusable element planted inside pauses it too. */
+  @media (hover: hover) {
+    .brandstrip:hover .brandmarquee { animation-play-state: paused; }
+  }
+  /* AND ON FOCUS-WITHIN. Nothing in the strip is focusable today, so
+     this fires only if something ever becomes focusable inside it.
+     That is the point: it is the rule, not a description of the
+     current markup. */
+  .brandstrip:focus-within .brandmarquee { animation-play-state: paused; }
+}
+
+@keyframes brand-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.3333%); }
 }
 
 /* ---------- Breadcrumb ---------- */

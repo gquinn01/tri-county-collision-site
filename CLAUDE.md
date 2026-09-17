@@ -623,6 +623,35 @@ stops watching. Anything that would move a second time, or move without a
 reader having either arrived or acted, is a different decision and needs its
 own amendment, dated, here and in the header of `docs/assets/site.css`.
 
+## The continuous-motion amendment, 2026-09-17
+
+**One thing on this site may loop, and it is the brand strip. Nothing else
+ever may.** Decided 2026-09-17 on the client's ruling, migrating the live
+homepage's manufacturer carousel. It is the amendment the sentence above
+asked for, and it is the largest one the motion law carries, because
+"nothing loops" was the rule.
+
+**`#brands` only**: the twelve manufacturer marks, drifting left at about
+40 seconds a cycle, directly after the testimonials. No second strip, no
+ticker, no carousel, no autoplaying anything, on this page or any other. A
+thing that wants to loop needs its own amendment with its own date, here and
+in `site.css`, and the answer is expected to be no.
+
+**Why this one earns it.** Twelve marks cannot be shown legibly across a
+phone. The alternatives are worse than motion: shrink them until nobody
+recognises them, or hide some behind a control, which is the failure the
+Real Repairs pairs were rebuilt to avoid. The drift shows every mark at full
+size at every width. It is recognition rather than decoration, which is the
+same test the arrival motion had to pass.
+
+**The limits are the permission.** Transform only, so nothing fades,
+resizes, recolours, appears or disappears. It pauses under a pointer and on
+focus-within. **Under `prefers-reduced-motion` it does not run at all** and
+rests as a wrapped static row with all twelve marks visible, and that
+resting state is the base in the cascade rather than something a media query
+restores. There is no JavaScript in it at all, so scripting off renders
+exactly the same page.
+
 ## Staging ships noindexed on purpose
 
 **Three things are deliberately "wrong" on every page in `docs/` until
@@ -690,12 +719,13 @@ dark. That archive is the last copy of it that will ever exist.
 |---|---|
 | `pagemap.md` | **The build spec.** The page map of record. |
 | `.claude/skills/corcoran-site-standards/` | The law. Unedited copy of the firm's standards. |
-| `scripts/audit.py` | The SEO and AEO scanner. Scores every page separately. Its NAP block is the one place the canonical name, address and phone live, and its review block is the one place the review count, the rating and the day they were counted live. It also reads the provenance metadata of every image under `docs/` and fails the build on an AI-generated one. |
+| `scripts/audit.py` | The SEO and AEO scanner. Scores every page separately. Its NAP block is the one place the canonical name, address and phone live, its review block is the one place the review count, the rating and the day they were counted live, and its brand block is the one place the brand count lives: the marks in the strip, every count claimed in text and every count in the schema have to agree or the build fails. It also reads the provenance metadata of every image under `docs/` and fails the build on an AI-generated one. |
 | `scripts/test-sitemap-expansion.py` | Tests the sitemap expansion. Run it before touching that code. |
 | `scripts/test-audit-checks.py` | Smoke tests for the checks that must never drift back: the address spelling, the CallRail number, the one email, the review count, and asset provenance. Written after the address check was caught scoring a wrong address as a pass. Its AI-asset fixtures are written at run time, never committed, because committing a known-AI image to prove the check catches them would put a known-AI image in the repo. |
 | `proposed-changes.md` | Every text change made during the migration, as before/after pairs, plus the claims the pages carry. Awaiting the owner's fact-check. |
 | `scripts/build-sitemap.py` | Generates `docs/sitemap.xml` from the pages themselves. `lastmod` comes from each page's own schema `dateModified`, never from a file mtime and never from today. |
 | `scripts/prepare-repair-photos.py` | Turns the shop's own before/after repair photographs into the ten frames the Real Repairs band ships. Holds the redaction boxes for every plate and sticker carrying numbers, destroys them by pixelating then blurring and **fails the export if more than a quarter of the local detail survives**, strips metadata structurally because re-encoding puts it back, leaves a frame uncompressed when it needs no crop, redaction or resize, and never emits a file bigger than its source. Prints every number it used. |
+| `scripts/prepare-brand-logos.py` | Turns the twelve manufacturer logos the shop publishes on its own live site into the twelve marks the brand strip ships. Reads each source's provenance through the audit's own reader and refuses to process a flagged file, turns luminance into opacity so the marks carry no ground and no baked tone, normalises them to one height, crops the one source that is a badge rather than a mark, and fails the export if the strip is over budget. Prints every number it used. |
 | `scripts/prepare-car-render.py` | Turns the licensed wireframe render into the two assets the We Fix It All band uses. Holds the measured crop box, pulls the black point so the screen blend is invisible on ink, solves a gamma only if the median line falls under the 3:1 graphic floor, and searches every integer JPEG quality against both the 250KB budget and a surviving ground. **A ground that does not decode to exactly 0 fails the export**, proved twice: once by decoding the emitted file, and once from its own quantisation table, which is decoder-independent. Builds in a temp directory and installs only on success, so a failed export cannot leave a broken asset in `docs/`. Prints every number it used. |
 | `scripts/stamp-assets.py` | Cache-busting stamps for `docs/assets/site.css` and `site.js`. |
 | `scripts/fetch_seo_news.py` | Pulls the headline sweep the Google Watcher reads. |

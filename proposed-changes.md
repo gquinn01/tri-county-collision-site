@@ -2205,6 +2205,200 @@ the footer, and the two oxblood grounds are separated by an ink band. **One
 act band, two ox grounds, one white band, and silver is the page rather than a
 band.**
 
+
+### 3.26 The brand strip: twelve marks, drifting. BUILT 2026-09-17
+
+The live homepage's manufacturer carousel, migrated on the client's ruling and
+placed directly after the testimonials, on silver, between the ink quote band
+and the oxblood act band.
+
+#### The finding first, because it decided what shipped
+
+**The live strip shows fourteen marks; the live prose says a dozen.** The extra
+two are RAM and Fiat. The full record of the discrepancy, what this build does
+about it and what one owner answer would change is in **4.1**, and the question
+is **5.6b**. In short: **the strip ships the twelve the site claims in words**,
+and a check now makes the marks, the words and the schema agree or fail.
+
+#### The check, which is the review count's argument in a second key
+
+`scripts/audit.py` carries `BRAND_COUNT = 12` and `BRANDS`, reads:
+
+```
+marks    the <img> elements in the one .brandtrack that is NOT aria-hidden
+text     every count claimed in visible text, comments and scripts stripped
+schema   every count claimed inside <script type="application/ld+json">
+```
+
+and **fails as a CRITICAL when any two disagree**, with the constant counting
+as one of the voices so that a lone page drifting from it still fails.
+
+**It reads "12", "12+", "a dozen" and "Twelve" as the same number**, because
+they are the same claim. Whether the site should say "12" or "12+" at all is a
+different question and it stays in 4.1 where the owner can answer it.
+
+**The duplicate tracks do not count.** The marquee ships the marks three times
+so the drift has no seam; two of those tracks are `aria-hidden`. Counting them
+would report thirty-six brands, which is why the count comes from the one track
+a screen reader is offered.
+
+**Twenty assertions in `scripts/test-audit-checks.py` hold it**, including the
+live site's own state as a fixture: fourteen marks over a sentence saying a
+dozen is a critical. The real page is checked too, because a fixture that
+passes while the page fails is a fixture that lies. Proved end to end as well:
+a thirteenth mark added to the shipping page made `--strict` exit 1 and the
+report named the strip.
+
+#### The assets
+
+**The client's own published files**, read off `https://tricountycollision.com/`
+on 2026-09-17, one per brand, all under `/wp-content/uploads/`.
+
+**Provenance read before anything was done to them**, through the same reader
+the audit uses, and `scripts/prepare-brand-logos.py` refuses to process a file
+that carries an AI tell: nine name Adobe Photoshop CC 2018 in the tool field,
+three carry no tool at all, **none carries a DigitalSourceType and none names a
+generator**. Clean, and the outputs carry no metadata at all because the writer
+emits IHDR, IDAT and IEND and nothing else.
+
+**One treatment, and it is an alpha mask rather than a picture.** Luminance
+becomes opacity: the white ground goes transparent, the darkest ink goes
+opaque, and everything between lands between, so a logo's internal tones
+survive. The Ford script stays legible inside its oval because the white script
+is transparent rather than white.
+
+**The pixels are black and the stylesheet owns the tone.** `--brand-ink` is one
+number in `site.css`, not twelve baked greys in twelve files, and the marks
+carry no ground, so a future change to `--silver` cannot leave twelve
+rectangles behind. The palette note records that this exact mistake has been
+made on this site once already, with ten rgba() washes.
+
+**Measured on the render:** at `.72` the darkest composited pixel in the strip
+is rgb(67,68,68), **8.70:1 against `--silver`**, well past the 3:1 a graphic
+needs.
+
+```
+brand      source     trimmed    shipped     bytes   note
+Subaru     164x158    164x82     120x60       4576
+Nissan     164x158    156x132     71x60       3835
+Kia        199x158    184x96     115x60       5126
+Jeep       199x158    194x85     137x60       3168
+INFINITI   199x158    199x96     124x60       2981
+GM         153x158     94x92      61x60       2629   badge cropped to its mark
+Hyundai    208x158    189x114     99x60       4545
+Ford       214x158    204x77     159x60       7878
+Dodge      138x160    137x155     53x60       2153
+Chrysler   161x161    161x56     161x56       5762   shorter than target, NOT upscaled
+Acura      199x158    175x99     106x60       3029
+Honda      199x158    184x121     91x60       3758
+TOTAL                                        49440   budget 153600
+```
+
+**One source is a badge rather than a mark, and it was cropped to its mark.**
+The GM file is the "GM CERTIFIED Collision Repair Center" badge: the GM box,
+ten empty rows, then two lines of fine print. At 30px that print is three
+pixels tall and reads as a grey smudge, which is worse for GM than for any
+other brand in the row. **It removes no claim**: "factory-certified for 12
+vehicle brands", GM among them, is published in words on `/collision-repair/`
+and is in the claims list. A claim belongs in text a person and a crawler can
+both read, not in three pixels.
+
+**Chrysler ships 4px shorter than the others at 2x** and the script says so
+rather than upscaling it. The stylesheet sets the height, so it renders at the
+same 30px as everything else; what it gives up is 7% of its own resolution.
+
+#### The marquee, and the motion law it amended
+
+**This is the motion law's fourth kind and the largest amendment the law
+carries**, because "nothing loops" was written twice in `site.css`. It is dated
+in the stylesheet header and in `CLAUDE.md`. **One strip, never a second one**,
+and anything else that wants to loop needs its own dated amendment.
+
+**Why this one earns it.** Twelve marks cannot be shown legibly across a phone.
+The alternatives are worse than motion: shrink them until nobody recognises
+them, or hide some behind a control, which is the failure the Real Repairs
+pairs were rebuilt to avoid. The drift shows every mark at full size at every
+width.
+
+```
+one strip     #brands only
+~40s          a cycle: a drift, not a carousel
+transform     the only property that animates
+pauses        under a pointer, and on focus-within
+stops         entirely under prefers-reduced-motion
+no JS         none at all, so scripting off renders the same page
+```
+
+**The resting state is the base and the motion is the addition**, the same
+construction the hero entrance uses. The rules outside the media query lay the
+twelve marks out as a wrapped, centred, static row with the duplicate tracks
+`display: none`. Reduced motion, an old browser, a half-loaded stylesheet or a
+browser that never heard of `@keyframes` all rest with all twelve visible.
+**Nothing here is ever hidden waiting for an animation.**
+
+**The geometry is arithmetic rather than taste.** Three identical tracks,
+translated by exactly one third of the marquee's width, which is one track plus
+one gap, so the second track lands precisely where the first began and the loop
+has no seam. The gap is the track's own `padding-right` rather than a flex gap
+between tracks, because one third has to be one whole unit and a gap between
+units is not inside one.
+
+**Three tracks and not two, and this is the number that decides it.** What is
+on screen at the end of a cycle is the total width less one unit, so two tracks
+cover a viewport only while one unit is wider than it. A unit is 654px of marks
+plus twelve gaps: **1866px at 1440 and 2094px at 1920**, which covers those and
+not a 2560 monitor. Three tracks cover two units, 4188px, which covers any
+screen this site will meet. The third costs twelve `<img>` elements the browser
+has already downloaded.
+
+#### Measured on the page
+
+```
+1440   section 127px tall, strip 30px, three tracks of 1864px, gap 101px
+        marks 27 to 86px wide, all exactly 30px tall
+ 390   section  83px tall, strip 30px, three tracks of 1134px, gap 40px
+reduced motion, 1440   section 179px: two centred rows, all twelve visible
+reduced motion,  390   section 187px: three centred rows, all twelve visible
+pointer on the strip   paused        pointer off again   running
+a focusable element inside            paused
+overflow    document scrollWidth equals the viewport at both widths
+images      all 36 lazy, alt text is the brand name and nothing else
+```
+
+**The pause was verified on the rendered page and the first two runs were
+wrong.** `scrollIntoView()` parks the strip directly under the sticky header,
+so the synthetic pointer was landing on the nav and the strip never saw it.
+Scrolling the strip to the middle of the viewport first, the pointer pauses it
+and moving away resumes it.
+
+#### The copy, the heading it does not have, and the rhythm
+
+**No heading, like the live site.** The stat band already carries the
+twelve-brands claim in text and `/collision-repair/` names every brand in
+prose. **The strip is recognition, not a second claim**, so it gets no H2 and a
+plain `aria-label="Manufacturer logos"` that describes what it is without
+making a claim of its own. **Alt text is the brand name and nothing more.**
+
+**The band rhythm as it landed**, top to bottom:
+
+```
+hero            photograph under an INK scrim
+proof           WHITE stat card, overlapping the hero's seam
+services        silver
+We Fix It All   INK
+Real Repairs    silver
+who we are      OX   (2026-09-17, asks for nothing)
+testimonials    INK
+brands          silver  <- new, and the only silver band between two dark ones
+start           OX   (the act band, the only one that asks)
+contact         INK
+FAQ             silver
+```
+
+**No two touching sections share a ground.** The strip is a thin silver breath
+between the ink quotes and the oxblood ask, which is what a recognition band
+should be: it separates the two dark bands that would otherwise touch.
+
 ---
 
 ## 4. The claims list
@@ -2226,6 +2420,32 @@ unverified claim does not ship. **Confirm each one.**
   Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru, Jeep. The page also says
   "12+" in two places while the list has exactly 12. Confirm the number and the
   list, and pick one of "12" or "12+".
+
+  **NEW FINDING, 2026-09-17, from the live site itself: the live homepage's
+  logo strip shows FOURTEEN marks, not twelve.** The twelve above plus **RAM**
+  and **Fiat**. The same live page's prose says "a dozen vehicle brands", so
+  **the live site contradicts itself**: a reader who counts the pictures and a
+  reader who reads the sentence get different answers, and an assistant reading
+  the page gets the sentence.
+
+  Nobody typed that on purpose. A logo carousel is built once in a page builder
+  and the prose is written somewhere else, and after that neither knows about
+  the other.
+
+  **What this build does about it, and it is deliberately the conservative
+  choice: the strip ships the TWELVE the site claims in words.** Adding RAM and
+  Fiat because they appear in a carousel would be publishing a certification
+  claim on the strength of a picture, and rule 1 says a fact is confirmed or it
+  does not ship. Dropping the strip would lose the client's own recognition
+  asset over a question that has an answer.
+
+  **If the owner confirms RAM and Fiat, the count moves to fourteen
+  EVERYWHERE in one commit**: `BRAND_COUNT` in `scripts/audit.py`, the two stat
+  bands, the two prose lists on `/collision-repair/`, the FAQ answer, the FAQ
+  schema, and two more marks in the strip. That is now enforced rather than
+  remembered: the brand-count check fails the build if the marks, the visible
+  text and the schema do not all say the same number, so a half-done update
+  cannot ship. See 3.26.
 
 ### 4.1b Claims the homepage adds
 
@@ -2488,6 +2708,10 @@ Ordered by how much else depends on it.
 5. **The warranty**, in the owner's own words: lifetime of what, covering what,
    transferable or not. See 4.1.
 6. **The rating**: live widget, dated number, or nothing. See 4.4.
+6b. **RAM and Fiat: certified or not?** The live logo strip shows fourteen
+   marks and the live prose says a dozen. This build ships the twelve the
+   words claim. One answer moves the count everywhere, in one commit, and
+   the build now fails if it moves in only some places. See 4.1 and 3.26.
 7. **1974 and second generation**: publish them or not. See 4.5.
 8. **priceRange**: publish `$$` or not. See section 2.
 9. **The four customer quotes**: permission to republish, and whether the

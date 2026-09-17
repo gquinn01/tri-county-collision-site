@@ -229,6 +229,55 @@ REVIEW_STALE_DAYS = 35
 # would teach everyone to stop writing them.
 REVIEW_COUNT_RE = re.compile(r"\b(\d[\d,]{0,6})\s+(?:google\s+)?reviews?\b", re.I)
 
+# --- The brand count: the marks, the words and the schema agree -------
+# ADDED 2026-09-17, with the brand strip, and it is the review count's
+# check in a second key: one shop has one number of brands, and a
+# visitor who meets two has no way to tell which is real.
+#
+# WHAT MADE IT NECESSARY. The live site's own carousel shows FOURTEEN
+# marks, the twelve plus RAM and Fiat, while the same site's prose says
+# "a dozen". Nobody wrote that discrepancy on purpose; a strip is built
+# once in a page builder and the prose is written somewhere else, and
+# after that neither knows about the other. This build now states the
+# number in FOUR kinds of place at once: the stat band, the prose, the
+# FAQ schema, and twelve pictures in a row. That is four places to drift.
+#
+# SO THE CHECK COUNTS THE PICTURES. It reads the number of marks in the
+# strip, every count claimed in visible text, every count claimed inside
+# JSON-LD, and this constant, and a disagreement between any two of them
+# is a CRITICAL. If the owner confirms RAM and Fiat, the count moves to
+# fourteen everywhere in one commit, because anything less fails here.
+#
+# THE STRIP'S DUPLICATE TRACKS DO NOT COUNT. The marquee ships the marks
+# three times so the drift has no seam, and two of those tracks are
+# aria-hidden. Counting them would report thirty-six brands, which is
+# why the count is taken from the one track a screen reader is offered.
+BRAND_COUNT = 12
+BRANDS = ("INFINITI", "Nissan", "Hyundai", "Kia", "Acura", "Honda",
+          "GM", "Chrysler", "Ford", "Dodge", "Subaru", "Jeep")
+
+# "12 vehicle brands", "12+ vehicle brands", "a dozen vehicle brands",
+# "Twelve manufacturers". The "+" is READ AS THE NUMBER: "12+" and "12"
+# are the same count for agreement purposes, because the claim under it
+# is the same claim. Whether the site should say "12" or "12+" at all is
+# a claims question and it is in proposed-changes.md 4.1, not here.
+BRAND_WORDS = {"ten": 10, "eleven": 11, "twelve": 12, "dozen": 12,
+               "thirteen": 13, "fourteen": 14, "fifteen": 15}
+BRAND_COUNT_RE = re.compile(
+    r"\b(?:(\d{1,3})\s*\+?|(?:a\s+)?(" + "|".join(BRAND_WORDS) + r"))\s+"
+    r"(?:vehicle\s+|car\s+|auto\s+|automotive\s+)?"
+    r"(?:brands?|manufacturers?|makes?)\b", re.I)
+
+# The one track a screen reader is offered, and the <img> elements in
+# it. Deliberately anchored to the class and to the ABSENCE of
+# aria-hidden: a fourth duplicate track added later still counts zero,
+# and a mark added to the real track counts one.
+BRAND_TRACK_RE = re.compile(
+    r"<ul[^>]*\bclass=\"[^\"]*\bbrandtrack\b[^\"]*\"(?![^>]*aria-hidden)[^>]*>"
+    r"(.*?)</ul>", re.S | re.I)
+JSONLD_RE = re.compile(
+    r"(?is)<script[^>]+type=\"application/ld\+json\"[^>]*>(.*?)</script>")
+
 # --- Asset provenance: no AI-generated image enters this repo ----------
 # ADDED 2026-09-17, after two candidate assets for the We Fix It All
 # render were both caught by reading their metadata.
@@ -1041,6 +1090,110 @@ def check_pending_links_local(warns: list, notes: list):
     notes.append(head + "\n" + body + why)
 
 
+def find_brand_claims(root: str = None) -> dict:
+    """Every place under docs/ that states how many brands, as
+    {kind: [(path, count, snippet)]}.
+
+    Three kinds, because they fail in different ways and a report that
+    says which one drifted is a report somebody can act on:
+
+      marks   the pictures in the strip, counted from the one track that
+              is not aria-hidden
+      text    what a reader sees, comments and scripts stripped first
+      schema  what a crawler and an assistant read, inside JSON-LD
+
+    SITE_DIR is resolved when this is CALLED, like find_assets, because
+    the tests point the check at a temporary directory.
+    """
+    root = root or SITE_DIR
+    out = {"marks": [], "text": [], "schema": []}
+    for dirpath, _dirs, files in os.walk(root):
+        for name in sorted(files):
+            if not name.endswith((".html", ".txt")):
+                continue
+            path = os.path.join(dirpath, name)
+            try:
+                with open(path, encoding="utf-8") as f:
+                    raw = f.read()
+            except OSError:
+                continue
+            if name.endswith(".html"):
+                for m in BRAND_TRACK_RE.finditer(raw):
+                    n = len(re.findall(r"<img\b", m.group(1), re.I))
+                    out["marks"].append((path, n, f"{n} marks in the strip"))
+                for m in JSONLD_RE.finditer(raw):
+                    for hit in BRAND_COUNT_RE.finditer(m.group(1)):
+                        out["schema"].append(
+                            (path, brand_number(hit), hit.group(0).strip()))
+                text = visible_text(raw)
+            else:
+                text = raw
+            for hit in BRAND_COUNT_RE.finditer(text):
+                out["text"].append((path, brand_number(hit),
+                                    text[max(0, hit.start() - 40):hit.end() + 16].strip()))
+    return out
+
+
+def brand_number(m) -> int:
+    """The count a match states, whether it is written 12, 12+ or twelve."""
+    if m.group(1):
+        return int(m.group(1))
+    return BRAND_WORDS[m.group(2).lower()]
+
+
+def check_brand_count_local(passes: list, warns: list, fails: list,
+                            notes: list):
+    """THE BRAND COUNT, ENFORCED RATHER THAN REMEMBERED.
+
+    DISAGREEMENT IS A CRITICAL, and this is the review count's argument
+    in a second key. One shop is certified for one number of brands. A
+    strip of fourteen marks over a sentence that says a dozen is the
+    live site's own state today, and it is the kind of thing that
+    survives for years because the picture and the prose are edited in
+    different rooms.
+
+    The recorded BRAND_COUNT counts as one of the voices, so a single
+    page that drifts from the constant fails on its own.
+
+    Local runs only, like the review count and the asset provenance: it
+    reads files under docs/, and a live run is auditing WordPress.
+    """
+    found = find_brand_claims()
+    seen = {}
+    for kind in ("marks", "text", "schema"):
+        for path, n, snip in found[kind]:
+            seen.setdefault(n, []).append((kind, path, snip))
+    seen.setdefault(BRAND_COUNT, []).append(
+        ("constant", "scripts/audit.py", f"BRAND_COUNT = {BRAND_COUNT}"))
+
+    distinct = sorted(seen)
+    total = sum(len(found[k]) for k in found)
+
+    if len(distinct) > 1:
+        where = "; ".join(
+            "**{}** from {}".format(
+                n, ", ".join(sorted({f"{kind} in `{pth}`" for kind, pth, _ in seen[n]})))
+            for n in distinct)
+        fails.append(
+            f"**The site states {len(distinct)} different brand counts: {where}.** "
+            "The marks in the strip, the number claimed in text and the number in the "
+            "schema have to be the same number, because they are the same claim said "
+            "three ways. Confirm the list with the owner, then move `BRAND_COUNT`, the "
+            "strip and every page in one commit.")
+    elif not total:
+        notes.append(
+            f"**No page states a brand count.** `BRAND_COUNT` is {BRAND_COUNT} and "
+            "nothing publishes it yet. Nothing to disagree.")
+    else:
+        notes.append(
+            f"**Brand count agrees everywhere: {BRAND_COUNT}.** "
+            f"{len(found['marks'])} strip{'' if len(found['marks']) == 1 else 's'} of marks, "
+            f"{len(found['text'])} mention{'' if len(found['text']) == 1 else 's'} in visible "
+            f"text and {len(found['schema'])} in JSON-LD, all saying {BRAND_COUNT}. "
+            "The live site's own carousel shows fourteen against its prose's dozen; this "
+            "is the check that keeps that from happening here.")
+
+
 def check_review_count_local(passes: list, warns: list, fails: list,
                              notes: list, today: date = None):
     """THE REVIEW COUNT, ENFORCED RATHER THAN REMEMBERED.
@@ -1774,6 +1927,7 @@ def main():
     else:
         check_staging_local(site_passes, site_warns, site_notes)
         check_review_count_local(site_passes, site_warns, site_fails, site_notes)
+        check_brand_count_local(site_passes, site_warns, site_fails, site_notes)
         check_asset_provenance_local(site_passes, site_warns, site_fails, site_notes)
         check_comment_convention_local(site_warns, site_notes)
         check_pending_links_local(site_warns, site_notes)

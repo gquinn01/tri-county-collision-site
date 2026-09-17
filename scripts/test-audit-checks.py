@@ -590,6 +590,116 @@ def main():
           bool(real) and all(not a["reasons"] for a in real),
           [a["path"] for a in real if a["reasons"]])
 
+    print("18. The brand count: the marks, the words and the schema agree")
+    # WHY. The live site does this wrong RIGHT NOW, which is the whole
+    # argument for the check: its carousel shows fourteen marks while its
+    # own prose says a dozen. Nobody typed that discrepancy on purpose.
+    # A strip is built once in a page builder and the prose is written
+    # somewhere else, and after that neither one knows about the other.
+    # This build says the number in four kinds of place, so it has four
+    # ways to drift and needs a mechanism rather than a memory.
+
+    STRIP = ('<ul class="brandtrack">%s</ul>'
+             % "".join('<li><img src="b/%d.png" alt="B%d"></li>' % (i, i)
+                       for i in range(12)))
+    DUPE = ('<ul class="brandtrack" aria-hidden="true">%s</ul>'
+            % "".join('<li><img src="b/%d.png" alt="B%d"></li>' % (i, i)
+                      for i in range(12)))
+
+    with _tempfile.TemporaryDirectory() as tmp:
+        with open(os.path.join(tmp, "index.html"), "w", encoding="utf-8") as fh:
+            fh.write("<!-- we used to say 9 vehicle brands -->\n"
+                     + STRIP + DUPE + DUPE
+                     + "<p>factory training for a dozen vehicle brands</p>"
+                     + "<p>Twelve manufacturers, and the procedures</p>"
+                     + "<p>factory-certified for 12+ vehicle brands</p>"
+                     + '<script type="application/ld+json">'
+                     + '{"text":"a collision center for 12+ vehicle brands"}</script>'
+                     + '<script>var old = "7 vehicle brands";</script>')
+        found = audit.find_brand_claims(tmp)
+        marks = [n for _p, n, _s in found["marks"]]
+        text = sorted(n for _p, n, _s in found["text"])
+        schema = [n for _p, n, _s in found["schema"]]
+        check("     the strip is counted once, not once per duplicate track",
+              marks == [12], marks)
+        check("     the aria-hidden tracks are not counted as brands",
+              sum(marks) == 12, marks)
+        check("     \"a dozen\", \"Twelve\" and \"12+\" all read as 12",
+              text == [12, 12, 12], text)
+        check("     a comment recording an old count is not a claim",
+              9 not in text, text)
+        check("     a number inside a plain <script> is not a claim either",
+              7 not in text, text)
+        check("     JSON-LD is read separately from visible text",
+              schema == [12], schema)
+
+    def run_brand(found):
+        """One call of the check against fixed inputs, with the finder
+        swapped out so the cases are the fixtures and not the repo."""
+        real_find = audit.find_brand_claims
+        audit.find_brand_claims = lambda root=None: found
+        try:
+            passes, warns, fails, notes = [], [], [], []
+            audit.check_brand_count_local(passes, warns, fails, notes)
+            return warns, fails, notes
+        finally:
+            audit.find_brand_claims = real_find
+
+    N = audit.BRAND_COUNT
+    agree = {"marks": [("docs/index.html", N, "12 marks in the strip")],
+             "text": [("docs/index.html", N, "a dozen vehicle brands")],
+             "schema": [("docs/collision-repair/index.html", N, "12+ vehicle brands")]}
+    warns, fails, notes = run_brand(agree)
+    check("     agreement across marks, text and schema is clean",
+          not fails and not warns, fails + warns)
+    check("     and it reports as a note rather than a pass",
+          len(notes) == 1, notes)
+
+    # THE LIVE SITE'S OWN STATE, as a fixture: fourteen marks over a
+    # sentence that says a dozen. This is the case the check exists for.
+    live = dict(agree, marks=[("docs/index.html", 14, "14 marks in the strip")])
+    warns, fails, notes = run_brand(live)
+    check("     FOURTEEN MARKS OVER A DOZEN IN WORDS IS A CRITICAL",
+          len(fails) == 1 and not warns, fails + warns)
+    check("     and the critical names both numbers",
+          bool(fails) and "12" in fails[0] and "14" in fails[0], fails)
+    check("     and says which kind of place each came from",
+          bool(fails) and "marks in" in fails[0] and "text in" in fails[0], fails)
+
+    schema_drift = dict(agree, schema=[("docs/collision-repair/index.html", 13,
+                                        "13 vehicle brands")])
+    warns, fails, notes = run_brand(schema_drift)
+    check("     schema drifting from the page is a critical too",
+          len(fails) == 1, fails)
+    check("     and the report names the schema as the odd one out",
+          bool(fails) and "schema in" in fails[0], fails)
+
+    # The recorded constant is one of the voices, so one lonely page that
+    # drifts has something to disagree with. That is exactly the case a
+    # wrong number survives longest in.
+    lone = {"marks": [], "schema": [],
+            "text": [("docs/index.html", 14, "14 vehicle brands")]}
+    warns, fails, notes = run_brand(lone)
+    check("     ONE page disagreeing with BRAND_COUNT is a critical too",
+          len(fails) == 1, fails)
+
+    empty = {"marks": [], "text": [], "schema": []}
+    warns, fails, notes = run_brand(empty)
+    check("     no mention anywhere is a note, not a failure",
+          not fails and not warns and len(notes) == 1, fails + warns + notes)
+
+    # And the strip as it actually ships, because a fixture that passes
+    # while the real page fails is a fixture that lies.
+    _sd = audit.SITE_DIR
+    try:
+        audit.SITE_DIR = os.path.join(root, "docs")
+        passes, warns, fails, notes = [], [], [], []
+        audit.check_brand_count_local(passes, warns, fails, notes)
+    finally:
+        audit.SITE_DIR = _sd
+    check("     the strip that ships agrees with every page that ships",
+          not fails, fails)
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} check(s) failed:")
