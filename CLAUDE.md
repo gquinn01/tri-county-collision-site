@@ -220,13 +220,28 @@ no source type and names the generator in the tool field instead.
 
 **The client's ruling, 2026-09-17: no AI exception, and no third drawing.**
 The genre predates generative AI, 3D artists have been making real ghosted
-top-down car renders since well before 2023, and the asset will be
-re-purchased with the generative-AI filter excluded and from contributors
-whose portfolios predate it. **The We Fix It All section is held until that
-file lands** at `docs/assets/img/car-xray-top.jpg`, and its metadata gets
-read the same way before anything is built on it. The existing drawn
-diagram is not the answer either: it stays on the page only because
-removing it before the replacement exists would leave a hole.
+top-down car renders since well before 2023, so the asset was re-sourced with
+the generative-AI filter excluded rather than an exception being written. **No
+AI asset entered the repo.**
+
+**The third candidate cleared, and it is the one that shipped.**
+`AdobeStock_1604222224` carries an intact Adobe-signed C2PA manifest, embedded
+rather than linked, whose claim generator is Adobe Stock's own pipeline and
+which asserts **no** `digitalSourceType` at all. That is the strongest
+evidence available short of the contributor's word, and it is not the same as
+an attestation of human authorship: Adobe Stock's manifest records
+publication, not creation. **The shipped derivatives carry no metadata**,
+because re-encoding drops it and a crop invalidates a C2PA hash regardless, so
+the source asset id is recorded in `proposed-changes.md` 3.22, in the section's
+HTML comment, and in `scripts/prepare-car-render.py`.
+
+**Two parts of the spec the client's pick amended, and he ruled on both.** The
+asset is a **side profile**, not the top-down view the direction named, and it
+is a **wireframe**, which is line art rather than a photograph. His ruling:
+the client's pick amends the spec, and the no-third-drawing rule covers
+**drawings made by us**, not a licensed engineering render he selected. **The
+drawn intake diagram is still dead**, and it was deleted in the same commit
+rather than left standing.
 
 **Stripping the label is not an option and never becomes one.** The
 provenance is the fact; the label is only where the fact is written down.
@@ -668,6 +683,7 @@ dark. That archive is the last copy of it that will ever exist.
 | `scripts/test-audit-checks.py` | Smoke tests for the checks that must never drift back: the address spelling, the CallRail number, the one email, the review count, and asset provenance. Written after the address check was caught scoring a wrong address as a pass. Its AI-asset fixtures are written at run time, never committed, because committing a known-AI image to prove the check catches them would put a known-AI image in the repo. |
 | `proposed-changes.md` | Every text change made during the migration, as before/after pairs, plus the claims the pages carry. Awaiting the owner's fact-check. |
 | `scripts/build-sitemap.py` | Generates `docs/sitemap.xml` from the pages themselves. `lastmod` comes from each page's own schema `dateModified`, never from a file mtime and never from today. |
+| `scripts/prepare-car-render.py` | Turns the licensed wireframe render into the two assets the We Fix It All band uses. Holds the measured crop box, pulls the black point so the screen blend is invisible on ink, solves a gamma only if the median line falls under the 3:1 graphic floor, and searches the JPEG quality against the 250KB budget. Prints every number it used. |
 | `scripts/stamp-assets.py` | Cache-busting stamps for `docs/assets/site.css` and `site.js`. |
 | `scripts/fetch_seo_news.py` | Pulls the headline sweep the Google Watcher reads. |
 | `scripts/cascade-analyzer.html` | CSS cascade analyzer. |

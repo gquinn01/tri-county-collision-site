@@ -1421,149 +1421,184 @@ page wears `accent-minor-collision-repair.jpg`; **two front doors were never
 going to wear the same picture.** The shortage recorded in 3.17 is unchanged:
 four service cards still share three photographs.
 
-### 3.22 We Fix It All: the render and six items. PROPOSED, NOT BUILT
+### 3.22 We Fix It All: the licensed render and the eight. BUILT 2026-09-17
 
-Direction chosen 2026-09-13: the drawn intake diagram is replaced by a centred
-top-down **ghosted car render**, photographic, with the damage types flanking it
-in two columns of three, each item a small line icon, a bold heading and one
-short supporting line. **The drawn diagram stays dead.** Section head grammar is
-unchanged: eyebrow kicker plus centred H2.
+The drawn intake diagram is gone and the band is now a licensed wireframe car
+render, full width on the ink ground, with eight damage types in a grid
+beneath it. Section head grammar unchanged: centred H2 plus the kicker line
+every other section carries.
 
-**Nothing here is on a page yet, and the reason is recorded in "What is
-blocking it" below.** The copy, the two measurements the direction depends on
-and the rhythm decision are settled, so that the only thing still outstanding
-is the asset.
+#### The asset, and the two that were rejected first
 
-#### The six items and where every word comes from
+**`AdobeStock_1604222224`, provenance verified before a line was built on it.**
+Three candidates were offered and the first two were rejected as AI-generated,
+which their own metadata declared:
 
-Four of the six can be built entirely out of what the shop already publishes.
-Two cannot, and they are the two the claims list already flagged.
+| Candidate | What the file declares | Verdict |
+|---|---|---|
+| `AdobeStock_1060063701`, top-down | IPTC `DigitalSourceType` = `trainedAlgorithmicMedia`, plus a remote Adobe C2PA manifest | rejected, AI |
+| `AdobeStock_746591791`, side profile | `xmp:CreatorTool` = `OkiDokiBot AI Art Generator` | rejected, AI |
+| **`AdobeStock_1604222224`, side profile** | **intact Adobe-signed C2PA manifest, 179KB embedded, claim generator `Adobe_Stock adobe_c2pa/0.14.2`, asset id `stock.adobe.com/1604222224`, one action `c2pa.published`, and NO `digitalSourceType` assertion anywhere** | **accepted** |
+
+**What the accepted file's evidence is and is not.** Adobe requires
+contributors to declare generative AI and labels the assets it distributes,
+the first candidate carried that label plainly, and this one's manifest is
+present, signed and silent on the question rather than absent. That is the
+strongest evidence available short of the contributor's word. It is not a
+positive attestation of human authorship: Adobe Stock's manifest records
+**publication**, not creation, so there is no `softwareAgent` in it and no
+claim about which tool drew the pixels.
+
+**The shipped files carry none of that metadata**, and that is a side effect
+of re-encoding rather than anything done to them on purpose. `sips` drops
+metadata, and a C2PA manifest is invalidated by cropping anyway because it
+hashes the pixels. The source asset id is recorded here, in the section's own
+HTML comment, and in `scripts/prepare-car-render.py`, so the chain is
+followable even though the derivative cannot carry it.
+
+#### The client's ruling, 2026-09-17
+
+**The asset qualifies, and the amendment is recorded as the client's.** Greg
+chose this file after seeing it rendered. Two constraints it does not meet on
+their face were considered and waived by him:
+
+- **It is a side profile, not the top-down view the direction named.** The
+  client's pick amends the spec.
+- **It is a wireframe, which is line art rather than a photograph.** The
+  no-third-drawing ruling covers **drawings made by us**, not a licensed
+  engineering render the client selected. The drawn diagram is still dead.
+
+#### The eight items and where every word comes from
+
+**The minor/major split is retired**, which reverses the six-item plan and is
+recorded in 4.1b. Its two sourced lines merge into one item.
 
 | Item | Supporting line | Source |
 |---|---|---|
-| Minor collisions | Scratches, scuffs, small dents, bumper damage and fender benders. | `/collision-repair/`, "What counts as minor", already on this site |
-| Major collisions | Frame straightening, structural repair and full panel replacement. | `/collision-repair/`, "What counts as major", already on this site |
-| Cracked windshields | Small chips and short cracks can often be repaired rather than replaced. | live `/auto-glass-repair-replacement/`, read 2026-09-13 |
-| Door dings and dents | No filler, no sanding, no spraying. Your original finish stays untouched. | live `/paintless-dent-repair/`, read 2026-09-13 |
+| Minor and major collisions | From fender benders to frame straightening and full panel replacement. | **composed**, merging `/collision-repair/`'s own "What counts as minor" and "What counts as major" lists |
+| Cracked windshields | Small chips and short cracks can often be repaired. | **trimmed verbatim prefix** of the live glass page's "Small chips and short cracks can often be repaired, saving you the cost of a full replacement" |
+| Broken side and rear glass | A shattered door window or rear window can't wait. | **verbatim**, live `/auto-glass-repair-replacement/` |
+| Door dings and dents | No filler, no sanding, no spraying. Your original finish stays untouched. | **verbatim**, live `/paintless-dent-repair/` |
+| Bumper damage | A repaired bumper can disturb the sensors behind it, and we recalibrate. | **composed** from two sentences in one paragraph of `/collision-repair/`: "a replaced windshield or a repaired bumper can disturb the sensors behind it too" and "We also perform ADAS recalibration whenever a repair calls for it" |
+| Scratched and chipped paint | Small paint chips can lead to rust over time. | **trimmed verbatim prefix** of `/collision-repair/`'s "Small paint chips can lead to rust over time, dents affect resale value, and unaddressed damage can escalate" |
+| Deer strikes | **none** | no published sentence exists anywhere |
 | Hail damage | Often lifted out with paintless dent repair, so the finish stays untouched. | **composed** from the live PDR page, which lists hail among what PDR fixes |
-| Deer strikes | **none yet** | **no published supporting line exists anywhere** |
 
-The four sourced lines are trimmed from published sentences, not invented, and
-each is a before/after pair against the source above. **The two marked lines are
-the ones that need the owner**:
+**The glass scope was verified rather than assumed, and it decided an item.**
+The instruction made "Broken side and rear glass" conditional on the live
+glass page actually going beyond windshields, with "Fender benders" as the
+fallback. The live page was read on 2026-09-17 and it does, repeatedly and
+unambiguously: "we handle auto glass repair and replacement for windshields,
+side windows, and rear windows", a "Side and Rear Windows" heading, and an FAQ
+whose answer is "Yes. Our technicians handle all types of auto glass:
+windshields, side windows, and rear windows." **So the glass item shipped and
+the fallback was not needed.**
 
-- **Hail damage.** The live PDR page lists "Hail damage" among what PDR can fix,
-  so the composed line is supported by the shop's own page rather than by us.
-  It still asserts a method, so it is an owner question and not a writer's.
-- **Deer strikes.** The live homepage names it in the same five-item list and
-  **says nothing else about it anywhere on the site.** Any supporting line would
-  be the first sentence this business has ever published about deer work, and it
-  would assert scope: panel, glass and lighting, in house or sublet. Rule 2 says
-  we do not write it. **Either the owner supplies the line, or the item ships as
-  a heading with no supporting line, which is honest and reads fine in a
-  six-item grid.**
+**Deer strikes still ships as a heading with no supporting line.** The shop
+has never published a sentence about deer work, so any line would be the first
+this business has said about it and it would assert scope: panel, glass and
+lighting, in house or sublet. Rule 2 says we do not write it. **Still an owner
+question.**
 
-**The split from five items to six is ours**, not the shop's: the live list says
-"Minor & Major Collisions" as one item and this section makes it two, which the
-collision page's own two-column Minor and Major treatment already supports.
-Recorded in 4.1b.
+**Three lines are composed rather than migrated** and all three need the
+owner: the merged collisions line, the bumper line, and the hail line. The two
+trimmed lines add no words and cut only from the end of a published sentence.
 
-#### Two measurements the direction needed
+#### The measurements
 
-**The icons may be logo red.** `--mark` #E92424 on `--ink` #121B27 measures
-**3.91**, and a non-text graphic needs 3. So the marks clear the floor on this
-ground with headroom, and the mark-only rule is satisfied: they are marks, not
-text and not decoration. For the record of what does not work on ink, `--ox`
-measures 1.47 and `--ox-tx` 1.94, so oxblood icons were never available.
+**Contrast on the ink ground**, `--ink` #121B27, all recomputed from the
+tokens on 2026-09-17 rather than carried over:
 
-**The type clears on ink as it does everywhere else.** Headings in `--silver`
-measure **15.42** and supporting lines in `--silver-2` measure **10.78**,
-against a 4.5 floor and a 7 target. The ink band is a flat ground, so unlike the
-hero there is no photograph under the glyphs and no composite to sample.
+```
+item headings    --silver   #F0F2F2   15.42:1     floor 4.5, target 7
+supporting lines --silver-2 #C9CCD3   10.78:1     floor 4.5, target 7
+icon glyphs      --mark     #E92424    3.91:1     floor 3 as a non-text graphic
+```
 
-#### The rhythm, and a correction to the brief
+**The icons are logo red and it is one measurement, not eight.** All eight
+glyphs are strokes of the single `--mark` token, so the ratio is a property of
+the token and the ground, not of the drawing. For the record of what was never
+available on ink: `--ox` is 1.47 and `--ox-tx` is 1.94.
 
-The brief expected this to put an ink band directly above the ink quote band.
-**It does not**, and the section order is why: services, then We Fix It All,
-then `#who-we-are`, then testimonials. `#who-we-are` is a silver prose section
-and it sits between the two. Today's order and grounds are hero, stat card,
-services on silver, We Fix It All, who we are on silver, testimonials on ink,
-the one act band on ox, contact on ink, FAQ on silver.
+**The render, measured as the screen composite it actually is.** The asset is
+greyscale line art whose own ground reads v=12 of 255, not black, which
+screen-blended onto ink would have shown as a 1.13:1 rectangle sitting on the
+band. `scripts/prepare-car-render.py` pulls the black point to zero, so the
+blend leaves the ink exactly as it found it:
 
-**So nothing has to move, and the quote band keeps its ink.** Both changes the
-brief offered are refused for cause: giving the quote band `--white` would break
-the written rule that white is exactly one band, the stat card, and that rule is
-worth more than this; reordering to fix an adjacency that does not exist would
-be churn.
+```
+car-xray-top@2x.jpg   2160x795   234 KB   median line 8.51:1 on ink
+car-xray-top.jpg      1080x397   143 KB   median line 4.01:1 on ink
+JPEG ringing around a line                            1.05:1, below sight
+```
 
-**What the change actually fixes is a palette inconsistency.** The section sits
-on `.band-panel` today, which is `--panel`, which is `#FFFFFF`. That is a second
-white band on a page whose palette note says white is used on exactly one.
-Putting this section on ink retires it.
+**No level lift was applied, and that is a measurement rather than an
+omission.** The median line already cleared the 3:1 floor at both sizes. An
+earlier pass reported the median as 86, which was wrong: it came off a 500px
+proxy rather than the export, and downscaling dims line art. The pipeline
+still solves a gamma if a future size or ground pushes the median under.
 
-#### What is blocking it, updated 2026-09-17
+**PNG was tried first and lost.** 479KB for the 2x even with a clean ground,
+because a dense wireframe is high-entropy; quantising to 16 grey levels to fit
+the budget banded the lines visibly. The objection to JPEG was that ringing
+would read as a glow, which is banned, so it was measured instead of argued
+and it reads 1.05:1.
 
-**Two licensed candidates were offered and both were rejected, because both
-are AI-generated and said so in their own metadata.** Read before anything
-was built on either one:
+#### The icon scale is a recorded deviation
 
-| Asset | What the file declares | Verdict |
-|---|---|---|
-| `AdobeStock_1060063701`, top-down | IPTC `DigitalSourceType` = `trainedAlgorithmicMedia`, plus a public Adobe C2PA manifest | rejected |
-| `AdobeStock_746591791`, side profile | `xmp:CreatorTool` = `OkiDokiBot AI Art Generator`, no `DigitalSourceType` | rejected |
+**Drawn at 30px where the approved chip scale is 17px.** The chips carry three
+repeated glyphs inline beside their own label, where position identifies them
+as much as shape does. These are eight distinct glyphs standing alone above a
+heading, and eight damage types have to be told apart from each other.
 
-Rule 9 allows no AI imagery, and neither is photographic, which is what the
-direction called for. Three things made this a stop rather than a footnote:
+**They were drawn at 26px first and rendered, and four of the eight were
+unreadable**, which is the same failure already on record in 3.11: the broken
+glass glyph read as a cancel symbol, the door read as a picture frame, the
+bumper read as a football, and the deer read as an insect. All four were
+redrawn and re-rendered. The drawing grammar is unchanged from the chips: a 24
+viewBox, a 2 stroke, round caps and joins.
 
-- **The provenance is public.** The C2PA manifest travels with the published
-  JPEG, so Content Credentials tools and Google's "About this image" surface
-  it from the live file. On a site whose pitch includes real beating stock,
-  that is a discoverable contradiction rather than a private compromise.
-- **The top-down render is not mechanically coherent.** Its underbody is
-  decorative noise and the wireframe is not a car an estimator would
-  recognise. The drawn diagram was redrawn for exactly that standard, on a
-  page that sells ASE and I-CAR Gold Class training, so the swap would have
-  traded away the axis the shop sells on.
-- **It would have cost a fifth colour.** The render's lines are cyan, against
-  a four-colour palette, and the asset is literally a glow on a no-glow site.
-  Both fixable, and both evidence the asset was not native here.
+#### The band rhythm, and the white band this retires
 
-**The client's ruling, 2026-09-17.** No AI exception and no third drawing.
-The genre predates generative AI and real 3D ghosted top-down renders have
-existed since well before 2023, so the asset is being re-purchased with the
-generative-AI filter excluded and from contributors whose portfolios predate
-it. **The section is held until it lands**, and its metadata gets read the
-same way first. **The existing drawn diagram is not staying either**; it is
-on the page now only because pulling it before the replacement exists would
-leave a hole where a section should be.
+**Nothing had to move.** Today's order and grounds: hero on ox, stat card on
+white, services on silver, **We Fix It All on ink**, who we are on silver,
+testimonials on ink, the one act band on ox, contact on ink, FAQ on silver.
+`#who-we-are` sits on silver between this band and the ink quote band, so the
+adjacency the brief expected does not exist.
 
-**What was not done, and would have been wrong to do.** Nothing was shipped
-with a placeholder, and the AI label was not stripped to make a file pass.
-The provenance is the fact and the label is only where it is written down, so
-removing it would be a lie about the asset as well as a licence breach.
+**What the change fixes is a palette inconsistency.** The section was
+`.band-panel`, which is `--panel`, which is `#FFFFFF`: a second white band on
+a page whose palette note allows exactly one, the stat card. Putting this
+section on ink retires it.
 
-**The catch is now a mechanism.** `scripts/audit.py` reads the provenance of
-every raster image under `docs/` and scores an AI-generated one as a
-site-wide critical, so `--strict` exits 1. It reads both tells, because each
-candidate would have passed a check written against the other. Its limit is
-stated in the report: it reads labels, not pixels, so a stripped file passes,
-and `digitalCapture`, `digitalArt` and `algorithmicMedia` deliberately pass,
-because the last two are what the real render we are waiting for will carry.
-Fixtures live in `scripts/test-audit-checks.py` case 17 and are written at
-run time rather than committed.
+**`/collision-repair/` still carries two `.band-panel` sections**, so the same
+inconsistency is still live on that page. Not touched here, because that page's
+copy is approved and this was not the brief. **Noted so it is not lost.**
 
-#### What is still settled and waiting
+#### Motion, and what was deliberately not taken
 
-The six items, their copy and its sourcing, the two measurements and the
-rhythm decision are all unchanged by this and are recorded above. On the
-ink ground, item headings in `--silver` measure **15.42**, supporting lines
-in `--silver-2` measure **10.78**, and logo-red icon marks in `--mark`
-measure **3.91** against the 3 a non-text graphic needs, so the icons may be
-red. Re-derived from the tokens on 2026-09-17 rather than carried over.
+**The rule sweep only.** Each item's `::after` goes from the quiet 28px mark to
+full width on hover, on the same 260ms clock and easing as every card on the
+site, in silver because oxblood is invisible against this band. **The lift's
+3px rise and its ink shadow are absent on purpose**, because the brief bans
+the float. Hover-only behind `@media (hover: hover)`, and since only width and
+opacity move the state still answers under `prefers-reduced-motion`.
 
-**Deer strikes still has no supporting line**, for the reason given above,
-and the owner question stands.
+#### The phone, and the one thing to flag
 
+**The section is 1504px tall at 390.** Against the 604px usable height
+recorded in `scripts/mobile-check.md`, which is a 390x664 viewport less the
+60px fixed call bar, **that is 2.49 screens, so it does eat more than two.**
+Flagged as instructed and not changed, because one column at 390 is the
+client's sizing.
+
+What it costs and what it does not: the render is cheap there, because a
+2.74:1 asset in a 350px column is only 129px tall, so the height cap the brief
+asked for turned out to be unnecessary rather than skipped. The 1375px under
+it is the eight items themselves. **Two columns at 390 would cut it to roughly
+four rows and land near 900px**, if the height matters more than the single
+column does. Measured at 1440 for comparison: 1078px, four across in two rows,
+items 249px wide, no horizontal overflow at either width.
 ---
 
 ## 4. The claims list
@@ -1588,17 +1623,31 @@ unverified claim does not ship. **Confirm each one.**
 
 ### 4.1b Claims the homepage adds
 
-- **"We fix it all", and the five damage types under it**: minor and major
-  collisions, cracked windshields, door dings and dents, deer strikes, hail
-  damage. Rule 2, scope honesty: **does the shop do all five, in house?**
-  Hail and deer strikes in particular are the kind of work a shop either
-  takes or sublets. **Updated 2026-09-13**: the rebuild in 3.22 makes it six
-  items by splitting minor from major, which the collision page's own two
-  column treatment supports, and proposes a one line description under each.
-  Four of those lines are trimmed from published copy. **The hail line is
-  composed and the deer strikes line does not exist**, because the shop has
-  never published a sentence about deer work. Both are owner questions, and
-  the deer item ships without a supporting line unless the owner supplies one.
+- **"We fix it all", and the EIGHT damage types under it.** Rule 2, scope
+  honesty: **does the shop do all eight, in house?** Hail and deer strikes in
+  particular are the kind of work a shop either takes or sublets, and the
+  glass items are the kind a shop often sublets whole.
+
+  **Superseded history, kept because the item count has now moved twice.**
+  The live site's list was five: minor and major collisions as one item, plus
+  cracked windshields, door dings and dents, deer strikes, hail damage. On
+  2026-09-13 the plan was six, splitting minor from major. **On 2026-09-17 it
+  shipped as eight, on the client's sizing, and the minor/major split is
+  retired**: those two go back to being one item and their two sourced lines
+  merge into one. So the split never reached a page.
+
+  **The three additions are ours, not the live site's**, and all three are
+  sourced from published copy: bumper damage and scratched and chipped paint
+  both come out of `/collision-repair/`'s own minor-damage paragraphs, and
+  broken side and rear glass comes out of the live glass page, whose scope was
+  **verified on 2026-09-17** as covering side and rear windows and not only
+  windshields. Full sourcing table in 3.22.
+
+  **Three of the eight lines are composed rather than migrated** and need the
+  owner: the merged collisions line, the bumper line, and the hail line.
+  **Deer strikes still carries no supporting line at all**, because the shop
+  has never published a sentence about deer work. That remains an owner
+  question and the item ships as a heading alone until it is answered.
 - **"We perform ADAS recalibration at our Southampton facility."** Read off
   the live auto glass page on 2026-09-13. It is not carried on any page here
   yet, and it matters beyond its own sentence: `pagemap.md` gates the ADAS
@@ -1832,3 +1881,5 @@ Ordered by how much else depends on it.
 9. **The four customer quotes**: permission to republish, and whether the
    staff they name still work here. See 4.8.
 10. **The verified `sameAs` list.** See 3.7.
+11. **The eight damage types on the homepage, all in house?** And the three
+    composed lines plus the missing deer strikes line. See 4.1b and 3.22.

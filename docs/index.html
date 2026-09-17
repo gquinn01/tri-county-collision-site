@@ -60,7 +60,7 @@
        SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
   <link rel="preload" href="assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/site.css?v=031e013b">
+  <link rel="stylesheet" href="assets/site.css?v=eae8d710">
   <script src="assets/site.js?v=78d33e7f" defer></script>
 
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
@@ -231,7 +231,7 @@
             "name": "Auto Body Shop in Southampton, PA | Tri-County Collision",
             "description": "Family-owned auto body shop in Southampton, PA. Collision repair, auto glass, dent repair & fleet work. Free estimates, lifetime warranty. (215) 322-5350.",
             "inLanguage": "en-US",
-            "dateModified": "2026-09-13",
+            "dateModified": "2026-09-17",
             "isPartOf": {
               "@id": "https://tricountycollision.com/#website"
             },
@@ -426,29 +426,93 @@
       </div>
     </section>
 
-    <!-- ============ THE INTAKE DIAGRAM ============
-         "We fix it all" as the drawing every customer has seen at
-         intake, with the checklist's own words pointing at the panels
-         they name. Solid single-colour line art, no fill, no motion.
-         The five lines are also a list in the DOM at every width,
-         visually hidden above 900px, because SVG labels do not survive a
-         phone and a screen reader should not depend on the viewport. -->
-    <section id="what-we-fix" class="band-panel">
+    <!-- ============ WE FIX IT ALL ============
+         The licensed wireframe car render, full width on the ink band,
+         with the eight damage types in a grid beneath it.
+
+         THE RENDER IS AdobeStock_1604222224, and its provenance was read
+         before it was used. Two earlier candidates were rejected for
+         being AI-generated, which their own metadata declared; this one
+         carries an intact Adobe-signed C2PA manifest that asserts no
+         generative source. The full record, including what the shipped
+         file no longer carries, is in proposed-changes.md 3.22, and
+         scripts/audit.py now reads every asset's provenance.
+
+         mix-blend-mode: screen IS WHAT MAKES THE GROUND DISAPPEAR. The
+         asset's own ground was measured at v=12 rather than black, so
+         scripts/prepare-car-render.py pulls the black point to zero and
+         screen then leaves the ink untouched everywhere the render is
+         ground. No alpha channel, no cutout, one flat opaque file. If
+         blend modes are unsupported the render shows as a very slightly
+         darker rectangle on the band and nothing else changes.
+
+         ON THE INK GROUND, and that retires a palette inconsistency
+         rather than creating one: this section was .band-panel, which is
+         --panel, which is #FFFFFF, a second white band on a page whose
+         palette note allows exactly one. The rhythm still alternates,
+         because #who-we-are sits on silver between this band and the
+         ink quote band below it.
+
+         MOTION IS THE RULE SWEEP AND NOTHING ELSE. The items take the
+         established ::after sweep on hover and deliberately NOT the
+         lift's transform or shadow: no float, per the brief. Hover only,
+         and the state still changes under prefers-reduced-motion.
+
+         DEER STRIKES CARRIES NO SUPPORTING LINE, on purpose. The shop
+         has never published a sentence about deer work, so writing one
+         would assert scope. Owner question, open in proposed-changes.md
+         3.22 and 5. -->
+    <section id="what-we-fix" class="dark field-ink">
       <div class="wrap">
         <div class="sec-head">
           <h2 class="sec-title">We Fix It All</h2>
           <p class="sec-sub">What comes through the door</p>
         </div>
-        <svg class="diagram-svg" viewBox="0 0 1000 460" aria-hidden="true" focusable="false">
-          <g transform="translate(190,90)"><path class="dg-3" d="M-10 240H636"/><path class="dg-3" d="M110 248v24M482 248v24"/><path class="dg-3" d="M110 264H482"/><path class="dg-3" d="M110 264l11-5m-11 5l11 5M482 264l-11-5m11 5l-11 5"/><path class="dg-1" d="M6 196V158c0-11 6-17 18-20l74-9c26-5 48-7 74-9l90-4 68-58h122l56 56 90 12c14 3 20 12 20 24v46z"/><path class="dg-2" d="M58 198a52 52 0 0 1 104 0"/><path class="dg-2" d="M430 198a52 52 0 0 1 104 0"/><circle class="dg-2" cx="110" cy="198" r="42"/><circle class="dg-3" cx="110" cy="198" r="16"/><circle class="dg-2" cx="482" cy="198" r="42"/><circle class="dg-3" cx="482" cy="198" r="16"/><path class="dg-2" d="M274 112L334 64H448L502 110Z"/><path class="dg-2" d="M372 64V111"/><path class="dg-2" d="M432 66V111"/><path class="dg-2" d="M252 118V178"/><path class="dg-2" d="M372 112V178"/><path class="dg-2" d="M432 114V178"/><path class="dg-3" d="M164 178H428"/><path class="dg-3" d="M292 140h26M392 140h26"/><path class="dg-3" d="M268 108h-18c-4 0-6 2-6 5v4c0 3 2 5 6 5h12"/></g>
-          <g class="dg-notes"><path class="dg-lead" d="M438 60H490V178"/><text class="dg-label" x="430" y="66" text-anchor="end">Cracked windshields</text><path class="dg-lead" d="M692 60H580V142"/><text class="dg-label" x="700" y="66" text-anchor="start">Hail damage</text><path class="dg-lead" d="M178 392H204V262"/><text class="dg-label" x="170" y="398" text-anchor="end">Deer strikes</text><path class="dg-lead" d="M470 414V244H522"/><text class="dg-label" x="470" y="432" text-anchor="middle">Door dings and dents</text><path class="dg-lead" d="M772 398V236H730"/><text class="dg-label" x="960" y="404" text-anchor="end">Minor and major collisions</text></g>
-        </svg>
-        <ul class="ticks diagram-list">
-          <li><strong>Minor and major collisions.</strong></li>
-          <li><strong>Cracked windshields.</strong></li>
-          <li><strong>Door dings and dents.</strong></li>
-          <li><strong>Deer strikes.</strong></li>
-          <li><strong>Hail damage.</strong></li>
+        <img class="carx" src="assets/img/car-xray-top.jpg"
+             srcset="assets/img/car-xray-top.jpg 1080w, assets/img/car-xray-top@2x.jpg 2160w"
+             sizes="(min-width: 1160px) 1080px, calc(100vw - 40px)"
+             width="1080" height="397" loading="lazy" decoding="async"
+             alt="Wireframe render of a car in side profile, showing the body panels, doors, glass and wheels where collision damage happens.">
+        <ul class="fixgrid">
+          <li class="fix">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.5 12h5"/><path d="M6 9.5 8 12l-2 2.5"/><path d="M21.5 12h-5"/><path d="M18 9.5 16 12l2 2.5"/><path d="M12 3.5l-1.8 4.2 3.2 1.4-2.2 3.6 3 1.2-2.4 6.6"/></svg>
+            <h3>Minor and major collisions</h3>
+            <p>From fender benders to frame straightening and full panel replacement.</p>
+          </li>
+          <li class="fix">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 18 6.8 6.5h10.4L20 18Z"/><path d="M12 6.5l-1.6 4.4 2.8 1-1.2 3.4"/></svg>
+            <h3>Cracked windshields</h3>
+            <p>Small chips and short cracks can often be repaired.</p>
+          </li>
+          <li class="fix">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 6.5h17v11h-17Z"/><path d="M11.4 17.5l2-4.2-3.6-2.3"/><path d="M13.4 13.3l4.2-1.9M13.4 13.3l1.6 4.2"/></svg>
+            <h3>Broken side and rear glass</h3>
+            <p>A shattered door window or rear window can&#x27;t wait.</p>
+          </li>
+          <li class="fix">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 3.8h13.2v16.4H5Z"/><path d="M15.4 12.6h2.2"/><circle cx="10" cy="11.4" r="3"/></svg>
+            <h3>Door dings and dents</h3>
+            <p>No filler, no sanding, no spraying. Your original finish stays untouched.</p>
+          </li>
+          <li class="fix">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12.5a8 8 0 0 1 16 0"/><path d="M2.6 14.2h18.8v3.6H2.6Z"/><path d="M8.4 14.6 6.8 17.4M11.8 14.6l-1.6 2.8"/></svg>
+            <h3>Bumper damage</h3>
+            <p>A repaired bumper can disturb the sensors behind it, and we recalibrate.</p>
+          </li>
+          <li class="fix">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 19 12.5 5M8.5 20 17 6M13 20.5 20 9"/><path d="M16.8 16.6 20.4 15.4 19.2 19Z"/></svg>
+            <h3>Scratched and chipped paint</h3>
+            <p>Small paint chips can lead to rust over time.</p>
+          </li>
+          <li class="fix">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.4c-1.7 0-3-1.5-3-3.4s1.3-3.3 3-3.3 3 1.4 3 3.3-1.3 3.4-3 3.4Z"/><path d="M9.3 15.2 6.4 14M14.7 15.2 17.6 14"/><path d="M10.2 13.6 8.2 9M8.2 9 4.8 7M8.2 9l1.4-3"/><path d="M13.8 13.6 15.8 9M15.8 9l3.4-2M15.8 9l-1.4-3"/></svg>
+            <h3>Deer strikes</h3>
+          </li>
+          <li class="fix">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.4 13.5a3.2 3.2 0 0 1 1-6.2 4.2 4.2 0 0 1 7.9-1.1 3.6 3.6 0 0 1 3.3 7.3Z"/><path d="M8.4 17.6h.01M12 19.9h.01M15.6 17.6h.01"/></svg>
+            <h3>Hail damage</h3>
+            <p>Often lifted out with paintless dent repair, so the finish stays untouched.</p>
+          </li>
         </ul>
       </div>
     </section>

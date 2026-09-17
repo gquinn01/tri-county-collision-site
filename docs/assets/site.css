@@ -1197,34 +1197,94 @@ section { padding: var(--pad) 0; }
 .svc-card p { font-size: 1rem; color: var(--ink-2); margin: 0; }
 a.svc-card h3 { color: var(--ox-tx); }
 
-/* ---------- The intake diagram ----------
-   The estimator's car profile, drawn for band art on 2026-09-10 and
-   reverted the same day, brought back at the size it was always worth:
-   the drawing every customer has seen at intake, with the checklist's
-   own words pointing at the panels they name.
-   SOLID SINGLE COLOUR, NO FILL, NO MOTION. It is a diagram, not an
-   effect, and it is the only thing in this section doing the work.
-   THE LABELS ARE SVG TEXT AND DO NOT SURVIVE A PHONE. At 390 the drawing
-   scales to about a third and a 19px label becomes 6px. So below 900 the
-   callouts are hidden and the same five lines render as an ordinary
-   list. THE LIST IS IN THE DOM AT EVERY WIDTH, visually hidden above
-   900, so a screen reader gets the words whatever the viewport is. */
-.diagram-svg { display: block; width: 100%; height: auto; }
-/* THREE LINE WEIGHTS, ONE INK. An intake sheet is drawn that way: the
-   silhouette carries the eye, the panel seams sit under it, and the
-   details and dimensions sit under those. Same colour throughout; the
-   hierarchy is weight, not tone. */
-.diagram-svg .dg-1 { fill: none; stroke: var(--ink); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
-.diagram-svg .dg-2 { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.diagram-svg .dg-3 { fill: none; stroke: var(--ink); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
-.diagram-svg .dg-lead { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
-.diagram-svg .dg-label { fill: var(--ink); font-family: var(--font); font-size: 19px; font-weight: 700; }
-@media (max-width: 899px) { .diagram-svg .dg-notes { display: none; } }
-@media (min-width: 900px) {
-  .diagram-list {
-    position: absolute; width: 1px; height: 1px; overflow: hidden;
-    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+/* ---------- We Fix It All: the licensed render and the eight ----------
+   Replaced the drawn intake diagram on 2026-09-17, on the client's
+   ruling. What went with it: .diagram-svg, its three .dg line weights,
+   .dg-lead, .dg-label, the .dg-notes hide below 900px, and the
+   .diagram-list visually-hidden rule above it. Every one of those
+   selectors was scoped to .diagram-svg or .diagram-list and grepped
+   across every page and the template before deletion.
+
+   .ticks WAS NOT TOUCHED. It sat in the same section and is still worn
+   by /collision-repair/, which is exactly the trap the 2026-09-13 note
+   in CLAUDE.md is about: a base class that merely lives near the block
+   being swept belongs to the site, not the section.
+
+   THE RENDER IS A LICENSED WIREFRAME, not a drawing of ours and not a
+   photograph. AdobeStock_1604222224, provenance verified before use.
+   It is greyscale line art on a ground the asset pipeline pulls to true
+   black, so `mix-blend-mode: screen` composites it onto the ink band
+   with no alpha channel and no cutout: screen leaves a ground of zero
+   exactly as it found it. scripts/prepare-car-render.py holds the crop
+   box, the black point and the measured contrast, and prints all three.
+
+   MEASURED ON THE INK GROUND, screened, against the 3:1 a non-text
+   graphic needs: the median line reads 8.51:1 on the 2x file and 4.01:1
+   on the 1x, and the JPEG's ringing around a line reads 1.05:1, which
+   is below sight rather than a glow. No level lift was applied, because
+   the median already cleared; the pipeline still solves one if a future
+   size or ground pushes it under.
+
+   THE ITEMS TAKE THE RULE SWEEP AND NOT THE LIFT. Kind-one motion only:
+   the ::after rule sweeps from its quiet 28px mark to full width on
+   hover, on the same clock and easing as every card on the site. The
+   lift's 3px rise and its ink shadow are deliberately absent, because
+   the brief bans the float. Hover-only, and the state still answers
+   under prefers-reduced-motion since only width and opacity move.
+
+   FOUR ACROSS, TWO ROWS, which is the client's sizing. Two across from
+   600 to 999 and one column below that. Eight items in one column on a
+   phone is the longest this band gets, and the render costs almost
+   nothing there: at 2.74:1 a 350px column renders it 128px tall, so the
+   height cap the brief asked for turned out to be unnecessary rather
+   than omitted. */
+.carx {
+  display: block; width: 100%; height: auto;
+  mix-blend-mode: screen;
+}
+
+.fixgrid {
+  display: grid; gap: 34px 28px; grid-template-columns: repeat(4, 1fr);
+  list-style: none; margin: 40px 0 0; padding: 0;
+}
+.fix { position: relative; padding-bottom: 16px; }
+/* 30px, AND THE APPROVED CHIP SCALE IS 17px, so this is a recorded
+   deviation rather than a drift. The chips carry three repeated glyphs
+   inline beside their own label, where a reader identifies them by
+   position as much as by shape. These are eight DISTINCT glyphs
+   standing alone above a heading, and eight damage types have to be
+   told apart from each other. Drawn at 26px first and rendered: four of
+   the eight were unreadable, which is the failure already on record in
+   proposed-changes.md 3.11. The drawing grammar is unchanged from the
+   chips, a 24 viewBox with a 2 stroke and round caps and joins. */
+.fix svg {
+  display: block; width: 30px; height: 30px;
+  fill: none; stroke: var(--mark); stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.fix h3 { font-size: 1.06rem; margin: 14px 0 .35em; color: var(--silver); }
+.fix p { font-size: .97rem; color: var(--silver-2); margin: 0; }
+
+/* The quiet mark at rest, the same 28px by 2px every card wears, in
+   silver because oxblood is invisible against this band. */
+.fix::after {
+  content: ""; position: absolute; left: 0; bottom: 0;
+  width: 28px; height: 2px; background: var(--silver); opacity: .4;
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .fix::after {
+    transition: width 260ms cubic-bezier(.2, .8, .3, 1),
+                opacity 160ms cubic-bezier(.2, .8, .3, 1);
   }
+  .fix:hover::after { width: 100%; opacity: 1; }
+}
+
+@media (max-width: 999px) {
+  .fixgrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 599px) {
+  .fixgrid { grid-template-columns: 1fr; gap: 26px; }
 }
 
 /* ---------- Breadcrumb ---------- */
