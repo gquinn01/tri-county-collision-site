@@ -651,6 +651,56 @@ to, and a label that looks like a link and is not one is worse than no label.
 The linked card is the whole card; the unlinked cards are not clickable and do
 not pretend to be, including the lift, which is on the linked card only.
 
+
+### 1.27 The contact band gives up the ask, two changes
+
+**The client's diagnosis, 2026-09-17, and it is the right one: the act band
+and the contact band read as the same band twice, because THE ASK IS
+DUPLICATED AND THE INFORMATION IS NOT.** `#start` asks; `#contact` was
+asking again in a smaller voice, in front of the same phone number it had
+already printed as a fact eight lines above.
+
+**The fix is one job each.** The act band is untouched: the restore line,
+"Estimates are free and there is no obligation", both buttons, and it stays
+the page's one conversion moment under the act-band rule. The contact band
+becomes pure reference.
+
+**a. The heading drops the pitch.**
+
+| | |
+|---|---|
+| **Before** | Contact Us for Your **Free Estimate** |
+| **After** | Contact Us |
+
+The estimate pitch lives one band up, in a band that exists to make it. A
+heading whose job is to label a block of facts should label the block of
+facts.
+
+**b. The closing line drops everything the band had already said.**
+
+| | |
+|---|---|
+| **Before** | **Estimates are free.** Call **(215) 322-5350**, email **contact@tricountycollision.com**, or send us your details online. |
+| **After** | Prefer to write? Send us your details online. |
+
+Three of that sentence's four clauses were repeats: the estimate claim from
+the band above, and the phone and the email from the grid directly above it,
+where both are already tappable. **The fourth clause was the only thing in
+the band that appears nowhere else on the page**, and it is what is left.
+
+**Nothing was lost and the removal is checkable.** The phone, the email, the
+address and the hours are facts in the grid, unchanged. The
+`data-pending-href` to `/contact-us/` is intact, so the sentence becomes a
+real link the day that page ships, and the pending-link test still sees it.
+The audit reads **12** tappable phone and email mentions on the homepage where
+it read 14, which is exactly the two duplicate links, and the NAP address
+check still reads the canonical spelling.
+
+**The sub line stays**, because it is not a repeat of anything: "One phone
+number, one email address, one shop" is the one-email doctrine made visible,
+and it is the sentence that tells a reader the `info@` address they may have
+seen elsewhere is not a second shop. See section 2.
+
 ---
 
 ## 2. What the live page carries that this page does not
@@ -2398,6 +2448,62 @@ FAQ             silver
 **No two touching sections share a ground.** The strip is a thin silver breath
 between the ink quotes and the oxblood ask, which is what a recognition band
 should be: it separates the two dark bands that would otherwise touch.
+
+
+### 3.27 One job each: the act band asks, the contact band informs. 2026-09-17
+
+The copy pairs are in **1.27**. This is what the change means for the page's
+structure and what it does not touch.
+
+#### The diagnosis was precise, and it is worth keeping
+
+Two bands in a row read as redundant. The instinct in that situation is to
+merge them or to delete one, and both would have been wrong: **the ask was
+duplicated, the information was not.** The contact band carries the address,
+the phone, the email and the hours, and none of that appears anywhere else on
+the page as a block a reader can scan. What it also carried was a second ask,
+in a quieter voice, immediately after the band whose whole job is to ask.
+
+So nothing merged and nothing was deleted. **Each band got one job.**
+
+```
+#start    asks        the restore line, "Estimates are free and there is
+                      no obligation", Call and Email. UNCHANGED, and still
+                      the page's one conversion moment under the act-band
+                      rule: one oxblood act band on the front door.
+#contact  informs     address, phone and email, hours, and one line for
+                      the reader who would rather write than call.
+```
+
+#### What was checked rather than assumed
+
+**The NAP is the thing a change like this can quietly break**, because the
+phone and the email were deleted from a sentence. They were deleted from a
+*sentence*; they live in the *grid*, tappable, spelled the canonical way, and
+the grid was not touched.
+
+```
+NAP address on /                canonical: 995 Jaymor Rd, Southampton, PA 18966
+tappable phone/email mentions   14 -> 12, which is exactly the two removed
+                                duplicate links and nothing else
+data-pending-href to /contact-us/   still present, still pending, still seen
+                                by the link test's second direction
+audit, both pages               95/100, sameAs the only warning, 0 critical
+```
+
+#### The same shape exists on /collision-repair/ and in the template, and it
+#### was NOT changed
+
+`/collision-repair/` carries the same heading, "Contact Us for Your Free
+Estimate", and the same closing line in a shorter form, and
+`templates/service-page-template.html` carries a closing line of its own.
+**The ruling named the homepage's two bands, so the homepage is what changed.**
+
+It is also not obviously the same problem there. The service page has **two**
+act bands rather than one, a different rhythm, and a reader arrives at its
+contact band having scrolled through a much longer page. Whether the same
+diagnosis applies is a judgement about that page, and it is the client's to
+make rather than a consistency edit to make on his behalf.
 
 ---
 
