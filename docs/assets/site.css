@@ -1290,48 +1290,50 @@ a.svc-card h3 { color: var(--ox-tx); }
 /* ---------- Real Repairs: five before and after pairs ----------
    Added 2026-09-17, with the first real photographs on this build.
 
-   TAP TO CROSSFADE, NOT A WIPE, and the reason is in the photographs.
-   The pairs were shot from different angles and distances, months
-   apart, by whoever had a phone: the Murano's before is a close-up of
-   one door and its after is the whole car from behind. A wipe slider
-   would read as broken halfway through every drag, because there is no
-   shared frame to wipe between. A dissolve compares two pictures
-   honestly without pretending they are the same photograph.
+   REVISED 2026-09-17 ON THE CLIENT'S RULING: A PAIR SHOWS BOTH FRAMES
+   AT ONCE, before beside after, and the tap-to-crossfade is retired.
+   The comparison is now made by the layout rather than by a reader
+   finding a control.
 
-   KIND-ONE MOTION. It fires on the reader's action and never on its
-   own: no autoplay, no loop, no scroll trigger. Opacity only, 400ms.
-   Under prefers-reduced-motion the swap is instant, which is why the
-   transition lives inside a no-preference query rather than being
-   switched off in one.
+   THERE IS NO MOTION HERE AND NO STATE. This band used to carry
+   kind-one motion, a 400ms dissolve that fired on a tap and never on
+   its own; now nothing fires at all. There is no hover state either:
+   these are photographs, not links, and a shape that answers a pointer
+   is telling a reader it can be clicked.
 
-   NOTHING IS HIDDEN WAITING FOR A SCRIPT. The base rules below put the
-   two frames in normal flow, one under the other, each wearing its own
-   chip. `.is-ready` is added by site.js and is what stacks them. With
-   JavaScript off, a broken script or a half-loaded stylesheet, a reader
-   gets both photographs and both labels.
+   NOTHING LEAVES NORMAL FLOW, so nothing needs a JS-off fallback. The
+   ten frames are ten images in the flow of the page, each with its own
+   chip and each lazy-loaded. The fallback the crossfade needed retired
+   with it, because there is no enhanced state left for a reader to
+   miss.
 
-   TWO UP, AND THE ROWS ARE PAIRED BY ASPECT RATIO. Four frames came
-   back 4:3 and six 16:9, so the two 16:9 pairs share the first row and
-   the 4:3 pairs the second, and nothing has a ragged bottom edge. The
-   fifth card sits alone and the empty cell beside it is just page. The
-   Jeep is that fifth card on purpose: its before frame is mid repair.
+   ONE PAIR PER ROW, WHICH IS WHAT THE COMPARISON COSTS. Two pairs
+   across a desktop row would be four frames across, and halving every
+   photograph buries the thing the section exists to show. Five rows:
+   before left, after right, equal widths, the caption under the row it
+   describes.
 
-   WHY NOT A FEATURED PAIR WITH SELECTABLE THUMBS. Every frame has to be
-   reachable with JavaScript off, so all ten render either way; a
-   featured layout would then be a large pair plus nine images a reader
-   cannot select, which is worse than a grid. Paging fails the same
-   test and hides evidence behind a control. */
+   EQUAL HEIGHTS COME FREE, and that is not luck. Both frames of every
+   pair ship at identical pixel dimensions, which
+   scripts/prepare-repair-photos.py enforces and fails on, so equal
+   widths give equal heights with no aspect-ratio box, no object-fit
+   and no crop at render time. Each row is as tall as its own
+   photographs are.
+
+   THE PHONE STACKS THE PAIR RATHER THAN SHRINKING IT. Two frames side
+   by side in a 350px column are about 165px wide each, which buries a
+   crease in a quarter panel. Below 600px the pair reads top to bottom
+   instead, before above after, both chips, one caption. */
 #real-repairs .repairs-note {
   max-width: 62ch; margin: -18px auto 34px; text-align: center;
   font-size: 1rem; color: var(--ink-2);
 }
 
-.repairs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 36px 28px; }
+.repairs-grid { display: grid; gap: 44px; }
 
 .ba { margin: 0; }
+.ba-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .ba-frame { position: relative; }
-/* NO-JS BASE: the after sits under the before, both visible. */
-.ba-frame + .ba-frame { margin-top: 10px; }
 .ba img {
   display: block; width: 100%; height: auto;
   border-radius: var(--radius); background: var(--rule);
@@ -1342,8 +1344,9 @@ a.svc-card h3 { color: var(--ox-tx); }
    edge a shape sitting on an unknown photograph. Ink can: between a
    white fill and an ink edge, one of the two always stands off the
    picture underneath, which is the same argument that put the silver
-   hairline on the act button. Measured per frame in
-   proposed-changes.md 3.23. */
+   hairline on the act button. Measured per frame, at every position
+   around every chip's perimeter, in proposed-changes.md 3.23, and
+   re-measured there when this layout moved the chips. */
 .ba-chip {
   position: absolute; top: 12px; left: 12px;
   background: var(--panel); border: 1px solid var(--ink); border-radius: 999px;
@@ -1354,22 +1357,13 @@ a.svc-card h3 { color: var(--ox-tx); }
 .ba figcaption { margin-top: 14px; font-size: .97rem; color: var(--ink-2); }
 .ba figcaption strong { display: block; color: var(--ink); font-size: 1.04rem; }
 
-/* JS-ENHANCED: the frames stack and the after fades over the before. */
-.ba-stack.is-ready { position: relative; aspect-ratio: var(--ar); cursor: pointer; }
-.ba-stack.is-ready .ba-frame { position: absolute; inset: 0; margin: 0; }
-.ba-stack.is-ready .ba-frame img { height: 100%; object-fit: cover; }
-.ba-stack.is-ready .ba-frame--after { opacity: 0; }
-.ba-stack.is-ready.is-after .ba-frame--after { opacity: 1; }
-.ba-stack.is-ready.is-after .ba-frame--before { opacity: 0; }
-.ba-stack.is-ready:focus-visible { outline: 3px solid var(--ox); outline-offset: 3px; }
-
-@media (prefers-reduced-motion: no-preference) {
-  .ba-stack.is-ready .ba-frame { transition: opacity 400ms ease; }
+@media (max-width: 760px) {
+  .repairs-grid { gap: 36px; }
+  #real-repairs .repairs-note { margin-bottom: 26px; }
 }
 
-@media (max-width: 760px) {
-  .repairs-grid { grid-template-columns: 1fr; gap: 30px; }
-  #real-repairs .repairs-note { margin-bottom: 26px; }
+@media (max-width: 599px) {
+  .ba-stack { grid-template-columns: 1fr; gap: 12px; }
 }
 
 /* ---------- Breadcrumb ---------- */

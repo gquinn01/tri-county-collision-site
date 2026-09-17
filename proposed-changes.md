@@ -1693,11 +1693,19 @@ eight items themselves. **Two columns at 390 would cut it to four rows and
 land near 900px**, if the height matters more than the single column does.
 Measured at 1440 for comparison: 1053px, four across in two rows, no
 horizontal overflow at either width.
-### 3.23 Real Repairs: the first real photographs. BUILT 2026-09-17
+### 3.23 Real Repairs: the first real photographs. BUILT 2026-09-17, REVISED 2026-09-17
 
 Five before and after pairs of customer vehicles, directly after We Fix It
 All, on silver. **The claim is in the band above and the evidence is in this
 one**, which is the only reason for that placement.
+
+**REVISED THE SAME DAY ON THE CLIENT'S RULING, after seeing it live: a pair
+shows BOTH frames at once, before beside after, and the tap-to-crossfade is
+retired.** The section is now static. What changed is the arrangement, the
+interaction and one sentence of the note; **no asset changed**, and the ten
+frames, their redactions and the pipeline that made them are untouched. The
+revision is recorded in place below, under the mechanism, the layout, the
+chips and the note, rather than appended as a second account.
 
 #### Provenance, which is the whole point
 
@@ -1795,31 +1803,44 @@ on this site hides damage or flatters a repair.**
 is trimmed a single row. Both frames of every pair now ship at identical pixel
 dimensions, which is what keeps a dissolve from drifting.
 
-#### The mechanism: tap to crossfade, and why not a wipe
+#### The mechanism: RETIRED 2026-09-17, and both frames now show at once
 
-**The pairs were shot from different angles, distances and seasons**, by
-whoever had a phone. The Murano's before is a close-up of one door; its after
-is the whole car from behind. **A wipe slider would read as broken halfway
-through every drag**, because there is no shared frame to wipe between. A
-dissolve compares two photographs honestly without pretending they are one.
+**The client's ruling, after seeing the section live: show the before and the
+after together.** A pair is two photographs side by side on a desktop row,
+before left and after right, and stacked before above after on a phone. The
+comparison is made by the layout, so a reader makes it without doing
+anything, and there is nothing to discover.
 
-Tap, click, or drag across a card to crossfade; again to return. 400ms,
-opacity only. **Kind-one motion**: it fires on the reader's action and never on
-its own, so it needs no amendment to the motion law. Under
-`prefers-reduced-motion` the swap is instant, which is why the transition
-lives inside a `no-preference` query rather than being switched off in a
-`reduce` one.
+**What went, and it went rather than being switched off**: the `[data-ba]`
+block in `site.js` whole, the `.is-ready` and `.is-after` stacking rules, the
+`role`, `tabindex`, `aria-pressed` and `aria-hidden` machinery a two-state
+control needs, the 24px drag threshold and the swallowed click after a drag,
+and the `--ar` custom property the stacked layout needed on each figure. A
+tombstone at the block's old line in `site.js` says what stood there and why
+it does not any more.
 
-**BOTH FRAMES ARE REACHABLE WITH JAVASCRIPT OFF, and that is measured.**
-Rendered in a sandboxed frame with scripting denied: the script did not run,
-no `role` was applied, and **all ten images laid out at full size with all ten
-chips visible**, the two frames of each card stacked one under the other
-rather than overlaid. The section is 2833px that way against 1718px enhanced.
-Nothing is hidden waiting for a script.
+**THE SECTION NOW HAS NO MOTION AND NO STATE.** It carried kind-one motion, a
+400ms dissolve that fired on a reader's tap and never on its own. Nothing
+fires at all now. It has no hover state either, and that is deliberate rather
+than left out: these are photographs and not links, and a shape that answers a
+pointer is telling a reader it can be clicked.
 
-The frame a reader cannot see is also taken out of the accessibility tree, so
-a screen reader is never read a description of a photograph that is not on
-screen, and the card's label flips with its state.
+**IT NEEDS NO JAVASCRIPT-OFF FALLBACK, BECAUSE IT NEVER LEAVES NORMAL FLOW.**
+The ten frames are ten images in the flow of the page, each with its own chip
+and each still lazy-loaded. The fallback the crossfade needed retired with the
+crossfade: there is no enhanced state left for a reader without JavaScript to
+miss. Measured after the change, on both pages at both widths, with scripting
+**on**: no `[data-ba]`, no `role`, no `.is-ready` and no `.is-after` anywhere,
+no script error, and no image in the section at anything but full opacity and
+full visibility.
+
+**The retired argument, kept because it is still true of a crossfade.** The
+pairs were shot from different angles, distances and seasons, by whoever had a
+phone. The Murano's before is a close-up of one door; its after is the whole
+car from behind. **A wipe slider would have read as broken halfway through
+every drag**, because there is no shared frame to wipe between, which is why
+the retired interaction was a dissolve. Showing both frames at once answers
+the same problem without asking the reader for a gesture.
 
 #### The chips, measured over the photographs
 
@@ -1835,14 +1856,29 @@ against a 4.5 floor and a 7 target, whatever the picture does.
 **The chip as a shape was measured on the rendered page, locally.** At each
 position along the perimeter the transition a reader sees is photo, then ink
 border, then white fill, and the boundary is visible there if **either** tone
-clears 3:1 against the photo pixel beside it. All ten chips, in both states:
+clears 3:1 against the photo pixel beside it.
+
+**RE-MEASURED 2026-09-17 ON THE NEW LAYOUT, because the chips moved.** The
+positions are a property of the layout, not of the chip: side by side at 532px
+a chip sits over different photograph pixels than it did stacked. Both widths,
+all ten chips, every position around every perimeter, sampled 2px outside the
+outline:
 
 ```
-every perimeter position of every chip clears 3:1
-worst position anywhere            4.16:1
-which tone carries it              fill on 4, edge on 6
-internal edge, photo-independent   17.33:1
+1440   1820 positions over ten chips   0 below 3:1   worst 4.16:1
+ 390   1820 positions over ten chips   0 below 3:1   worst 4.17:1
+which tone carries it                  fill on 4 chips, edge on 6, at both widths
+internal edge, photo-independent       17.33:1
 ```
+
+**The measurement is calibrated rather than assumed.** A screenshot clip is
+not guaranteed to start on the page pixel it was asked for, and a silent
+offset between page coordinates and image coordinates samples the wrong pixels
+while looking perfectly healthy. Two magenta marks at known page positions
+make the mapping a measurement: both landed where they were put, so page
+coordinates and image coordinates are 1:1. The page was served over HTTP for
+this, not opened from disk, because `file://` blocks the self-hosted fonts on
+CORS and a chip measured in fallback type is a chip of the wrong width.
 
 **The first version of this measurement was wrong and is recorded as such.**
 It took the minimum contrast across the whole ring around each chip and
@@ -1853,16 +1889,41 @@ question, and the fix was to ask it per position.
 
 #### Layout, with the numbers
 
-**Two up, rows paired by aspect ratio.** Six frames came back 16:9 and four
-4:3, so the two 16:9 pairs share the first row and the 4:3 pairs the second,
-and no row has a ragged bottom edge:
+**REVISED 2026-09-17: one pair per row, five rows.** Before left, after right,
+equal widths, the caption under the row it describes. Two pairs across a
+desktop row would put four frames across and halve every photograph, and the
+damage is the evidence the section exists to show. The aspect-ratio pairing
+the two-up grid needed is gone with it: each row is as tall as its own
+photographs.
+
+**Equal heights come free, and that is not luck.** Both frames of every pair
+ship at identical pixel dimensions, which
+`scripts/prepare-repair-photos.py` enforces and fails on, so equal widths give
+equal heights with no aspect-ratio box, no `object-fit` and no crop at render
+time.
+
+Rendered and measured over HTTP, so the self-hosted faces are the ones in
+play:
 
 ```
-1440   row 1  Dodge 526x296   Mercedes 526x296
-       row 2  BMW   526x394   Murano   526x394
-       row 3  Jeep  526x395   (the cell beside it is just page)
- 390   one column, 350px wide, 197 to 263px tall
+1440   five rows, frames 532x299, 532x299, 532x399, 532x399, 532x399
+       16px between the two frames of a pair, 44px between rows,
+       53px caption under each row
+       section height 2640px   (it was 1718 crossfaded, 2833 with JS off)
+ 390   one column, frames 350 wide and 197 to 263 tall, before above after
+       12px between the frames of a pair, 36px between rows
+       section height 3157px
+overflow   document scrollWidth equals the viewport at both widths, on both
+           pages: 1440 and 390, nothing scrolls sideways
+images     all ten still loading="lazy", all ten still carrying alt text,
+           68 to 110 characters
 ```
+
+**The phone stacks the pair rather than shrinking it.** Two frames side by
+side inside a 350px column are about 165px wide each, which buries a crease in
+a quarter panel. Below 600px the pair reads top to bottom instead, before
+above after, both chips, one caption. The breakpoint is 599px, which is the
+one this stylesheet already uses for a phone.
 
 **The Jeep is the fifth card on purpose.** Its before frame is mid repair,
 with the rear clip off and the glass out, so it goes last and its caption says
@@ -1907,10 +1968,20 @@ copy: `/collision-repair/`'s own FAQ says "restore your vehicle to its
 pre-accident condition".
 
 **A short note under the head**, and every clause of it is a fact the site can
-stand behind: "Vehicles repaired at our Southampton shop. Tap or click a
-photograph to see it finished. License plates are blurred." The first sentence
-is the owner-supplied premise of the section, the second is an instruction,
-and the third is a disclosure of what we did to the pictures.
+stand behind. **Revised 2026-09-17 with the interaction it instructed:**
+
+```
+before  Vehicles repaired at our Southampton shop. Tap or click a
+        photograph to see it finished. License plates are blurred.
+after   Vehicles repaired at our Southampton shop. License plates are
+        blurred.
+```
+
+The middle sentence was the instruction for the retired crossfade, and an
+instruction to tap a photograph that does nothing is worse than no note at
+all. What is left is the owner-supplied premise of the section and the
+disclosure of what we did to the pictures. **The heading, the kicker and every
+caption are unchanged.**
 
 #### The band rhythm, reported
 

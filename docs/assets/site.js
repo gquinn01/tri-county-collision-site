@@ -234,88 +234,21 @@
 })();
 
 /* ===========================================================================
-   REAL REPAIRS: tap to crossfade before into after. Added 2026-09-17.
+   REAL REPAIRS: NOTHING RUNS HERE ANY MORE. Tombstone, 2026-09-17.
 
-   KIND-ONE MOTION, which is the only kind that needs no amendment: it
-   fires on the reader's action and never on its own.
+   A tap-to-crossfade lived at this line for one day. It stacked each
+   pair, faded the after over the before on a tap, click or drag, and
+   carried the role, tabindex, aria-pressed and aria-hidden machinery
+   that a two-state control needs.
 
-   THIS SCRIPT IS AN ENHANCEMENT AND NOT A REQUIREMENT. The markup ships
-   the before and the after as two images in normal flow, each with its
-   own chip, so a reader with no JavaScript sees both photographs. All
-   this does is stack them and fade between them. If it never runs,
-   nothing is hidden and nothing is pending.
+   RETIRED THE SAME DAY ON THE CLIENT'S RULING: a pair now shows both
+   frames at once, before beside after, and the comparison is made by
+   the layout instead of by a reader finding a control.
 
-   A DRAG TOGGLES TOO, and the horizontal threshold is what keeps a
-   vertical scroll on a phone from flipping every card it passes under
-   a thumb. The click that follows a drag is swallowed, or the pair
-   would toggle twice for one gesture.
+   THE SECTION NEEDS NO JS-OFF FALLBACK NOW, because it never leaves
+   normal flow. The ten frames are ten images in the flow of the page,
+   each with its own chip; there is no enhanced state for a reader
+   without JavaScript to miss, and nothing here is hidden waiting for a
+   script. It went with the CSS that stacked the frames and with the
+   note's middle sentence, which was the instruction to tap.
    =========================================================================== */
-(function () {
-  var stacks = document.querySelectorAll("[data-ba]");
-  if (!stacks.length) { return; }
-
-  Array.prototype.forEach.call(stacks, function (stack) {
-    var before = stack.querySelector(".ba-frame--before");
-    var after = stack.querySelector(".ba-frame--after");
-    if (!before || !after) { return; }
-
-    stack.classList.add("is-ready");
-    stack.setAttribute("role", "button");
-    stack.setAttribute("tabindex", "0");
-    stack.setAttribute("aria-pressed", "false");
-
-    function label() {
-      var on = stack.classList.contains("is-after");
-      stack.setAttribute("aria-label", on
-        ? "Showing the repaired vehicle. Activate to see the damage again."
-        : "Showing the damage. Activate to see the repaired vehicle.");
-      /* The frame a reader cannot see is taken out of the accessibility
-         tree too, so a screen reader is never read a description of a
-         photograph that is not on screen. */
-      before.setAttribute("aria-hidden", on ? "true" : "false");
-      after.setAttribute("aria-hidden", on ? "false" : "true");
-    }
-
-    function toggle() {
-      var on = stack.classList.toggle("is-after");
-      stack.setAttribute("aria-pressed", on ? "true" : "false");
-      label();
-    }
-
-    label();
-
-    var startX = null;
-    var dragged = false;
-
-    stack.addEventListener("click", function () {
-      if (dragged) { dragged = false; return; }
-      toggle();
-    });
-
-    stack.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
-        e.preventDefault();
-        toggle();
-      }
-    });
-
-    stack.addEventListener("pointerdown", function (e) {
-      startX = e.clientX;
-      dragged = false;
-    });
-
-    stack.addEventListener("pointermove", function (e) {
-      if (startX === null) { return; }
-      if (Math.abs(e.clientX - startX) > 24) {
-        toggle();
-        dragged = true;
-        startX = null;
-      }
-    });
-
-    function endDrag() { startX = null; }
-    stack.addEventListener("pointerup", endDrag);
-    stack.addEventListener("pointercancel", endDrag);
-    stack.addEventListener("pointerleave", endDrag);
-  });
-})();
