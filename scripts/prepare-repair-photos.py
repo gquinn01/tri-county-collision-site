@@ -11,7 +11,11 @@ WHAT IT DOES, in order, per frame:
 
 1. RESIZES to the target width. Never upscales: the width is capped at
    the smaller native width of the PAIR, so both frames of a pair ship
-   at identical pixel dimensions and the crossfade overlays exactly.
+   at identical pixel dimensions. The section shows the two frames side
+   by side at equal widths, so identical dimensions are what make the
+   two halves of a row the same height with no aspect-ratio box and no
+   object-fit. (It was the crossfade that needed this until 2026-09-17;
+   the rule outlived the crossfade because the new reason is stronger.)
 
 2. CROPS ONLY WHERE A PAIR'S ASPECTS DISAGREE. Four of the five pairs
    already match. job5's before is 4:3 and its after is 16:9, so the
@@ -98,7 +102,7 @@ SIZE_BUDGET = 150 * 1024
 # different trade. If a pair cannot meet the budget at this quality it
 # loses WIDTH instead, which costs sharpness on a retina screen and
 # nothing else. Width steps apply to the PAIR, never to one frame, or
-# the crossfade would stop registering.
+# the two halves of a row would stop being the same height.
 QUALITY_FLOOR = 52
 WIDTH_STEPS = (1.0, 0.90, 0.81, 0.73)
 
@@ -488,8 +492,9 @@ def main():
 
             frames[role] = (w, h, px)
 
-        # Both frames of a pair must be pixel-identical in size or the
-        # crossfade drifts. Rounding alone put job5 one row apart.
+        # Both frames of a pair must be pixel-identical in size, or the
+        # row shows two photographs of different heights side by side.
+        # Rounding alone put job5 one row apart.
         live = {r: f for r, f in frames.items() if f}
         if len(live) == 2:
             hb, ha = live["before"][1], live["after"][1]
@@ -580,7 +585,7 @@ def main():
         match = final_dims["before"] == final_dims["after"]
         print(f"  pair        {final_dims['before'][0]}x{final_dims['before'][1]} vs "
               f"{final_dims['after'][0]}x{final_dims['after'][1]}   "
-              f"{'ok, identical so the crossfade registers' if match else 'FAIL, mismatched'}")
+              f"{'ok, identical so the row is one height' if match else 'FAIL, mismatched'}")
         if not match:
             failures.append(f"{slug}: pair dimensions differ")
         manifest.append((slug, vehicle, final_dims["before"]))

@@ -240,6 +240,15 @@
    SOLID COLORS ONLY. No gradients on text, buttons, cards or accents, and no
    glows.
 
+   ONE SANCTIONED CHROME ACCENT, DATED 2026-09-17. The sticky header carries
+   a 4px --ox bottom border, on the client's ruling, matching the brand
+   accent the shop's live site wears under its nav. It is recorded here
+   because it is oxblood doing a job that is not an act: it is a ground
+   element, chrome, like the scrim, and it asks for nothing and cannot be
+   clicked. It is --ox and NOT --mark: the logo's red stays mark-only, on
+   the rule in the table above. See .nav for what it cost the fold budget,
+   which was measured rather than assumed.
+
    TWO SANCTIONED SECTION-BACKGROUND GRADIENTS, BOTH DATED 2026-09-10.
    The second is the homepage hero's scrim, the ground its type sits on;
    see THE HERO and the readability amendment. It is not a gradient on
@@ -570,9 +579,35 @@ section { padding: var(--pad) 0; }
    the two read as one dark band at the top of the page. That is the point:
    the staging notice stops looking like a design element and starts looking
    like chrome. */
+
+/* THE OXBLOOD DIVIDER, ADDED 2026-09-17 ON THE CLIENT'S RULING, matching the
+   brand accent the live site carries under its nav. It replaces the 1px
+   silver hairline that separated the header from the page.
+
+   IT IS CHROME, NOT AN ACT AND NOT THE MARK, and it is recorded as a
+   sanctioned chrome accent in the palette note above. It asks for nothing,
+   it is not clickable, and it is the same ground colour rather than the
+   logo's red: --mark stays mark-only, because #E92424 is 3.94 on the silver
+   ground and is the single easiest thing on this site to get wrong.
+
+   IT RIDES WITH THE HEADER because it is the header's own border and the
+   header is sticky, so it is under the nav at every scroll position rather
+   than a rule at the top of the document that scrolls away.
+
+   IT COSTS 3px OF FOLD BUDGET ON EVERY PAGE, because the sticky header is in
+   flow and everything below it moves down by what the border gained. That is
+   measured rather than assumed: the full fold table was re-run at five
+   viewports and is in proposed-changes.md 3.24. The tightest phone in the
+   record, 360x640, went from clearing by 5px to clearing by 2px, and 2px is
+   the floor the ruling set.
+
+   ITS OWN CONTRAST IS MEASURED TOO. --ox on --ink is 1.47, so the divider
+   barely reads against the header above it and is not trying to: what it
+   separates is the header from the PAGE, and it is measured against what
+   sits directly under it, which is the hero photograph. See 3.24. */
 .nav {
   position: sticky; top: 0; z-index: 40;
-  background: var(--ink); border-bottom: 1px solid rgb(var(--silver-rgb) / .16);
+  background: var(--ink); border-bottom: 4px solid var(--ox);
 }
 /* THE LOGO NEEDS CLEAR SPACE, AND IT HAD NONE. The mark's PNG is cropped
    tight to the artwork, so the <img> box IS the mark: at 1440 the logo
@@ -946,10 +981,15 @@ section { padding: var(--pad) 0; }
       the page has asked for anything. Ink is structural, which is what
       a panel under a photograph is.
 
-   2. HOME CARRIES ONE OXBLOOD BAND, NOT TWO. Two is right on a long
+   2. HOME CARRIES ONE OXBLOOD ACT BAND, NOT TWO. Two is right on a long
       service page a reader scrolls through deciding. The front door
       routes rather than argues: it asks once, after the diagram, and
       its other asks are the services grid and the call bar.
+
+      THE WORD "ACT" IN THAT SENTENCE IS LOAD-BEARING SINCE 2026-09-17.
+      Home now carries a second oxblood GROUND, #who-we-are, which asks
+      for nothing and carries no button. The act-band count is one on
+      this page and it did not move. See .dark for the amendment.
 
    THE PANEL IS OPAQUE, WHICH IS WHY IT IS A PANEL AND NOT A SCRIM. The
    readability half of design rule 1 is not shape and does not diverge:
@@ -1039,9 +1079,17 @@ section { padding: var(--pad) 0; }
    move: the type colour with headroom on this ground did.
    THE BREADCRUMB GOES WITH IT for the same arithmetic: it measured 6.34
    to 7.07 in --silver-2 and clears comfortably in --silver. ON AN OX
-   GROUND THERE IS NO SECONDARY TEXT TONE, because --silver-2 tops out at
-   7.34 there and a target of 7 leaves nothing for a photograph. On ink,
-   where --silver-2 reads 10.78, the hierarchy stays. */
+   GROUND OVER A PHOTOGRAPH THERE IS NO SECONDARY TEXT TONE, because
+   --silver-2 tops out at 7.34 there and a target of 7 leaves nothing for a
+   photograph. On ink, where --silver-2 reads 10.78, the hierarchy stays.
+
+   SCOPED 2026-09-17, NOT RELAXED. That sentence used to say "on an ox
+   ground", full stop, and it was read as a law about the colour when it is
+   an argument about the photograph: 0.34 of headroom is spent by the first
+   image pixel that shows through a scrim, and it measured 6.57 here. A BAND
+   HAS NO PHOTOGRAPH UNDER IT, so on the oxblood prose band --silver-2 is
+   7.34 and stays 7.34, which was measured on the render rather than assumed.
+   See .dark .prose p and proposed-changes.md 3.25. */
 .heroB--ox .lead { color: var(--silver); }
 .heroB .btn { border-color: var(--silver); }
 .heroB .btn-ghost { color: var(--silver); }
@@ -1380,10 +1428,45 @@ a.svc-card h3 { color: var(--ox-tx); }
 }
 /* .dark is the BEHAVIOR: light type on a dark ground. The ground itself is
    .field-ox or .field-ink, so the two never get confused.
-   OXBLOOD MEANS ACT AND NOTHING ELSE. A .field-ox band always carries the
-   CTA row; there are exactly two on a page. Ink is structural: it breaks
-   the silver run under proof and quotes, where there is nothing to click. */
+
+   OXBLOOD MEANS ACT, AND THE RULE IS ABOUT ACT BANDS. AMENDED 2026-09-17 on
+   the client's ruling. It used to read "a .field-ox band always carries the
+   CTA row; there are exactly two on a page", and that sentence was written
+   about the bands that ASK FOR SOMETHING. It still governs them: the CTA
+   band is the only oxblood band on a page that asks for an action, one on
+   the front door and two on a long service page.
+
+   WHAT IS NEW IS OXBLOOD AS A PROSE-SECTION GROUND. #who-we-are carries it
+   and carries no button, no CTA row and no link. It joins the recorded
+   section-background gradient exception in the palette note rather than
+   creating a new one: same class, same 104-degree stops, same button
+   grammar if a button ever lands in one.
+
+   THE TEST, IF A THIRD EVER COMES UP: does the band ask the reader to do
+   something? If it does, it is an act band and the act-band count governs
+   it. If it only says something, it is a ground.
+
+   Ink is structural: it breaks the silver run under proof and quotes, where
+   there is nothing to click. */
 .dark { color: var(--silver); }
+/* THE DARK-GROUND BODY TONE, ADDED 2026-09-17 with the oxblood prose band.
+   Headings and kickers take --silver from .dark above; a run of body copy
+   takes --silver-2, which is the same hierarchy the ink bands already use.
+
+   MEASURED ON BOTH DARK GROUNDS, worst case first: --silver-2 on --ox is
+   7.34 and on --ink is 10.78, against a 4.5 floor and a 7 target for
+   body-size type. The ox band's gradient is brightest at --ox exactly, so
+   7.34 IS the worst pixel on it and the ends only get better: 12.39 on
+   --ox-dk and 13.68 at the deep end.
+
+   THIS IS NOT THE HERO'S RULE AND THE DIFFERENCE IS A PHOTOGRAPH. The hero
+   note says there is no secondary text tone on an ox ground, and it is
+   right about the hero: --silver-2's 0.34 of headroom over a 7 target is
+   spent by the first photograph pixel that shows through a scrim, and it
+   measured 6.57 there. A band has no photograph under it, so the 7.34 is
+   the number and nothing takes it down. The rule was scoped on 2026-09-17,
+   not relaxed: on ox OVER A PHOTOGRAPH there is still no secondary tone. */
+.dark .prose p { color: var(--silver-2); }
 /* THE ONE SANCTIONED GRADIENT ON THIS SITE. Decided 2026-09-10, and the
    palette law's own exception: section backgrounds may carry a gradient
    when it is a dated, recorded decision. This is that record. Everything

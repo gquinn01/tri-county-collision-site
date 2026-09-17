@@ -749,6 +749,12 @@ to click. `docs/assets/site.css` splits this into `.dark` for the behavior and
 `.field-ox` / `.field-ink` for the ground, so the two can never be confused by
 someone adding a section later.
 
+**Amended 2026-09-17, and the amendment is about which bands the sentence was
+ever describing.** It governs ACT bands, the ones that ask for something, and
+it still governs them exactly: the CTA band is the only oxblood band on a page
+that asks for an action. Oxblood may also be a prose section's ground, which
+`#who-we-are` now is. See 3.25 and the `.dark` note in `site.css`.
+
 ### 3.6 The hero and Minor photographs swapped places
 
 Done 2026-09-06, with the photographic direction. The hero is now a full-bleed
@@ -1983,7 +1989,7 @@ all. What is left is the owner-supplied premise of the section and the
 disclosure of what we did to the pictures. **The heading, the kicker and every
 caption are unchanged.**
 
-#### The band rhythm, reported
+#### The band rhythm, reported, and RESOLVED 2026-09-17
 
 ```
 hero ox | stat card white | services silver | We Fix It All INK |
@@ -1999,6 +2005,206 @@ than as a contrast switch, and each carries its own centred section head with
 `--pad` above and below. **Recorded because it is a change in rhythm, not
 because it is a defect.** The alternation that matters, ink against page, is
 intact on both sides.
+
+**The client ruled on it on 2026-09-17 and it is no longer the rhythm.**
+`#who-we-are` moved to the oxblood ground, so the two adjacent light bands are
+one light band and one dark one. The new rhythm, the amendment it needed and
+the measured type are in **3.25**.
+
+### 3.24 The oxblood divider under the header. BUILT 2026-09-17
+
+**The client's ruling, from the live staging pages: a red divider between the
+nav and the page, matching the brand accent the shop's live site carries.**
+Implemented as a `border-bottom: 4px solid var(--ox)` on `.nav`, which
+replaces the 1px silver hairline that was there.
+
+**It is the header's own border, so it rides with the header.** The header is
+sticky, so the divider is under the nav at every scroll position instead of
+being a rule at the top of the document that scrolls away. Site-wide: both
+pages and `templates/service-page-template.html` share one `.nav`.
+
+**It is recorded in the palette note as a SANCTIONED CHROME ACCENT.** Oxblood
+means act, and this is oxblood doing something that is not an act: it is a
+ground element, chrome, like the scrim. It asks for nothing and cannot be
+clicked. **It is `--ox` and not `--mark`:** the logo's red stays mark-only,
+because #E92424 measures 3.94 on the silver ground and the two reds are two
+tokens for exactly this reason.
+
+#### The fold table, re-run, because the divider costs 3px everywhere
+
+The sticky header is in flow, so every pixel the border gains comes off the
+fold budget of every page under it. **1px to 4px is +3px, and it lands on all
+five viewports.** Measured with the staging banner hidden, which is the
+post-cutover state and the state the standing table is in. The budget is the
+viewport less the 60px fixed call bar on a phone, and the whole viewport on
+desktop where the call bar is not displayed.
+
+```
+HOME                       nav   hero depth  CTA ends  budget  clears by
+1440 x 900                  96      566        556      900      344
+1920 x 1080                 96      566        556     1080      524
+ 430 x 745                  68      560        556      685      129
+ 390 x 664                  68      541        537      604       67
+ 360 x 640                  68      582        578      580        2
+
+/collision-repair/         nav   hero depth  CTA ends  budget  clears by
+1440 x 900                  96      562        492      900      408
+1920 x 1080                 96      562        492     1080      588
+ 430 x 745                  68      560        576      685      109
+ 390 x 664                  68      505        523      604       81
+ 360 x 640                  68      503        521      580       59
+```
+
+**360x640 went from clearing by 5px to clearing by 2px, and 2px is the floor
+the ruling set, not below it.** So the divider ships at 4px and nothing was
+reclaimed from the hero copy block. **This is the number to watch:** the
+tightest phone in the record now has two pixels of headroom, and the next
+thing that grows the header or the hero copy by even 3px puts the CTA under
+the fold. Thinning the divider to 3px would buy one of those pixels back and
+is a one-character change if it is ever wanted.
+
+**The staging state was measured too**, because it is what a reviewer sees
+today and it is 57px worse: the banner's sentence wraps to two lines on a
+phone. The Call button is the one that has to clear, and it does.
+
+```
+WITH the staging banner    banner  Call button ends  budget  clears by
+ 430 x 745                   57         613          685       72
+ 390 x 664                   57         520          604       84
+ 360 x 640                   57         561          580       19
+```
+
+#### What the divider reads against, measured
+
+**--ox on --ink is 1.47**, so the divider does not read against the header
+above it and is not meant to: what it separates is the header from the PAGE.
+So it was measured against the strip directly below it, sampled across the
+full width at four scroll positions on both pages.
+
+```
+under the divider                     worst   mean    best
+the silver page, the white card                       10.50 to 11.80
+the hero photograph, 1440 home         1.00   1.61     5.53
+the hero photograph,  390 home         2.64   6.24    11.32
+an ink band under a sticky header      1.07   1.48     4.53
+AN OXBLOOD BAND under a sticky header  1.00   1.43    10.50
+```
+
+**IT DISAPPEARS OVER AN OXBLOOD GROUND, AND THAT IS REPORTED RATHER THAN
+QUIETLY SHIPPED.** Ox on ox is 1.00, which is the same colour. Two places
+this is visible today: the header floating over `#start` or `#who-we-are` as
+a reader scrolls, and **the top of `/collision-repair/` at desktop**, where
+the ox hero scrim is near-solid under the copy and the divider merges into it
+for the left part of the frame. At 390 the same page reads the divider
+clearly, because the phone scrim anchors to the bottom and the top of the
+frame is clear photograph.
+
+**It is not a regression.** The 1px silver hairline it replaced was 16% silver
+over ink, and it vanished over an oxblood band too; the divider is far more
+visible everywhere else, 10.50 against the page where the hairline was a
+whisper. But the site's own law says never to put a dark shape on a dark
+ground without an edge, and this is that shape.
+
+**The one-line answer, if the client wants it**, is a paper hairline under the
+divider: `box-shadow: 0 1px 0 rgb(var(--silver-rgb) / .16)` on `.nav`. A
+shadow does not participate in layout, so **it costs zero fold budget** and
+the 2px at 360x640 stands. It is not applied: the ruling said a 4px ox border
+and nothing about a hairline, and a design element nobody asked for is not a
+thing to add quietly.
+
+### 3.25 Family Owned moves to the oxblood ground. BUILT 2026-09-17
+
+**The client's ruling, resolving the flag 3.23 raised when Real Repairs
+shipped**: Real Repairs and `#who-we-are` were both silver and read as one
+long run of page. `#who-we-are` now carries `class="dark field-ox"`, which is
+the same 104-degree gradient the act bands wear, not a copy of it.
+
+#### The amendment, which is about what the old rule was ever describing
+
+The rule read: oxblood means act, a `.field-ox` band always carries the CTA
+row, there are exactly two on a page and one on the front door. **It was
+written about the bands that ASK FOR SOMETHING, and it still governs them
+exactly.** `#start` remains the only oxblood band on the homepage that asks
+for an action; it carries the only CTA row on an ox ground on this page.
+
+**What is new is oxblood as a prose section's ground.** `#who-we-are` carries
+no CTA row, no button and no link. It joins the recorded section-background
+gradient exception rather than creating a second one: same class, same stops,
+same fallback chain, and the dark-ground act rule still waiting if a button
+ever lands in one.
+
+**The test, if a third case ever comes up: does the band ask the reader to do
+something?** If it does, it is an act band and the act-band count governs it.
+If it only says something, it is a ground. That sentence is now in `site.css`
+beside `.dark`, where someone adding a section will meet it.
+
+#### Type on the new ground, measured rather than assumed
+
+Headings and the kicker take `--silver` from `.dark`; the body takes
+`--silver-2`, which is the same hierarchy the ink bands already use, through
+one new rule: `.dark .prose p`.
+
+**Measured by the readability amendment's method**, on the real render at both
+widths: the page rendered, then rendered again with the section's copy at
+`visibility: hidden` so the layout holds and the glyphs go, each text node's
+**glyph runs** taken via `Range.getClientRects()` rather than its block box,
+and every composited pixel under those runs sampled against the element's own
+computed colour.
+
+```
+element                colour        size      1440     390    floor  target
+h2.sec-title           --silver      36.8px   10.50   10.50     4.5      7
+p.sec-sub              --silver      13.4px   10.50   10.50     4.5      7
+p, body copy           --silver-2    17px      7.34    7.34     4.5      7
+worst under any glyph run on this band                 7.34
+```
+
+**The worst pixel is the same at both widths and that is arithmetic, not
+coincidence.** The gradient's brightest stop is `--ox` exactly, so `--ox` is
+the worst ground any glyph can sit on, and the ends only get better: 12.39 on
+`--ox-dk` and 13.68 at the deep end. Where the type falls across the band
+changes with the width; the worst case cannot.
+
+**There is no act button in this section**, so the dark-ground act rule has
+nothing to apply to here. If one ever lands, `.field-ox .btn` already fills it
+with ink and gives it the paper hairline, because the rule is keyed to the
+ground rather than written per section.
+
+#### The hero's "no secondary tone on ox" rule was SCOPED, not relaxed
+
+`site.css` said, in the hero note: on an ox ground there is no secondary text
+tone, because `--silver-2` tops out at 7.34 there. **That is right about the
+hero and the reason is a photograph.** 0.34 of headroom over a 7 target is
+spent by the first photograph pixel showing through a scrim; it measured 6.57
+in the hero, which is why the ox hero's lead and breadcrumb are `--silver`.
+
+**A band has no photograph under it.** 7.34 is the number and nothing takes it
+down, which the render above confirms rather than assumes. The sentence now
+reads: on ox **over a photograph** there is no secondary tone. Recorded here
+because narrowing a written rule is exactly the kind of change that should
+never happen quietly.
+
+#### The full band rhythm, top to bottom
+
+```
+hero            photograph under an INK scrim
+proof           WHITE stat card, overlapping the hero's seam
+services        silver
+We Fix It All   INK
+Real Repairs    silver
+who we are      OX  <- moved 2026-09-17, asks for nothing
+testimonials    INK
+start           OX  <- the act band, the only one that asks
+contact         INK
+FAQ             silver
+```
+
+**No two touching sections share a ground now**, which the old rhythm could
+not say. The page alternates page, dark, page, dark from the services grid to
+the footer, and the two oxblood grounds are separated by an ink band. **One
+act band, two ox grounds, one white band, and silver is the page rather than a
+band.**
+
 ---
 
 ## 4. The claims list

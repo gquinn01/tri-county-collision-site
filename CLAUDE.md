@@ -441,6 +441,18 @@ unchanged on either ground** — it is a border and a label already.
 them any more. Oxblood means act and nothing else: two oxblood bands per page,
 each carrying the CTA row. Ink is structural. Solid colours only and no glows.
 
+**Amended 2026-09-17 on the client's ruling, in two places, both recorded in
+the palette note in `docs/assets/site.css` and in `proposed-changes.md` 3.24
+and 3.25.** The act-band rule governs bands that ASK FOR SOMETHING and still
+governs them exactly: the CTA band is the only oxblood band on a page that
+asks for an action. **Oxblood may also be a prose section's ground**, which
+`#who-we-are` now is, carrying no CTA row and no button; the test for a third
+case is whether the band asks the reader to do something. And **one sanctioned
+chrome accent**: the sticky header wears a 4px `--ox` bottom border, which is
+oxblood as a ground element rather than an act. It is `--ox` and never
+`--mark`. It costs 3px of fold budget on every page, measured, and 360x640 now
+clears by 2px where it cleared by 5.
+
 **White is a ground, not a shade of the ground.** Added 2026-09-10. `--silver`
 is the page; `--white` is used on exactly **one band**, the stat band under the
 hero, to lift the three proof figures off the run of the page. Every text pair
