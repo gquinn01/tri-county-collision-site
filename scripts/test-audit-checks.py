@@ -483,6 +483,113 @@ def main():
         check("     a PRE-RENDERED strip would be caught, not silently accepted",
               bool(baked) and nums != [audit.REVIEW_COUNT], nums)
 
+    print("17. Asset provenance: an AI-generated image must never land")
+    # WHY THIS EXISTS. Rule 9 bans AI imagery and had no mechanism, so
+    # for the whole build it was enforced by somebody choosing to look.
+    # On 2026-09-17 two licensed candidates for the We Fix It All render
+    # were both AI, and each gave itself away in a DIFFERENT tag: one in
+    # the IPTC source type, one in the tool field. Either tell alone
+    # would have passed the other file.
+    #
+    # The fixtures are written here rather than committed, because
+    # committing a known-AI image to prove the check catches AI images
+    # would put a known-AI image in the repo.
+    import tempfile as _tempfile3
+
+    IPTC = "http://cv.iptc.org/newscodes/digitalsourcetype/"
+
+    def prov(xmp: str) -> dict:
+        """Writes a fixture carrying `xmp` and reads it back."""
+        with _tempfile3.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "a.jpg")
+            with open(path, "wb") as fh:
+                fh.write(b"\xff\xd8\xff\xe1" + xmp.encode("utf-8") + b"\xff\xd9")
+            return audit.read_asset_provenance(path)
+
+    a = prov(f"<Iptc4xmpExt:DigitalSourceType>{IPTC}trainedAlgorithmicMedia"
+             "</Iptc4xmpExt:DigitalSourceType>")
+    check("     trainedAlgorithmicMedia as an element is caught",
+          bool(a["reasons"]) and "trainedAlgorithmicMedia" in a["source_type"], a)
+
+    a = prov(f'Iptc4xmpExt:DigitalSourceType="{IPTC}trainedAlgorithmicMedia"')
+    check("     and as an ATTRIBUTE, which is the other legal spelling",
+          bool(a["reasons"]), a)
+
+    a = prov(f"<Iptc4xmpExt:DigitalSourceType>{IPTC}"
+             "compositeWithTrainedAlgorithmicMedia</Iptc4xmpExt:DigitalSourceType>")
+    check("     a part-generative composite is caught too",
+          bool(a["reasons"]), a)
+
+    a = prov("<xmp:CreatorTool>OkiDokiBot AI Art Generator</xmp:CreatorTool>")
+    check("     THE SECOND TELL: an AI generator in the tool field, with no "
+          "source type at all", bool(a["reasons"]) and not a["source_type"], a)
+
+    a = prov("<xmp:CreatorTool>Midjourney</xmp:CreatorTool>")
+    check("     and the other generators by name", bool(a["reasons"]), a)
+
+    # THE CASES THAT MUST KEEP PASSING. Failing these would ban the very
+    # asset this check was written to let through: a real 3D ghosted
+    # render is a person at a workstation, and its source type says so.
+    a = prov(f"<Iptc4xmpExt:DigitalSourceType>{IPTC}digitalCapture"
+             "</Iptc4xmpExt:DigitalSourceType>")
+    check("     a camera passes", not a["reasons"], a)
+
+    a = prov(f"<Iptc4xmpExt:DigitalSourceType>{IPTC}digitalArt"
+             "</Iptc4xmpExt:DigitalSourceType>")
+    check("     digitalArt passes, WHICH IS THE POINT: that is a real 3D render",
+          not a["reasons"], a)
+
+    a = prov(f"<Iptc4xmpExt:DigitalSourceType>{IPTC}algorithmicMedia"
+             "</Iptc4xmpExt:DigitalSourceType>")
+    check("     algorithmicMedia passes: procedural is not generative",
+          not a["reasons"], a)
+
+    a = prov('dcterms:provenance="https://cai-manifests.adobe.com/manifests/urn-c2pa-x"'
+             f'<Iptc4xmpExt:DigitalSourceType>{IPTC}digitalCapture'
+             "</Iptc4xmpExt:DigitalSourceType>")
+    check("     a C2PA manifest ALONE is not a tell: real stock carries one",
+          not a["reasons"] and a["c2pa"], a)
+
+    a = prov("<xmp:CreatorTool>Adobe Photoshop 26.0 (Macintosh)</xmp:CreatorTool>")
+    check("     ordinary editing software passes", not a["reasons"], a)
+
+    a = prov("")
+    check("     and a file with no metadata passes, because a label is all "
+          "this can read", not a["reasons"], a)
+
+    # The wiring, not just the reader: the check has to be able to fail a
+    # build. The comment-convention check is deliberately handed no fails
+    # list; this one must have one.
+    with _tempfile3.TemporaryDirectory() as tmp:
+        os.makedirs(os.path.join(tmp, "assets", "img"))
+        with open(os.path.join(tmp, "assets", "img", "bad.jpg"), "wb") as fh:
+            fh.write(b"\xff\xd8" + (f"<Iptc4xmpExt:DigitalSourceType>{IPTC}"
+                                    "trainedAlgorithmicMedia"
+                                    "</Iptc4xmpExt:DigitalSourceType>").encode())
+        with open(os.path.join(tmp, "assets", "img", "drawn.svg"), "w") as fh:
+            fh.write("<svg>midjourney</svg>")
+        found = audit.find_assets(tmp)
+        check("     find_assets reads rasters and leaves .svg alone, because an "
+              "svg here is our own drawing", len(found) == 1, [x["path"] for x in found])
+
+        _sd = audit.SITE_DIR
+        audit.SITE_DIR = tmp
+        try:
+            p2, w2, f2, n2 = [], [], [], []
+            audit.check_asset_provenance_local(p2, w2, f2, n2)
+        finally:
+            audit.SITE_DIR = _sd
+        check("     and it raises a CRITICAL, not a warning",
+              len(f2) == 1 and not w2, (f2, w2))
+        check("     which names the file", "bad.jpg" in f2[0], f2)
+        check("     and refuses the shortcut of stripping the label",
+              "strip the label" in f2[0], f2)
+
+    real = audit.find_assets(os.path.join(root, "docs"))
+    check("     every image in the repo right now is clean",
+          bool(real) and all(not a["reasons"] for a in real),
+          [a["path"] for a in real if a["reasons"]])
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} check(s) failed:")

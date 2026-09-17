@@ -229,6 +229,70 @@ REVIEW_STALE_DAYS = 35
 # would teach everyone to stop writing them.
 REVIEW_COUNT_RE = re.compile(r"\b(\d[\d,]{0,6})\s+(?:google\s+)?reviews?\b", re.I)
 
+# --- Asset provenance: no AI-generated image enters this repo ----------
+# ADDED 2026-09-17, after two candidate assets for the We Fix It All
+# render were both caught by reading their metadata.
+#
+# The standards say real photos only, no stock and no AI-generated
+# imagery, and the reason is the firm's own argument: a site that tells
+# clients real beats stock has to live by it. That rule had no
+# mechanism, so it was a rule that depended on somebody remembering to
+# look. Twice in one afternoon the thing that caught an AI asset was a
+# person deciding to check, which is exactly the shape of rule that
+# rule 8 says gets violated.
+#
+# WHAT THE TWO CANDIDATES CARRIED, both licensed from Adobe Stock and
+# both rejected on the client's ruling:
+#
+#   AdobeStock_1060063701  IPTC DigitalSourceType = trainedAlgorithmicMedia
+#   AdobeStock_746591791   xmp:CreatorTool = "OkiDokiBot AI Art Generator"
+#
+# Two different tells in two different tags, which is why this reads
+# both and does not trust either one alone. The first is Adobe's own
+# C2PA label, the standard IPTC code for "a generative model made these
+# pixels". The second carries no DigitalSourceType at all and names the
+# generator in the tool field instead.
+#
+# THE LIMIT, AND IT IS A REAL ONE. This reads labels. It cannot read
+# pixels, so it cannot catch an AI asset whose metadata was stripped,
+# and stripping is one command. The check is a floor and not a
+# guarantee: it makes the labelled case impossible to ship by accident,
+# and the unlabelled case stays a human judgement at purchase time. A
+# report that says "no AI marker" is saying the file makes no such
+# claim, not that a person made it.
+#
+# WHAT IS DELIBERATELY NOT A FAIL. digitalCapture is a camera.
+# digitalArt and algorithmicMedia are a person at a workstation, which
+# is what a real 3D ghosted render is, and failing those would ban the
+# asset this check was written to let through.
+AI_SOURCE_TYPES = (
+    "trainedalgorithmicmedia",
+    "compositewithtrainedalgorithmicmedia",
+)
+
+# Generator names and phrases that mean the same thing when they turn up
+# in a tool field. Deliberately specific: "firefly" alone is a typeface
+# and a product name, so it is spelled "adobe firefly", and bare "ai" is
+# not here at all because it matches half the software on earth.
+AI_TOOL_RE = re.compile(
+    r"midjourney|stable\s?diffusion|dall[·.\-\s]?e\b|adobe firefly"
+    r"|okidokibot|leonardo\.ai|ideogram|nightcafe|craiyon|starryai"
+    r"|ai (?:art|image) generator|text[-\s]to[-\s]image"
+    r"|generative (?:fill|expand)|ai[-\s]generated",
+    re.I)
+
+# Where the tells live. Both tags appear as an element or as an
+# attribute depending on how the XMP was written, so both spellings are
+# matched rather than assumed.
+SOURCE_TYPE_RE = re.compile(
+    r"DigitalSourceType\s*[>=]\s*[\"']?\s*"
+    r"(?:http://cv\.iptc\.org/newscodes/digitalsourcetype/)?([A-Za-z]+)")
+CREATOR_TOOL_RE = re.compile(r"CreatorTool\s*[>=]\s*[\"']?([^<\"'\r\n]{1,120})")
+
+# Raster formats only. An .svg under docs/ is our own drawing, in the
+# repo as text, and it is reviewed as code rather than as an asset.
+ASSET_EXTS = (".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif")
+
 # --- The convention that keeps comments from rotting ------------------
 # COMMENTS NEVER CARRY THE LITERAL REVIEW COUNT OR THE STAT ORDER. They
 # name `REVIEW_COUNT` and "the band's DOM order" instead.
@@ -1052,6 +1116,139 @@ def check_review_count_local(passes: list, warns: list, fails: list,
             "site, deliberately.")
 
 
+def read_asset_provenance(path: str) -> dict:
+    """What one image file says about where it came from.
+
+    Returns the DigitalSourceType, the CreatorTool and whether a C2PA
+    manifest is referenced, plus a verdict. A C2PA manifest on its own
+    is not a tell: legitimate stock carries one too, and it is the
+    assertion inside the label that matters, not the presence of a
+    label.
+
+    The whole file is scanned as latin-1 rather than only its metadata
+    segments. Parsing JPEG APP markers, PNG chunks, WebP RIFF and AVIF
+    boxes correctly is four parsers and a dependency, and the strings
+    being matched are long enough that compressed pixel data producing
+    one by chance is not a thing that happens. The failure direction is
+    also the safe one: a false positive stops a build and gets read by
+    a person, a false negative ships an AI asset.
+    """
+    with open(path, "rb") as f:
+        raw = f.read()
+    text = raw.decode("latin-1", "replace")
+
+    source_type = ""
+    for m in SOURCE_TYPE_RE.finditer(text):
+        val = m.group(1).strip()
+        if val:
+            source_type = val
+            if val.lower() in AI_SOURCE_TYPES:
+                break
+
+    tool = ""
+    for m in CREATOR_TOOL_RE.finditer(text):
+        val = m.group(1).strip()
+        if val:
+            tool = val
+            if AI_TOOL_RE.search(val):
+                break
+
+    reasons = []
+    if source_type.lower() in AI_SOURCE_TYPES:
+        reasons.append(f"IPTC DigitalSourceType is `{source_type}`")
+    if tool and AI_TOOL_RE.search(tool):
+        reasons.append(f"CreatorTool is `{tool}`")
+    # A generator named anywhere else in the metadata counts too. The
+    # side-view candidate hid in the tool field; the next one may not.
+    if not reasons:
+        loose = AI_TOOL_RE.search(text)
+        if loose:
+            reasons.append(f"the file carries the string `{loose.group(0)}`")
+
+    return {
+        "path": path,
+        "bytes": len(raw),
+        "source_type": source_type,
+        "tool": tool,
+        "c2pa": "cai-manifests.adobe.com" in text or "c2pa" in text.lower(),
+        "reasons": reasons,
+    }
+
+
+def find_assets(root: str = None) -> list:
+    """Every raster image under docs/, with its provenance read.
+
+    SITE_DIR is resolved when this is CALLED and not when it is
+    defined, because a default argument binds once at import and the
+    tests point the check at a temporary directory.
+    """
+    root = root or SITE_DIR
+    out = []
+    for dirpath, _dirs, files in os.walk(root):
+        for name in sorted(files):
+            if name.lower().endswith(ASSET_EXTS):
+                try:
+                    out.append(read_asset_provenance(os.path.join(dirpath, name)))
+                except OSError:
+                    continue
+    return sorted(out, key=lambda a: a["path"])
+
+
+def check_asset_provenance_local(passes: list, warns: list, fails: list,
+                                 notes: list):
+    """AN AI-GENERATED IMAGE IS A CRITICAL, not a warning.
+
+    Rule 9 bans AI imagery outright, and the client reaffirmed it on
+    2026-09-17 against two assets he had already licensed, so the
+    threshold here is not a judgement call this script gets to make.
+    It is also the cheapest possible thing to get wrong: the metadata
+    that gives an asset away is invisible in every image viewer, a
+    C2PA manifest is readable by anyone who opens the published file,
+    and the shop's own argument is that real beats stock.
+
+    Local runs only, like the rest of these. On a live run the target
+    is the WordPress site and there are no files to read.
+    """
+    assets = find_assets()
+    if not assets:
+        notes.append(
+            f"**No raster images under `{SITE_DIR}/`.** Nothing to check yet. Every "
+            "licensed asset gets its metadata read before it lands, and this is what "
+            "reads it.")
+        return
+
+    bad = [a for a in assets if a["reasons"]]
+    if bad:
+        for a in bad:
+            fails.append(
+                f"**`{a['path']}` is AI-generated: " + "; ".join(a["reasons"]) + ".** "
+                "Rule 9 allows no AI imagery, reaffirmed 2026-09-17. Do not strip the "
+                "label to make it pass: the provenance is the fact, the label is only "
+                "where it is written down, and removing it is a lie about the asset "
+                "plus a licence breach. Replace the file with one whose source is a "
+                "camera or a person at a workstation.")
+
+    clean = [a for a in assets if not a["reasons"]]
+    if clean:
+        labelled = [a for a in clean if a["source_type"]]
+        detail = ""
+        if labelled:
+            kinds = sorted({a["source_type"] for a in labelled})
+            detail = (f" {len(labelled)} carr{'ies' if len(labelled) == 1 else 'y'} an "
+                      f"explicit source type ({', '.join(kinds)}).")
+        passes.append(
+            f"No AI-generation marker on {len(clean)} of {len(assets)} image"
+            f"{'' if len(assets) == 1 else 's'} under `{SITE_DIR}/`.{detail}")
+
+    notes.append(
+        "**What the asset check can and cannot do.** It reads the labels a file carries: "
+        "the IPTC `DigitalSourceType`, the XMP `CreatorTool`, and any generator named "
+        "elsewhere in the metadata. It cannot read pixels, so an AI image whose metadata "
+        "was stripped passes it. Treat a clean result as 'the file makes no AI claim', "
+        "not as 'a person made this'. The judgement at purchase time is still the "
+        "control that matters, and this is the floor under it.")
+
+
 def audit(source: str, coverage: dict = None):
     """Scores one page. `coverage` carries the parsed sitemap.xml and
     llms.txt for local runs, so a page that was built but never published
@@ -1577,6 +1774,7 @@ def main():
     else:
         check_staging_local(site_passes, site_warns, site_notes)
         check_review_count_local(site_passes, site_warns, site_fails, site_notes)
+        check_asset_provenance_local(site_passes, site_warns, site_fails, site_notes)
         check_comment_convention_local(site_warns, site_notes)
         check_pending_links_local(site_warns, site_notes)
     if expand_note:

@@ -1501,15 +1501,68 @@ on `.band-panel` today, which is `--panel`, which is `#FFFFFF`. That is a second
 white band on a page whose palette note says white is used on exactly one.
 Putting this section on ink retires it.
 
-#### What is blocking it
+#### What is blocking it, updated 2026-09-17
 
-**The licensed render is not in the repo.** `docs/assets/img/car-xray-top.jpg`
-does not exist in the working tree, in git, or anywhere the file could have been
-dropped by mistake. Nothing about the section can be built honestly without it:
-its aspect ratio decides the two-column geometry, its height decides the phone
-cap, and a real photograph is the one thing the standards will not let us stand
-in for. **No placeholder was shipped and no substitute was chosen.** The
-section still carries the drawn diagram until the asset lands.
+**Two licensed candidates were offered and both were rejected, because both
+are AI-generated and said so in their own metadata.** Read before anything
+was built on either one:
+
+| Asset | What the file declares | Verdict |
+|---|---|---|
+| `AdobeStock_1060063701`, top-down | IPTC `DigitalSourceType` = `trainedAlgorithmicMedia`, plus a public Adobe C2PA manifest | rejected |
+| `AdobeStock_746591791`, side profile | `xmp:CreatorTool` = `OkiDokiBot AI Art Generator`, no `DigitalSourceType` | rejected |
+
+Rule 9 allows no AI imagery, and neither is photographic, which is what the
+direction called for. Three things made this a stop rather than a footnote:
+
+- **The provenance is public.** The C2PA manifest travels with the published
+  JPEG, so Content Credentials tools and Google's "About this image" surface
+  it from the live file. On a site whose pitch includes real beating stock,
+  that is a discoverable contradiction rather than a private compromise.
+- **The top-down render is not mechanically coherent.** Its underbody is
+  decorative noise and the wireframe is not a car an estimator would
+  recognise. The drawn diagram was redrawn for exactly that standard, on a
+  page that sells ASE and I-CAR Gold Class training, so the swap would have
+  traded away the axis the shop sells on.
+- **It would have cost a fifth colour.** The render's lines are cyan, against
+  a four-colour palette, and the asset is literally a glow on a no-glow site.
+  Both fixable, and both evidence the asset was not native here.
+
+**The client's ruling, 2026-09-17.** No AI exception and no third drawing.
+The genre predates generative AI and real 3D ghosted top-down renders have
+existed since well before 2023, so the asset is being re-purchased with the
+generative-AI filter excluded and from contributors whose portfolios predate
+it. **The section is held until it lands**, and its metadata gets read the
+same way first. **The existing drawn diagram is not staying either**; it is
+on the page now only because pulling it before the replacement exists would
+leave a hole where a section should be.
+
+**What was not done, and would have been wrong to do.** Nothing was shipped
+with a placeholder, and the AI label was not stripped to make a file pass.
+The provenance is the fact and the label is only where it is written down, so
+removing it would be a lie about the asset as well as a licence breach.
+
+**The catch is now a mechanism.** `scripts/audit.py` reads the provenance of
+every raster image under `docs/` and scores an AI-generated one as a
+site-wide critical, so `--strict` exits 1. It reads both tells, because each
+candidate would have passed a check written against the other. Its limit is
+stated in the report: it reads labels, not pixels, so a stripped file passes,
+and `digitalCapture`, `digitalArt` and `algorithmicMedia` deliberately pass,
+because the last two are what the real render we are waiting for will carry.
+Fixtures live in `scripts/test-audit-checks.py` case 17 and are written at
+run time rather than committed.
+
+#### What is still settled and waiting
+
+The six items, their copy and its sourcing, the two measurements and the
+rhythm decision are all unchanged by this and are recorded above. On the
+ink ground, item headings in `--silver` measure **15.42**, supporting lines
+in `--silver-2` measure **10.78**, and logo-red icon marks in `--mark`
+measure **3.91** against the 3 a non-text graphic needs, so the icons may be
+red. Re-derived from the tokens on 2026-09-17 rather than carried over.
+
+**Deer strikes still has no supporting line**, for the reason given above,
+and the owner question stands.
 
 ---
 
