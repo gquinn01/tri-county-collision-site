@@ -1421,9 +1421,9 @@ page wears `accent-minor-collision-repair.jpg`; **two front doors were never
 going to wear the same picture.** The shortage recorded in 3.17 is unchanged:
 four service cards still share three photographs.
 
-### 3.22 We Fix It All: the licensed render and the eight. BUILT 2026-09-17
+### 3.22 We Fix It All: the licensed render and the eight. BUILT, then REVISED 2026-09-17
 
-The drawn intake diagram is gone and the band is now a licensed wireframe car
+The drawn intake diagram is gone and the band is a licensed wireframe car
 render, full width on the ink ground, with eight damage types in a grid
 beneath it. Section head grammar unchanged: centred H2 plus the kicker line
 every other section carries.
@@ -1468,21 +1468,84 @@ their face were considered and waived by him:
   no-third-drawing ruling covers **drawings made by us**, not a licensed
   engineering render the client selected. The drawn diagram is still dead.
 
-#### The eight items and where every word comes from
+#### The ground bug, and how a passing check missed it
 
-**The minor/major split is retired**, which reverses the six-item plan and is
-recorded in 4.1b. Its two sourced lines merge into one item.
+**The first build shipped the 2x file with its entire ground encoded at v=1
+instead of 0.** Screen-blended onto ink that put a rectangle one level lighter
+than the band across the whole image, which the client saw on a retina
+display. The 1x file was clean, so nothing looked wrong at DPR 1.
 
-| Item | Supporting line | Source |
-|---|---|---|
-| Minor and major collisions | From fender benders to frame straightening and full panel replacement. | **composed**, merging `/collision-repair/`'s own "What counts as minor" and "What counts as major" lists |
-| Cracked windshields | Small chips and short cracks can often be repaired. | **trimmed verbatim prefix** of the live glass page's "Small chips and short cracks can often be repaired, saving you the cost of a full replacement" |
-| Broken side and rear glass | A shattered door window or rear window can't wait. | **verbatim**, live `/auto-glass-repair-replacement/` |
-| Door dings and dents | No filler, no sanding, no spraying. Your original finish stays untouched. | **verbatim**, live `/paintless-dent-repair/` |
-| Bumper damage | A repaired bumper can disturb the sensors behind it, and we recalibrate. | **composed** from two sentences in one paragraph of `/collision-repair/`: "a replaced windshield or a repaired bumper can disturb the sensors behind it too" and "We also perform ADAS recalibration whenever a repair calls for it" |
-| Scratched and chipped paint | Small paint chips can lead to rust over time. | **trimmed verbatim prefix** of `/collision-repair/`'s "Small paint chips can lead to rust over time, dents affect resale value, and unaddressed damage can escalate" |
-| Deer strikes | **none** | no published sentence exists anywhere |
-| Hail damage | Often lifted out with paintless dent repair, so the finish stays untouched. | **composed** from the live PDR page, which lists hail among what PDR fixes |
+**The pipeline was not at fault and every stage was clean.** Crop, resize, the
+PNG conversion and the black-point correction all end at a ground of exactly
+0; each was measured. **It is the JPEG encoder, and it is not monotonic in
+quality**: sips quantises an all-black block's DC coefficient, and whether the
+dequantised value returns to 0 or lands at 1 depends on the quantisation table
+for that particular quality. Measured at 2160px: q55 clean, q50 v=1, q45
+clean, q40 v=1, q37 clean, q35 v=1. **There is no threshold to stay above**,
+so there was nothing to correct upstream.
+
+**Two things let it through.** The quality search stepped by 5 and took the
+first size that fitted, which is how it chose q40. And the only thing it
+measured about the ground was the 95th percentile of the ringing around the
+lines, which was 1.05:1 and true, **while the modal value of the ground itself
+was never read at all**. A uniform offset is invisible to a percentile taken
+over the same uniform field.
+
+**The fix, and it is three checks rather than one:**
+
+1. **The search walks every integer quality** and requires both the size
+   budget and a surviving ground. It chose **q43, 248KB**.
+2. **A post-encode decode assertion.** The emitted file is decoded again and
+   its ground's modal value read. The export fails if it is not 0.
+3. **A decoder-independent assertion, added because check 2 is not enough.**
+   Check 2 asks sips what sips wrote, which is the encoder graded by its own
+   vendor's decoder. So the file's own quantisation table is read instead and
+   the arithmetic done: a uniform black block has every sample at -128 after
+   the level shift, so its DC is exactly -1024 and its AC all zero, and a
+   DC-only block's inverse DCT is flat, putting every one of its 64 samples at
+   dequantised/8 + 128. That number is fixed by the table in the file, not by
+   whose decoder reads it. **Both shipped files read Q00=8 and Q00=1, giving
+   exactly +0.000, so the ground clamps to 0 in any conformant decoder.**
+
+**A fourth fix, from a mistake made while diagnosing this.** The export wrote
+each candidate quality straight into `docs/assets/img/`, so a failed export
+left the last rejected candidate sitting in the repo as the shipped asset. A
+mutation test of the new assertion did exactly that, and the q25 file it left
+behind was then measured in the browser and misdiagnosed as a decoder
+discrepancy. **The export now builds in a temp directory and installs only
+after every assertion passes**, and that was verified by running a failing
+export and confirming the committed file's hash did not change.
+
+#### The eight items, revised, and where every word comes from
+
+**Deer strikes was removed and minor/major split back into two**, on the
+client's ruling, 2026-09-17. Dropping a claim needs no source. Deer work stays
+covered under collisions and by the existing post, verified on the live site
+as `/blog/deer-season-in-bucks-county-insurance-coverage-next-steps/`.
+**Every item now carries a supporting line and the heading-only gap is gone.**
+
+| # | Item | Supporting line | Source |
+|---|---|---|---|
+| 1 | Minor collisions | Scratches, scuffs, small dents and fender benders. | **trim** of `/collision-repair/`'s "Scratches, scuffs, small dents, bumper damage, and fender benders happen", with "bumper damage" dropped because Bumper damage is its own item two slots away |
+| 2 | Major collisions | Frame straightening, structural repair and full panel replacement. | **trim** of `/collision-repair/`'s "When frame straightening, structural repair, and full panel replacement are needed" |
+| 3 | Cracked windshields | Small chips and short cracks can often be repaired. | **trim** of the live glass page's "Small chips and short cracks can often be repaired, saving you the cost of a full replacement" |
+| 4 | Broken side and rear glass | A shattered door window or rear window can't wait. | **verbatim**, live `/auto-glass-repair-replacement/` |
+| 5 | Door dings and dents | No filler, no sanding, no spraying. Your original finish stays untouched. | **verbatim**, live `/paintless-dent-repair/` |
+| 6 | Bumper damage | A repaired bumper can disturb the sensors behind it, and we recalibrate. | **composed** from two sentences in one paragraph of `/collision-repair/` |
+| 7 | Scratched and chipped paint | Small paint chips can lead to rust over time. | **trim** of `/collision-repair/`'s "Small paint chips can lead to rust over time, dents affect resale value, and unaddressed damage can escalate" |
+| 8 | Hail damage | Often lifted out with paintless dent repair, so the finish stays untouched. | **composed** from the live PDR page, which lists hail among what PDR fixes |
+
+**So the count is now four trims, two verbatim and two composed.** The four
+trims add no words. Three of them cut only from the end of a published
+sentence; the Minor collisions line also drops two words from the middle,
+which the client ruled safe on the grounds that dropping words from a trim
+cannot add a claim. Items 2 and 7 also drop a serial comma, which is the
+typographic normalization already established in 1.11.
+
+**Only two lines are composed now, down from three**, because retiring the
+merged collisions line replaced a composed sentence with two trims. **Both
+remaining composed lines still need the owner**, as does the question of
+whether the shop does all eight in house.
 
 **The glass scope was verified rather than assumed, and it decided an item.**
 The instruction made "Broken side and rear glass" conditional on the live
@@ -1490,24 +1553,13 @@ glass page actually going beyond windshields, with "Fender benders" as the
 fallback. The live page was read on 2026-09-17 and it does, repeatedly and
 unambiguously: "we handle auto glass repair and replacement for windshields,
 side windows, and rear windows", a "Side and Rear Windows" heading, and an FAQ
-whose answer is "Yes. Our technicians handle all types of auto glass:
-windshields, side windows, and rear windows." **So the glass item shipped and
-the fallback was not needed.**
-
-**Deer strikes still ships as a heading with no supporting line.** The shop
-has never published a sentence about deer work, so any line would be the first
-this business has said about it and it would assert scope: panel, glass and
-lighting, in house or sublet. Rule 2 says we do not write it. **Still an owner
-question.**
-
-**Three lines are composed rather than migrated** and all three need the
-owner: the merged collisions line, the bumper line, and the hail line. The two
-trimmed lines add no words and cut only from the end of a published sentence.
+answering "Yes. Our technicians handle all types of auto glass: windshields,
+side windows, and rear windows." **So the glass item shipped and the fallback
+was not needed.**
 
 #### The measurements
 
-**Contrast on the ink ground**, `--ink` #121B27, all recomputed from the
-tokens on 2026-09-17 rather than carried over:
+**Contrast on the ink ground**, `--ink` #121B27, computed from the tokens:
 
 ```
 item headings    --silver   #F0F2F2   15.42:1     floor 4.5, target 7
@@ -1520,17 +1572,29 @@ glyphs are strokes of the single `--mark` token, so the ratio is a property of
 the token and the ground, not of the drawing. For the record of what was never
 available on ink: `--ox` is 1.47 and `--ox-tx` is 1.94.
 
-**The render, measured as the screen composite it actually is.** The asset is
-greyscale line art whose own ground reads v=12 of 255, not black, which
-screen-blended onto ink would have shown as a 1.13:1 rectangle sitting on the
-band. `scripts/prepare-car-render.py` pulls the black point to zero, so the
-blend leaves the ink exactly as it found it:
+**The render, measured as the screen composite it actually is:**
 
 ```
-car-xray-top@2x.jpg   2160x795   234 KB   median line 8.51:1 on ink
-car-xray-top.jpg      1080x397   143 KB   median line 4.01:1 on ink
-JPEG ringing around a line                            1.05:1, below sight
+car-xray-top@2x.jpg   2160x795   248 KB  q43  median line 8.51:1  Q00=8  DC +0.000
+car-xray-top.jpg      1080x397   143 KB  q85  median line 4.01:1  Q00=1  DC +0.000
+JPEG ringing around a line                                        1.05:1, below sight
 ```
+
+**The band verified by pixel sample on the rendered page**, not by reading the
+file and not by a canvas re-implementation, at every DPR the srcset can serve:
+
+```
+1440 @ DPR1   1x file, 1080x397 device px    ground rgb(18,27,39) == ink   exact
+1440 @ DPR2   2x file, 2160x794 device px    ground rgb(18,27,39) == ink   exact
+ 390 @ DPR2   1x file,  700x258 device px    ground rgb(18,27,39) == ink   exact
+ 390 @ DPR3   1x file, 1050x387 device px    ground rgb(18,27,39) == ink   exact
+```
+
+All four corners of the image area equal the band ink exactly at every one.
+**One measurement was thrown away as invalid before these**: a canvas that
+filled ink and drew the image in screen mode reported rgb(20,29,41) at DPR 2,
+because it drew a 2160px source into a 1080px canvas, a downscale the real
+page never performs since at DPR 2 the 2x file renders 1:1 in device pixels.
 
 **No level lift was applied, and that is a measurement rather than an
 omission.** The median line already cleared the 3:1 floor at both sizes. An
@@ -1544,19 +1608,35 @@ the budget banded the lines visibly. The objection to JPEG was that ringing
 would read as a glow, which is banned, so it was measured instead of argued
 and it reads 1.05:1.
 
-#### The icon scale is a recorded deviation
+#### The icons, and the two that replaced the combined glyph
 
-**Drawn at 30px where the approved chip scale is 17px.** The chips carry three
-repeated glyphs inline beside their own label, where position identifies them
-as much as shape does. These are eight distinct glyphs standing alone above a
-heading, and eight damage types have to be told apart from each other.
+**Drawn at 30px where the approved chip scale is 17px**, a recorded deviation.
+The chips carry three repeated glyphs inline beside their own label, where
+position identifies them as much as shape does. These are eight distinct
+glyphs standing alone above a heading, and eight damage types have to be told
+apart from each other.
 
 **They were drawn at 26px first and rendered, and four of the eight were
 unreadable**, which is the same failure already on record in 3.11: the broken
 glass glyph read as a cancel symbol, the door read as a picture frame, the
 bumper read as a football, and the deer read as an insect. All four were
-redrawn and re-rendered. The drawing grammar is unchanged from the chips: a 24
-viewBox, a 2 stroke, round caps and joins.
+redrawn and re-rendered.
+
+**The deer glyph died with its item. The combined collisions glyph became
+two**, and they have to read apart at 30px:
+
+- **Minor collisions**: two short arrows converging on a small burst. A
+  localised knock.
+- **Major collisions**: a car in profile with a jagged fracture through the
+  body. The whole vehicle, structurally, which is what the line says.
+
+**A starburst was drawn for Major and rejected: it read as a sun** at both 96px
+and 30px, which is the same class of error as the wifi-signal icon in 3.9. Two
+further candidates, a deeper front crumple and a folded-in front end, both lost
+to the fracture because the fracture is the only one still visible at 30px.
+
+The drawing grammar is unchanged from the chips throughout: a 24 viewBox, a 2
+stroke, round caps and joins.
 
 #### The band rhythm, and the white band this retires
 
@@ -1586,19 +1666,20 @@ opacity move the state still answers under `prefers-reduced-motion`.
 
 #### The phone, and the one thing to flag
 
-**The section is 1504px tall at 390.** Against the 604px usable height
+**The section is 1530px tall at 390**, up from 1504 before the revision,
+because every item now carries a line. Against the 604px usable height
 recorded in `scripts/mobile-check.md`, which is a 390x664 viewport less the
-60px fixed call bar, **that is 2.49 screens, so it does eat more than two.**
+60px fixed call bar, **that is 2.53 screens, so it still eats more than two.**
 Flagged as instructed and not changed, because one column at 390 is the
 client's sizing.
 
 What it costs and what it does not: the render is cheap there, because a
 2.74:1 asset in a 350px column is only 129px tall, so the height cap the brief
-asked for turned out to be unnecessary rather than skipped. The 1375px under
-it is the eight items themselves. **Two columns at 390 would cut it to roughly
-four rows and land near 900px**, if the height matters more than the single
-column does. Measured at 1440 for comparison: 1078px, four across in two rows,
-items 249px wide, no horizontal overflow at either width.
+asked for turned out to be unnecessary rather than skipped. The rest is the
+eight items themselves. **Two columns at 390 would cut it to four rows and
+land near 900px**, if the height matters more than the single column does.
+Measured at 1440 for comparison: 1053px, four across in two rows, no
+horizontal overflow at either width.
 ---
 
 ## 4. The claims list
@@ -1624,17 +1705,25 @@ unverified claim does not ship. **Confirm each one.**
 ### 4.1b Claims the homepage adds
 
 - **"We fix it all", and the EIGHT damage types under it.** Rule 2, scope
-  honesty: **does the shop do all eight, in house?** Hail and deer strikes in
-  particular are the kind of work a shop either takes or sublets, and the
-  glass items are the kind a shop often sublets whole.
+  honesty: **does the shop do all eight, in house?** Hail in particular is the
+  kind of work a shop either takes or sublets, and the glass items are the
+  kind a shop often sublets whole.
 
-  **Superseded history, kept because the item count has now moved twice.**
-  The live site's list was five: minor and major collisions as one item, plus
-  cracked windshields, door dings and dents, deer strikes, hail damage. On
-  2026-09-13 the plan was six, splitting minor from major. **On 2026-09-17 it
-  shipped as eight, on the client's sizing, and the minor/major split is
-  retired**: those two go back to being one item and their two sourced lines
-  merge into one. So the split never reached a page.
+  **THE ITEM COUNT HAS NOW MOVED THREE TIMES. Plainly, in order:**
+
+  | When | Count | What |
+  |---|---|---|
+  | the live site | **five** | minor and major collisions as one item, cracked windshields, door dings and dents, deer strikes, hail damage |
+  | 2026-09-13, planned | **six** | split minor from major. **Never reached a page.** |
+  | 2026-09-17, shipped | **eight** | minor/major merged back to one, and three added: bumper damage, scratched and chipped paint, broken side and rear glass. Deer strikes kept, as a heading with no line. |
+  | 2026-09-17, revised | **eight** | **deer strikes REMOVED** on the client's ruling, and minor/major **split back into two**. Every item now carries a line. |
+
+  **Deer strikes was removed, not softened.** Dropping a claim needs no source.
+  Deer work stays covered under collisions and by the existing post, verified
+  on the live site as
+  `/blog/deer-season-in-bucks-county-insurance-coverage-next-steps/`. **So the
+  owner question about a deer line is closed**, and it was closed by deleting
+  the claim rather than by answering it.
 
   **The three additions are ours, not the live site's**, and all three are
   sourced from published copy: bumper damage and scratched and chipped paint
@@ -1643,11 +1732,9 @@ unverified claim does not ship. **Confirm each one.**
   **verified on 2026-09-17** as covering side and rear windows and not only
   windshields. Full sourcing table in 3.22.
 
-  **Three of the eight lines are composed rather than migrated** and need the
-  owner: the merged collisions line, the bumper line, and the hail line.
-  **Deer strikes still carries no supporting line at all**, because the shop
-  has never published a sentence about deer work. That remains an owner
-  question and the item ships as a heading alone until it is answered.
+  **Two of the eight lines are composed rather than migrated** and both need
+  the owner: the bumper line and the hail line. The other six are four trims
+  and two verbatim, and none of them adds a word.
 - **"We perform ADAS recalibration at our Southampton facility."** Read off
   the live auto glass page on 2026-09-13. It is not carried on any page here
   yet, and it matters beyond its own sentence: `pagemap.md` gates the ADAS
@@ -1881,5 +1968,7 @@ Ordered by how much else depends on it.
 9. **The four customer quotes**: permission to republish, and whether the
    staff they name still work here. See 4.8.
 10. **The verified `sameAs` list.** See 3.7.
-11. **The eight damage types on the homepage, all in house?** And the three
-    composed lines plus the missing deer strikes line. See 4.1b and 3.22.
+11. **The eight damage types on the homepage, all in house?** And the two
+    composed lines, the bumper one and the hail one. The deer strikes question
+    is closed: the item was removed on 2026-09-17 rather than answered. See
+    4.1b and 3.22.

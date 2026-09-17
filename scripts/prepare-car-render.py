@@ -46,15 +46,30 @@ WHAT IT DOES, in order:
    the median is 172 at 2160px and 105 at 1080px, from the same source.
    Every measurement is therefore taken on the export, not the master.
 
-4. PICKS THE JPEG QUALITY BY SEARCH, against the 250KB budget. PNG was
-   tried first and lost: 479KB for the 2x even with a clean ground,
-   because a dense wireframe is high-entropy data, and quantising to 16
-   grey levels to fit banded the lines visibly. The JPEG objection was
-   ringing reading as a glow around the lines, which is banned, so it
-   was measured instead of argued: at the chosen quality the ground
-   around a line sits at v=4 for 95% of it, which screens to 1.04:1
-   against ink. That is not a glow, it is arithmetic below the
-   threshold of sight.
+4. PICKS THE JPEG QUALITY BY SEARCH, on two conditions, and verifies
+   the result by decoding it again. PNG was tried first and lost: 479KB
+   for the 2x even with a clean ground, because a dense wireframe is
+   high-entropy data, and quantising to 16 grey levels to fit banded the
+   lines visibly.
+
+   THE SECOND CONDITION EXISTS BECAUSE THE FIRST VERSION SHIPPED A BUG.
+   The 2x file went out with its entire ground encoded at v=1 instead of
+   0, which screened onto ink put a rectangle one level lighter than the
+   band across the whole image, visible on a retina display. The 1x file
+   was clean, so nothing in the pipeline looked wrong.
+
+   IT IS THE JPEG ENCODER, AND IT IS NOT MONOTONIC IN QUALITY. Every
+   step up to and including the corrected PNG has a ground of exactly 0;
+   this was checked at each one. sips then quantises an all-zero block's
+   DC coefficient, and whether the dequantised value rounds back to 0 or
+   up to 1 depends on the quantisation table for that particular
+   quality. Measured at 2160px: q55 clean, q50 v=1, q45 clean, q40 v=1,
+   q37 clean, q35 v=1. There is no threshold to stay above, so there is
+   nothing to fix upstream. The only correct response is to encode, DECODE
+   AGAIN, and reject a quality whose ground did not survive.
+
+   The old search also stepped by 5 and took the first size that fitted,
+   which is how it landed on q40. It now walks every integer.
 
 5. MEASURES THE RESULT ON THE GROUND IT WILL SIT ON. The render is
    composited with `mix-blend-mode: screen` over --ink, so the contrast
@@ -79,6 +94,7 @@ Usage:
 import argparse
 import os
 import struct
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -114,6 +130,11 @@ GRAPHIC_FLOOR = 3.0
 
 # The asset budget, and the reason the quality is searched rather than set.
 SIZE_BUDGET = 250 * 1024
+
+# The ground has to decode back to exactly this. Not "close to": the
+# band behind it is --ink, screen leaves a ground of 0 untouched, and
+# one level off is a visible rectangle the width of the image.
+REQUIRED_GROUND = 0
 
 OUT_DIR = os.path.join("docs", "assets", "img")
 OUT_STEM = "car-xray-top"
@@ -287,6 +308,49 @@ def solve_gamma(px, line_idx, black, target_contrast):
     return (lo + hi) / 2
 
 
+def dc_ground_bound(path: str):
+    """What an all-black 8x8 block MUST decode to, in any conformant
+    JPEG decoder, read from the file's own quantisation table.
+
+    WHY THIS EXISTS ALONGSIDE THE DECODE CHECK. The decode check asks
+    sips what the file says, and sips is the library that wrote it, so
+    it is the encoder being graded by its own vendor. This is
+    arithmetic instead: a uniform black block has every sample at -128
+    after the level shift, so its DC coefficient is exactly -1024 and
+    all its AC coefficients are 0. Quantise, dequantise, and a DC-only
+    block's inverse DCT is flat, so every one of its 64 samples comes
+    out at dequantised/8 + 128. That value is fixed by the table in the
+    file, not by whose decoder reads it.
+
+    Returns (Q00, the exact sample value). A value at or below 0 means
+    the ground clamps to 0 no matter how the decoder rounds.
+    """
+    d = open(path, "rb").read()
+    p, q00 = 2, None
+    while p < len(d) - 1:
+        if d[p] != 0xFF:
+            break
+        m = d[p + 1]
+        if m in (0xDA, 0xD9):
+            break
+        ln = int.from_bytes(d[p + 2:p + 4], "big")
+        if m == 0xDB:
+            body = d[p + 4:p + 2 + ln]
+            i = 0
+            while i < len(body):
+                pq, tq = body[i] >> 4, body[i] & 0x0F
+                n = 64 * (2 if pq else 1)
+                if tq == 0:
+                    q00 = (int.from_bytes(body[i + 1:i + 3], "big") if pq
+                           else body[i + 1])
+                i += 1 + n
+        p += 2 + ln
+    if q00 is None:
+        raise ValueError(f"no luma quantisation table in {path}")
+    dequant = round(-1024 / q00) * q00
+    return q00, dequant / 8 + 128
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("source")
@@ -332,49 +396,104 @@ def main():
         write_gray_png(corr_png, w, h, corrected)
 
         name = f"{OUT_STEM}{'@2x' if width != CSS_WIDTH else ''}.jpg"
-        out = os.path.join(OUT_DIR, name)
-        chosen_q, size = None, None
-        for q in range(85, 24, -5):
+        final = os.path.join(OUT_DIR, name)
+        # BUILT IN THE TEMP DIR AND ONLY INSTALLED ON SUCCESS. The first
+        # version wrote each candidate quality straight to docs/, so a
+        # failed export left the last rejected candidate sitting in the
+        # repo as the shipped asset. That is exactly how a q25 file with
+        # a v=2 ground got measured and misdiagnosed as a browser
+        # decoder quirk: the file being measured was not the file the
+        # export had approved.
+        out = os.path.join(tmp, f"{width}-out.jpg")
+        check = os.path.join(tmp, f"{width}-check.png")
+
+        # Walk every integer quality down from 85 and take the first that
+        # is inside the budget AND whose ground survives the round trip.
+        # Both conditions are checked on the DECODED file, because the
+        # only thing that matters is what a browser will get back.
+        chosen_q, size, done, rejected = None, None, None, []
+        for q in range(85, 24, -1):
             sips("-s", "format", "jpeg", "-s", "formatOptions", str(q),
                  corr_png, "--out", out)
             size = os.path.getsize(out)
-            if size <= opts.budget:
-                chosen_q = q
-                break
-        # What the JPEG did to the ground, which is the only objection
-        # to using one here. Measured on the pixels that were zero.
-        check = os.path.join(tmp, f"{width}-check.png")
-        sips("-s", "format", "png", out, "--out", check)
-        _cw, _ch, done = read_gray_png(check)
+            if size > opts.budget:
+                continue
+            sips("-s", "format", "png", out, "--out", check)
+            _cw, _ch, decoded = read_gray_png(check)
+            ground_mode = modal_ground(decoded)
+            if ground_mode != REQUIRED_GROUND:
+                rejected.append((q, size, ground_mode))
+                continue
+            chosen_q, done = q, decoded
+            break
+
+        if chosen_q is None:
+            print(f"{name}: NO QUALITY both fits {opts.budget / 1024:.0f}KB and keeps "
+                  f"the ground at {REQUIRED_GROUND}.", file=sys.stderr)
+            for q, sz, gm in rejected[:8]:
+                print(f"    q{q} {sz / 1024:.0f}KB ground v={gm}", file=sys.stderr)
+            return 1
+
+        # THE POST-ENCODE ASSERTION. The file that will ship is decoded
+        # and its ground read; nothing here trusts the encoder's input.
+        ground_mode = modal_ground(done)
+        ground_share = 100.0 * done.count(ground_mode) / len(done)
+        ground_ok = ground_mode == REQUIRED_GROUND
         halo = sorted(done[i] for i in ground_idx)
         h95, hmax = percentile(halo, 0.95), halo[-1]
         med_final = percentile(sorted(done[i] for i in line_idx), 0.5)
 
+        q00, dc_sample = dc_ground_bound(out)
+        dc_ok = dc_sample <= 0.0
+
+        if not (ground_ok and dc_ok):
+            print(f"{name}: the ground did not survive encoding "
+                  f"(decoded v={ground_mode}, DC arithmetic {dc_sample:+.3f}).",
+                  file=sys.stderr)
+            return 1
+        shutil.copyfile(out, final)
+
         c_med = contrast(screen(med_final), INK)
         print(f"{name}")
         print(f"  {w} x {h}   {size:,} bytes ({size / 1024:.0f} KB) at quality {chosen_q}")
-        print(f"  ground          modal v={black - GROUND_MARGIN}, black point {black}"
-              f"  ->  {zeros:.1f}% of pixels exactly 0")
+        if rejected:
+            print(f"  rejected        {len(rejected)} quality level(s) that fitted the budget "
+                  f"but broke the ground: "
+                  + ", ".join(f"q{q}(v={gm})" for q, _sz, gm in rejected[:6]))
+        print(f"  ground          modal v={black - GROUND_MARGIN} in the source, "
+              f"black point {black}  ->  {zeros:.1f}% of pixels 0 before encoding")
+        print(f"  POST-ENCODE     decoded ground modal v={ground_mode} "
+              f"({ground_share:.1f}% of pixels)   "
+              f"{'ok, exactly the required ' + str(REQUIRED_GROUND) if ground_ok else 'FAIL'}")
+        print(f"  DC ARITHMETIC   luma Q00={q00}, so an all-black block decodes to "
+              f"{dc_sample:+.3f} in ANY decoder   {'ok, clamps to 0' if dc_ok else 'FAIL'}")
+        print(f"  on ink          ground screens to rgb{screen(ground_mode)} "
+              f"against ink rgb{INK}   {contrast(screen(ground_mode), INK):.3f}:1")
         print(f"  gamma           {gamma:.3f}"
               f"{'  (none needed, the median already clears)' if gamma == 1.0 else ''}")
         print(f"  median line     {med_before} -> {med_final}"
               f"   screened on ink {c_med:.2f}:1   (floor {GRAPHIC_FLOOR}:1)")
-        print(f"  ground halo     p95 v={h95}, max v={hmax}"
-              f"   screened {contrast(screen(h95), INK):.2f}:1   "
-              f"(1.0 = invisible, a glow would show here)\n")
-        results.append((name, size, c_med, chosen_q, contrast(screen(h95), INK)))
+        print(f"  ringing         p95 v={h95}, max v={hmax}"
+              f"   screened {contrast(screen(h95), INK):.2f}:1\n")
+        results.append((name, size, c_med, chosen_q,
+                        contrast(screen(h95), INK), ground_ok, ground_mode))
 
     worst = min(r[2] for r in results)
     biggest = max(r[1] for r in results)
-    over = [r[0] for r in results if r[3] is None]
     halo_worst = max(r[4] for r in results)
+    grounds_ok = all(r[5] for r in results)
     print(f"worst line contrast   {worst:.2f}:1   "
           f"{'ok' if worst >= GRAPHIC_FLOOR else 'UNDER THE FLOOR'}")
     print(f"largest file          {biggest / 1024:.0f} KB   "
-          f"{'ok' if not over else 'OVER BUDGET: ' + ', '.join(over)}")
-    print(f"worst ground halo     {halo_worst:.2f}:1   "
+          f"{'ok' if biggest <= opts.budget else 'OVER BUDGET'}")
+    print(f"worst ringing         {halo_worst:.2f}:1   "
           f"{'ok, no visible glow' if halo_worst < 1.1 else 'VISIBLE, reconsider format'}")
-    return 0 if (worst >= GRAPHIC_FLOOR and not over and halo_worst < 1.1) else 1
+    print(f"ground, every file    "
+          + ", ".join(f"{r[0]} v={r[6]}" for r in results)
+          + f"   {'ok, all exactly 0' if grounds_ok else 'FAIL: a ground is not 0'}")
+    ok = (worst >= GRAPHIC_FLOOR and biggest <= opts.budget
+          and halo_worst < 1.1 and grounds_ok)
+    return 0 if ok else 1
 
 
 if __name__ == "__main__":
