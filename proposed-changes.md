@@ -1131,6 +1131,19 @@ reused the pattern page's hero. The two pages now use different photographs
 and different hero architectures, so they no longer read as the same page. The
 underlying shortage did not go away; it moved into this note.
 
+**UPDATED 2026-09-17: the first real photographs are in, and they are not
+these.** Ten frames of the shop's own customer vehicles landed for the Real
+Repairs band, section 3.23. **The hero and all four service cards still carry
+the three stock images**, and this note stands unchanged for them: the grid
+still needs four distinct photographs, one per service, showing that service.
+
+What the shoot still owes, and none of it is covered by the repair
+photographs: **the building, the signage, the bays, the frame rack, the paint
+booth, and the people who do the work.** Two of the ten repair frames happen
+to include the Tri-County sign in the background, which is evidence the cars
+were photographed at this shop, and it is not a photograph OF the shop. 4.9
+stays a cutover blocker.
+
 ### 3.18 The homepage carries two testimonials, not four
 
 The live homepage publishes eight and the first build of this page carried
@@ -1680,6 +1693,241 @@ eight items themselves. **Two columns at 390 would cut it to four rows and
 land near 900px**, if the height matters more than the single column does.
 Measured at 1440 for comparison: 1053px, four across in two rows, no
 horizontal overflow at either width.
+### 3.23 Real Repairs: the first real photographs. BUILT 2026-09-17
+
+Five before and after pairs of customer vehicles, directly after We Fix It
+All, on silver. **The claim is in the band above and the evidence is in this
+one**, which is the only reason for that placement.
+
+#### Provenance, which is the whole point
+
+**The shop's own photographs of its own customers' vehicles, supplied by Greg
+on 2026-09-17.** Not stock, not licensed, not generated. This is the first
+real photography on the build and it closes the showstopper 3.17 has been
+carrying since 2026-09-05.
+
+The ten frames arrived as platform-hosted files, and their metadata was read
+before anything was done to them: **no GPS and no EXIF in any of the ten**,
+already stripped by whatever they passed through. That was checked, not
+assumed, and it is checked again on the output.
+
+**One thing the owner still has to confirm**, and it is in section 5:
+**whether the shop has permission to publish photographs of customers'
+vehicles**, and what its practice is. The vehicles are identifiable by make,
+model and colour even with plates gone. Nothing here is a person, a name or a
+date, but a customer's car outside a body shop is still their car.
+
+#### Redaction: three regions, destroyed rather than softened
+
+**All ten frames were inspected at magnification** before the list was
+written. Three carry identifying numbers:
+
+| Frame | What | Result |
+|---|---|---|
+| `job4-after` Murano | Rear plate at the left edge, characters and registration sticker legible | 52x126px, local detail 13.2 to 1.6, **12% left** |
+| `job3-after` BMW | Green Pennsylvania inspection sticker on the windshield, characters legible | 80x36px, detail 6.3 to 0.9, **15% left** |
+| `job5-after` Mercedes | Rear plate in shadow, faint, registration sticker still visible | 100x43px, detail 2.4 to 0.3, **14% left** |
+
+**The other seven are clean, and there is a reason rather than luck.**
+Pennsylvania issues rear plates only, and five of the remaining frames face
+forward. The Jeep's before frame has its entire rear clip removed, plate mount
+included. Background vehicles were checked in every frame: a truck flank, a
+USPS van, a silver coupe's nose, a distant fence line, none with a readable
+plate.
+
+**The method is pixelate then blur, in that order**, and the order is the
+argument. Averaging into large blocks throws the information away; the blur
+afterwards only stops the blocks reading as a deliberate mosaic. A Gaussian
+alone can sometimes be partly undone and a plate is not the thing to be
+clever about. `scripts/prepare-repair-photos.py` measures local detail inside
+each box before and after and **fails the export** if more than 25% survives.
+
+#### Metadata: stripped structurally, because re-encoding adds it back
+
+**`sips` writes metadata INTO its output.** Re-encoding produced an APP1 Exif
+block, an APP1 XMP packet, an APP13 Photoshop block and an APP2 ICC profile,
+none of which was in the input. So every APP1 through APP15 segment and every
+comment is walked and dropped, leaving APP0 JFIF and the coding markers.
+**All ten finished frames carry no metadata segment at all.**
+
+**The first version of that check was wrong in both directions**, and both are
+recorded because both are instructive. It counted the string "exif" in the
+file, which cannot tell a harmless orientation tag from a GPS record and
+false-positived "gps:1" on a frame whose metadata was clean. Rewritten to walk
+the marker segments, it then reported APP0 JFIF as a survivor and **failed all
+ten frames, which is a check calling its own correct output a defect**. APP0
+JFIF is the density header every baseline JPEG carries; it identifies nobody
+and it is kept on purpose.
+
+#### Sizing, and what it cost
+
+```
+job1 Jeep       960x720    104 + 98 KB    copied and stripped, NEVER re-compressed
+job2 Dodge      960x540    119 + 149 KB   before copied, after re-encoded q57
+job3 BMW        766x574    149 + 135 KB   width stepped down, see below
+job4 Murano    1050x787    140 + 147 KB   q60 both
+job5 Mercedes  1050x590    142 + 123 KB   before cropped to 16:9, q60 and q58
+                          1312 KB total, ten frames, every one lazy-loaded
+```
+
+**Three frames are copied and stripped rather than re-compressed.** A frame
+with no crop, no redaction and no resize gets its metadata removed and nothing
+else, because re-encoding an already-compressed photograph only compounds the
+loss. The first run re-encoded a 98KB source into a **139KB** output at
+quality 68, which is worse on both counts, so no output may now exceed its
+own source's size.
+
+**job3 is the one pair that paid for the budget in sharpness.** The BMW's
+before frame is foliage, gravel and a chain-link fence, which is JPEG's worst
+case: 154KB even at quality 40. Rather than ship quality 40 photography, the
+script steps the **pair** down in width until the budget holds at quality 52
+or better, and job3 landed at 766px for a 526px card, about 1.46x rather than
+2x. **Width steps apply to the pair, never to one frame**, or the crossfade
+would stop registering.
+
+**job5's before was cropped 4:3 to 16:9 to match its after**, 18.5% off the
+top and 6.5% off the bottom. What came off is building and sky above and
+gravel below; the crushed bumper, the torn quarter panel and the dislodged
+tail light are all still in frame. Verified by eye after the crop. **No crop
+on this site hides damage or flatters a repair.**
+
+**Rounding put that pair one row apart**, 591 against 590, so the taller frame
+is trimmed a single row. Both frames of every pair now ship at identical pixel
+dimensions, which is what keeps a dissolve from drifting.
+
+#### The mechanism: tap to crossfade, and why not a wipe
+
+**The pairs were shot from different angles, distances and seasons**, by
+whoever had a phone. The Murano's before is a close-up of one door; its after
+is the whole car from behind. **A wipe slider would read as broken halfway
+through every drag**, because there is no shared frame to wipe between. A
+dissolve compares two photographs honestly without pretending they are one.
+
+Tap, click, or drag across a card to crossfade; again to return. 400ms,
+opacity only. **Kind-one motion**: it fires on the reader's action and never on
+its own, so it needs no amendment to the motion law. Under
+`prefers-reduced-motion` the swap is instant, which is why the transition
+lives inside a `no-preference` query rather than being switched off in a
+`reduce` one.
+
+**BOTH FRAMES ARE REACHABLE WITH JAVASCRIPT OFF, and that is measured.**
+Rendered in a sandboxed frame with scripting denied: the script did not run,
+no `role` was applied, and **all ten images laid out at full size with all ten
+chips visible**, the two frames of each card stacked one under the other
+rather than overlaid. The section is 2833px that way against 1718px enhanced.
+Nothing is hidden waiting for a script.
+
+The frame a reader cannot see is also taken out of the accessibility tree, so
+a screen reader is never read a description of a photograph that is not on
+screen, and the card's label flips with its state.
+
+#### The chips, measured over the photographs
+
+`Before` and `After` in the established chip grammar, top left, **with one
+change: the border is `--ink`, not `--rule`.** The standard chip's `--rule`
+hairline measures 1.46 against its own white fill and cannot edge a shape
+sitting on an unknown photograph.
+
+**Text is photo-independent by construction.** The fill is opaque, so no
+photograph pixel is ever under a glyph: `--ink` on `--panel` is **17.33:1**
+against a 4.5 floor and a 7 target, whatever the picture does.
+
+**The chip as a shape was measured on the rendered page, locally.** At each
+position along the perimeter the transition a reader sees is photo, then ink
+border, then white fill, and the boundary is visible there if **either** tone
+clears 3:1 against the photo pixel beside it. All ten chips, in both states:
+
+```
+every perimeter position of every chip clears 3:1
+worst position anywhere            4.16:1
+which tone carries it              fill on 4, edge on 6
+internal edge, photo-independent   17.33:1
+```
+
+**The first version of this measurement was wrong and is recorded as such.**
+It took the minimum contrast across the whole ring around each chip and
+reported all ten as failures. On a photograph spanning luminance 0.004 to
+0.998 there is always some pixel matching any given colour, so that test is
+unpassable for any chip on any photo. Contrast for a shape is a **local**
+question, and the fix was to ask it per position.
+
+#### Layout, with the numbers
+
+**Two up, rows paired by aspect ratio.** Six frames came back 16:9 and four
+4:3, so the two 16:9 pairs share the first row and the 4:3 pairs the second,
+and no row has a ragged bottom edge:
+
+```
+1440   row 1  Dodge 526x296   Mercedes 526x296
+       row 2  BMW   526x394   Murano   526x394
+       row 3  Jeep  526x395   (the cell beside it is just page)
+ 390   one column, 350px wide, 197 to 263px tall
+```
+
+**The Jeep is the fifth card on purpose.** Its before frame is mid repair,
+with the rear clip off and the glass out, so it goes last and its caption says
+so rather than dressing it as finished damage.
+
+**A featured pair with selectable thumbs was rejected, and the JS-off rule is
+why.** Every frame has to be reachable with scripting off, so all ten render
+either way; a featured layout would then be one large pair plus nine images a
+reader cannot select, which is worse than a grid. Paging fails the same test
+and hides evidence behind a control.
+
+#### Captions and alt text
+
+**Model and damage class only.** No accident stories, no customer details, no
+dates, nothing about fault or insurance.
+
+```
+Dodge Grand Caravan      Front-end collision
+Mercedes CLE 300         Rear-end collision
+BMW 5 Series             Front-end collision
+Nissan Murano            Door dents
+Jeep Grand Cherokee L    Rear end, before frame shown mid repair
+```
+
+**The damage classes are read off the photographs**, which is a judgement and
+is flagged as one: a crushed front bumper is a front-end collision on any
+reading, but the class is our description of an image, not something the shop
+has published about that job. The Jeep's caption deliberately describes the
+frame's state instead of a class, because its damaged parts had already been
+removed when the photograph was taken and naming a cause would be inventing
+one.
+
+Alt text names the vehicle, its colour and the specific visible damage, and
+the after frames say "the same" so the pairing is explicit to a reader who
+cannot see them.
+
+#### The heading, the kicker and the note
+
+**H2 "Real Repairs"**, with the working title kept because it is accurate and
+plain. **Kicker "Restored to pre-accident condition"**, which is published
+copy: `/collision-repair/`'s own FAQ says "restore your vehicle to its
+pre-accident condition".
+
+**A short note under the head**, and every clause of it is a fact the site can
+stand behind: "Vehicles repaired at our Southampton shop. Tap or click a
+photograph to see it finished. License plates are blurred." The first sentence
+is the owner-supplied premise of the section, the second is an instruction,
+and the third is a disclosure of what we did to the pictures.
+
+#### The band rhythm, reported
+
+```
+hero ox | stat card white | services silver | We Fix It All INK |
+Real Repairs SILVER | who we are SILVER | testimonials ink |
+act band ox | contact ink | FAQ silver
+```
+
+**This puts two silver sections next to each other**, Real Repairs and who we
+are, which is new on this page. It breaks no written rule: the rules are that
+white is exactly one band and oxblood is two, and silver is not a band at all,
+it is the page. Consecutive silver sections read as continuous page rather
+than as a contrast switch, and each carries its own centred section head with
+`--pad` above and below. **Recorded because it is a change in rhythm, not
+because it is a defect.** The alternation that matters, ink against page, is
+intact on both sides.
 ---
 
 ## 4. The claims list
@@ -1972,3 +2220,9 @@ Ordered by how much else depends on it.
     composed lines, the bumper one and the hail one. The deer strikes question
     is closed: the item was removed on 2026-09-17 rather than answered. See
     4.1b and 3.22.
+12. **The customer-vehicle photograph practice.** Does the shop have
+    permission to publish photographs of customers' vehicles, and what is its
+    practice for asking? The Real Repairs band publishes ten frames of five
+    identifiable vehicles. Plates and stickers are destroyed and no person,
+    name or date appears, but a customer's car outside a body shop is still
+    their car. See 3.23.

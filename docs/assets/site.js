@@ -232,3 +232,90 @@
 
   sections.forEach(function (el) { io.observe(el); });
 })();
+
+/* ===========================================================================
+   REAL REPAIRS: tap to crossfade before into after. Added 2026-09-17.
+
+   KIND-ONE MOTION, which is the only kind that needs no amendment: it
+   fires on the reader's action and never on its own.
+
+   THIS SCRIPT IS AN ENHANCEMENT AND NOT A REQUIREMENT. The markup ships
+   the before and the after as two images in normal flow, each with its
+   own chip, so a reader with no JavaScript sees both photographs. All
+   this does is stack them and fade between them. If it never runs,
+   nothing is hidden and nothing is pending.
+
+   A DRAG TOGGLES TOO, and the horizontal threshold is what keeps a
+   vertical scroll on a phone from flipping every card it passes under
+   a thumb. The click that follows a drag is swallowed, or the pair
+   would toggle twice for one gesture.
+   =========================================================================== */
+(function () {
+  var stacks = document.querySelectorAll("[data-ba]");
+  if (!stacks.length) { return; }
+
+  Array.prototype.forEach.call(stacks, function (stack) {
+    var before = stack.querySelector(".ba-frame--before");
+    var after = stack.querySelector(".ba-frame--after");
+    if (!before || !after) { return; }
+
+    stack.classList.add("is-ready");
+    stack.setAttribute("role", "button");
+    stack.setAttribute("tabindex", "0");
+    stack.setAttribute("aria-pressed", "false");
+
+    function label() {
+      var on = stack.classList.contains("is-after");
+      stack.setAttribute("aria-label", on
+        ? "Showing the repaired vehicle. Activate to see the damage again."
+        : "Showing the damage. Activate to see the repaired vehicle.");
+      /* The frame a reader cannot see is taken out of the accessibility
+         tree too, so a screen reader is never read a description of a
+         photograph that is not on screen. */
+      before.setAttribute("aria-hidden", on ? "true" : "false");
+      after.setAttribute("aria-hidden", on ? "false" : "true");
+    }
+
+    function toggle() {
+      var on = stack.classList.toggle("is-after");
+      stack.setAttribute("aria-pressed", on ? "true" : "false");
+      label();
+    }
+
+    label();
+
+    var startX = null;
+    var dragged = false;
+
+    stack.addEventListener("click", function () {
+      if (dragged) { dragged = false; return; }
+      toggle();
+    });
+
+    stack.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        toggle();
+      }
+    });
+
+    stack.addEventListener("pointerdown", function (e) {
+      startX = e.clientX;
+      dragged = false;
+    });
+
+    stack.addEventListener("pointermove", function (e) {
+      if (startX === null) { return; }
+      if (Math.abs(e.clientX - startX) > 24) {
+        toggle();
+        dragged = true;
+        startX = null;
+      }
+    });
+
+    function endDrag() { startX = null; }
+    stack.addEventListener("pointerup", endDrag);
+    stack.addEventListener("pointercancel", endDrag);
+    stack.addEventListener("pointerleave", endDrag);
+  });
+})();

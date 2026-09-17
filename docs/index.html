@@ -60,8 +60,8 @@
        SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
   <link rel="preload" href="assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/site.css?v=eae8d710">
-  <script src="assets/site.js?v=78d33e7f" defer></script>
+  <link rel="stylesheet" href="assets/site.css?v=eccce6f3">
+  <script src="assets/site.js?v=ffd04526" defer></script>
 
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
        the SAME @id, so the whole site resolves to one business entity: a
@@ -520,6 +520,119 @@
             <p>Often lifted out with paintless dent repair, so the finish stays untouched.</p>
           </li>
         </ul>
+      </div>
+    </section>
+
+    <!-- ============ REAL REPAIRS ============
+         THE FIRST REAL PHOTOGRAPHS ON THIS BUILD. Five before and after
+         pairs of customer vehicles repaired at this shop, supplied by
+         Greg on 2026-09-17. Everything else on the page is still stock;
+         see proposed-changes.md 3.17 for what the shoot still owes.
+
+         THE CLAIM IS IN THE BAND ABOVE AND THE EVIDENCE IS HERE, which
+         is why this sits directly after We Fix It All.
+
+         EVERY PLATE AND STICKER CARRYING NUMBERS IS DESTROYED, not
+         softened. All ten frames were inspected at magnification and
+         three regions needed it: this Murano's plate, the BMW's
+         windshield inspection sticker, and the Mercedes' plate. The
+         other seven are clean, mostly because Pennsylvania issues rear
+         plates only and those frames face forward. Metadata is stripped
+         structurally, not by re-encoding, because sips writes its own
+         Exif and XMP back in. scripts/prepare-repair-photos.py holds
+         the redaction boxes, the crop, and every number, and it fails
+         rather than shipping a frame that did not pass.
+
+         CAPTIONS CARRY THE MODEL AND THE DAMAGE CLASS AND NOTHING ELSE.
+         No accident stories, no customer details, no dates. The Jeep
+         goes last because its before frame is mid repair, and its
+         caption says so.
+
+         BOTH FRAMES ARE REACHABLE WITH JAVASCRIPT OFF. The before and
+         the after are two images in normal flow, each with its own
+         chip, and the script is what stacks them and crossfades. If it
+         never runs, a reader sees both photographs one under the other.
+         Nothing here is hidden waiting for a script. -->
+    <section id="real-repairs">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Real Repairs</h2>
+          <p class="sec-sub">Restored to pre-accident condition</p>
+        </div>
+        <p class="repairs-note">Vehicles repaired at our Southampton shop. Tap or click a photograph to see it finished. License plates are blurred.</p>
+        <div class="repairs-grid">
+
+          <figure class="ba" style="--ar: 960 / 540">
+            <div class="ba-stack" data-ba>
+              <div class="ba-frame ba-frame--before">
+                <img src="assets/img/repairs/job2-before.jpg" width="960" height="540" loading="lazy" decoding="async" alt="Black Dodge Grand Caravan with a crushed front bumper, a broken headlight and a buckled hood.">
+                <span class="ba-chip">Before</span>
+              </div>
+              <div class="ba-frame ba-frame--after">
+                <img src="assets/img/repairs/job2-after.jpg" width="960" height="540" loading="lazy" decoding="async" alt="The same Dodge Grand Caravan after repair, with the front bumper, headlight and hood back in line.">
+                <span class="ba-chip">After</span>
+              </div>
+            </div>
+            <figcaption><strong>Dodge Grand Caravan</strong> Front-end collision</figcaption>
+          </figure>
+
+          <figure class="ba" style="--ar: 1050 / 590">
+            <div class="ba-stack" data-ba>
+              <div class="ba-frame ba-frame--before">
+                <img src="assets/img/repairs/job5-before.jpg" width="1050" height="590" loading="lazy" decoding="async" alt="Black Mercedes CLE 300 with its rear bumper torn loose and the rear quarter panel creased.">
+                <span class="ba-chip">Before</span>
+              </div>
+              <div class="ba-frame ba-frame--after">
+                <img src="assets/img/repairs/job5-after.jpg" width="1050" height="590" loading="lazy" decoding="async" alt="The same Mercedes CLE 300 after repair, rear bumper and quarter panel back to shape.">
+                <span class="ba-chip">After</span>
+              </div>
+            </div>
+            <figcaption><strong>Mercedes CLE 300</strong> Rear-end collision</figcaption>
+          </figure>
+
+          <figure class="ba" style="--ar: 766 / 574">
+            <div class="ba-stack" data-ba>
+              <div class="ba-frame ba-frame--before">
+                <img src="assets/img/repairs/job3-before.jpg" width="766" height="574" loading="lazy" decoding="async" alt="Black BMW 5 Series with the front bumper pulled away from the grille and the bumper cover split.">
+                <span class="ba-chip">Before</span>
+              </div>
+              <div class="ba-frame ba-frame--after">
+                <img src="assets/img/repairs/job3-after.jpg" width="766" height="574" loading="lazy" decoding="async" alt="The same BMW 5 Series after repair, front bumper and grille aligned.">
+                <span class="ba-chip">After</span>
+              </div>
+            </div>
+            <figcaption><strong>BMW 5 Series</strong> Front-end collision</figcaption>
+          </figure>
+
+          <figure class="ba" style="--ar: 1050 / 787">
+            <div class="ba-stack" data-ba>
+              <div class="ba-frame ba-frame--before">
+                <img src="assets/img/repairs/job4-before.jpg" width="1050" height="787" loading="lazy" decoding="async" alt="Close-up of a silver Nissan Murano with a deep crease running across the rear door and quarter panel.">
+                <span class="ba-chip">Before</span>
+              </div>
+              <div class="ba-frame ba-frame--after">
+                <img src="assets/img/repairs/job4-after.jpg" width="1050" height="787" loading="lazy" decoding="async" alt="The same Nissan Murano after repair, rear door and quarter panel smooth again, parked at the shop.">
+                <span class="ba-chip">After</span>
+              </div>
+            </div>
+            <figcaption><strong>Nissan Murano</strong> Door dents</figcaption>
+          </figure>
+
+          <figure class="ba" style="--ar: 960 / 720">
+            <div class="ba-stack" data-ba>
+              <div class="ba-frame ba-frame--before">
+                <img src="assets/img/repairs/job1-before.jpg" width="960" height="720" loading="lazy" decoding="async" alt="Jeep Grand Cherokee L partway through repair, with the rear bumper and tail lights off and the rear glass out.">
+                <span class="ba-chip">Before</span>
+              </div>
+              <div class="ba-frame ba-frame--after">
+                <img src="assets/img/repairs/job1-after.jpg" width="960" height="720" loading="lazy" decoding="async" alt="The same Jeep Grand Cherokee L finished, parked outside the Tri-County Collision building.">
+                <span class="ba-chip">After</span>
+              </div>
+            </div>
+            <figcaption><strong>Jeep Grand Cherokee L</strong> Rear end, before frame shown mid repair</figcaption>
+          </figure>
+
+        </div>
       </div>
     </section>
 
