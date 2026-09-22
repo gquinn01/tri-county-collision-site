@@ -3029,6 +3029,197 @@ own sitting, and the hero was not to be moved for it.
 **No CSS was deleted.** The `site.css` diff is 24 added lines and zero
 removed.
 
+### 3.32 A real wreck replaces the stock hero. BUILT 2026-09-22
+
+The home page's hero photograph becomes a real customer vehicle, supplied by
+the client on 2026-09-22: a red sedan with its front end crushed, inside the
+shop, before repair. **This retires the most prominent stock image on the
+site.**
+
+*(3.31 is unused. The number was reserved in the strategy chat for work that
+has not landed here, and this record was asked for as 3.32. Nothing is
+missing.)*
+
+#### Provenance, and where the file lives
+
+Read before anything was built on it, through `scripts/audit.py`'s own reader:
+
+```
+474875707_9154568911256256_2223418552262379327_n.jpg   187,107 bytes
+  IPTC DigitalSourceType   (none declared)
+  XMP CreatorTool          (none declared)
+  C2PA manifest            none
+  VERDICT                  clean, no AI tell
+segment walk               APP0 JFIF, APP13 8BIM "Photoshop" (132 bytes)
+                           no APP1, so Exif was already stripped upstream
+SOF2 progressive           1440x1078
+```
+
+That confirms the strategy chat's pre-scan against the reader the build uses.
+**The supplied file never entered a commit**: it was copied to a scratch
+directory outside the repo, and `git log --all` confirms no file of that name
+has ever been added. `scripts/prepare-hero-photo.py` takes its path as an
+argument.
+
+**Permission rides the same practice as the Real Repairs photographs**, and
+the same owner-sheet question covers it. **The original full-resolution file
+is still to come from the client**; what ships here is the web-resolution copy
+supplied, at the hero's existing contract.
+
+#### The contract, which is why the layout cannot move
+
+The hero ships 1200x800 and the `<img>` carries `width="1200" height="800"`.
+Those attributes are untouched, so the page's layout is unchanged **by
+construction** rather than by inspection. `fetchpriority="high"` and
+`decoding="async"` are unchanged too. Only `src` and `alt` changed.
+
+```
+alt, before  A technician grinding a damaged front end in the shop while sparks fall.
+alt, after   A red sedan with its front end crushed and the bumper torn loose,
+             in the shop before repair.
+```
+
+The old alt described a technician who is not in this photograph.
+
+#### The crop is measured, and one measurement was wrong first
+
+The vehicle was located by scanning for **saturated** red: red-dominant AND
+not a bright warm neutral. The first scan used red-dominance alone and
+reported the car running to the bottom edge of the frame. It was the concrete:
+warm floor samples at (199,167,110) and (221,189,130) are red-dominant by 30
+to 50 and are not a car. With the saturation condition added:
+
+```
+whole vehicle        y  86 .. 811
+crushed front end    y 236 .. 811   the right of the frame
+intact body, left    y  85 .. 632
+```
+
+1440x1078 to 1440x960 discards 118 rows. 960 rows must contain 86..811, so the
+top edge can sit anywhere in 0..86. **It ships at 0**: that keeps the whole
+roofline and the entire crushed front end, and spends all 118 discarded rows
+on empty foreground concrete, the only part of the frame carrying nothing.
+
+Then one uniform downscale, 1440 to 1200 by box average, factor 1.2 on both
+axes. **No upscaling anywhere**, and the script refuses to run on a source
+smaller than the crop.
+
+#### The plate check fired, and the fix was to make it stricter
+
+The check runs although no plate is visible, and on the first run it **flagged
+five boxes and stopped the build**. Inspected at magnification, they were the
+**rear alloy wheel** (spokes against a dark tyre) and the **torn-open engine
+bay**. No plate, no characters, nothing readable.
+
+**The threshold was not lowered.** Detail alone does not identify a plate; a
+plate is a bright, neutral rectangle carrying dark glyphs. The check became a
+conjunction of three conditions:
+
+```
+region                    luma    sat   detail
+rear alloy wheel          70.8   60.5   16.65   dark, saturated
+alloy wheel edge         124.9   39.2   18.73   saturated
+torn engine bay          117.7  117.6   17.71   very saturated
+bright garage wall       207.7   13.9    9.76   bright, neutral, no glyphs
+a plate                   >150    <35     >14   all three at once
+```
+
+660 plate-sized boxes scanned, **none meets all three**, which is the expected
+result: the front of this car is torn open and its plate area is gone. The
+check is now stricter about what counts as a plate and still catches one.
+
+#### The encode, and the numbers
+
+```
+quality search   q92 down to q58, stopping at the first file <= the source
+shipped          1200x800 at q58, 183,127 bytes
+source           187,107 bytes, so the output is 3,980 bytes smaller (97.9%)
+metadata after   APP0 JFIF only, by structural marker walk
+decode assertion sips 1200x800, round-trip decode 1200x800 3ch, provenance clean
+```
+
+**Why q58 and not higher:** the house rule is that no output may be larger
+than its source, and the source is a 0.96 bpp progressive JPEG of a frame that
+is half empty floor. The crop throws the floor away and the downscale
+concentrates what is left, so the same picture costs more per pixel. Inspected
+at 1:1 in both the scrim zone and on the wreck: no blocking, no banding. It is
+23KB heavier than the stock image it replaces and 1200x800 like it.
+
+#### The scrim was re-measured and did not move
+
+Per the readability amendment: page rendered, rendered again with
+`.heroB-copy` at `visibility: hidden` so the layout holds and the glyphs go,
+glyph runs taken with `Range.getClientRects()` rather than block boxes, every
+composited pixel under those runs sampled against the element's own computed
+colour.
+
+```
+                            HEAD (stock)   NEW (wreck)   floor   target
+1440  eyebrow  --silver        13.93         14.13        4.5      7
+1440  h1       --silver        11.86         13.38        4.5      7
+1440  lead     --silver-2       9.47          9.81        4.5      7
+ 390  eyebrow  --silver        13.09         13.09        4.5      7
+ 390  h1       --silver        13.38         13.38        4.5      7
+ 390  lead     --silver-2       9.72          9.72        4.5      7
+      WORST GLYPH-BOX PIXEL    9.47          9.72 / 9.81
+```
+
+**The scrim values are unchanged and did not need to deepen.** The brief
+expected a deepening because the text zone sits over a bright garage wall. It
+did not happen, and the reason is arithmetic: the scrim runs at .95 to .97
+alpha across the text zone, so the photograph contributes three to five per
+cent of the composite and a brighter picture cannot move the number far. The
+new photograph measures **better** at 1440 and **identical** at 390.
+
+#### The phone, and the honest answer about framing
+
+**`object-position` ships unchanged at `50% 42%`.**
+
+The brief asked what the 390 crop shows and required the crushed front end to
+stay in frame on phones. Rendered and looked at: **on a phone the hero
+photograph is almost entirely invisible**, and no framing choice changes that.
+The phone scrim is a vertical gradient at .97/.96/.94 that only falls to zero
+in the top five per cent of the hero, so what a phone reader sees is a sliver
+of picture above the type. That was equally true of the stock photograph.
+
+Changing `object-position` would trade the desktop framing, where the
+photograph genuinely shows, for a few pixels of phone sliver. At 1440 the
+wreck fills the right of the frame exactly where the scrim fades out, which is
+the composition this hero is built for. **So it was left alone, and the reason
+is recorded rather than the value quietly kept.**
+
+#### The stock asset stays, and why
+
+`grep accent-major-collision-repair` across every page and template first, per
+the brief. The swap does **not** leave it unreferenced:
+
+```
+docs/index.html:402                 the Commercial Collision Repair service card
+docs/collision-repair/index.html    the .svc photo on that page
+```
+
+**So it does not leave the repo**, per the brief's own condition. One side
+effect worth recording: 3.17 noted that the hero doubled as the Commercial
+Collision Repair card's photograph. **That duplication is now resolved** — the
+hero has its own picture. The grid's internal repeat, Auto Glass reusing the
+minor-collision photograph, is unchanged.
+
+#### The fold did not move, proved against HEAD
+
+```
+                    usable   .cta-row bottom   verdict         HEAD
+390x664 staging      604          613          misses by  9   identical
+390x664 cutover      604          556          clears by 48   identical
+360x640 staging      580          654          misses by 74   identical
+360x640 cutover      580          597          misses by 17   identical
+```
+
+The 17px miss at 360x640 is the false CLAUDE.md record already flagged in 3.29
+and 3.30. Untouched here.
+
+**The audit's permanent asset-provenance check now reads 29 of 29 images with
+no AI-generation marker**, up from 28, the new one included.
+
 ---
 
 ## 4. The claims list
