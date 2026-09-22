@@ -379,10 +379,10 @@ MAPPING = [
      "front view, spider crack across the windshield"),
     ("Broken side and rear glass",  ("redraw", "glass"),
      "door with wing mirror, window shattered"),
-    ("Door dings and dents",        ("set", 25),
-     "car from above, impact burst on the near side"),
-    ("Bumper damage",               ("set", 4),
-     "front view, burst below the front bumper"),
+    ("Door dings and dents",        ("set", 20),
+     "three-quarter car, localised side impact with shake lines"),
+    ("Bumper damage",               ("set", 26),
+     "two front ends meeting close up, impact burst between them"),
     ("Scratched and chipped paint", ("redraw", "paint"),
      "donor car, zigzag scratch and two lifted flakes"),
     ("Hail damage",                 ("redraw", "hail"),
@@ -398,9 +398,14 @@ ALTERNATIVES = {
     "Major collisions": (21, "abstracted head-on, fewer lines, cleaner at any "
                              "size; 06 ships because it shows actual crush, "
                              "which is what the line under it claims"),
-    "Bumper damage":    (31, "side view with the burst under the body; 04 "
-                             "ships because that burst is at the bumper and "
-                             "31's reads as undercarriage"),
+    "Door dings and dents": (25, "car from above with the burst on the near "
+                                 "side; 20 ships on the client's pick from the "
+                                 "numbered sheet, 2026-09-22"),
+    "Bumper damage":    (4,  "front view with the burst below the front "
+                             "bumper; 26 ships on the client's pick from the "
+                             "numbered sheet, 2026-09-22. Icon 31, the side "
+                             "view with the burst under the body, reads as "
+                             "undercarriage and was never in front"),
 }
 
 

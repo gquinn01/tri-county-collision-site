@@ -1354,8 +1354,12 @@ a.svc-card h3 { color: var(--ox-tx); }
    arithmetic and writes each mark's width and height onto its own svg.
 
    The box is 46px and BOTTOM-ALIGNED, so the cars share a ground line
-   and the headings below them stay level. The tallest mark is 45.4px and
-   the script fails rather than let a re-run grow one past the box. */
+   and the headings below them stay level. It has to clear the tallest
+   mark shipping, and the pipeline FAILS rather than let a re-mapping
+   grow one past it. The number is not repeated here on purpose: which
+   marks ship is a mapping decision that changes, and a comment quoting
+   today's tallest is a copy that nothing updates. ICO_BOX in
+   scripts/prepare-damage-icons.py is the one place it lives. */
 .fix .ico { display: flex; align-items: flex-end; height: 46px; }
 .fix svg { display: block; }
 /* The set's own marks are fill. The three matched redraws are authored as

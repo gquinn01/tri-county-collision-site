@@ -2627,14 +2627,20 @@ an identical 1.524px line. Greg ruled this too.
 | Major collisions | icon 06 | set | icon 21 |
 | Cracked windshields | icon 01 | set | none |
 | Broken side and rear glass | redraw | **matched redraw** | none in the set |
-| Door dings and dents | icon 25 | set | none |
-| Bumper damage | icon 04 | set | icon 31 |
+| Door dings and dents | **icon 20** | set | icon 25 |
+| Bumper damage | **icon 26** | set | icon 04 |
 | Scratched and chipped paint | redraw | **matched redraw** | none in the set |
 | Hail damage | redraw | **matched redraw** | none in the set |
 
-**Five from the set, three redrawn.** The three alternatives validated at size
+**Five from the set, three redrawn.** The four alternatives validated at size
 and were not shipped; they are printed on every run of the pipeline so the
 choice stays visible rather than becoming a fact nobody remembers deciding.
+
+**Two were re-picked by the client on 2026-09-22**, off the numbered contact
+sheet, after the first eight shipped: Door dings and dents moved from icon 25
+to **icon 20**, and Bumper damage from icon 04 to **icon 26**. Both were
+re-validated at the derived scale before they went in; the marks they replace
+are now the alternatives above.
 
 - **Minor collisions, 08 over 07.** Both are two cars nose to nose. 07 carries
   a burst between them and 08 carries light impact ticks. 08 ships because it
@@ -2647,8 +2653,25 @@ choice stays visible rather than becoming a fact nobody remembers deciding.
   which is what "frame straightening, structural repair and full panel
   replacement" claims. 21 is the one to take if the density ever reads as
   noise.
-- **Bumper damage, 04 over 31.** 31's burst sits under the body and reads as
-  undercarriage. 04's sits at the bumper, which is the item.
+- **Door dings and dents, 20 over 25.** 25 is the car seen from above with a
+  burst on the near side. 20 is a three-quarter car with the impact on its
+  rear quarter and shake lines beside it, which localises the damage to a
+  panel rather than to a whole flank. **The client's pick.**
+- **Bumper damage, 26 over 04.** 04 is a front view with the burst below the
+  front bumper. 26 is the close-up of two front ends meeting, cropped so the
+  bumper line is the subject. **The client's pick.** Icon 31, the side view
+  with the burst under the body, reads as undercarriage and was never in
+  front.
+
+**One thing the re-pick costs, flagged and not fixed.** Three of the eight are
+now two-vehicle frontal impacts: **08** for Minor, two cars nose to nose with
+light ticks; **06** for Major, two crushed fronts with a burst; and **26** for
+Bumper, two front ends meeting with a burst. 06 and 26 carry the same burst
+vocabulary and differ mainly in density. At the ruled scale they are
+distinguishable, and the headings do the naming, but a reader scanning the
+marks alone gets the same idea three times in a row of eight. Recorded rather
+than changed, because the pick is the client's and it was made off the
+numbered sheet with all 36 in view.
 
 **Hail was a gate and the gate closed.** The brief made it conditional on an
 impact-from-above mark reading honestly as falling objects at size. **There is
