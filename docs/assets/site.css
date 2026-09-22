@@ -1818,7 +1818,25 @@ a.svc-card h3 { color: var(--ox-tx); }
 footer.site { background: var(--ink); color: var(--silver); padding: var(--pad) 0 34px; }
 footer.site a { color: var(--silver); }
 .foot-grid { display: grid; gap: 34px; }
-@media (min-width: 760px) { .foot-grid { grid-template-columns: 1.4fr 1fr 1fr; } }
+/* FOUR COLUMNS, NOT THREE, since Hours was promoted out of the small
+   print on 2026-09-22 (proposed-changes.md 3.29). The grid gained a
+   child, so it gained a track.
+
+   TWO STEPS RATHER THAN ONE, AND THE PHONE NUMBER IS THE REASON. Four
+   across from 760 gives the three link columns 131px each, measured, and
+   at that width "Call (215) 322-5350" breaks between the exchange and
+   the line number. A phone number split across two lines is not a
+   cramped layout, it is an unreadable fact, and this is the one fact the
+   whole page is for. Two columns carry 760 to 899 at 343px each; four
+   arrive at 900, where the link columns measure 177px and the number
+   sits on one line.
+
+   The identity column resolves WIDER than its 1.4fr share because the
+   logo is 200px and min-content wins: 226px at 760 against the 197px the
+   ratio alone would give. That is the track doing its job, not a bug,
+   and it is why nothing overflows at the narrow end. */
+@media (min-width: 760px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 900px) { .foot-grid { grid-template-columns: 1.4fr 1fr 1fr 1fr; } }
 .foot-home img { width: 200px; height: 80px; object-fit: contain; }
 .foot-tag { margin-top: 16px; max-width: 38ch; color: var(--silver-2); }
 .foot-nap { margin-top: 18px; line-height: 1.8; }

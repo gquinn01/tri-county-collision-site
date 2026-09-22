@@ -2760,6 +2760,145 @@ damage.
 changed, all of them `<svg>` elements. The patch is keyed on each item's own
 `<h3>`.
 
+### 3.29 The footer is the contact section. BUILT 2026-09-22
+
+The home page's Contact Us band is deleted, the hours are promoted out of the
+small print into a headed footer column site-wide, and the one line the band
+carried that the footer did not becomes a Get Started item. Client rulings,
+2026-09-22.
+
+#### Why the band could go, verified before anything was deleted
+
+The home page ran `#start`, the oxblood act band, directly into `#contact`,
+which informs. 3.27 had already taken the duplicated ASK out of the contact
+band and left it carrying the facts. This finishes that: **the footer already
+carried every fact the band carried.**
+
+```
+band carried            footer carried before this change
+  address                 yes, .foot-nap and .foot-bottom
+  phone                   yes, both
+  email                   yes, both
+  hours                   yes, but in .foot-bottom small print
+  "prefer to write"       NO  <- the one thing that had to move
+```
+
+**Nothing linked to it.** `grep '#contact'` across `docs/` and `templates/`
+returns no hits at all, so deleting the anchor broke no link on any page.
+
+**The structured data was never in the band.** The `AutoBodyShop` node carries
+`address` and `openingHoursSpecification` independently, and the JSON-LD is
+**byte-identical before and after** in all three files, proved by hashing every
+`ld+json` block: `682748c497ae928b`, `8d243f16f2a6bf72`, `5552adf7fbf1d637`
+before and after.
+
+**The visible NAP remains**, in `.foot-nap` and again in `.foot-bottom`.
+
+#### What came out, and what did not
+
+The section and **its own comment block** went together. The comment described
+that band and nothing else; leaving it would have been a comment describing
+markup that no longer exists, which is the rotting-comment failure CLAUDE.md
+already has a rule about. 2,148 bytes, 41 lines, one `<section>`.
+
+**`/collision-repair/` keeps its `#contact` section**, untouched, with its Free
+Estimate heading. That page has no act band, so the section is not redundant
+there. Its `id="contact"` and the template's are now the only two left.
+
+**No CSS was deleted, and that was checked rather than assumed.** The sweep
+rule from 2026-09-13 says grep a selector across every page before deleting
+its rule. All four are still live:
+
+```
+.contact          collision page, template
+.contact-grid     collision page
+.contact-alt      collision page, template
+.contact-grid h3  collision page
+```
+
+#### Hours promoted, not copied
+
+A new `Hours` column with its own `.foot-head`, placed directly after the
+identity column, so the grid reads **identity, Hours, Services, Get Started**:
+facts first, asks last. The `Hours: ...` line was then **deleted** from
+`.foot-bottom`. Each footer now states the hours exactly once.
+
+```
+                                       footer   body
+docs/index.html                          1        0
+docs/collision-repair/index.html         1        1   <- its own #contact, kept
+templates/service-page-template.html     1        0
+```
+
+**The collision page carries the hours twice at file scope**, and that is the
+brief working rather than failing: its `#contact` section stays by instruction,
+and that section has always carried hours. The claim that matters, one per
+footer, holds in all three.
+
+#### Two columns at 760, four at 900, and the phone number is the reason
+
+`.foot-grid` had to grow a track. Four across from 760 was tried first and
+**measured**, not judged:
+
+```
+760   identity 226  |  three link columns at 131px each
+      "Call (215) 322-5350" breaks between the exchange and the line number
+900   identity 241  |  three link columns at 172px each
+      the number sits on one line
+```
+
+A phone number split across two lines is not a cramped layout, it is an
+unreadable fact, and it is the one fact the whole page is for. So the
+intermediate breakpoint the brief allowed **shipped**: two columns from 760 at
+343px each, four from 900. Rendered and checked at 760, 900, 1440 and 390: no
+overflow at any width, no column collision, and no orphan gap where the
+`.foot-bottom` hours line came out.
+
+**The identity column resolves wider than its 1.4fr share** because the logo is
+200px and min-content wins: 226px at 760 against the 197px the ratio alone
+would give. That is why nothing overflows at the narrow end.
+
+#### The one unique line, and where the template diverges
+
+"Prefer to write? Send us your details online." became a third Get Started
+item, `data-pending-href` matching each file's own depth convention:
+`contact-us/` on home, `../contact-us/` on the collision page,
+`{{ROOT}}contact-us/` in the template. The home FAQ answer keeps its own.
+
+**The template has four Get Started items, not three**, because it already
+carried a parameterised `{{CTA_LABEL}}` item that the two built pages do not.
+The brief's proof expected three everywhere; three is right for the two built
+pages and four is right for the template. Recorded rather than forced.
+
+**The template never carried the hours at all**, so there was nothing to
+promote there: the column was added so a page built from the template does not
+ship a footer poorer than the two that exist. That is the divergence the brief
+was guarding against, taken in the only direction that closes it.
+
+#### Band rhythm and the fold
+
+`#start` (ox) then `#faq` (light) then the footer (ink), confirmed by eye at
+1440 and 390. The footer moved up **423px** at 1440, which is the removed
+band's own height, and three ink bands remain where there were four.
+
+**The fold did not move, and HEAD was measured alongside to prove it.**
+
+```
+                    usable   .cta-row bottom   verdict        HEAD
+390x664 staging      604          613          misses by  9   identical
+390x664 cutover      604          556          clears by 48   identical
+360x640 staging      580          654          misses by 74   identical
+360x640 cutover      580          597          misses by 17   identical
+```
+
+The staging banner costs 57px, matching `scripts/mobile-check.md` exactly.
+
+**One number to flag, and it is not this change's doing.** CLAUDE.md records
+that 360x640 "now clears by 2px"; measured today it **misses by 17** in the
+cutover state. HEAD measures identically, so the drift predates this commit
+entirely. Not touched here, because the page only got shorter and the cause is
+somewhere in the hero's own sizing. It wants its own look.
+
 ---
 
 ## 4. The claims list
