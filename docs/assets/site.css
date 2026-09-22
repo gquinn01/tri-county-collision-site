@@ -1438,6 +1438,30 @@ a.svc-card h3 { color: var(--ox-tx); }
   font-size: 1rem; color: var(--ink-2);
 }
 
+/* THE SECTION-BOTTOM CTA ROW, CENTRED. Added 2026-09-22 with the row
+   itself, proposed-changes.md 3.30.
+
+   SCOPED TO THIS SECTION, AND THAT IS THE POINT RATHER THAN A SHORTCUT.
+   Three centring mechanisms already exist and none of them reaches a
+   light-ground row at the foot of a section:
+
+     .dark .cta-row      centres, but only on a dark ground. #what-we-fix
+                         is .dark and gets its centring from this rule for
+                         free, with nothing written for it.
+     .prose + .cta-row   centres, but only as the adjacent sibling of a
+                         .prose. This row follows .repairs-grid, so the
+                         selector cannot fire.
+     .sec-head           centres the heading, not the row.
+
+   THE BASE .cta-row IS LEFT-ALIGNED AND MUST STAY THAT WAY. The hero's
+   copy is anchored left inside the scrim and the whole flush-left hero
+   reads off that edge, so centring the base rule would move the one
+   thing the design turns on. The narrowest change that centres this row
+   is a rule for the one section that needs it, and if a second light
+   section ever wants the same thing, THAT is the moment to generalise,
+   not this one. */
+#real-repairs .cta-row { justify-content: center; }
+
 .repairs-grid { display: grid; gap: 44px; }
 
 .ba { margin: 0; }

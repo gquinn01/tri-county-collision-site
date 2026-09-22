@@ -2899,6 +2899,136 @@ cutover state. HEAD measures identically, so the drift predates this commit
 entirely. Not touched here, because the page only got shorter and the cause is
 somewhere in the hero's own sizing. It wants its own look.
 
+### 3.30 The ask joins the capability moment and the proof moment. BUILT 2026-09-22
+
+The hero's CTA pair is added at the bottom of `#what-we-fix` and
+`#real-repairs`. Client ruling 2026-09-22, with the rationale on the record:
+on desktop there was no ask between the hero and `#start`, and these two
+section bottoms are where a reader has just finished learning what the shop
+can fix and just finished seeing that it did.
+
+**No new wording, no new claims, no new buttons.** The markup is the hero's
+own `.cta-row`, copied verbatim, twice. Proved rather than asserted: all four
+rows on the page are byte-identical once indentation is normalised, and the
+hero's children sit two spaces deeper only because it lives inside
+`.heroB-copy > .wrap` rather than `.wrap`.
+
+```
+row 0  hero           child indent 12
+row 1  what-we-fix    child indent 10
+row 2  real-repairs   child indent 10
+row 3  start          child indent 10
+every one:  tel:+12153225350  +  mailto:contact@tricountycollision.com
+            class="btn"       +  class="btn btn-ghost"
+```
+
+`/collision-repair/` is untouched. Its only changed line is the cache stamp.
+
+#### The alignment mechanism, and why it is scoped
+
+**`#what-we-fix` got its centring free and has nothing written for it.** It is
+a `.dark` band, so the existing `.dark .cta-row` rule centres it and sets its
+44px top margin, exactly as it does for `#start`. That is the mould working.
+
+**`#real-repairs` needed a rule, and three existing mechanisms were checked
+first:**
+
+```
+.dark .cta-row      centres, but only on a dark ground. Not this section.
+.prose + .cta-row   centres, but only as the ADJACENT SIBLING of a .prose.
+                    This row follows .repairs-grid, so it cannot fire.
+.sec-head           centres the heading, not the row.
+```
+
+None reaches a light-ground row at the foot of a section, so the rule shipped
+is `#real-repairs .cta-row { justify-content: center; }`.
+
+**It is scoped on purpose rather than as a shortcut.** The base `.cta-row` is
+left-aligned and has to stay that way: the hero's copy is anchored left inside
+the scrim and the whole flush-left hero reads off that edge, so centring the
+base rule would move the one thing the design turns on. The narrowest change
+that centres this row is a rule for the one section that needs it. **If a
+second light section ever wants the same thing, that is the moment to
+generalise**, and the comment in `site.css` says so.
+
+**One difference between the two new rows, recorded rather than smoothed
+over.** `#what-we-fix` sits 44px below the grid because `.dark .cta-row` says
+so; `#real-repairs` sits 26px below the pairs because that is the base
+`.cta-row` margin. Both read correctly at both widths. Matching them would
+have meant putting a margin into the scoped rule, which is more restyling than
+the ruling asked for, so it was left alone and flagged here.
+
+#### The contrast proof, for the pair that had not shipped anywhere
+
+`#real-repairs` is a plain section, so its ground is `--silver`, the page. The
+ghost button on that ground is new to this build.
+
+```
+                                             measured   floor
+ghost label    --ox #691C17 on --silver       10.50:1     4.5
+ghost border   --ox on --silver               10.50:1     3    (non-text graphic)
+.btn fill      --ox on --silver               10.50:1     3    (shape)
+.btn label     --silver on --ox               10.50:1     4.5
+```
+
+The label floor is **4.5 and not 3:1**, because `.btn` is 17px at weight 700
+and WCAG's large-text cut is 18.66px bold. It clears by more than double
+either way, and the figure matches the 10.50 already in the palette table, so
+nothing had to be invented and no new button style exists.
+
+#### What it costs
+
+```
+                     1440                      390
+                before  after  delta     before  after  delta
+#what-we-fix      1085   1191   +106       1658   1840   +182
+#real-repairs     2640   2728    +88       3157   3321   +164
+#start             439    439      0        444    444      0
+```
+
+**At 390, against the 604px usable height:** `#what-we-fix` goes 2.74 to
+**3.05 screens**, `#real-repairs` 5.23 to **5.50**. The page is 346px longer
+at 390 and 194px longer at 1440.
+
+#### The phone behaviour, and one thing the brief expected that does not exist
+
+The brief expected the pair "stacked full-width on the phone". **The site has
+never done that and there is no rule for it anywhere**: `.cta-row` is
+`flex-wrap: wrap`, so buttons keep their natural width and wrap onto their own
+lines. Measured at 390, all four rows are identical:
+
+```
+row 0 hero          wrapped  btnW [199, 167]
+row 1 what-we-fix   wrapped  btnW [199, 167]
+row 2 real-repairs  wrapped  btnW [199, 167]
+row 3 start         wrapped  btnW [199, 167]
+```
+
+So the new rows **do** match the hero's behaviour, which is what the ruling
+actually required; "full-width" described something the hero does not do.
+Inventing a full-width rule would have restyled the hero too, or needed a
+second scoped rule for a look nobody has approved. Reported instead.
+
+#### The fold, unchanged
+
+Both additions sit far below the fold, and both viewports measure exactly what
+they measured before this commit:
+
+```
+                    usable   .cta-row bottom   verdict
+390x664 staging      604          613          misses by  9
+390x664 cutover      604          556          clears by 48
+360x640 staging      580          654          misses by 74
+360x640 cutover      580          597          misses by 17
+```
+
+The 17px miss at 360x640 is the false record already flagged in 3.29 against
+CLAUDE.md's "clears by 2". **Not touched here**, per the ruling: it wants its
+own sitting, and the hero was not to be moved for it.
+
+**No CSS was deleted.** The `site.css` diff is 24 added lines and zero
+removed.
+
 ---
 
 ## 4. The claims list
