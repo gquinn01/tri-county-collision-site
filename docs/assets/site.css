@@ -1326,18 +1326,45 @@ a.svc-card h3 { color: var(--ox-tx); }
   list-style: none; margin: 40px 0 0; padding: 0;
 }
 .fix { position: relative; padding-bottom: 16px; }
-/* 30px, AND THE APPROVED CHIP SCALE IS 17px, so this is a recorded
-   deviation rather than a drift. The chips carry three repeated glyphs
-   inline beside their own label, where a reader identifies them by
-   position as much as by shape. These are eight DISTINCT glyphs
-   standing alone above a heading, and eight damage types have to be
-   told apart from each other. Drawn at 26px first and rendered: four of
-   the eight were unreadable, which is the failure already on record in
-   proposed-changes.md 3.11. The drawing grammar is unchanged from the
-   chips, a 24 viewBox with a 2 stroke and round caps and joins. */
-.fix svg {
-  display: block; width: 30px; height: 30px;
-  fill: none; stroke: var(--mark); stroke-width: 2;
+/* THE MARKS ARE A LICENSED SET NOW, AdobeStock_1964340052, and they are
+   FILLED OUTLINES rather than strokes: the file carries 253 fill
+   operators and ZERO stroke operators, so `fill: none; stroke: ...`
+   renders them as nothing at all. Line weight is therefore a property of
+   the artwork and of the scale it is drawn at, and not something this
+   stylesheet can set. Adopted 2026-09-22, proposed-changes.md 3.28.
+
+   THE SCALE IS DERIVED AND NOT CHOSEN. The set carries ONE stroke,
+   measured at 9.61 to 10.08 across three marks and taken as 9.8 set
+   units. The chips are 17px at stroke-width 2.1 on a 24 viewBox, which
+   is 1.4875 device px, and the set's own stroke equals that at 54.64px
+   per 360 set units. The band ships 56 per 360, so every mark's line is
+   1.5244 device px, 2.5% off the chips.
+
+   THIS RETIRES THE BAND'S OLD 2.5px GLYPHS. Those were 30px at
+   stroke-width 2, the heaviest icons on the site and a recorded
+   deviation from the 17px chip scale. The band now joins the chip
+   grammar instead of being the outlier, which is the argument for the
+   size rather than a taste for bigger icons.
+
+   NATURAL PROPORTIONS AT ONE SCALE. Every mark keeps its own aspect, so
+   the two-car compositions are simply wider than tall. A square box was
+   tried and rejected: it shrinks the wide marks to fit and drops their
+   stroke to 0.58 and 0.68 of everyone else's, which is visible in a row
+   that stands side by side. scripts/prepare-damage-icons.py holds the
+   arithmetic and writes each mark's width and height onto its own svg.
+
+   The box is 46px and BOTTOM-ALIGNED, so the cars share a ground line
+   and the headings below them stay level. The tallest mark is 45.4px and
+   the script fails rather than let a re-run grow one past the box. */
+.fix .ico { display: flex; align-items: flex-end; height: 46px; }
+.fix svg { display: block; }
+/* The set's own marks are fill. The three matched redraws are authored as
+   strokes at the set's own 9.8 units, in the same set-unit viewBox, so the
+   two render at one weight by construction rather than by anybody having
+   matched them up by eye. */
+.fix svg .f { fill: var(--mark); stroke: none; }
+.fix svg .s {
+  fill: none; stroke: var(--mark); stroke-width: 9.8;
   stroke-linecap: round; stroke-linejoin: round;
 }
 .fix h3 { font-size: 1.06rem; margin: 14px 0 .35em; color: var(--silver); }

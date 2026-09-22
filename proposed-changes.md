@@ -2505,6 +2505,238 @@ contact band having scrolled through a much longer page. Whether the same
 diagnosis applies is a judgement about that page, and it is the client's to
 make rather than a consistency edit to make on his behalf.
 
+### 3.28 The eight damage marks become a licensed set. BUILT 2026-09-22
+
+The eight hand-drawn glyphs in We Fix It All are retired and replaced with
+marks from a licensed icon set, plus three matched redraws for the concepts
+the set does not contain. Greg licensed the set and ruled the approach;
+every number below was measured here.
+
+#### The icon saga, in order
+
+**The services set was evaluated and archived.** `AdobeStock_57374576`, "Big
+set car repair icons", 137 marks, provenance clean: Illustrator CS6, 2013, no
+AI markers, intact metadata. **Evaluated in the strategy chat on 2026-09-18
+and rejected there**, on two grounds: concept coverage, because six of our
+eight damage types have no mark in it, and at-size legibility, because its
+wide two-car compositions are unreadable at 30px. That evaluation is Greg's
+and it is recorded here as history. **It was not re-run**, and nothing in this
+build depends on it.
+
+**The damage set was licensed and adopted.** `AdobeStock_1964340052`, "Car
+Accident", 36 editable line icons, licensed 2026-09-22.
+
+#### The provenance, and the limit under it
+
+Read before a line was built on it, through `scripts/audit.py`'s own reader,
+which is the standing step rather than a favour to a file somebody already
+trusts:
+
+```
+AdobeStock_1964340052.ai   2,030,991 bytes
+  IPTC DigitalSourceType   (none declared)
+  XMP CreatorTool          Adobe Illustrator CC 2015 (Windows)
+  C2PA manifest            none, referenced or embedded
+  generator string         none anywhere in 2MB
+  VERDICT                  clean, no AI tell
+```
+
+That confirms the strategy chat's pre-check against the same reader the build
+uses. **The .ai is not in this repo** and never was: it stays outside like
+every licensed source, and `scripts/prepare-damage-icons.py` takes its path as
+an argument.
+
+**The limit is real and this is where it is written down.** The eight ship as
+**inline SVG**, which carries no metadata, so there is no derived file for the
+audit's provenance reader to scan and **a clean audit says nothing about
+them**. The reading above is the floor under them. This is the same
+arrangement the car render has in 3.22, and it is stated for the same reason:
+a gate that cannot fire should not look like one that passed.
+
+#### What the file actually turned out to be, and what it cost
+
+**The marks are filled outlines, not strokes.** The content stream carries
+**253 fill operators and zero stroke operators**, and no line-width setting
+anywhere. Dropped into the old rule, which was
+`fill: none; stroke: var(--mark); stroke-width: 2`, every one of them would
+have rendered as **nothing at all**. The brief described the set as "stroke
+style matching the section's existing grammar"; it does not, and the grammar
+had to move rather than the artwork.
+
+**The set carries ONE stroke weight**, recovered by measuring dark-run widths
+in a large render and dividing by each mark's own normalising scale:
+
+```
+icon 19   10.08 set units        icon 07   9.61        icon 25   9.61
+```
+
+taken as **9.8 set units**.
+
+#### The size, which is a derivation and not a preference
+
+The first pass normalised each mark to its own bounding box, which destroyed
+that single weight: the two-car marks came out at 0.40 units and the
+single-subject ones at 0.75. **That was an error in the pipeline, not a
+property of the set**, and it is recorded because the first round of
+judgements was made on it.
+
+At the recorded 30px the set's own stroke is **0.82 device px**. Against the
+site's other icons:
+
+```
+chips        17px at stroke-width 2.1 on a 24 viewBox   1.4875 device px
+this band    30px at stroke-width 2   on a 24 viewBox   2.5000 device px
+set at 30px                                             0.8167 device px
+```
+
+So 30px was never available: the marks would have shipped as hairlines, 45%
+lighter than the chips and 67% lighter than the glyphs they replace.
+
+**The set's own stroke equals the chip stroke at 54.64px per 360 set units.**
+The band ships **56 per 360**, which is 0.155556 px per set unit and puts
+every mark at **1.5244 device px, 2.5% off the chips**. Greg ruled on this
+with the arithmetic in front of him.
+
+**What that buys is not bigger icons, it is consistency.** The band's old
+2.5px glyphs were the heaviest icons on the site and a recorded deviation from
+the 17px chip scale. The band now joins the chip grammar instead of being the
+exception to it.
+
+#### Natural proportions, and the square box that was rejected
+
+A square box forces the wide two-car compositions to shrink to fit, and the
+shrink lands on their stroke:
+
+```
+icon 07   528 units wide   fit 0.681   stroke 0.68 of everyone else's
+icon 08   618 units wide   fit 0.582   stroke 0.58 of everyone else's
+icon 09   502 units wide   fit 0.717   stroke 0.70 of everyone else's
+```
+
+A 42% difference standing side by side in one row is visible, and no amount of
+size fixes it, because the crowding is in set units and therefore
+scale-invariant. **Every mark keeps its natural proportions at one scale
+instead**, so the two-car marks are simply wider than tall and all eight carry
+an identical 1.524px line. Greg ruled this too.
+
+#### The mapping
+
+| Item | Ships | Source | Alternative shown |
+|---|---|---|---|
+| Minor collisions | icon 08 | set | icon 07 |
+| Major collisions | icon 06 | set | icon 21 |
+| Cracked windshields | icon 01 | set | none |
+| Broken side and rear glass | redraw | **matched redraw** | none in the set |
+| Door dings and dents | icon 25 | set | none |
+| Bumper damage | icon 04 | set | icon 31 |
+| Scratched and chipped paint | redraw | **matched redraw** | none in the set |
+| Hail damage | redraw | **matched redraw** | none in the set |
+
+**Five from the set, three redrawn.** The three alternatives validated at size
+and were not shipped; they are printed on every run of the pipeline so the
+choice stays visible rather than becoming a fact nobody remembers deciding.
+
+- **Minor collisions, 08 over 07.** Both are two cars nose to nose. 07 carries
+  a burst between them and 08 carries light impact ticks. 08 ships because it
+  is the lighter drawing, which is what "minor" means, and because it leaves
+  the burst to Major, which sits directly beside it. **Both are nose to nose
+  rather than rear-end**, which is what the brief called them; 09 is the actual
+  rear-end mark and it is busier than either.
+- **Major collisions, 06 over 21.** 21 is cleaner at every size and 06 is the
+  densest mark shipping. 06 ships because it shows actual structural crush,
+  which is what "frame straightening, structural repair and full panel
+  replacement" claims. 21 is the one to take if the density ever reads as
+  noise.
+- **Bumper damage, 04 over 31.** 31's burst sits under the body and reads as
+  undercarriage. 04's sits at the bumper, which is the item.
+
+**Hail was a gate and the gate closed.** The brief made it conditional on an
+impact-from-above mark reading honestly as falling objects at size. **There is
+no such mark in the 36.** The nearest, icon 24, is a hazard triangle with
+engine smoke. So hail went to a redraw rather than to a mark that would have
+had to be argued into meaning.
+
+#### The three matched redraws
+
+Drawn in the set's own hand: the same 9.8-unit stroke, the same round caps and
+joins, the same corner radii. **Two of the three are built on the set's OWN
+car**, lifted whole from icon 29, so one hand appears across all eight by
+construction rather than because somebody matched them up by eye.
+
+- **Scratched and chipped paint.** The donor car untouched, plus one scratch
+  and two filled flakes. **The scratch is a zigzag rather than a straight
+  line**, because at a single stroke weight a straight line reads as a body
+  crease, which the set's own cars already carry. The flakes are **filled**
+  because a 10-unit dash is 1.6px at the ruled size and simply disappears.
+- **Hail damage.** The same car dropped 78 units down the box, with six filled
+  stones and six **slanted** travel lines above them. Stones are filled
+  because an 18-unit ring at 9.8 of stroke has no hole left in it. The first
+  pass put vertical lines directly above each stone and the pair read as a pin;
+  the slant reads as travel.
+- **Broken side and rear glass.** **A door, not the donor car, and that is a
+  measurement rather than a preference.** The donor's rear side window is 65 x
+  32 set units, which is **10.1 x 5.0 device px** at the ruled scale, and no
+  crack survives that. It also has to read apart from icon 01, which is a
+  cracked windshield sitting in the same row of eight. The wing mirror is what
+  makes a door unmistakably a car door. **It is a different zoom level from the
+  other seven, and that is the cost of the measurement.**
+
+**Every placement on the donor was measured, not eyeballed.** The car's panel
+between the wheels was probed row by row: solid beltline at y 69..75, free
+from y 78..132 apart from the door-gap line, solid sill at y 135..141.
+Everything added sits inside y 78..132. The first pass put the scratch at y 123..136 and it collided
+with the sill.
+
+#### What it costs, measured through the iframe method
+
+`scripts/mobile-check.md` exists because headless Chrome will not lay a page
+out below about 500px, and **this session walked straight into that trap**: a
+`--window-size=390` render laid out at 500 and cropped to 390, text appeared
+clipped mid-word, and it looked exactly like a horizontal overflow bug. It is
+not one. Measured properly, in an iframe of the width being tested:
+
+```
+                       before      after     delta
+1440   #what-we-fix      1053       1085       +32     4 across, 2 rows
+ 390   #what-we-fix      1530       1658      +128     1 column, 8 rows
+```
+
+The before figures match what 3.22 recorded to the pixel, which is the check
+that the method is measuring the same thing.
+
+**At 390 that is 2.74 screens against the 604px usable height, up from 2.53.**
+The band already ate more than two and it now eats a little more. Flagged
+rather than fixed, for the same reason 3.22 flagged it: one column at 390 is
+the client's sizing. Two columns would still cut it to four rows.
+
+**Neither width overflows.** `scrollWidth` equals the viewport at both, and
+every item sits at L20/R370 at 390, symmetric insets, which is what
+`mobile-check.md` calls a correct render.
+
+#### The pipeline, and the guard it now carries
+
+`scripts/prepare-damage-icons.py`. It reads the provenance first and refuses
+to process a flagged file, parses the .ai as PDF through the standard
+library's zlib alone, walks the content stream tracking the CTM, splits the
+page on its own occupancy gaps into the cover illustration plus a 6 x 6 grid,
+emits the chosen marks at one scale, builds the three redraws, patches
+`docs/index.html`, and prints every number it used.
+
+**It failed destructively once and now cannot.** The first patcher matched
+from `<li class="fix">` to a named `<h3>` with a non-greedy `.*?`, which spans
+every item in between, because `.*?` stops at the first match of what follows
+it and not at an item boundary. It **ate seven of the eight items** and left
+the page with one. The page was restored from git. The patcher now cuts the
+page into items first and patches each inside its own bounds, and before a
+byte is written it proves that the item count is unchanged and that all eight
+headings still appear exactly once. **A rule worth keeping became a check**,
+which is rule 8, and it is a check inside the one script that can do the
+damage.
+
+**Headings and copy are untouched**, which the diff shows: exactly eight lines
+changed, all of them `<svg>` elements. The patch is keyed on each item's own
+`<h3>`.
+
 ---
 
 ## 4. The claims list
