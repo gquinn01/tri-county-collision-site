@@ -3864,6 +3864,67 @@ cannot answer both.
 HEAD and the working tree measure identically at both viewports and both
 banner states.
 
+### 3.37 The description names the credential in full. BUILT 2026-09-23
+
+The sentence 3.36 stopped on. Client-approved wording, 2026-09-23, closing
+that gate.
+
+#### The pair
+
+```
+before  Trusted collision repair in Southampton, PA. ASE & I-CAR Gold
+        certified, lifetime warranty, free estimates. Serving Bucks &
+        Montgomery County. (215) 322-5350.                      158 chars
+
+after   Collision repair in Southampton, PA. ASE & I-CAR Gold Class
+        certified, lifetime warranty, free estimates. Serving Bucks &
+        Montgomery County. (215) 322-5350.                      156 chars
+```
+
+**"Trusted " leaves the front and " Class" joins the credential.** The word
+that went was puffery, and its going lets the keyword lead. The word that
+arrived is the credential's actual name, which this page's chips (3.36) and
+its own FAQ answer already use.
+
+**156 characters, machine-counted**, by the same check that reports it in the
+audit: "Meta description present and a good length (156 chars)." The limit is
+160, so it clears by four where the compressed form would have exceeded it by
+four.
+
+#### All three mirrors, proved identical
+
+The sentence lives in three places and they are byte-identical after the edit,
+by SHA-256 of the decoded string:
+
+```
+meta description    156 chars   sha256 041c2c44137437e3
+og:description      156 chars   sha256 041c2c44137437e3
+JSON-LD WebPage     156 chars   sha256 041c2c44137437e3
+```
+
+**The stored bytes differ by context and that is correct**, not a discrepancy:
+the two `<meta>` attributes hold `&amp;` because an HTML attribute must, and
+the JSON-LD holds a raw `&` because JSON must not. The edit rewrote each in
+its own encoding. **Byte-identical is a property of the sentence, not of the
+file.**
+
+#### Nothing else moved
+
+Three lines changed, and the whole-file word delta accounts for exactly them:
+
+```
+added     content="Collision x2, "Collision x1, Class x3
+removed   content="Trusted   x2, "Trusted   x1, collision x3
+```
+
+The three `collision` removals are the lowercase word being absorbed into the
+new capitalised leading `Collision`. Nothing else in the file moved.
+
+**The JSON-LD Service description is untouched** and still names Gold Class,
+as it already did. **No compressed form of the credential remains anywhere**
+in `docs/` or `templates/`. **"Trusted" now appears zero times on either
+page**; that sentence was its only home. No CSS, so no restamp.
+
 ---
 
 ## 4. The claims list
