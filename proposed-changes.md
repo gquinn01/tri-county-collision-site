@@ -4141,6 +4141,122 @@ home 390x664  7d5fd337    home 360x640  8b8b68f3
 coll 390x664  bb9257cb    coll 360x640  911a69f6
 ```
 
+### 3.40 The marks lead, and the heading captions them. BUILT 2026-09-23
+
+On `/collision-repair/`, `<section id="brands">` moves from **under**
+`#factory-certified`'s head to **above** it, becoming the first child of that
+section's `.wrap`. Client ruling 2026-09-23.
+
+**The relationship inverts and nothing else does.** Before, the sub announced
+the strip: you read "Twelve manufacturers, and the procedures that come with
+them" and then saw twelve marks. Now you watch the marks go by and the
+heading tells you what you just watched. The words did not move, the strip's
+own markup did not move, and no rule was written for either arrangement.
+
+#### What actually changed, proved rather than asserted
+
+The diff is one block relocated and one comment rewritten. Everything the
+block contains is byte-identical:
+
+```
+<section id="brands">…</section>   sha256  HEAD ef0636a7d0a6   NOW ef0636a7d0a6   identical
+<div class="sec-head">…</div>              identical
+visible word multiset, whole page          identical  (2933 tokens)
+```
+
+**The strip is still the page's only one**, and the brand check agrees:
+`scripts/audit.py` reports 2 strips of marks site-wide, 8 mentions in visible
+text and 1 in JSON-LD, all saying 12.
+
+The comment was rewritten because it argued for the old order in its own
+words. It now records the ruling, and it keeps the half that is **enforced
+rather than argued**: the section names no manufacturer in text, the stat band
+higher up the page names all twelve, and the brand check wants every count on
+the page agreeing rather than merged.
+
+#### A pure reorder, measured
+
+Nothing reflowed. Both widths, HEAD against the working tree:
+
+```
+                 #factory-certified h      PAGE END
+1440   HEAD              1065               13514
+1440   NOW               1065               13514
+ 390   HEAD              1521               20722
+ 390   NOW               1521               20722
+```
+
+**Section height delta 0 at both widths**, which is what a reorder inside one
+`.wrap` should cost and is the reason no spacing was tuned.
+
+The gaps, for the record:
+
+```
+                       section-top -> strip    strip -> sec-head   sec-head -> prose
+1440   HEAD                  204                    -242                 166
+1440   NOW                    88                       0                  40
+ 390   HEAD                  197                    -232                 123
+ 390   NOW                    48                       0                  40
+```
+
+**The negative numbers in the HEAD rows are not a defect, they are the probe
+reading backwards**: it measures `sec-head.top - brands.bottom`, and in the old
+order the head sat above the strip. They are printed rather than hidden so the
+two columns are the same measurement.
+
+#### The spacing was left alone, on purpose
+
+The brief allowed a margin if the arrangement needed one. It did not.
+`#brands` carries `margin: 0 / 0` and its own `padding: calc(var(--pad) * .55)`
+— **48.4px at 1440, 26.4px at 390** — so the air above it is the section's top
+padding plus the strip's, and the air below is the strip's padding meeting the
+head. That is why the raw `strip -> sec-head` gap reads 0 while the rendered
+air is the strip's own 48.4px. Rendered and judged at both widths before
+deciding: ink testimonials, then ground, then air, then the marks, then the
+heading. **No stylesheet was touched, so there is nothing to restamp.**
+
+#### Reduced motion, rendered in its resting state
+
+Forced with `--force-prefers-reduced-motion` at both widths. The strip rests as
+the static wrapped centred row the cascade gives it, **all twelve marks
+visible**, now leading the section:
+
+```
+1440   two rows, 7 + 5
+ 390   three rows, 4 + 4 + 4
+```
+
+Nothing in the continuous-motion amendment moved. The resting state is still
+the base in the cascade rather than something a media query restores, and the
+move is markup order, which the animation never read.
+
+#### The fold, unchanged
+
+Measured with the viewport-sized probe from `mobile-check.md`'s second trap,
+`innerHeight` printed beside the answer in every run so a wrong basis would be
+visible:
+
+```
+390x664  usable 604   with banner 580  CLEARS by 24    without 523  CLEARS by 81
+360x640  usable 580   with banner 579  CLEARS by  1    without 521  CLEARS by 59
+```
+
+Identical HEAD and now; the four reports hash byte-identical:
+
+```
+390x664  a85b1f87        360x640  92d39f42
+```
+
+Expected, since `#factory-certified` sits 9,098px down the page at 1440, but
+measured rather than assumed.
+
+#### Home untouched
+
+`git status` carries one tracked change, `docs/collision-repair/index.html`.
+`docs/index.html` and `docs/assets/site.css` are unmodified. The homepage's own
+strip keeps its position under its head; this ruling was made about this
+section and is recorded in this section's comment, not in the mold.
+
 ---
 
 ## 4. The claims list
