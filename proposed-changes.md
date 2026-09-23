@@ -3451,6 +3451,220 @@ it. **A chip does not ask** — it cannot be clicked, it is not a target, it
 names which photograph you are looking at. Nothing else was extended in this
 commit.
 
+### 3.34 The collision page takes the proof, the brands, and a wreck of its own. BUILT 2026-09-23
+
+Three client rulings of 2026-09-23, from the template conversation. Real
+Repairs and the brand strip graduate from home-page sections into components a
+service page may carry; `/collision-repair/` takes both; and its stock hero is
+replaced with a real photograph.
+
+#### Real Repairs, and the gate that makes the reuse honest
+
+The home section's markup, adapted **for path depth only**: same five pairs,
+same alt text (checked string for string against the home page), same heading,
+sub and intro copy, same id. No new claim and no new word.
+
+**A SERVICE PAGE'S PAIRS SHOW THAT SERVICE'S JOBS.** That is the gate, and it
+is written on the section in `docs/collision-repair/index.html` and again on
+the optional block in `templates/service-page-template.html`, because the
+template is where somebody will copy it from. All five pairs are collision
+jobs, so on this page they are its own evidence. **A page whose service has no
+photographs yet ships WITHOUT the section** — never with stock, never with
+another service's work. A glass page showing collision pairs is a claim the
+shop did not make.
+
+**Placed directly after `#process`**, so the page reads "here is how we work,
+here is what it produces."
+
+**NO CTA ROW at its foot**, and that is the one structural difference from the
+home copy. The home section carries the pair because the front door had no ask
+between its hero and `#start` (3.30). This page already carries two act bands,
+and a third ask inside a proof section is the duplication 3.27 removed.
+
+**The `.ba` grammar arrived free**, as predicted: print shadows and the
+branded AFTER chip are shared CSS, and no rule was added for this page.
+`#real-repairs .cta-row { justify-content: center }` is home-scoped and stays
+home-scoped — it has nothing to centre here.
+
+#### The chips, re-measured on this page
+
+3.23's perimeter machinery, calibrated first: both magenta marks at known page
+coordinates were found where they were put, so page and image coordinates are
+1:1, and the page was served over HTTP so the chips are their real width.
+
+```
+1440                                  390
+chip  rect y   samples <3:1  worst    rect y   samples <3:1  worst
+ 1     2391      210     0   3.46      3980      210     0   3.26
+ 2     2801      212     0   3.24      4488      212     0   3.28
+ 3     3211      212     0   3.28      5062      212     0   3.25
+ 4     3721      210     0   3.25      5702      210     0   3.28
+ 5     4231      210     0   3.25      6342      210     0   3.28
+       worst           3.24                    worst          3.25   floor 3.0
+```
+
+**Zero samples below 3:1 at either width**, 2,108 positions in total. Label and
+internal edge are 10.50 and photo-independent. The numbers sit where 3.33's
+did, a little over three, for the reason recorded there.
+
+**One measurement bug caught and fixed**: the probe's own report panel is
+`#0f0`, which is the second chip's mask colour, so the first run merged chip 2
+with the panel and reported a rect 719px wide. The search is now bounded to
+the page width. Nothing shipped on the bad reading.
+
+#### The brand strip, and the motion law's extension
+
+Placed **under `#factory-certified`'s head**, because that sub counts the
+twelve in words and the strip shows which twelve. The section does not name
+them in text, so nothing is repeated. **The stat band higher up the page does
+name them, and those words stay**: `scripts/audit.py`'s brand check wants every
+count on the page agreeing, not merged. It reports **2 strips of marks, 8
+mentions in visible text and 1 in JSON-LD, all saying 12**.
+
+**THE CONTINUOUS-MOTION AMENDMENT IS EXTENDED.** It read "`#brands` only ... on
+this page or any other", which made the strip a property of the home page. On
+the client's ruling it is a **component**, the one thing on this site that may
+loop, and **a page carries at most one**. Recorded in CLAUDE.md's
+continuous-motion amendment and in the motion note in `site.css`, dated and
+attributed.
+
+**Every limit travels verbatim, and by construction rather than by copying
+care**: the markup is the same and so is the CSS. The animation exists only
+inside `@media (prefers-reduced-motion: no-preference)`, so the static wrapped
+row is the base in the cascade; `.brandstrip:hover` and `.brandstrip:focus-within`
+pause it; there is no JavaScript. **Rendered in the reduced-motion state**: the
+strip rests as a wrapped static row with all twelve marks visible, seven on
+one line and five on the next.
+
+**The test for anything else that wants to loop is unchanged, and the answer is
+still expected to be no.**
+
+#### The hero, and a second real photograph
+
+`accent-minor-collision-repair.jpg` is replaced by a white GMC SUV with its
+front end crushed, shot outside the shop and supplied by the client.
+
+```
+source   490357663_1519359622667520_8523311604682603809_n.jpg   273,173 bytes
+         1440x1080, APP2 ICC + APP13 8BIM, no APP1 so Exif was stripped upstream
+         DigitalSourceType, CreatorTool, C2PA: none. Clean.
+shipped  hero-wrecked-gmc-outside-shop.jpg   1200x800 at q62, 270,216 bytes
+         98.9% of the source, APP0 JFIF only, decodes to contract both ways
+```
+
+The supplied original never entered a commit; `git log --all` confirms no file
+of that name was ever added.
+
+**The pipeline was extended, not forked.** `scripts/prepare-hero-photo.py` now
+carries a `FRAMES` table, one entry per photograph, because a hero crop has to
+keep a particular vehicle in a particular frame and that is a fact about the
+photograph. **The home hero rebuilds byte-identically through the
+parameterised script**, which is how the refactor was checked.
+
+**How the two crops were obtained is not the same, and that is recorded rather
+than smoothed over.** The home frame's car was found by a saturated-red scan.
+**No colour test separates this frame**: the vehicle is white on grey asphalt
+under a low sun, and a luma-plus-saturation scan scores the sunlit asphalt and
+the sky as bodywork just as strongly. The extents — vehicle rows 66..810 —
+were **read off the decoded frame under a 120px coordinate grid**. That is an
+inspection, not a scan, and the script says so.
+
+#### The plate check fired again, and it exposed a gap in its own design
+
+19 boxes met all three conditions. Inspected at magnification: **backlit sky
+through bare trees** (15), the **corrugated building and chain-link fence**
+(3), and **the subject's own front alloy wheel on sunlit gravel** (1). The
+background parked cars were looked at too, although they did not flag: they
+are front-facing and Pennsylvania issues rear plates only. No plate anywhere.
+
+**The thresholds were not touched.** What the check lacked was a path for the
+usual answer. Its failure text offered only "redact it if it is a plate" and
+had nothing to say for "looked at it, it is not one". So a frame may now carry
+**inspected-and-cleared regions**, each with a sentence naming what the thing
+actually is. This is deliberately not a threshold: the numbers do not move,
+**every suspect outside a cleared region still fails the build**, and clearing
+one is an edit to the script that names the region and the reason, which
+somebody reviews. A per-frame exception that has to be written down is a
+different thing from a global limit that has been loosened.
+
+#### The scrim, re-run with the ox rules
+
+Per the readability amendment, on the ox hero, where **there is no secondary
+text tone** — `.heroB--ox .lead` is `--silver`, not `--silver-2` — so all
+three runs are measured against `--silver`.
+
+```
+                     HEAD (stock)   NOW (GMC)   floor   target
+1440  worst glyph        9.27          9.52      4.5       7
+ 390  worst glyph        9.46          9.52      4.5       7
+```
+
+**The scrim did not need to deepen** and its values are unchanged. The new
+photograph measures slightly better at both widths.
+
+**`object-position` ships unchanged at `50% 42%`, and the reason is that it is
+SHARED.** `.heroB-photo` sets it once for both heroes; there is no `--ox`
+override. Changing it for this page would move the home hero too and would
+need both re-measured. At 1440 the damaged front fills the right of the frame
+where the scrim fades, which is the composition the hero is built for. **At 390
+the photograph is almost entirely behind the scrim**, as it is on the home
+page, and the sliver above the breadcrumb shows the treeline and the SUV's
+roof rather than the crushed front. No framing choice changes that; the phone
+scrim is the reason.
+
+#### The old asset, and two references outside this brief
+
+`grep accent-minor-collision-repair` before touching anything returned **seven**
+references, not the one the swap assumed:
+
+```
+docs/collision-repair/index.html   og:image (47), JSON-LD url (236), hero (399)
+docs/index.html                    og:image (47), JSON-LD url (243),
+                                   services grid (395, 416)
+```
+
+The assumption that the home services grid still uses it **holds**, so the
+asset stays and nothing was deleted. **But the collision page's own og:image
+and JSON-LD image still point at the stock hero**, which this brief did not
+cover. They are untouched and flagged here: the page's social preview and its
+schema image now show a photograph its hero no longer uses. That is a decision
+for the client, not a silent edit to structured data.
+
+#### What it costs
+
+```
+                HEAD      NOW     delta
+1440 page      10748    13514    +2766
+ 390 page      17483    20722    +3239
+ 360 page      18638    21675    +3037
+```
+
+**At 390 that is 28.95 to 34.31 screens** against the 604px usable height. The
+page was already long; it is now much longer, and the two components are the
+whole of it.
+
+**The hero is unchanged in height at every width** (562 at 1440, 560 at 390 and
+360), because the `<img>` keeps `width="1200" height="800"`, `fetchpriority`
+and `decoding`. **The fold is identical to HEAD**, both viewports, both banner
+states:
+
+```
+390x664  629 / 572      360x640  629 / 572
+```
+
+The collision page clears 360x640 by 8 in the cutover state, unlike the home
+page, which misses by 17 for the reason flagged in 3.29.
+
+**The home page is byte-identical except its cache stamp**, and the
+site-wide asset provenance check now reads **30 of 30 images with no
+AI-generation marker**.
+
+#### The Altima, considered and set aside
+
+A second photograph was offered for the hero. It was set aside on composition,
+and because **it carries a customer's name on the glass**. It remains a
+candidate for a future before/after pair if its after-photo mate exists.
+
 ---
 
 ## 4. The claims list

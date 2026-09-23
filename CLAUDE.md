@@ -642,10 +642,22 @@ asked for, and it is the largest one the motion law carries, because
 "nothing loops" was the rule.
 
 **`#brands` only**: the twelve manufacturer marks, drifting left at about
-40 seconds a cycle, directly after the testimonials. No second strip, no
-ticker, no carousel, no autoplaying anything, on this page or any other. A
-thing that wants to loop needs its own amendment with its own date, here and
-in `site.css`, and the answer is expected to be no.
+40 seconds a cycle. No second strip, no ticker, no carousel, no autoplaying
+anything. A thing that wants to loop needs its own amendment with its own
+date, here and in `site.css`, and the answer is expected to be no.
+
+**Extended 2026-09-23 on the client's ruling: the strip is a COMPONENT, and a
+page carries at most one.** That sentence used to end "on this page or any
+other", which made the strip a property of the home page. It is not — it is
+the one thing on this site that may loop, and a service page may carry one.
+`/collision-repair/` now carries it inside `#factory-certified`, whose subject
+it is. **Every limit travels with it, verbatim**: transform only, pauses on
+hover and focus-within, rests as a wrapped static row with all twelve marks
+visible under `prefers-reduced-motion` with that resting state the base in the
+cascade, and no JavaScript at all. It is the same markup, not a second
+implementation; a copy that dropped one of those limits would be a new
+amendment rather than this one. **The test for anything else that wants to
+loop is unchanged and the answer is still expected to be no.**
 
 **Why this one earns it.** Twelve marks cannot be shown legibly across a
 phone. The alternatives are worse than motion: shrink them until nobody

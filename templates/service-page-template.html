@@ -319,7 +319,7 @@
     gtag('config', '{{GA4_ID}}');
   </script>
 
-  <link rel="stylesheet" href="{{ROOT}}assets/site.css?v=2f93d917">
+  <link rel="stylesheet" href="{{ROOT}}assets/site.css?v=37c31ced">
   <script src="{{ROOT}}assets/site.js?v=9b1fd397" defer></script>
 
   <!-- WHY: one @graph. The ProfessionalService node repeats the SAME @id
@@ -512,6 +512,60 @@
          real process is different. If the source page describes its
          process as prose rather than as steps, migrate the prose and
          delete this section. -->
+    <!-- ============ OPTIONAL: REAL REPAIRS ============
+         The home page's proof section, available to a service page as a
+         component since 2026-09-23. /collision-repair/ carries it; see
+         proposed-changes.md 3.34 for the build and the measurements.
+
+         THE GATE, AND IT IS THE WHOLE REASON THIS BLOCK IS COMMENTED OUT
+         RATHER THAN PRESENT:
+
+             A SERVICE PAGE'S PAIRS SHOW THAT SERVICE'S JOBS.
+
+         The collision page reuses the home pairs because all five ARE
+         collision jobs, so on that page they are its own evidence. A page
+         whose service has no photographs yet SHIPS WITHOUT THIS SECTION.
+         Never with stock, and never with another service's work: a glass
+         page showing collision pairs is a claim the shop did not make,
+         which is the prime law's failure wearing a nice layout.
+
+         If the pairs exist, copy the section from /collision-repair/,
+         correct the path depth, and keep the alt text with the frames it
+         describes. NO CTA ROW at its foot on a page that already carries
+         its act bands.
+    <section id="real-repairs">
+      ... five figure.ba pairs, each with .ba-stack > two .ba-frame ...
+    </section>
+         ============================================================ -->
+
+    <!-- ============ OPTIONAL: THE BRAND STRIP ============
+         The twelve manufacturer marks. Available to a service page as a
+         component since 2026-09-23, on the client's ruling.
+
+         IT IS THE ONE THING ON THIS SITE THAT MAY LOOP, AND A PAGE
+         CARRIES AT MOST ONE. The continuous-motion amendment in
+         CLAUDE.md and in the motion note in docs/assets/site.css is the
+         record; this block is not permission to add a second strip, a
+         ticker, a carousel or anything else that moves on its own.
+
+         EVERY LIMIT TRAVELS VERBATIM: transform only, pauses on hover and
+         focus-within, rests as a wrapped static row with all twelve marks
+         visible under prefers-reduced-motion with that resting state the
+         base in the cascade, and no JavaScript. Copy the markup, do not
+         re-implement it.
+
+         PUT IT WHERE ITS SUBJECT IS. On /collision-repair/ it sits under
+         #factory-certified's head, because that sub counts the twelve in
+         words and the strip shows which twelve. If a section NAMES the
+         twelve in text, the strip goes under the text and the words stay:
+         scripts/audit.py's brand check wants every count on the page
+         agreeing, not merged.
+    <section id="brands" aria-label="Manufacturer logos">
+      ... .brandstrip > .brandmarquee > three ul.brandtrack, the second
+          and third aria-hidden ...
+    </section>
+         ============================================================ -->
+
     <section id="how">
       <div class="wrap">
         <div class="sec-head">

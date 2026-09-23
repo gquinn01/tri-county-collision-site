@@ -362,12 +362,26 @@
    this file carries, because "nothing loops" was written twice above
    and a loop is now allowed.
 
-   IT IS ONE SECTION, NOT A PERMISSION. #brands, the twelve
+   IT IS ONE COMPONENT, NOT A PERMISSION. #brands, the twelve
    manufacturer marks, drifting left at about 40 seconds a cycle. No
-   second strip, no ticker, no carousel, no autoplaying anything, on
-   this page or any other. A thing that wants to loop needs its own
-   amendment with its own date, here and in CLAUDE.md, and the answer
-   is expected to be no.
+   second strip, no ticker, no carousel, no autoplaying anything. A
+   thing that wants to loop needs its own amendment with its own date,
+   here and in CLAUDE.md, and the answer is expected to be no.
+
+   EXTENDED 2026-09-23 ON THE CLIENT'S RULING: A COMPONENT, CAPPED AT
+   ONE PER PAGE. This paragraph used to end "on this page or any
+   other", which made the strip a property of the home page. It is not:
+   it is the one thing on this site that may loop, and a page may carry
+   ONE of it. /collision-repair/ now carries it, inside
+   #factory-certified, whose subject it is.
+
+   EVERY LIMIT TRAVELS WITH IT, VERBATIM. It is the same markup and the
+   same rules below, not a second implementation: transform only,
+   pauses on hover and focus-within, rests as a wrapped static row with
+   all twelve marks visible under prefers-reduced-motion with that
+   resting state the base in the cascade, and no JavaScript at all. A
+   copy that dropped one of those would be a new amendment, not this
+   one.
 
    WHY THIS ONE. Twelve marks cannot be shown legibly across a phone,
    and the two alternatives are worse than motion: shrink them until
