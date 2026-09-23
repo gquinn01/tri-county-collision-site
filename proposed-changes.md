@@ -4033,6 +4033,11 @@ and that one is the comment terminator the shadow note was extended through.
 `figure.ba` becomes a member of the lift, site-wide, on both pages. Client
 ruling 2026-09-23. **This is the mold growing a member, not a new effect.**
 
+*(WITHDRAWN 2026-09-23 by 3.41, on the client's ruling after live use. Every
+line below was built and proved as written; the client's eye then decided the
+pairs read better without it, and the membership was reverted in full. This
+record stays because what was done and why is worth keeping. See 3.41.)*
+
 #### Membership, proved as membership
 
 `.ba` was added to **eleven selector lists** and nothing else: the
@@ -4256,6 +4261,171 @@ measured rather than assumed.
 `docs/index.html` and `docs/assets/site.css` are unmodified. The homepage's own
 strip keeps its position under its head; this ruling was made about this
 section and is recorded in this section's comment, not in the mold.
+
+### 3.41 The pairs leave the lift, on the client's eye. BUILT 2026-09-23
+
+**3.39 is withdrawn.** `figure.ba` leaves the lift on every page. Client
+ruling 2026-09-23, after using it on the live staging build.
+
+**This is a withdrawal, not a correction.** 3.39 was built exactly as
+specified and worked exactly as proved: the membership was real membership,
+the selector count did not move, the exception was an absence rather than an
+override, and the swept rule rendered on both grounds. Nothing about it was
+wrong. The client looked at it in use and decided the pairs read better still,
+which is a judgement the record cannot make and the only person who can make
+it made it. **It is recorded forward, in a new commit with its own number.
+3.39 stays where it is and gains one line pointing here.** History is not
+rewritten to make a decision look like it was never taken.
+
+#### The restoration is exact, not approximate
+
+`docs/assets/site.css` was returned to its state at **662b89a**, the commit
+before 3.39, and the proof is that it diffs empty against it:
+
+```
+git diff 662b89a -- docs/assets/site.css     (no output)
+```
+
+That covers the whole file, not only the lift block, so there is no room for
+a line that came back slightly different. `grep` finds **zero** occurrences of
+`.ba` inside the lift block, lines 764 to 854. The eleven selector lists read
+`.card, .step, .svc, a.svc-card` again, and the banner comment's member list
+is `.card, .step and .svc`.
+
+#### The prose came out with the behaviour
+
+Law text describing behaviour that no longer exists is the kind of record that
+rots, so every sentence 3.39 wrote was removed with it:
+
+- the ox-on-dark exception paragraph in the lift block's `.dark .card::after`
+  comment, including the line saying that adding `.ba` there later would undo
+  the ruling;
+- the matching paragraph in `CLAUDE.md`, and `.ba` out of the lift's member
+  sentence in rule 7;
+- the hover-shadow sentence added to the `.ba img` not-broken note, which now
+  ends at "it is not broken." again and covers only the resting print shadow;
+- the lift paragraph in `templates/service-page-template.html`'s Real Repairs
+  block.
+
+`CLAUDE.md` and the template were restored from 662b89a the same way and diff
+empty against it too.
+
+#### What stays, and was checked rather than assumed
+
+Nothing from any other record moved. The ink ground on `/collision-repair/`'s
+Real Repairs (3.38), the `.dark .ba` caption grammar, the resting print
+shadows and their not-broken note (3.33), the AFTER chip's oxblood fill
+(3.33), and the brand strip's new position at the head of `#factory-certified`
+(3.40) are all untouched. Measured on the rendered page rather than read off
+the diff:
+
+```
+.ba img box-shadow   rgba(18, 27, 39, .16) 0 12px 28px, rgba(18, 27, 39, .10) 0 3px 8px
+```
+
+That is the print shadow, present on both pages at both widths after the
+withdrawal.
+
+#### Computed style: the membership is gone at the element
+
+`figure.ba` on both pages, at 1440 and at 390:
+
+```
+                 20f87a3 (3.39)                     now
+position         relative                           static
+transition       transform                          all  (the default)
+::before         content ""  shadow rgba(18,27,39,.34)   content none
+::after          content ""  width 28px  bg rgb(105,28,23)   content none
+```
+
+Both pseudo-elements are free again, which is the lift's own requirement for
+whatever might want them next.
+
+#### Nothing moved, and one thing stopped being painted
+
+**Layout is identical everywhere**, which the brief expected because the lift
+was hover-only:
+
+```
+                          20f87a3     NOW
+home       1440  #real-repairs h=2728  2728   page end  8689 ->  8689
+home        390  #real-repairs h=3321  3321   page end 12244 -> 12244
+collision  1440  #real-repairs h=2640  2640   page end 13514 -> 13514
+collision   390  #real-repairs h=3157  3157   page end 20722 -> 20722
+```
+
+**But "minus the hover behaviour" is not the whole of it, and that is worth
+saying plainly.** The lift's `::after` painted **at rest** as well: a 28px by
+2px oxblood tick at the base of every member, at opacity .4. Joining the mold
+gave the pairs that tick; leaving it takes the tick away. So five marks per
+page stop being drawn, and a full-page pixel diff at 1440 finds exactly them:
+
+```
+home       5 clusters  x180..207  2px tall   (186,156,154) -> (240,242,242)
+collision  5 clusters  x180..207  2px tall   ( 52, 27, 32) -> ( 18, 27, 39)
+```
+
+Both reduce to the mold's own arithmetic. Ox is rgb(105,28,23); at alpha .4
+over `--silver` rgb(240,242,242) that composites to **(186,156,154)** and over
+`--ink` rgb(18,27,39) to **(53,27,33)**, against a measured (52,27,32), one
+level per channel of the browser's own rounding. **The ink row is the 3.39
+exception disappearing**: that tick stayed oxblood on the dark ground rather
+than turning silver, and it is what the ruling was about.
+
+Five per page is one per `figure.ba`, and both pages carry five.
+
+#### The rest of the diff is the strip's animation phase
+
+The pixel diff also flags a band across `#brands` on each page, at y6817..6846
+on home and y9235..9264 on the collision page. **Those are the drifting
+manufacturer marks caught at a different point in their 40-second cycle, not a
+change.** Proved rather than argued: the home page was rendered **twice from
+the same server, same commit, same URL**, and the two renders of the identical
+page differ like this:
+
+```
+#brands band        rows 6768..6896    16088 differing pixels
+tick row 1          rows 3420..3445        0   identical
+tick row 5          rows 5360..5385        0   identical
+above the pairs     rows 2500..3400        0   identical
+below the strip     rows 7000..8000        0   identical
+```
+
+The strip is `animation: brand-drift 40s linear infinite`, a pure transform, so
+two headless renders sample it at different phases and nothing else moves. **The
+five ticks per page are the only real change in the whole diff.**
+
+#### The fold, unchanged on both pages
+
+Viewport-sized probe, `innerHeight` printed beside every answer. Eight runs,
+two pages by two viewports by before and after, and the four report pairs hash
+byte-identical:
+
+```
+home       390x664   with banner 594  CLEARS by 10    without 537  CLEARS by 67   f12d0a1f
+home       360x640   with banner 635  MISSES by 55    without 578  CLEARS by  2   e889cfec
+collision  390x664   with banner 580  CLEARS by 24    without 523  CLEARS by 81   a85b1f87
+collision  360x640   with banner 579  CLEARS by  1    without 521  CLEARS by 59   92d39f42
+```
+
+The home page's 360x640 miss with the banner showing is the standing state and
+not something this change caused: the banner comes off at cutover, and the
+without-banner row is the one that describes a customer. It is identical
+before and after, as are the other seven.
+
+#### The stamp went backwards, which is correct
+
+`site.css` is byte-identical to 662b89a, so its content hash is too, and
+`scripts/stamp-assets.py` put `?v=e9d90441` back on all three files. **A
+returning stamp is still a changing stamp**: any browser holding the 3.39
+stylesheet at `?v=35795e3f` is asked for a different URL and gets the
+reverted file.
+
+#### The mold is back to three members
+
+`.card`, `.step` and `.svc`, plus `a.svc-card`. **A future component still
+needs both of its own pseudo-elements free to join**, and `figure.ba` has both
+free again, so this is a withdrawal rather than a door closing.
 
 ---
 
