@@ -453,6 +453,16 @@ oxblood as a ground element rather than an act. It is `--ox` and never
 `--mark`. It costs 3px of fold budget on every page, measured, and 360x640 now
 clears by 2px where it cleared by 5.
 
+**Amended again 2026-09-23 on the client's ruling, a third extension: ox as a
+label ground on the AFTER chip only.** The Real Repairs pairs fill their AFTER
+chip in `--ox` with a `--silver` hairline, while the BEFORE chip keeps its
+white fill and ink edge. The asymmetry is the ruling: the outcome is the
+branded moment and the wreck is not. **The test for a fourth case is whether
+the element asks the reader to do something, and a chip does not** — it cannot
+be clicked, it is not a target, it names which photograph you are looking at.
+Recorded in the palette note in `docs/assets/site.css` beside the other two
+extensions, and measured per frame in `proposed-changes.md` 3.33.
+
 **White is a ground, not a shade of the ground.** Added 2026-09-10. `--silver`
 is the page; `--white` is used on exactly **one band**, the stat band under the
 hero, to lift the three proof figures off the run of the page. Every text pair

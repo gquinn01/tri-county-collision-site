@@ -3318,6 +3318,139 @@ and 3.30. Untouched here.
 **The audit's permanent asset-provenance check now reads 29 of 29 images with
 no AI-generation marker**, up from 28, the new one included.
 
+### 3.33 The repairs become prints, and the outcome wears the brand. BUILT 2026-09-23
+
+Two changes to Real Repairs, both on the client's ruling of 2026-09-23, picked
+from rendered comparisons: the ten photographs get a resting ink shadow so the
+pairs read as physical prints, and the AFTER chip fills in oxblood.
+
+**Variant D was picked from A through F.** Two are worth recording because of
+what they would have done:
+
+- **E, both chips red-outlined.** Rejected: it brands the wreck as loudly as
+  the repair, which is the opposite of the argument.
+- **F, a red base rule under every frame.** Rejected on the same ground and
+  harder: a rule under every photograph **red-underlines the wrecks**, so the
+  most emphatic mark on the page would have been sitting under the damage.
+
+#### The shadow, and why it rests here
+
+```
+box-shadow: 0 12px 28px rgb(var(--ink-rgb) / .16),
+            0 3px 8px  rgb(var(--ink-rgb) / .10);
+```
+
+**Nothing was tokenized to derive from.** The lift's shadow is a literal
+`rgba(18, 27, 39, .34)` on `.card::before` and there is no shadow token in
+`:root`, so the strategy chat's measured values ship — but **written against
+`--ink-rgb`'s channels rather than retyped as literals**, so the shadow is the
+site's own darkest value by construction and not a grey that happens to match.
+
+**Why a shadow rests here when everywhere else it answers a pointer.** The
+lift exists to tell a hand that a card is under it. These frames are not
+cards: nothing here is hoverable, nothing is a target, there is no gesture to
+answer. What they are is the evidence the page argues from, and the ruling is
+that evidence should read as a print lying on the page rather than a picture
+pasted into it. So the same ink the cards cast under a pointer is cast here at
+rest, softer and at lower alpha, describing weight instead of reacting to one.
+
+**No new number entered the stylesheet.** The mock used a 6px radius; the
+frames keep `var(--radius)`.
+
+#### The chips, and the asymmetry
+
+```
+BEFORE   white fill, ink edge, ink text        byte-identical to HEAD
+AFTER    ox fill, silver hairline, silver text new, 2026-09-23
+```
+
+The `.ba-chip` base rule is **unchanged to the byte**; the AFTER chip is a new
+`.ba-frame--after .ba-chip` rule that sets fill, border colour and text colour
+and nothing else. Geometry, type, letter-spacing and position stay the BEFORE
+chip's, so the two read as one family with one of them coloured.
+
+**The edge follows the act button's symmetric rule, not the BEFORE chip's.**
+The ground under a chip is a photograph nobody controls, so the chip needs a
+light tone and a dark tone and lets whichever suits the picture carry it. On
+the BEFORE chip that is white fill plus ink edge. On the AFTER chip an ox fill
+stands off a bright photograph and a silver hairline stands off a dark one, so
+it wears **both** — the same construction as the act button on a dark ground,
+built for the same reason.
+
+**The asymmetry is the ruling, not an oversight**: the outcome is the branded
+moment and the wreck is not.
+
+#### The measurements, 3.23's machinery re-run
+
+Per-frame perimeter sampling, every position around every AFTER chip, sampled
+2px outside the outline, at both widths. **Calibrated first**, as 3.23
+requires: two magenta marks at known page coordinates were found exactly where
+they were put, so page and image coordinates are 1:1, and the page was served
+over HTTP so the self-hosted fonts load and the chips are their real width.
+
+```
+1440                                        390
+chip  rect y      samples  <3:1  worst      samples  <3:1  worst   carried by
+ 1    3078          212      0   3.27         212      0   3.26    fill
+ 2    3489          210      0   3.25         210      0   3.27    fill
+ 3    3899          210      0   3.25         210      0   3.26    fill
+ 4    4408          212      0   3.25         212      0   3.26    edge
+ 5    4918          212      0   3.25         212      0   3.28    edge
+      worst across all five      3.25                     3.26     floor 3.0
+```
+
+**Zero samples below 3:1 at either width.** Photo-independent, and therefore
+true everywhere:
+
+```
+label, --silver on --ox      10.50:1   floor 4.5
+internal edge, silver on ox  10.50:1   floor 3
+```
+
+**One number is worth stating plainly: 3.25 is tighter than the 4.16 the
+white/ink chips measured in 3.23.** Oxblood and silver are a narrower pair
+against a mid-tone photograph than white and ink are. It clears the floor at
+every one of the 1,056 positions sampled, and it clears it with less room than
+the BEFORE chip does. If a future photograph ever lands in the band, this is
+the measurement to re-run before assuming it still holds.
+
+#### What did not move
+
+Shadows paint outside the box and the chips did not resize, so nothing
+reflowed. Measured against HEAD rather than asserted:
+
+```
+                      HEAD     NOW
+1440  #real-repairs    2728    2728     page end  8689 -> 8689
+ 390  #real-repairs    3321    3321     page end 12244 -> 12244
+ 360  #real-repairs    3118    3118     page end 12218 -> 12218
+```
+
+**The fold is identical**, which it had to be since the section sits far below
+it:
+
+```
+390x664  613 / 556      360x640  654 / 597      both, HEAD and now
+```
+
+`/collision-repair/` changed by its cache stamp alone. **No CSS was deleted:**
+294 selectors against HEAD's 293, the one addition being the AFTER chip rule,
+and the ten removed lines are the `.ba-chip` comment that was rewritten.
+
+#### The palette law's third extension
+
+Oxblood means act, and the client has now extended it three times: the
+header's 4px divider (2026-09-17), `#who-we-are`'s prose ground (2026-09-17),
+and this label. **Recorded where the other two live**, in the palette note in
+`docs/assets/site.css` and in CLAUDE.md's palette paragraph, dated and
+attributed.
+
+**The test for a fourth case: does the element ask the reader to do
+something?** A band that asks is an act band and the act-band count governs
+it. **A chip does not ask** — it cannot be clicked, it is not a target, it
+names which photograph you are looking at. Nothing else was extended in this
+commit.
+
 ---
 
 ## 4. The claims list

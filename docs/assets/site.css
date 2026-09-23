@@ -249,6 +249,20 @@
    the rule in the table above. See .nav for what it cost the fold budget,
    which was measured rather than assumed.
 
+   ONE SANCTIONED LABEL GROUND, DATED 2026-09-23. The AFTER chip on the
+   Real Repairs pairs fills in --ox with a --silver hairline, on the
+   client's ruling: the outcome is the branded moment and the wreck is
+   not, so the BEFORE chip keeps its white fill and ink edge. This is the
+   THIRD time oxblood has been extended past the act bands, after the
+   header's 4px divider and #who-we-are's prose ground, and it is
+   recorded here with them rather than argued again at the chip.
+
+   THE TEST FOR A FOURTH CASE: does the element ask the reader to do
+   something? A band that asks is an act band and the act-band count
+   governs it. A chip does not ask, cannot be clicked and is not a
+   target; it names which photograph you are looking at. See .ba-chip for
+   the construction and proposed-changes.md 3.33 for the measurements.
+
    TWO SANCTIONED SECTION-BACKGROUND GRADIENTS, BOTH DATED 2026-09-10.
    The second is the homepage hero's scrim, the ground its type sits on;
    see THE HERO and the readability amendment. It is not a gradient on
@@ -1490,24 +1504,69 @@ a.svc-card h3 { color: var(--ox-tx); }
 .ba { margin: 0; }
 .ba-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .ba-frame { position: relative; }
+/* THE PRINTS REST ON A SHADOW, AND IT IS THE LIFT'S SHADOW STANDING STILL.
+   Client ruling 2026-09-23, proposed-changes.md 3.33.
+
+   WHY A SHADOW RESTS HERE WHEN EVERYWHERE ELSE IT ANSWERS A POINTER. The
+   lift exists to tell a hand that a card is under it: a .card, .step or
+   .svc is quiet until a pointer arrives, and the ink shadow is the
+   answer. These frames are not cards. Nothing here is hoverable, nothing
+   is a target, and there is no gesture to answer. What they are is the
+   evidence the whole page argues from, and the client's argument is that
+   evidence should read as a physical print lying on the page rather than
+   as a picture pasted into it. So the same ink the cards cast under a
+   pointer is cast here at rest, softer and at lower alpha, because it is
+   describing weight rather than reacting to one.
+
+   It is --ink by its channels and not a grey. A shadow the colour of the
+   site's own darkest value is the material argument the lift already
+   makes; a default grey glow belongs to nobody. No geometry is invented:
+   the radius stays var(--radius), so no new number enters this file.
+
+   Shadows paint OUTSIDE the box, so nothing reflows and no section grows.
+   Measured both ways in 3.33. */
 .ba img {
   display: block; width: 100%; height: auto;
   border-radius: var(--radius); background: var(--rule);
+  box-shadow: 0 12px 28px rgb(var(--ink-rgb) / .16),
+              0 3px 8px rgb(var(--ink-rgb) / .10);
 }
 
-/* THE CHIP TAKES AN INK EDGE, NOT --rule. The established chip wears a
-   --rule hairline, which measures 1.46 on its own white fill and cannot
-   edge a shape sitting on an unknown photograph. Ink can: between a
-   white fill and an ink edge, one of the two always stands off the
-   picture underneath, which is the same argument that put the silver
-   hairline on the act button. Measured per frame, at every position
-   around every chip's perimeter, in proposed-changes.md 3.23, and
-   re-measured there when this layout moved the chips. */
+/* THE CHIPS ARE TWO CONSTRUCTIONS OF ONE ARGUMENT, and the argument is
+   that the ground under a chip is a photograph nobody controls.
+
+   NEITHER CHIP TAKES --rule. The established chip wears a --rule
+   hairline, which measures 1.46 on its own white fill and cannot edge a
+   shape sitting on an unknown picture. A pair of tones can: give the
+   chip a light one and a dark one, and whichever way the photograph
+   goes, one of them stands off it. That is the same symmetric argument
+   that put the silver hairline on the act button, and it is why each
+   chip below carries a fill and an edge that sit at opposite ends.
+
+   BEFORE  white fill, ink edge      unchanged since 3.23
+   AFTER   ox fill, silver hairline  added 2026-09-23, 3.33
+
+   THE ASYMMETRY IS THE POINT, not an oversight. The client's ruling is
+   that the outcome is the branded moment and the wreck is not, so only
+   the AFTER chip fills in oxblood. The BEFORE chip is the same argument
+   inverted and is deliberately left alone.
+
+   The AFTER chip's own two tones read 10.50 against each other, which is
+   --silver on --ox, the same pair the act button carries on a dark
+   ground and for the same reason. Measured per frame, at every position
+   around every chip's perimeter, in proposed-changes.md 3.23 and
+   re-measured in 3.33 when the AFTER chip changed. */
 .ba-chip {
   position: absolute; top: 12px; left: 12px;
   background: var(--panel); border: 1px solid var(--ink); border-radius: 999px;
   padding: 5px 12px; font-size: .74rem; font-weight: 800;
   letter-spacing: .1em; text-transform: uppercase; color: var(--ink);
+}
+/* The outcome wears the brand. Fill and edge only: the geometry, the type
+   and the position are the BEFORE chip's, so the two read as one family
+   with one of them coloured. */
+.ba-frame--after .ba-chip {
+  background: var(--ox); border-color: var(--silver); color: var(--silver);
 }
 
 .ba figcaption { margin-top: 14px; font-size: .97rem; color: var(--ink-2); }
