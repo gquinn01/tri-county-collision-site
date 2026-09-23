@@ -3665,6 +3665,77 @@ A second photograph was offered for the hero. It was set aside on composition,
 and because **it carries a customer's name on the glass**. It remains a
 candidate for a future before/after pair if its after-photo mate exists.
 
+### 3.35 The share card shows the page it shares. BUILT 2026-09-23
+
+`og:image`, `og:image:alt` and the JSON-LD image on both pages pointed at
+`accent-minor-collision-repair.jpg`, the stock photograph **no hero uses any
+more**. This was the builder's own flag at the end of 3.34, approved by the
+client. Each page's share card and schema image now show that page's own real
+hero.
+
+```
+                      og:image / primaryImageOfPage
+/                     hero-wrecked-sedan-in-shop.jpg    (3.32)
+/collision-repair/    hero-wrecked-gmc-outside-shop.jpg (3.34)
+```
+
+#### Driven from each page's own hero, not retyped
+
+The edit reads the `<img class="heroB-photo">` element on each page and takes
+both the filename and the alt from it, then asserts the filename is the one
+expected. **So "og:image:alt matches the hero alt verbatim" is true by
+construction rather than by somebody copying carefully**, and the check after
+the fact confirms it:
+
+```
+                      og:image:alt == hero alt    url == hero src
+/                             True                     True
+/collision-repair/            True                     True
+```
+
+#### The collision page's schema caption had to move too
+
+Its `primaryImageOfPage` carries a `caption` as well as a `url`, and that
+caption read "Final collision repair touch-ups being completed on a black
+automobile." **Changing only the url would have left a caption describing a
+different photograph** — not a stale line but a false one, a sentence claiming
+the picture shows something it does not. The caption now follows the alt.
+
+The home page's node carries a `url` and no caption, and it was left that
+shape. That asymmetry predates this change and nothing here needed it
+resolved.
+
+#### The meta that did not move, and why
+
+`og:image:width` and `og:image:height` stay at 1200 and 800 because **both new
+assets really are 1200x800**, confirmed by reading them rather than assumed
+from the contract:
+
+```
+hero-wrecked-sedan-in-shop.jpg     1200x800
+hero-wrecked-gmc-outside-shop.jpg  1200x800
+```
+
+**The stock asset itself stays.** It is still referenced twice, by the home
+services grid's Collision Repair and Auto Glass cards, exactly as 3.32 and
+3.34 recorded. Nothing was deleted.
+
+#### The interim state, on the record
+
+**This is not the final arrangement and it is written down as interim.** When
+the photo shoot delivers a building shot, the client's instruction is that the
+**schema image becomes the shop itself** while the **og:image stays the page's
+hero**.
+
+**One note for whoever does that.** The only image in either page's schema is
+`primaryImageOfPage` on the `WebPage` node, and that property means precisely
+what it says: the primary image *of the page*. A photograph of the building is
+not that; it is a picture of the business. **The `AutoBodyShop` node carries no
+`image` at all today**, and that is the property a building shot belongs on.
+Putting the shop on `primaryImageOfPage` would make the page claim a hero it
+does not have. Recorded now, while the reasoning is in front of us, rather
+than discovered on the day.
+
 ---
 
 ## 4. The claims list
