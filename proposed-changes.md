@@ -4028,6 +4028,119 @@ would show:
 Both identical to HEAD. **No CSS was deleted**: 37 lines added, one removed,
 and that one is the comment terminator the shadow note was extended through.
 
+### 3.39 The pairs join the lift, and the sweep stays red in the dark. BUILT 2026-09-23
+
+`figure.ba` becomes a member of the lift, site-wide, on both pages. Client
+ruling 2026-09-23. **This is the mold growing a member, not a new effect.**
+
+#### Membership, proved as membership
+
+`.ba` was added to **eleven selector lists** and nothing else: the
+`position: relative` base, the `::before` shadow, the `::after` rule, the six
+rules inside `@media (hover: hover)`, and both lists in the
+`prefers-reduced-motion` block. **No bespoke value, no copied block.**
+
+The proof that it is membership rather than authorship is the selector count:
+
+```
+selectors in site.css    HEAD 297    now 297
+```
+
+**Not one rule was added or removed.** The sixteen removed lines are the
+fourteen selector lists that were rewritten to include `.ba` plus two comment
+lines that were extended.
+
+**The lift's own requirement was checked before any of it.** A member needs
+both pseudo-elements free; `grep` found no `.ba::before` or `.ba::after`
+anywhere, and `.ba` itself carried only `margin: 0`.
+
+Confirmed by computed style on both pages, at both widths:
+
+```
+figure.ba   position: relative
+  ::before  content ""   shadow rgba(18, 27, 39, .34) 0 12px 26   opacity 0
+  ::after   content ""   background rgb(105, 28, 23)   width 28px  opacity .4
+```
+
+Those are the mold's own numbers, not new ones.
+
+#### The dark-ground exception, and why it is an absence
+
+The lift's rule answers in silver on dark grounds, because `--ox` on `--ink`
+measures 1.47. **The pairs' rule stays oxblood on every ground.** Client
+ruling, on the header divider's precedent: **ox against ink reads by hue
+rather than by luminance**, which is why that divider works at the same 1.47.
+The branded sweep is the point of the ask, and a silver sweep would answer a
+question nobody asked.
+
+**The implementation is that `.ba` is left OUT of `.dark .card::after`**,
+which already named `.card` and only `.card`. So the exception costs no
+override and no scoped rule: it is an absence. Recorded in the lift comment,
+in CLAUDE.md's lift paragraph, and here, with the note that **adding `.ba` to
+that rule later would undo the ruling**.
+
+Measured on the ink section: `::after` background reports `rgb(105, 28, 23)`,
+which is `--ox`, not `--silver`.
+
+#### Rendered, with the hover state forced
+
+The first attempt injected the forced class from JavaScript after a timeout
+and **silently did nothing** — the scan found 28px resting ticks and no swept
+rule anywhere, so nothing was concluded from it. Replaced with a
+deterministic method: a temporary copy of each page carrying the mold's own
+hover declarations in a `<style>` and the class already on the second pair, so
+there is no timing to get wrong. Both copies were deleted afterwards; a stray
+page in `docs/` is a page the audit scores and a crawler can find.
+
+Measured off those renders, by scanning for 2px horizontal red runs:
+
+```
+                    forced pair          every other pair
+home  (silver)      1080px swept rule    28px resting tick
+collision (ink)     1080px swept rule    28px resting tick
+```
+
+**The resting tick is present and visible on both grounds**, so the question
+the brief raised about invisibility on ink did not arise. On ink the full
+sweep reads clearly as a dark red line, which is the hue argument holding.
+
+#### The shadow, invisible on one ground on purpose
+
+The lift's `::before` is the same ink as the print shadow 3.33 added, so it
+shows on the home page's light ground and does not on the ink section. **The
+existing not-broken note in `site.css` now covers the hover shadow too**, in
+one sentence, so nobody forks a shared component to fix something that costs
+nothing.
+
+#### Reduced motion, inherited rather than rewritten
+
+Read, not reimplemented: `.ba`, `.ba::before`, `.ba::after` and `.ba:hover`
+sit in the existing `prefers-reduced-motion: reduce` block alongside every
+other member, so the hover **state** still changes and the movement goes.
+Nothing was written for it beyond the membership.
+
+#### Layout untouched
+
+The pseudo-elements are absolute and the transform is hover-only, so nothing
+reflows:
+
+```
+                          HEAD     NOW
+home       1440  #real-repairs h=2728  2728   page end  8689 ->  8689
+home        390  #real-repairs h=3321  3321   page end 12244 -> 12244
+collision  1440  #real-repairs h=2640  2640   page end 13514 -> 13514
+collision   390  #real-repairs h=3157  3157   page end 20722 -> 20722
+```
+
+**The fold is identical on both pages**, measured with the corrected probe
+from `mobile-check.md`'s second trap, and the four reports hash byte-identical
+between HEAD and the working tree:
+
+```
+home 390x664  7d5fd337    home 360x640  8b8b68f3
+coll 390x664  bb9257cb    coll 360x640  911a69f6
+```
+
 ---
 
 ## 4. The claims list

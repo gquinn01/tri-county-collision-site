@@ -427,6 +427,17 @@ and carries a silver border: `--ox` on `--ink` measures **1.47**, so without
 the border the button is invisible as a shape even though its label reads at
 11.04.
 
+**The pairs' rule stays oxblood on a dark ground, and that is the one
+exception to the answer below.** The lift's rule turns silver on ink and
+oxblood grounds because `--ox` on `--ink` measures 1.47. `.ba` is left out of
+that rule rather than given an override, so the exception is an absence and
+adding `.ba` to it later would undo the ruling. **The precedent is the
+header's oxblood divider**: ox against ink reads by hue rather than by
+luminance, which is why that divider works at the same 1.47. The branded sweep
+is the point of the client's ask, and a silver sweep would answer a question
+nobody asked. Client ruling 2026-09-23, recorded in the lift comment in
+`docs/assets/site.css` and in `proposed-changes.md` 3.39.
+
 **The act button on any dark ground wears the silver hairline.** Decided
 2026-09-10, and it is one symmetric rule rather than two exceptions, because
 the two failures are **the same number**: `--ox` on `--ink` is 1.47 and
@@ -531,10 +542,15 @@ Text gets *more* readable toward the ends, not less: 11.04 on `--ox`, 13.02 on
 gradient** — not text, not a button, not a card, not an accent.
 
 **7. The lift, adopted 2026-09-10. A mold behaviour: every card on every page
-gets it and nobody re-decides it per page.** A `.card`, `.step` or `.svc`
-rises 3px under a pointer, an ink shadow comes up beneath it, and the oxblood
-rule along its base sharpens from quiet to solid and sweeps to the card's full
-width. The lift is generic on purpose, because feedback to a hand should feel
+gets it and nobody re-decides it per page.** A `.card`, `.step`, `.svc` or
+`.ba` rises 3px under a pointer, an ink shadow comes up beneath it, and the
+oxblood rule along its base sharpens from quiet to solid and sweeps to the
+card's full width.
+
+**`.ba`, the Real Repairs pairs, joined 2026-09-23 on the client's ruling**,
+and it joined by being added to the mold's own selector lists — no bespoke
+value, no copied block. The lift's own requirement was checked first: a member
+needs both of its pseudo-elements free, and `figure.ba` carried neither. The lift is generic on purpose, because feedback to a hand should feel
 familiar. **The materials are what make it this site's**: the default is a
 soft grey glow that belongs to nobody, and this shadow is `--ink`, so a card
 casts a shadow the colour of the site's own darkest value. The sweep is the

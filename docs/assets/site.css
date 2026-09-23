@@ -762,7 +762,7 @@ section { padding: var(--pad) 0; }
 
 /* ===========================================================================
    THE LIFT. ADOPTED 2026-09-10, FROM CANDIDATE C OF drafts/motion/.
-   A MOLD BEHAVIOUR: every .card, .step and .svc on every page gets it,
+   A MOLD BEHAVIOUR: every .card, .step, .svc and .ba on every page gets it,
    and nobody re-decides it per page.
 
    WHAT HAPPENS. The card rises 3px. An ink shadow comes up underneath
@@ -793,36 +793,51 @@ section { padding: var(--pad) 0; }
    phone it is the only confirmation a finger gets that the button took
    the tap.
    =========================================================================== */
-.card, .svc, a.svc-card { position: relative; }
+.card, .svc, a.svc-card, .ba { position: relative; }
 
-.card::before, .step::before, .svc::before, a.svc-card::before {
+.card::before, .step::before, .svc::before, a.svc-card::before, .ba::before {
   content: ""; position: absolute; inset: 0; border-radius: inherit;
   box-shadow: 0 12px 26px -10px rgba(18, 27, 39, .34);
   opacity: 0; pointer-events: none;
 }
 /* At rest the rule is present but quiet: a short mark at the base, not a
    full underline. A card at rest should still read as flat. */
-.card::after, .step::after, .svc::after, a.svc-card::after {
+.card::after, .step::after, .svc::after, a.svc-card::after, .ba::after {
   content: ""; position: absolute; left: 0; bottom: 0;
   width: 28px; height: 2px; background: var(--ox); opacity: .4;
   pointer-events: none;
 }
 /* On ink and oxblood grounds the rule would be invisible against its own
-   band, so it answers in silver instead. Same behaviour, readable ground. */
+   band, so it answers in silver instead. Same behaviour, readable ground.
+
+   THIS NAMES .card AND ONLY .card, which is not an oversight. .step, .svc
+   and a.svc-card never sit on a dark ground, and .ba is EXCLUDED ON
+   PURPOSE.
+
+   THE PAIRS' RULE IS OX ON EVERY GROUND. Client ruling 2026-09-23. The
+   precedent is the header's oxblood divider: ox against ink reads by HUE
+   rather than by luminance, which is why that divider works at 1.47 and
+   why the swept solid rule reads on the ink section. The branded sweep is
+   the point of the ask, and a silver sweep would answer a question nobody
+   asked. So .ba is left out of this rule rather than given an override:
+   the exception is the absence, and adding .ba here later would undo the
+   ruling. proposed-changes.md 3.39. */
 .dark .card::after { background: var(--silver); }
 
 @media (hover: hover) {
-  .card, .step, .svc, a.svc-card { transition: transform 160ms cubic-bezier(.2, .8, .3, 1); }
-  .card::before, .step::before, .svc::before, a.svc-card::before {
+  .card, .step, .svc, a.svc-card, .ba { transition: transform 160ms cubic-bezier(.2, .8, .3, 1); }
+  .card::before, .step::before, .svc::before, a.svc-card::before, .ba::before {
     transition: opacity 160ms cubic-bezier(.2, .8, .3, 1);
   }
-  .card::after, .step::after, .svc::after, a.svc-card::after {
+  .card::after, .step::after, .svc::after, a.svc-card::after, .ba::after {
     transition: width 260ms cubic-bezier(.2, .8, .3, 1),
                 opacity 160ms cubic-bezier(.2, .8, .3, 1);
   }
-  .card:hover, .step:hover, .svc:hover, a.svc-card:hover { transform: translateY(-3px); }
-  .card:hover::before, .step:hover::before, .svc:hover::before, a.svc-card:hover::before { opacity: 1; }
-  .card:hover::after, .step:hover::after, .svc:hover::after, a.svc-card:hover::after {
+  .card:hover, .step:hover, .svc:hover, a.svc-card:hover, .ba:hover { transform: translateY(-3px); }
+  .card:hover::before, .step:hover::before, .svc:hover::before, a.svc-card:hover::before,
+  .ba:hover::before { opacity: 1; }
+  .card:hover::after, .step:hover::after, .svc:hover::after, a.svc-card:hover::after,
+  .ba:hover::after {
     width: 100%; opacity: 1;
   }
   /* THE NUMERAL ANSWERS TOO, added 2026-09-10. At rest "01" is --rule,
@@ -843,12 +858,12 @@ section { padding: var(--pad) 0; }
    the pointer is on something. What goes is the movement: no rise, no
    sweep, no travel. The shadow and the rule simply are, or are not. */
 @media (prefers-reduced-motion: reduce) {
-  .card, .step, .svc, a.svc-card,
-  .card::before, .step::before, .svc::before, a.svc-card::before,
-  .card::after, .step::after, .svc::after, a.svc-card::after,
+  .card, .step, .svc, a.svc-card, .ba,
+  .card::before, .step::before, .svc::before, a.svc-card::before, .ba::before,
+  .card::after, .step::after, .svc::after, a.svc-card::after, .ba::after,
   .step h3::after,
   .btn, .callbar { transition: none; }
-  .card:hover, .step:hover, .svc:hover, a.svc-card:hover { transform: none; }
+  .card:hover, .step:hover, .svc:hover, a.svc-card:hover, .ba:hover { transform: none; }
   .btn:active, .callbar:active { transform: none; }
 }
 
@@ -1544,7 +1559,12 @@ a.svc-card h3 { color: var(--ox-tx); }
    which is true on /collision-repair/ since 3.38 and is DELIBERATELY LEFT
    ALONE. A shadow that vanishes costs nothing, and scoping it off would
    fork a shared component into two implementations to save nothing. If
-   you came here to fix the invisible shadow: it is not broken. */
+   you came here to fix the invisible shadow: it is not broken.
+
+   THE SAME IS TRUE OF THE LIFT'S HOVER SHADOW, which .ba joined on
+   2026-09-23: it is the same ink, so it shows on the home page's light
+   ground and does not on the ink section. One behaviour, two grounds,
+   nothing scoped. 3.39. */
 .ba img {
   display: block; width: 100%; height: auto;
   border-radius: var(--radius); background: var(--rule);
