@@ -2894,9 +2894,10 @@ band's own height, and three ink bands remain where there were four.
 The staging banner costs 57px, matching `scripts/mobile-check.md` exactly.
 
 **One number to flag, and it is not this change's doing.** CLAUDE.md records
-that 360x640 "now clears by 2px"; measured today it **misses by 17** in the
-cutover state. HEAD measures identically, so the drift predates this commit
-entirely. Not touched here, because the page only got shorter and the cause is
+that 360x640 "now clears by 2px"; measured with the probe of the day it
+appeared to **miss by 17** in the cutover state, on HEAD too.
+
+**CORRECTED 2026-09-23, see 3.36: this flag was wrong.** The miss was an artefact of the measuring probe, whose tall iframe made `vh` resolve against itself. Measured with the iframe set to the real viewport, 360x640 clears by 2 in the cutover state, exactly as CLAUDE.md records. CLAUDE.md never drifted. Not touched here, because the page only got shorter and the cause is
 somewhere in the hero's own sizing. It wants its own look.
 
 ### 3.30 The ask joins the capability moment and the proof moment. BUILT 2026-09-22
@@ -3022,8 +3023,8 @@ they measured before this commit:
 360x640 cutover      580          597          misses by 17
 ```
 
-The 17px miss at 360x640 is the false record already flagged in 3.29 against
-CLAUDE.md's "clears by 2". **Not touched here**, per the ruling: it wants its
+The 17px figure at 360x640 came from a probe whose tall iframe broke the
+hero's `vh` clamp. **CORRECTED 2026-09-23, see 3.36: this flag was wrong.** The miss was an artefact of the measuring probe, whose tall iframe made `vh` resolve against itself. Measured with the iframe set to the real viewport, 360x640 clears by 2 in the cutover state, exactly as CLAUDE.md records.  **Not touched here**, per the ruling: it wants its
 own sitting, and the hero was not to be moved for it.
 
 **No CSS was deleted.** The `site.css` diff is 24 added lines and zero
@@ -3104,8 +3105,8 @@ construction rather than by re-measurement.
 390x664 cutover   556  clears by 48      360x640 cutover   597  misses by 17
 ```
 
-The 17px miss at 360x640 is the false CLAUDE.md record flagged in 3.29 and
-3.30. Untouched here.
+The 17px figure at 360x640 came from a faulty probe, not from the page.
+**CORRECTED 2026-09-23, see 3.36: this flag was wrong.** The miss was an artefact of the measuring probe, whose tall iframe made `vh` resolve against itself. Measured with the iframe set to the real viewport, 360x640 clears by 2 in the cutover state, exactly as CLAUDE.md records. 
 
 **`/collision-repair/` does not move at either width**, and it is immune by
 construction rather than by luck: its hero is `.heroB--ox`, and
@@ -3312,8 +3313,8 @@ minor-collision photograph, is unchanged.
 360x640 cutover      580          597          misses by 17   identical
 ```
 
-The 17px miss at 360x640 is the false CLAUDE.md record already flagged in 3.29
-and 3.30. Untouched here.
+The 17px figure at 360x640 came from a faulty probe, not from the page.
+**CORRECTED 2026-09-23, see 3.36: this flag was wrong.** The miss was an artefact of the measuring probe, whose tall iframe made `vh` resolve against itself. Measured with the iframe set to the real viewport, 360x640 clears by 2 in the cutover state, exactly as CLAUDE.md records. 
 
 **The audit's permanent asset-provenance check now reads 29 of 29 images with
 no AI-generation marker**, up from 28, the new one included.
@@ -3653,7 +3654,7 @@ states:
 ```
 
 The collision page clears 360x640 by 8 in the cutover state, unlike the home
-page, which misses by 17 for the reason flagged in 3.29.
+page. **CORRECTED 2026-09-23, see 3.36: this flag was wrong.** The miss was an artefact of the measuring probe, whose tall iframe made `vh` resolve against itself. Measured with the iframe set to the real viewport, 360x640 clears by 2 in the cutover state, exactly as CLAUDE.md records. Both pages clear it.
 
 **The home page is byte-identical except its cache stamp**, and the
 site-wide asset provenance check now reads **30 of 30 images with no
@@ -3735,6 +3736,133 @@ not that; it is a picture of the business. **The `AutoBodyShop` node carries no
 Putting the shop on `primaryImageOfPage` would make the page claim a hero it
 does not have. Recorded now, while the reasoning is in front of us, rather
 than discovered on the day.
+
+### 3.36 The chips read in the order the repair happens. BUILT 2026-09-23
+
+Two client rulings of 2026-09-23 on `/collision-repair/`'s hero chips.
+
+#### The order of operations
+
+```
+1. Free estimates                        you call; it costs nothing
+2. Insurance paperwork handled           the claim is dealt with
+3. ASE and I-CAR Gold Class certified    credentialed people do the work
+4. Detailed after every repair           the handback
+```
+
+**There are TWO chip lists on this page, not one**, and both were reordered
+identically. `.heroB .badges` is the desktop arrangement and
+`.proofstrip .badges` is the phone band; they are the same four claims in two
+DOM positions, exactly one rendered at a time. Reordering one would have made
+a phone and a desktop disagree about the order of the repair.
+
+**Each whole `<li>` moved, icon and label together.** Proved by hashing each
+chip's SVG path data and printing it beside its label: the four hashes are the
+same in both lists and each still sits with the label it belongs to.
+
+#### The credential's full name
+
+The chip read "ASE and I-CAR Gold certified". The credential is **I-CAR Gold
+Class**, and **this page's own FAQ answer already says it correctly**. This is
+an alignment to the page's own wording, not a new claim.
+
+```
+before   ASE and I-CAR Gold certified
+after    ASE and I-CAR Gold Class certified          x2, both chip lists
+```
+
+**The only text delta on the page is the word "Class", twice.** Proved by
+extracting every visible word from HEAD and from the working tree and
+comparing the multisets: `added {'Class': 2}`, `removed {}`. The reorder moves
+words; it does not change them.
+
+#### The length gate tripped, so three instances were NOT touched
+
+The compressed form appeared in five places, not two. The other three are
+**one sentence in three places** — they are byte-identical mirrors of each
+other:
+
+```
+meta description                158 chars   ->  164 with "Class"
+og:description                  158 chars   ->  164 with "Class"
+JSON-LD WebPage description     158 chars   ->  164 with "Class"   mirrors the meta exactly
+```
+
+The audit's limit is 160. **Adding "Class" pushes all three past it**, and the
+instruction was to stop and report rather than trim other words to make room.
+So they are unchanged and shipped at 158.
+
+**They have to move together or not at all.** The WebPage schema description
+is the same sentence as the meta description, character for character;
+aligning one and leaving the others would put three copies of one sentence out
+of step, which is the defect class the NAP rule and the byte-identical FAQ
+rule both exist to prevent. **Rewording a 158-character meta description to
+find six characters is an editorial decision about which promise gives way,
+and it is the client's, not a side effect of a chip label.**
+
+The JSON-LD **Service** description already said "Gold Class" and came back
+untouched, as expected. `docs/llms.txt` and the home page's prose already say
+it correctly too. **The home page carries no chips at all** and no compressed
+form, so it is untouched entirely — not even a stamp, because no CSS moved.
+
+#### Nothing moved, measured
+
+```
+                 HEAD    NOW        HEAD    NOW        HEAD    NOW
+width            1440               800                390
+hero h            562    562         522    522         560    560
+badges h           96     96          96     96         n/a (display:none)
+proofstrip h      n/a                n/a                202    202
+page end        13514  13514       14449  14449       20722  20722
+```
+
+**Not a pixel, at any of the three widths.** The longer third label does not
+orphan a word: at 1440 and 800 the row pairs two-by-two with the
+money-and-logistics chips on the first row and the quality chips on the
+second, exactly as the ruling intended, and at 390 each chip takes its own row
+on one line.
+
+#### And the fold measurement was wrong, in my own favour of caution
+
+Re-measuring the fold as instructed turned up a fault in the **probe**, not
+the page.
+
+**`vh` resolves against the iframe's own height.** The hero's size is a `vh`
+clamp — `min-height: clamp(380px, 76vh, 560px)` below 600px, plus three more
+— and every fold probe in this repo has used a 16000px-tall iframe. `76vh` of
+16000 is 12160, so every clamp pinned to its maximum and the hero rendered at
+its tallest possible size. The CTA row then sat lower than it ever would on a
+phone.
+
+Measured with the iframe set to the actual viewport:
+
+```
+                          tall iframe (wrong)     iframe = viewport (right)
+home  390x664 banner      613  misses by  9       594  clears by 10
+home  390x664 cutover     556  clears by 48       537  clears by 67
+home  360x640 banner      654  misses by 74       635  misses by 55
+home  360x640 cutover     597  misses by 17       578  CLEARS BY 2
+coll  390x664 banner      629  misses by 23       580  clears by 24
+coll  390x664 cutover     572  clears by 32       523  clears by 81
+coll  360x640 banner      635  misses by 55       579  clears by  1
+coll  360x640 cutover     578  clears by  8       521  clears by 59
+```
+
+**CLAUDE.md's "360x640 now clears by 2px" is exactly right.** I flagged it as
+a false record in 3.29, and repeated the flag in 3.30, 3.32 and 3.34. **The
+flag was wrong and all four are corrected**, each pointing here. CLAUDE.md
+never drifted; the probe did.
+
+**The trap is now written down** in `scripts/mobile-check.md`, beside the
+500px width clamp it is a sibling of, with the rule that a fold probe's iframe
+must be the viewport height and must report `innerHeight` and the computed
+`min-height` beside its answer so a wrong basis shows in the output instead of
+hiding in it. Page height and fold are two different questions and one frame
+cannot answer both.
+
+**This change did not move the fold**, on the corrected basis or the old one:
+HEAD and the working tree measure identically at both viewports and both
+banner states.
 
 ---
 

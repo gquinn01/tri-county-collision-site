@@ -73,6 +73,48 @@ page all came back 30/30 at 375px.
    every section individually fails to change the result, the page is
    not the cause and the tooling is.
 
+## The second trap: a tall probe iframe breaks `vh`
+
+Added 2026-09-23, after it produced a wrong number four times.
+
+The iframe method above fixes the width. **It does not fix the height, and
+the hero's size is written in `vh`:**
+
+```
+.heroB                      min-height: clamp(420px, 84vh, 600px)
+.heroB, max-width 599px     min-height: clamp(380px, 76vh, 560px)
+.heroB-copy                 padding-top: clamp(10px, 4vh, 44px)
+.heroB--ox .heroB-copy      padding-bottom: clamp(50px, 7vh, 58px)
+```
+
+`vh` resolves against the **iframe's own height**, not the phone you think
+you are testing. A probe frame 16000px tall makes `76vh` 12160px, so every
+clamp pins to its maximum and the hero renders at its tallest possible size.
+The CTA row then sits lower than it ever would on a phone, and the fold
+measurement reports a miss that does not exist.
+
+**What it cost:** the collision page was reported as missing 360x640 by 17px
+in four separate records, and CLAUDE.md's own note that it "clears by 2" was
+flagged as a false record three times. CLAUDE.md was right. The probe was
+wrong.
+
+```
+                        tall iframe (wrong)    iframe = viewport (right)
+home  360x640 cutover   597  misses by 17      578  CLEARS by 2
+coll  390x664 banner    629  misses by 23      580  CLEARS by 24
+```
+
+**The rule: for anything that measures the fold, the iframe's height must be
+the viewport height you are testing, not a tall scroll surface.** Check it
+in the probe itself — report `innerHeight` and the computed `min-height`
+beside the answer, so a wrong basis is visible in the output instead of
+hiding in it.
+
+That does mean the frame shows only the first screen. That is all the fold
+measurement needs. Measure page HEIGHT in a tall frame and the FOLD in a
+viewport-sized one; they are two different questions and one frame cannot
+answer both.
+
 ## The fold budget on a phone, and the 60px nobody counts
 
 Added 2026-09-10, after the hero CTA pair was found sitting below the
