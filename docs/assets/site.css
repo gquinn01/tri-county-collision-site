@@ -462,6 +462,13 @@
      padding cannot drift, because it is not a second opinion about the
      same number. */
   --statcard-overlap: clamp(44px, 6vw, 78px);
+  /* THE AIR BETWEEN THE HERO'S CTA ROW AND THE CARD'S TOP EDGE, and
+     it lives here beside the overlap because .heroB-copy states the
+     same sum in three places and they must not drift apart. Client
+     ruling 2026-09-22 from a rendered comparison; the floor is the
+     value that shipped before it, so phones pay nothing for a
+     desktop rhythm fix. proposed-changes.md 3.31. */
+  --statcard-air: clamp(28px, 3.9vw, 56px);
   --radius: 4px;
   --font: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --display: "Archivo Black", Impact, "Arial Black", sans-serif;
@@ -1086,15 +1093,31 @@ section { padding: var(--pad) 0; }
    glyph run measured 1.12 against silver, which is silver on white,
    which is the card.
 
-   THE AIR IS 28px, and that is the only number typed here. Everything
-   else comes from the overlap, so the gap between the buttons and the
-   card's top edge is 28px by construction at every width where the hero
-   is content driven, and more where min-height governs. It used to be
-   whatever two independent clamps happened to leave: 12px at 1440, 6px
-   at 390. See --statcard-overlap for the whole lesson. */
+   THE AIR IS --statcard-air AND NO NUMBER IS TYPED HERE. It is a clamp,
+   it lives in :root beside --statcard-overlap, and that token is its one
+   home; repeating its figures in this comment would be a copy that
+   nothing updates, the same convention ICO_BOX follows. Everything else
+   still comes from the overlap, so the gap between the buttons and the
+   card's top edge is the air by construction at every width where the
+   hero is content driven, and more where min-height governs. It used to
+   be whatever two independent clamps happened to leave: 12px at 1440,
+   6px at 390. See --statcard-overlap for the whole lesson.
+
+   THE AIR'S FLOOR IS THE VALUE THAT SHIPPED BEFORE IT, so a phone's hero
+   is exactly as tall as it was. The 390 hero already runs about two and
+   a half screens and it does not pay for a rhythm that only reads on a
+   desktop.
+
+   AND THE AIR IS SPENT BELOW THE CTA ROW, NEVER INSIDE THE HERO. Interior
+   spacing was considered on 2026-09-22 and declined: the copy cluster and
+   the buttons are one unit, and air between them pushes the CTA row DOWN,
+   which is the element the fold is measured against on a phone. Bottom
+   padding moves the card away from the buttons without moving the buttons,
+   so the fold arithmetic in scripts/mobile-check.md is untouched by
+   construction rather than by re-measurement. */
 .heroB-copy {
   position: relative; z-index: 1; width: 100%;
-  padding: clamp(10px, 4vh, 44px) 0 calc(var(--statcard-overlap) + 28px);
+  padding: clamp(10px, 4vh, 44px) 0 calc(var(--statcard-overlap) + var(--statcard-air));
 }
 .heroB h1 { font-size: clamp(2.5rem, 5.2vw, 4rem); color: var(--silver); margin-bottom: .26em; }
 .heroB .eyebrow { color: var(--silver); }
@@ -1155,7 +1178,7 @@ section { padding: var(--pad) 0; }
   .heroB .eyebrow { margin-bottom: 6px; }
   .heroB .lead { font-size: .98rem; line-height: 1.46; margin-bottom: 0; }
   .heroB .cta-row { margin-top: 12px; gap: 12px; }
-  .heroB-copy { padding: clamp(10px, 4vh, 44px) 0 calc(var(--statcard-overlap) + 28px); }
+  .heroB-copy { padding: clamp(10px, 4vh, 44px) 0 calc(var(--statcard-overlap) + var(--statcard-air)); }
   /* THE OX HERO SITS ABOVE A BAND, NOT THE CARD, so its foot is its own
      value and derives from nothing. This is the phone half of the pair;
      the desktop half is in the min-600 block below, and it is unchanged.
@@ -1176,7 +1199,7 @@ section { padding: var(--pad) 0; }
       rgb(var(--scrim-rgb) / .62) 68%,
       rgb(var(--scrim-rgb) / 0) 86%);
   }
-  .heroB-copy { padding: clamp(18px, 1.8vw, 24px) 0 calc(var(--statcard-overlap) + 28px); }
+  .heroB-copy { padding: clamp(18px, 1.8vw, 24px) 0 calc(var(--statcard-overlap) + var(--statcard-air)); }
   /* THE CHIP ROW IS HELD INSIDE THE SCRIM'S STRONG ZONE. Unconstrained,
      four chips run 917px and reach 76% of a 1440 frame, which is inside
      the fade: the rightmost glyphs measured 1.06. Capped, they wrap to

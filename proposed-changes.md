@@ -3029,6 +3029,105 @@ own sitting, and the hero was not to be moved for it.
 **No CSS was deleted.** The `site.css` diff is 24 added lines and zero
 removed.
 
+### 3.31 The card gets its air from a token. BUILT 2026-09-22
+
+The gap between the home hero's CTA row and the stat card's top edge doubles
+on desktop, from 28px to 56px. Client ruling 2026-09-22, picked from a
+rendered three-way comparison. **This is the number 3.32 noted as reserved;
+the gap is now closed.**
+
+#### One token, three places, and that is the whole point
+
+```
+:root   --statcard-air: clamp(28px, 3.9vw, 56px);
+.heroB-copy   padding-bottom: calc(var(--statcard-overlap) + var(--statcard-air))
+```
+
+The literal `+ 28px` appeared **three times** in `site.css`: the base
+`.heroB-copy` rule, its `max-width: 599px` variant and its `min-width: 600px`
+variant. All three now take the token. **That is why the air became a token
+rather than an edited literal**: three copies of one number are three chances
+to change two of them, which is the same lesson `--statcard-overlap` already
+carries in its own note.
+
+**The overlap is untouched.** The card rides over the hero's seam by exactly
+what it did before, measured below.
+
+#### The clamp, and why the floor is the old value
+
+```
+ 360px viewport   3.9vw = 14.04   ->  air 28.0   floor
+ 390px viewport   3.9vw = 15.21   ->  air 28.0   floor
+ 718px viewport   3.9vw = 28.00   ->  air 28.0   the floor stops binding here
+1200px viewport   3.9vw = 46.80   ->  air 46.8
+1436px viewport   3.9vw = 56.00   ->  air 56.0   ceiling
+1440px viewport   3.9vw = 56.16   ->  air 56.0   ceiling
+```
+
+The ceiling arrives at 1436, four pixels before 1440, so the ruled 56px is
+what a 1440 desktop actually gets. **The floor is the value that shipped
+before it**, so a phone's hero is the height it always was: the 390 hero
+already runs about two and a half screens and does not pay for a rhythm that
+only reads on a desktop.
+
+#### Interior spacing was considered and declined, on arithmetic
+
+The client also looked at spacing out the hero's interior, the copy cluster
+and the buttons, and ruled with the strategy chat to leave it alone. The copy
+and the buttons are one unit, and **air inside the hero pushes the CTA row
+down** — and the CTA row's bottom is the element `scripts/mobile-check.md`
+measures the fold against. Bottom padding moves the card away from the buttons
+**without moving the buttons**, so the fold arithmetic is untouched by
+construction rather than by re-measurement.
+
+#### Measured, against HEAD, on both pages
+
+```
+                        HEAD      NOW     delta
+1440  padding-bottom    106px    134px     +28
+1440  cta-row bottom     592      592        0   <- the point of the design
+1440  gap to card         28       56      +28   <- the ruling
+1440  overlap             78       78        0   <- untouched
+1440  page end          8661     8689      +28
+
+ 390  padding-bottom     72px     72px       0
+ 390  cta-row bottom     613      613        0
+ 390  gap to card         28       28        0
+ 390  overlap             44       44        0
+ 390  page end         12244    12244        0   <- phones pay nothing
+```
+
+**The fold, both viewports, both banner states, identical to the pixel:**
+
+```
+390x664 staging   613  misses by  9      360x640 staging   654  misses by 74
+390x664 cutover   556  clears by 48      360x640 cutover   597  misses by 17
+```
+
+The 17px miss at 360x640 is the false CLAUDE.md record flagged in 3.29 and
+3.30. Untouched here.
+
+**`/collision-repair/` does not move at either width**, and it is immune by
+construction rather than by luck: its hero is `.heroB--ox`, and
+`.heroB--ox .heroB-copy` sets `padding-bottom` outright in both media queries,
+so it never consumed the overlap-plus-air sum at all.
+
+```
+                      HEAD     NOW
+1440  padding-bottom   48px    48px      hero h562, page end 10748, both
+ 390  padding-bottom   58px    58px      hero h560, page end 17483, both
+```
+
+#### The comment
+
+`.heroB-copy`'s note used to say "THE AIR IS 28px, and that is the only number
+typed here." That stopped being true, so it was rewritten rather than left to
+rot. **It names the token and does not repeat the clamp's figures**, which is
+the convention `ICO_BOX` set in 3.28: the token is the one home for the
+numbers, and a comment quoting them is a copy that nothing updates.
+
+---
+
 ### 3.32 A real wreck replaces the stock hero. BUILT 2026-09-22
 
 The home page's hero photograph becomes a real customer vehicle, supplied by
@@ -3036,9 +3135,8 @@ the client on 2026-09-22: a red sedan with its front end crushed, inside the
 shop, before repair. **This retires the most prominent stock image on the
 site.**
 
-*(3.31 is unused. The number was reserved in the strategy chat for work that
-has not landed here, and this record was asked for as 3.32. Nothing is
-missing.)*
+*(3.31 was reserved and empty when this was written. It has since landed: the
+hero-to-card air. Nothing is missing.)*
 
 #### Provenance, and where the file lives
 
