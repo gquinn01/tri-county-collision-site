@@ -3925,6 +3925,109 @@ as it already did. **No compressed form of the credential remains anywhere**
 in `docs/` or `templates/`. **"Trusted" now appears zero times on either
 page**; that sentence was its only home. No CSS, so no restamp.
 
+### 3.38 The evidence goes on the dark ground, on the collision page too. BUILT 2026-09-23
+
+`/collision-repair/`'s `#real-repairs` takes `class="dark field-ink"`. Client
+ruling 2026-09-23, picked from rendered comparisons.
+
+#### The reasoning, and what was rejected
+
+It **ends the two-silver run after `#process`**, which is the adjacency the
+client's eye caught. Beyond that: the dark band is where evidence lives on
+this site, which the home page's damage list established; the photographs and
+the branded AFTER chips read stronger on ink; and red stays reserved for the
+ask on a page that already opens red.
+
+**The red option was rendered and rejected**, on the record: it fights the red
+chips and the red cars, and this page carries enough ox already.
+
+```
+before   #process (silver) -> #real-repairs (silver) -> #services (white)
+after    #process (silver) -> #real-repairs (INK)    -> #services (white)
+```
+
+#### The .ba grammar gains its dark mode
+
+```
+.dark .ba figcaption            --silver-2    10.78:1 on ink
+.dark .ba figcaption strong     --silver      15.42:1 on ink
+#real-repairs.dark .repairs-note --silver-2   10.78:1 on ink
+```
+
+Floor 4.5, target 7; all three clear both. **The tones they replace are why
+the rule had to exist at all**: `--ink-2` on ink measures **1.77** and `--ink`
+on ink measures **1.00**. Without it the captions would have been invisible on
+their own ground.
+
+**Scoped through `.dark`, so it is the component's rule and not a page
+one-off.** Any page that darkens this section gets readable captions with
+nothing written for it, which is what made it a component in 3.34.
+
+**The heading and kicker needed nothing.** `.dark` gives the sec-title
+`--silver` and `.dark .sec-sub` gives the kicker the same, exactly as
+`#what-we-fix` gets them on the home page. Confirmed by computed style: both
+report `rgb(240, 242, 242)`, where HEAD had ink and `--ox-tx`.
+
+#### One selector was wrong, and the measurement caught it
+
+The intro line's rule first shipped as `.dark #real-repairs .repairs-note`
+and **matched nothing**. `.dark` sits ON the section, not around it, so there
+is no ancestor for a descendant selector to describe. The probe showed
+`figcaption` and `strong` already turned while `repairs-note` still reported
+`rgb(60, 68, 83)`, which is `--ink-2` on ink at 1.77:1.
+
+Corrected to `#real-repairs.dark .repairs-note`, both on the same element.
+**It names the ID only because the rule it must beat does**: the existing
+`#real-repairs .repairs-note` carries an explicit `--ink-2` at specificity
+110, so a plain `.dark .repairs-note` at 20 would lose. Rewriting that
+selector would have been tidier and a wider change than this needed.
+
+#### The shadow is left invisible on purpose
+
+The `.ba` print shadow is ink on ink inside this section and effectively
+invisible. **The shared rule is untouched**, and the shadow comment in
+`site.css` now says so in as many words, ending "if you came here to fix the
+invisible shadow: it is not broken." A shadow that vanishes costs nothing;
+scoping it off would fork a shared component into two implementations to save
+nothing.
+
+#### The chips are untouched by construction
+
+Both chips sit **on the photographs**, so the pixels their perimeters were
+measured against are photo pixels that did not change. **3.23's and 3.34's
+numbers stand** and nothing was re-measured. The ground moved around the
+frames, not under the chips.
+
+#### Home stays light, deliberately
+
+`docs/index.html`'s `#real-repairs` is unchanged and the home page differs
+from HEAD **only by its cache stamp**. The component wears each page's rhythm:
+a page copying it picks its ground by its own adjacency, and the dark text
+grammar comes with it either way. That is written on the collision section's
+comment and on the template's optional block, so the next page to take it has
+the choice in front of it.
+
+#### A ground is a colour, not a size
+
+```
+                    HEAD          NOW
+1440  #real-repairs h=2640        h=2640      page end 13514 -> 13514
+ 390  #real-repairs h=3157        h=3157      page end 20722 -> 20722
+```
+
+**The fold is identical**, measured with the corrected probe from
+`mobile-check.md`'s second trap — the iframe IS the viewport, and it prints
+`innerHeight` and the computed `min-height` beside the answer so a wrong basis
+would show:
+
+```
+390x664   innerHeight=664  min-height=504.64px   580 / 523   clears by 24 / 81
+360x640   innerHeight=640  min-height=486.4px    579 / 521   clears by  1 / 59
+```
+
+Both identical to HEAD. **No CSS was deleted**: 37 lines added, one removed,
+and that one is the comment terminator the shadow note was extended through.
+
 ---
 
 ## 4. The claims list

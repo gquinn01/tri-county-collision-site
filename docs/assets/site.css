@@ -1538,7 +1538,13 @@ a.svc-card h3 { color: var(--ox-tx); }
    the radius stays var(--radius), so no new number enters this file.
 
    Shadows paint OUTSIDE the box, so nothing reflows and no section grows.
-   Measured both ways in 3.33. */
+   Measured both ways in 3.33.
+
+   ON A DARK GROUND THIS SHADOW IS INK ON INK AND EFFECTIVELY INVISIBLE,
+   which is true on /collision-repair/ since 3.38 and is DELIBERATELY LEFT
+   ALONE. A shadow that vanishes costs nothing, and scoping it off would
+   fork a shared component into two implementations to save nothing. If
+   you came here to fix the invisible shadow: it is not broken. */
 .ba img {
   display: block; width: 100%; height: auto;
   border-radius: var(--radius); background: var(--rule);
@@ -1585,6 +1591,36 @@ a.svc-card h3 { color: var(--ox-tx); }
 
 .ba figcaption { margin-top: 14px; font-size: .97rem; color: var(--ink-2); }
 .ba figcaption strong { display: block; color: var(--ink); font-size: 1.04rem; }
+
+/* THE .ba TEXT GRAMMAR ON A DARK GROUND. Added 2026-09-23 when
+   /collision-repair/ put its Real Repairs on ink, proposed-changes.md 3.38.
+
+   SCOPED THROUGH .dark, SO IT IS THE COMPONENT'S OWN RULE AND NOT A PAGE
+   ONE-OFF. Any page that gives this section a dark ground gets readable
+   captions with nothing written for it, which is what made the section a
+   component in 3.34. Measured on --ink: --silver-2 is 10.78 and --silver
+   is 15.42, against a 4.5 floor and a 7 target. The tones they replace
+   are the reason the rule exists at all: --ink-2 on ink measures 1.77 and
+   --ink on ink measures 1.00.
+
+   THE HEADING AND THE KICKER NEED NOTHING. .dark gives the sec-title
+   --silver and .dark .sec-sub gives the kicker the same, exactly as
+   #what-we-fix gets them on the home page.
+
+   THE INTRO LINE NAMES THE ID, and only because the rule it has to beat
+   does. #real-repairs .repairs-note carries an explicit --ink-2 at a
+   specificity of 110, so a plain .dark .repairs-note would lose to it.
+   Rewriting that selector would have been the tidier fix and a wider
+   change than this one needed.
+
+   AND THE TWO CLASSES SIT ON THE SAME ELEMENT, hence #real-repairs.dark
+   and not .dark #real-repairs. The descendant form was written first and
+   matched nothing: .dark is ON the section, not around it, so there is no
+   ancestor for it to describe. The measurement caught it, still showing
+   --ink-2 on the intro line while the captions had already turned. */
+.dark .ba figcaption { color: var(--silver-2); }
+.dark .ba figcaption strong { color: var(--silver); }
+#real-repairs.dark .repairs-note { color: var(--silver-2); }
 
 @media (max-width: 760px) {
   .repairs-grid { gap: 36px; }
