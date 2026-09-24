@@ -700,6 +700,71 @@ def main():
     check("     the strip that ships agrees with every page that ships",
           not fails, fails)
 
+    # Greg's ruling of 2026-09-24, proposed-changes.md 3.53: an execution
+    # page declares its kind and is exempt from the checks listed against
+    # that kind and from nothing else. BOTH DIRECTIONS are held here: the
+    # declared page still fails what it should, and a page that does not
+    # declare gets no exemption. Same shape as the address check, which
+    # needed a mechanism after it scored a wrong address as a pass.
+    print("19. The contact kind: exempt from exactly two checks, nothing else")
+    check("     the contact kind lists exactly the two ruled checks",
+          audit.RUBRIC_EXEMPTIONS.get("contact") == ("faq-schema", "thin-content"),
+          audit.RUBRIC_EXEMPTIONS.get("contact"))
+    check("     no blanket kind exists, utility above all",
+          set(audit.RUBRIC_EXEMPTIONS) == {"contact"}, sorted(audit.RUBRIC_EXEMPTIONS))
+
+    def run_kind(meta: str, body: str):
+        html = PAGE.replace("</head>", meta + "</head>").format(body=body)
+        audit.load = lambda _src, _h=html: _h
+        passes, warns, fails, notes, kind = audit.audit("fabricated.html", coverage=None)
+        return " ".join(passes), " ".join(warns), " ".join(fails), " ".join(notes), kind
+
+    contact_meta = '<meta name="tri-county-page" content="contact">'
+    short = '<p>Call <a href="tel:+12153225350">(215) 322-5350</a>.</p>'
+
+    p, w, f, n, kind = run_kind(contact_meta, short)
+    check("     a short contact page draws no thin-content warning",
+          "Thin content" not in w, w)
+    check("     and no FAQPage warning", "no FAQPage schema" not in w, w)
+    check("     both exemptions are reported as notes, not silence",
+          "not measured against 300" in n and "No FAQPage schema, not measured" in n, n)
+    check("     it still reports as a page, not as a special kind", kind == "page", kind)
+
+    p, w, f, n, kind = run_kind(contact_meta, short.replace(
+        "</p>", "</p><p>Or call 215.709.9665 today.</p>"))
+    check("     a contact page still fails on the CallRail number",
+          "CallRail tracking number" in f, f)
+    p, w, f, n, kind = run_kind(contact_meta, short + '<p><a href="mailto:info@tricountycollision.com">info@tricountycollision.com</a></p>')
+    check("     and on the second email address", "info@tricountycollision.com" in f, f)
+    p, w, f, n, kind = run_kind(contact_meta, short + f"<p>995 Jaymor Road, {CITY}</p>")
+    check("     and on a wrong street spelling", "street address is spelled" in f, f)
+    p, w, f, n, kind = run_kind(contact_meta, "<p>Email contact@tricountycollision.com.</p>")
+    check("     and still warns on an untappable contact", "not linked" in w, w)
+    html_no_h1 = PAGE.replace("<h1>Collision Repair</h1>", "").replace(
+        "</head>", contact_meta + "</head>").format(body=short)
+    audit.load = lambda _src, _h=html_no_h1: _h
+    _p, _w, _f, _n, _k = audit.audit("fabricated.html", coverage=None)
+    check("     and still fails with no H1", any("No H1" in x for x in _f), _f)
+
+    p, w, f, n, kind = run_kind("", short)
+    check("     an UNDECLARED short page still draws the thin-content warning",
+          "Thin content" in w, w)
+    check("     and the FAQPage warning", "no FAQPage schema" in w, w)
+    p, w, f, n, kind = run_kind('<meta name="tri-county-page" content="contct">', short)
+    check("     a misspelled kind gets no exemption", "Thin content" in w, w)
+    p, w, f, n, kind = run_kind('<meta name="tri-county-page" content="utility">', short)
+    check("     and neither does utility", "Thin content" in w and "no FAQPage schema" in w, w)
+
+    # And the page as it actually ships.
+    _load = audit.load
+    audit.load = lambda src: open(src, encoding="utf-8").read()
+    try:
+        cp, cw, cf, cn, ck = audit.audit(os.path.join(root, "docs", "contact-us", "index.html"))
+    finally:
+        audit.load = _load
+    check("     /contact-us/ as it ships: no critical, and sameAs its only warning",
+          not cf and len(cw) == 1 and "sameAs" in cw[0], (cf, cw))
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} check(s) failed:")

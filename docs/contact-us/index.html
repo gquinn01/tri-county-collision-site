@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       CONTACT. Built 2026-09-24, proposed-changes.md 3.53.
+
+       THIS PAGE EXECUTES; THE OTHER PAGES SELL. Greg's ruling of
+       2026-09-24: the options the live page offers, very easy to find and
+       very easy to do. So there is no hero photograph, no stat band and no
+       persuasion section. A compact header carries the H1, the live page's
+       just-call line, the call button and the hours; five action cards
+       follow, each one tap, nothing hidden.
+
+       NO FORM, AND THERE IS NOT MEANT TO BE ONE. Greg's ruling of
+       2026-09-24 answers the recorded form-endpoint question: there is no
+       endpoint because there is no form. pagemap.md records it. What
+       replaces a form is the shop's own CarWise estimate and appointment
+       links, kept pending the owner's confirmation that CarWise is still in
+       use.
+
+       THE SOURCE OF EVERY WORD ON THIS PAGE is the shop's own live
+       WordPress page at https://tricountycollision.com/contact-us/, read on
+       2026-09-24, except the card labels, which are this site's existing
+       labels. Every change is a before/after pair in proposed-changes.md
+       3.53. Do not edit copy here without adding the pair there.
+
+       WHAT THE LIVE PAGE CARRIES AND THIS ONE DOES NOT, each already
+       ruled, and listed in 3.53 with the reasons: the call-tracking
+       number, a third phone number the owner has not confirmed, the
+       second email address, a review-count line and a review widget that
+       contradict the counted figure, a Google Maps embed, and the form.
+
+       STAGING, DELIBERATE, AND NOT A DEFECT: noindex below, docs/robots.txt
+       disallows everything, and the canonical is absolute to the
+       production domain. All three come off together at cutover and
+       scripts/audit.py enforces them through its STAGING switch.
+
+       NO PRICE, OFFER, REVIEW OR RATING MARKUP.
+       ============================================================ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Ink. The palette lives in assets/site.css; a meta tag cannot read a
+       custom property, which is why this one hex is duplicated. -->
+  <meta name="theme-color" content="#121B27">
+
+  <title>Contact Us | Tri-County Collision, Southampton, PA</title>
+  <meta name="description" content="Call Tri-County Collision in Southampton, PA at (215) 322-5350, email the shop, get a free online estimate, book an appointment or get directions.">
+
+  <link rel="canonical" href="https://tricountycollision.com/contact-us/">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- AN EXECUTION PAGE, DECLARED. Greg's ruling of 2026-09-24,
+       proposed-changes.md 3.53: this page's job is executing, not
+       persuading, so scripts/audit.py does not measure it by word count or
+       by FAQ presence. Those two checks and nothing else; every other check
+       runs. Its own measure is the fold probe: the call and the hours
+       inside the first screen. RUBRIC_EXEMPTIONS in audit.py holds the
+       list. Remove this line and the page is measured like any other. -->
+  <meta name="tri-county-page" content="contact">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Contact Us | Tri-County Collision, Southampton, PA">
+  <meta property="og:description" content="Call Tri-County Collision in Southampton, PA at (215) 322-5350, email the shop, get a free online estimate, book an appointment or get directions.">
+  <meta property="og:url" content="https://tricountycollision.com/contact-us/">
+  <!-- THIS PAGE HAS NO HERO, SO ITS SHARE CARD FOLLOWS HOME'S. The four
+       og:image lines are home's, byte for byte. When the shoot produces a
+       real photograph of the shop, the share card moves to it; the shoot
+       list carries it. There is deliberately no primaryImageOfPage in the
+       schema below, because no image appears on this page. -->
+  <meta property="og:image" content="https://tricountycollision.com/assets/img/hero-wrecked-sedan-in-shop.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="800">
+  <meta property="og:image:alt" content="A red sedan with its front end crushed and the bumper torn loose, in the shop before repair.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- No analytics tag yet. GA4 goes in the CLIENT'S OWN Google account at
+       cutover, and the CallRail snippet goes in beside it. Neither is here,
+       because a measurement ID nobody has given us is a fact nobody has
+       confirmed. docs/privacy/ ships in the same commit as the first tag. -->
+
+  <!-- Both faces are self-hosted and both are needed above the fold, so they
+       are preloaded rather than discovered inside the stylesheet. They are
+       SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
+  <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/site.css?v=95d0714b">
+  <script src="../assets/site.js?v=9b1fd397" defer></script>
+
+  <!-- One @graph. The AutoBodyShop node repeats in full on every page under
+       the SAME @id, so the whole site resolves to one business entity: a
+       bare @id reference carries no type and no sameAs, which is what
+       search engines and the audit both read.
+       sameAs IS DELIBERATELY ABSENT. The live site publishes five profile
+       URLs and they are listed in proposed-changes.md, but a sameAs claims
+       "this profile is us" and only profiles the shop actually controls
+       belong in it. The verified list is coming from the client. Until it
+       lands the property is not here, and the audit says so out loud rather
+       than the page quietly claiming an entity signal it does not have.
+       THE PAGE NODE IS A ContactPage, not a WebPage, because that is what
+       it is. The CarWise links are not in the schema: they are a third
+       party's pages, and nothing here should claim them as the shop's. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AutoBodyShop",
+        "@id": "https://tricountycollision.com/#business",
+        "name": "Tri-County Collision",
+        "url": "https://tricountycollision.com/",
+        "telephone": "+12153225350",
+        "email": "contact@tricountycollision.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "995 Jaymor Rd",
+          "addressLocality": "Southampton",
+          "addressRegion": "PA",
+          "postalCode": "18966",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 40.1660232,
+          "longitude": -75.0538596
+        },
+        "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "08:00",
+            "closes": "18:00"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-bucks-county",
+            "name": "Bucks County, Pennsylvania"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-montgomery-county",
+            "name": "Montgomery County, Pennsylvania"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-philadelphia",
+            "name": "Philadelphia, Pennsylvania"
+          },
+          {
+            "@type": "City",
+            "name": "Southampton, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Feasterville-Trevose, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Richboro, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Warminster, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Langhorne, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Bensalem, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Huntingdon Valley, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Hatboro, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Willow Grove, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Horsham, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Jenkintown, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "Place",
+            "name": "Northeast Philadelphia, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-philadelphia"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "ContactPage",
+        "@id": "https://tricountycollision.com/contact-us/#webpage",
+        "url": "https://tricountycollision.com/contact-us/",
+        "name": "Contact Us | Tri-County Collision, Southampton, PA",
+        "description": "Call Tri-County Collision in Southampton, PA at (215) 322-5350, email the shop, get a free online estimate, book an appointment or get directions.",
+        "inLanguage": "en-US",
+        "dateModified": "2026-09-24",
+        "isPartOf": {
+          "@id": "https://tricountycollision.com/#business"
+        },
+        "about": {
+          "@id": "https://tricountycollision.com/#business"
+        },
+        "breadcrumb": {
+          "@id": "https://tricountycollision.com/contact-us/#breadcrumb"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://tricountycollision.com/contact-us/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://tricountycollision.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Contact Us",
+            "item": "https://tricountycollision.com/contact-us/"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Removed at cutover, with the noindex tag and the robots.txt disallow.
+       A human who opens this page should not have to guess why it is not
+       indexed. -->
+  <p class="staging">Staging build. Not the live site. The shop's live site is at tricountycollision.com</p>
+
+  <header class="nav">
+    <div class="wrap inner">
+      <a class="nav-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+      <nav class="nav-main" aria-label="Main"><ul>
+        <li><a href="../collision-repair/">Collision Repair</a></li>
+      </ul></nav>
+      <a class="btn btn-sm" href="tel:+12153225350">Call (215) 322-5350</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ THE COMPACT HEADER ============
+         Not a hero: no photograph, no scrim, no entrance. Greg's ruling of
+         2026-09-24, the actions first. .hero gives the short top padding
+         and .lead the reading size, both base rules restored on
+         2026-09-13 for exactly this, a .lead outside a hero.
+
+         ON WHITE, NOT OX, and the argument is in proposed-changes.md
+         3.53. In short: oxblood means act, and here it goes on the act
+         itself, a filled oxblood call button on a light ground, rather
+         than on the ground behind it, where the button would turn ink.
+         And the system has no rule for a breadcrumb or a .lead on a dark
+         ground outside .heroB, so ox would have needed new CSS.
+
+         THE HOURS SIT INSIDE THE CALL ROW, beside the button where there
+         is room and under it where there is not. A caller needs to know
+         whether anyone is there at the moment they reach for the phone.
+         The two lines are the footer's, byte for byte, and they carry no
+         "Hours" label on purpose: with one, the block is three lines, the
+         flex row stretches the button to match it at desktop widths, and
+         at 360x640 the hours cleared the fixed call bar by 1px. Measured
+         inside the first screen at 390x664 and 360x640, 3.53.
+
+         THE PLAIN <div> IS STRUCTURAL. A .cta-row that closes a section's
+         .wrap is a section-bottom ask, and section-bottom asks centre
+         (site.css). This one belongs to the copy above it and reads off
+         the same left edge, so it is not the wrap's direct child. -->
+    <section class="hero band-panel" id="contact">
+      <div class="wrap">
+        <!-- Mirrors the BreadcrumbList, same labels and same order. -->
+        <nav class="crumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="../">Home</a></li>
+            <li>Contact Us</li>
+          </ol>
+        </nav>
+        <div>
+          <p class="eyebrow">Southampton, PA</p>
+          <h1>Contact Us</h1>
+          <p class="lead">If you're standing next to a damaged car right now, just call. That's the fastest way to get help.</p>
+          <div class="cta-row">
+            <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+            <p>Monday to Friday, 8&nbsp;a.m. to 6&nbsp;p.m.<br>
+            Saturday by appointment only</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ THE FIVE WAYS TO REACH THE SHOP ============
+         Each card is one tap: the whole card is the link, in the site's
+         existing whole-card grammar (a.svc-card, the home router's), so
+         the lift comes with it and nothing is written for this page.
+         No accordion, nothing hidden, nothing revealed on scroll.
+
+         THE CARWISE HREFS ARE THE LIVE PAGE'S OWN, VERBATIM, taken from
+         the two links in its body copy. The live header and footer carry
+         the same two links with tracking parameters appended, one of them
+         a single visitor's analytics client id; those are not carried.
+         CarWise answers an automated fetch with a Cloudflare challenge, so
+         the links were not proven live from a terminal; the owner confirms
+         CarWise is still in use (3.53, section 5).
+
+         Outbound links open in a new tab with rel="noopener", the site's
+         convention for the maps link. The call and email cards do not,
+         because they open the reader's own phone and mail apps. -->
+    <section id="options">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Let's Get You Back on the Road Safely</h2>
+          <p>If you're not calling, pick whichever option below fits your situation. Either way, you'll get a straight answer and know exactly what happens next.</p>
+        </div>
+        <div class="grid2">
+          <a class="svc-card" href="tel:+12153225350">
+            <div class="svc-card-body">
+              <h3>Call (215) 322-5350</h3>
+              <p>For immediate answers or to discuss your repair directly with our local team.</p>
+            </div>
+          </a>
+          <a class="svc-card" href="mailto:contact@tricountycollision.com">
+            <div class="svc-card-body">
+              <h3>Email the shop</h3>
+              <p>For non-urgent questions or to send photos of damage.<br>
+              contact@tricountycollision.com</p>
+            </div>
+          </a>
+          <a class="svc-card" href="https://www.carwise.com/online-photo-estimate/tri-county-collision-center-southampton-pa-18966/481195" target="_blank" rel="noopener">
+            <div class="svc-card-body">
+              <h3>Free online estimate</h3>
+              <p>Get a quick, no-obligation idea of repair costs by submitting your vehicle's details online.</p>
+            </div>
+          </a>
+          <a class="svc-card" href="https://www.carwise.com/auto-body-shops/book-appointment/tri-county-collision-center-southampton-pa-18966/481195" target="_blank" rel="noopener">
+            <div class="svc-card-body">
+              <h3>Book an appointment</h3>
+              <p>Schedule a convenient time for a thorough, in-person assessment at our Southampton facility.</p>
+            </div>
+          </a>
+          <!-- A LINK, NOT AN EMBED. The live page embeds Google Maps, which
+               is a third-party request on every load; this opens the
+               reader's own navigation app instead. The same maps URL the
+               footer uses, and the address printed so it can be read or
+               copied without leaving the page. -->
+          <a class="svc-card" href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">
+            <div class="svc-card-body">
+              <h3>Get directions</h3>
+              <p>995 Jaymor Rd<br>
+              Southampton, PA 18966</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <a class="foot-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+          <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
+          <p class="foot-nap">
+            Tri-County Collision<br>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd<br>
+            Southampton, PA 18966</a><br>
+            <a href="tel:+12153225350">(215) 322-5350</a><br>
+            <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>
+          </p>
+        </div>
+        <div>
+          <h2 class="foot-head">Hours</h2>
+          <p>Monday to Friday, 8&nbsp;a.m. to 6&nbsp;p.m.<br>
+          Saturday by appointment only</p>
+        </div>
+        <div>
+          <!-- These columns list only pages that exist. They grow as pages
+               land, and never before. -->
+          <h2 class="foot-head">Services</h2>
+          <ul class="foot-links">
+            <li><a href="../collision-repair/">Collision Repair</a></li>
+            <li><a href="../auto-glass-repair-replacement/">Auto Glass Repair</a></li>
+            <li><a href="../paintless-dent-repair/">Paintless Dent Repair</a></li>
+            <li><a href="../commercial-collision-repair/">Commercial Collision&nbsp;Repair</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="foot-head">Get Started</h2>
+          <ul class="foot-links">
+            <li><a href="tel:+12153225350">Call (215) 322-5350</a></li>
+            <li><a href="mailto:contact@tricountycollision.com">Email the shop</a></li>
+            <li><a href="./">Send us your details online</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <!-- The year is written into the markup so it is right with
+             JavaScript off, and assets/site.js updates it so it is right
+             next January. A hard-coded year is a stale-clock claim. -->
+        <p>&copy; <span data-year>2026</span> Tri-County Collision &middot; <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> &middot; <a href="tel:+12153225350">(215) 322-5350</a> &middot; <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- The one element the whole design turns on. Fixed to the bottom of
+       every phone viewport, hidden above 900px where the header's own call
+       button is always visible. -->
+  <a class="callbar" href="tel:+12153225350">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h3l1.5 3.8-2 1.4a12.5 12.5 0 0 0 6.2 6.2l1.4-2 3.8 1.5v3a1.8 1.8 0 0 1-2 1.8A16.5 16.5 0 0 1 4.8 5.5a1.8 1.8 0 0 1 1.8-2z"/></svg>
+    Call (215) 322-5350
+  </a>
+
+</body>
+</html>

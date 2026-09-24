@@ -22,9 +22,11 @@ repo is public. `pagemap.md` carries only what the build needs.
 
 What it commits us to, in short:
 
-- **37 indexable pages** (38 if ADAS calibration clears its gate), plus 1
-  noindexed utility page, the thank-you page. The old sitemap's 48 entries
-  become 37 or 38, all real.
+- **37 indexable pages** (38 if ADAS calibration clears its gate), and
+  no utility pages since 2026-09-24, when the thank-you page left the map
+  with the form. The old sitemap's 48 entries: 36 migrate, 11 redirect, and
+  /thanks/ gets an honest 404. Privacy is new and ADAS is a candidate, which
+  is how 36 become 37 or 38. `pagemap.md` spells the arithmetic out.
 - **Migrate faithfully, do not rewrite for its own sake.** The promise of
   this migration is that rankings survive. Existing slugs are kept wherever
   a page keeps its purpose, because every unnecessary redirect spends a
@@ -136,8 +138,11 @@ invisible by eye.
 **Still unconfirmed, and therefore still off:**
 
 - **Everything else the template still tokenizes**: geo coordinates,
-  socials and `sameAs`, area served, GA4 ID, form endpoint, taglines, and
-  the proof line. `{{TOKENS}}` with no defaults. Fill them from the client,
+  socials and `sameAs`, area served, GA4 ID, taglines, and the proof line.
+  The form endpoint is answered, not pending: **there is no form on this
+  site**, by Greg's ruling of 2026-09-24, so there is no endpoint.
+  `{{FORM_ENDPOINT}}` still sits in the template until someone removes the
+  form from it. `{{TOKENS}}` with no defaults. Fill them from the client,
   in writing, and check them character for character against the Google
   Business Profile.
 
@@ -271,6 +276,12 @@ in the client's own accounts, never the agency's.** Analytics goes in the
 shop's Google account. The form posts to the shop's endpoint. This is what
 makes the exit promise, "you keep everything," easy to keep, and it is
 easier to set up right than to unwind later.
+
+**There is no form, decided 2026-09-24**, so today there is no endpoint to
+own. `/contact-us/` carries the shop's own CarWise estimate and appointment
+links instead, which are the shop's CarWise account and not ours, pending the
+owner's confirmation that CarWise is still in use. If a form ever ships, its
+endpoint goes in the client's account like everything else here.
 
 ---
 
@@ -675,6 +686,45 @@ rests as a wrapped static row with all twelve marks visible, and that
 resting state is the base in the cascade rather than something a media query
 restores. There is no JavaScript in it at all, so scripting off renders
 exactly the same page.
+
+## Execution pages measure differently, 2026-09-24
+
+**A page whose job is executing is not measured by the checks written for a
+page whose job is persuading.** Greg's ruling, recorded in full in
+`proposed-changes.md` 3.53. `/contact-us/` puts every way of reaching the
+shop within one tap and the call and the hours inside the first screen. Two
+audit checks measure something else: the 300-word thin-content check and the
+FAQPage check. Forcing either onto this page would mean 300 words of filler or
+an invented FAQ, which is **the check designing the page. The check serves
+the page, never the reverse.** The page's own measure is the fold probe.
+
+Scoring it below the bar forever and recording why was rejected: a permanent
+sub-bar score teaches the Monday reader to skim past warnings, and the report
+is worth paying for only while a warning is an alarm.
+
+**The mechanism and its limits**, which are the permission:
+
+- The page declares itself in its own head, `<meta name="tri-county-page"
+  content="contact">`, where the next reader sees it. Remove the line and the
+  page is measured like any other.
+- `RUBRIC_EXEMPTIONS` in `scripts/audit.py` lists, per kind, the checks that
+  kind skips, by name. `contact` skips exactly those two. Every other check
+  runs, and the page still counts as a page.
+- An exempt check still reports, as a note naming the ruling, so the report
+  says what it did not measure rather than going quiet.
+- **Per kind and explicit, forever.** When the privacy page trips its own
+  mismatch, it declares its own kind with its own recorded scope. **There is
+  never a blanket pass, and never one for "utility".**
+- `scripts/test-audit-checks.py` section 19 holds both directions: a contact
+  page still fails the CallRail number, the second email, a wrong street, a
+  missing H1 and a bare contact; an undeclared, misspelled or `utility` page
+  gets no exemption.
+
+**The score is the share of checks passed, and a page that runs fewer checks
+rounds differently.** With sameAs as its one warning, `/contact-us/` is 15 of
+16, which is 94, where a service page is 18 of 19, which is 95. Both are
+exactly as clean. Nobody counts an exempt check as a pass to round it up,
+because that would report a check as passing that never ran.
 
 ## Staging ships noindexed on purpose
 

@@ -19,10 +19,11 @@ WHAT GOES IN IT, and what does not:
   - NOT a redirect stub, and NOT the 404 page. Both declare themselves with
     <meta name="tri-county-page" content="..."> and the audit already scores
     them as a critical if they appear here.
-  - NOT a noindexed utility page. The thank-you page is the one this repo
-    expects: it is the GA4 form_submit key event, it has an H1, and it has no
-    business in a list of pages worth visiting. It declares itself with
-    content="utility".
+  - NOT a noindexed utility page. One declares itself with
+    content="utility". This repo expects none since 2026-09-24: the
+    thank-you page was the one, and it left the page map when Greg ruled the
+    site carries no form (pagemap.md, proposed-changes.md 3.53). The kind
+    stays, because the rule costs nothing and the next utility page needs it.
 
   The site-wide staging noindex is deliberately NOT a reason to leave a page
   out. Every page carries that tag today and none of them will after cutover;
@@ -69,8 +70,17 @@ JSONLD_RE = re.compile(
     re.I | re.S)
 
 
+# The page node's type. ContactPage is a schema.org subtype of WebPage and
+# /contact-us/ carries one, because that is what the page is (added
+# 2026-09-24, proposed-changes.md 3.53). A page that declares another
+# subtype adds it here; until then its lastmod is missing and the build
+# says so, which is the right way round.
+PAGE_NODE_TYPES = ("WebPage", "ContactPage")
+
+
 def date_modified(html: str):
-    """The dateModified from the page's WebPage node. None if it has none."""
+    """The dateModified from the page's WebPage node, or the node of a
+    WebPage subtype in PAGE_NODE_TYPES. None if it has none."""
     for block in JSONLD_RE.findall(html):
         try:
             data = json.loads(block)
@@ -84,7 +94,7 @@ def date_modified(html: str):
         for node in nodes:
             if not isinstance(node, dict):
                 continue
-            if node.get("@type") == "WebPage" and node.get("dateModified"):
+            if node.get("@type") in PAGE_NODE_TYPES and node.get("dateModified"):
                 return str(node["dateModified"]).strip()[:10]
     return None
 

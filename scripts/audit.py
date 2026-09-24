@@ -505,6 +505,38 @@ def type_name(raw) -> str:
 # like anything else. What changes is WHICH checks apply.
 SPECIAL_KINDS = ("redirect-stub", "error-404")
 
+# --- Execution pages: the full rubric, minus checks NAMED per kind ------
+# RULED BY GREG 2026-09-24, proposed-changes.md 3.53. EXECUTION PAGES
+# MEASURE DIFFERENTLY. Two checks below measure a page whose job is to
+# persuade and to answer: the FAQPage check and the 300-word thin-content
+# check. /contact-us/ does neither. Its job is to put every way of
+# reaching the shop within one tap and the call inside the first screen,
+# and the fold probe is what measures that. A check that forced 300 words
+# of filler or an invented FAQ onto it would be the check designing the
+# page. The check serves the page, never the reverse.
+#
+# WHY NOT LET IT SCORE 83 AND RECORD IT: a permanent sub-bar score teaches
+# the Monday reader to skim past warnings, and the report is worth paying
+# for only while a warning means something.
+#
+# THE LIMITS ARE THE PERMISSION:
+#   - A page opts in by declaring it in its own head, where the next
+#     reader sees it: <meta name="tri-county-page" content="contact">.
+#   - A kind is exempt from exactly the checks listed against it, by
+#     name, and from nothing else. Every other check runs as usual, and
+#     the page still counts as a page in the report.
+#   - KINDS ARE PER-KIND AND EXPLICIT. A new page that trips its own
+#     rubric mismatch (privacy is the expected next one) declares ITS OWN
+#     kind with its own recorded scope. There is never a blanket pass,
+#     and never one for "utility".
+#   - An exempt check still reports, as a note naming the exemption, so
+#     the report says what was not measured rather than going quiet.
+# scripts/test-audit-checks.py holds both directions: a contact-kind page
+# still fails what it should, and an undeclared page gets no exemption.
+RUBRIC_EXEMPTIONS = {
+    "contact": ("faq-schema", "thin-content"),
+}
+
 REFRESH_RE = re.compile(
     r"""<meta[^>]+http-equiv=["']refresh["'][^>]*content=["']\s*\d+\s*;\s*url=([^"']+)["']""",
     re.I)
@@ -1416,6 +1448,11 @@ def audit(source: str, coverage: dict = None):
     kind = (p.meta.get("tri-county-page") or "").strip().lower()
     if kind in SPECIAL_KINDS:
         return special_audit(source, html, p, kind, coverage) + (kind,)
+    # A declared execution kind keeps this whole rubric and loses only the
+    # checks RUBRIC_EXEMPTIONS names for it. It still reports as a page.
+    exempt = RUBRIC_EXEMPTIONS.get(kind, ())
+    exempt_why = (f"Declared `tri-county-page` kind `{kind}`, an execution page: "
+                  f"exempt by Greg's ruling of 2026-09-24, proposed-changes.md 3.53.")
     kind = "page"
 
     passes, warns, fails, notes = [], [], [], []
@@ -1497,6 +1534,8 @@ def audit(source: str, coverage: dict = None):
     # text is the closest thing to raising your hand.
     if "FAQPage" in types:
         passes.append("AEO: FAQPage schema present — the page offers ready-made Q&As for AI answers and rich results.")
+    elif "faq-schema" in exempt:
+        notes.append(f"**No FAQPage schema, not measured here.** {exempt_why}")
     else:
         warns.append("**AEO gap: no FAQPage schema.** Add a real FAQ section (the questions customers "
                      "actually call to ask) marked up as FAQPage — it's the closest thing to raising "
@@ -1715,7 +1754,9 @@ def audit(source: str, coverage: dict = None):
     # --- Word count (thin content check) ---
     text = re.sub(r"<script[\s\S]*?</script>|<style[\s\S]*?</style>|<[^>]+>", " ", html)
     words = len(text.split())
-    if words < 300:
+    if words < 300 and "thin-content" in exempt:
+        notes.append(f"**~{words} words, not measured against 300 here.** {exempt_why}")
+    elif words < 300:
         warns.append(f"**Thin content: ~{words} words.** Local pages generally need 300+ words of real, useful text to rank.")
     else:
         passes.append(f"Healthy content depth: ~{words} words on the page.")

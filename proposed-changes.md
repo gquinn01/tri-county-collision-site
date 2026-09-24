@@ -6337,6 +6337,369 @@ hero through the first two sections at 1440 and 390 on both pages.
 on glass (`#intro`, the intro prose, `#repair-or-replace`, `#adas`) and two on
 dent (`#intro`, the intro prose). Every other page regenerates byte-identical.
 
+
+### 3.53 Contact joins the site, with no form on it. BUILT 2026-09-24
+
+`/contact-us/`, built from the shop's live page at
+`https://tricountycollision.com/contact-us/`, **read on 2026-09-24.** Slug kept.
+Greg's rulings of 2026-09-24 govern it, and each one is here in his words or in
+what it decided:
+
+- **No form on this site.** The recorded form-endpoint question is answered:
+  there is no endpoint, because there is no form.
+- **The CarWise estimate and appointment links stay**, pending the owner's
+  confirmation that CarWise is still in use.
+- **The page top is a compact header with the actions first**, not a photo
+  hero. The page's whole job, in Greg's words: "the options the live page
+  provides, very easy to find and very easy to execute."
+
+#### 1. The map changed first
+
+`pagemap.md` was amended before any page was written, struck rather than
+deleted where it had said something else:
+
+- **Contact row.** "Form on an endpoint the client owns. This page is now the
+  only intake form on the site" is struck. It now records the ruling: no form;
+  call, email, the shop's CarWise estimate and appointment links (owner to
+  confirm), and directions. It is still the destination of the
+  `/customer-information/` 301, which stays genuinely equivalent, because it
+  is where a customer reaches the shop.
+- **Thank-you row: out of the map**, struck with the reason. It existed as the
+  form's success target and there is no form.
+- **Customer-information row.** "We build our own form, on an endpoint the
+  client owns" was a stale instruction and is struck hardest, per the
+  correction rule.
+- **Privacy row.** Its reason, "the forms need it", is struck and replaced
+  with the reason that still holds: GA4 and the CallRail snippet need it. The
+  page itself is not in question.
+- **Counts, the third time these numbers have moved**, with the arithmetic
+  spelled out: utility pages 1 - 1 = 0; indexable pages unchanged at 37 (38
+  with ADAS); redirects unchanged at 11.
+
+**One fact the brief did not have: `/thanks/` is live, and it is in the live
+sitemap.** So taking its row out also decides what its URL does. The old
+sitemap was counted off the live index on 2026-09-24 and it is 48 entries.
+They reconcile as 36 migrated + 11 redirected + `/thanks/` = 48. **`/thanks/`
+gets an honest 404 at cutover**: it is plumbing, and a thank-you page has no
+genuinely equivalent destination, so a 301 to Contact would be a forced
+mapping. That is inside the ruling (redirects unchanged at eleven), but it is
+recorded here so nobody is surprised by it at cutover.
+
+#### 2. What migrated, as pairs
+
+Everything on the page is the live page's words except the card labels, which
+are this site's existing labels ("Email the shop" is the label every CTA row
+carries).
+
+**Head**
+
+- Title. BEFORE: `Contact Us | Tri County Collision – Southampton, PA`.
+  AFTER: `Contact Us | Tri-County Collision, Southampton, PA`. Why: the
+  business name is the NAP's, with the hyphen, and the en dash becomes a
+  comma. 50 characters, machine-counted.
+- Meta description. BEFORE: none; the live page has none, which is what the
+  map said to fix. AFTER: `Call Tri-County Collision in Southampton, PA at
+  (215) 322-5350, email the shop, get a free online estimate, book an
+  appointment or get directions.` 146 characters, machine-counted. It carries
+  no street address, because the address check wants the full line wherever
+  the street appears and a description is not the place for it.
+- **The title, the description and the page node mirror each other byte for
+  byte, decoded, and hashing proves it.** Title `a6882bc045ca`, three times;
+  description `08fc7b436479`, three times.
+
+**The header**
+
+- H1 `Contact Us`, unchanged.
+- Eyebrow `Southampton, PA`: added. It is the site's own eyebrow, the one
+  every service hero carries, not new wording.
+- Lead. `If you're standing next to a damaged car right now, just call. That's
+  the fastest way to get help.` **Unchanged, and it leads the page**, as Greg
+  directed: protected voice.
+- Hours. BEFORE, under the live "Address & Hours" heading: `Hours: Monday -
+  Friday 8 AM - 6 PM` / `Saturday By Appointment Only`. AFTER, beside the call
+  button: `Monday to Friday, 8 a.m. to 6 p.m.` / `Saturday by appointment
+  only`, **the footer's two lines, byte for byte.** More below on why they carry
+  no label.
+
+**The options**
+
+- H2 `Let's Get You Back on the Road Safely`, unchanged. It moves from above
+  the live intro to above the cards.
+- BEFORE: `Otherwise, pick whichever option below fits your situation.` AFTER:
+  `If you're not calling, pick whichever option below fits your situation.`
+  Why: T5. The sentence now sits under its own heading, a section below the
+  "just call" it answered, so "Otherwise" had lost what it referred to. The
+  next sentence, `Either way, you'll get a straight answer and know exactly
+  what happens next.`, is unchanged.
+- Call. BEFORE: heading `Need to Talk Now?`, then `For immediate answers or to
+  discuss your repair directly with our local team: Call Us: (215) 515-4662
+  (Lines open Mon-Fri, 8 a.m. - 6 p.m.) - A real person answers, no phone
+  tree.` AFTER: heading `Call (215) 322-5350`, then `For immediate answers or to
+  discuss your repair directly with our local team.` Why: the number is the
+  NAP's, and the 515 number does not ship (section 3). The hours moved up
+  beside the header's button. **"A real person answers, no phone tree" is
+  HELD**, because it was written about the 515 line. Attaching it to 322-5350
+  would be fabrication by fusion: a true sentence about one line, made into a
+  claim about another. It goes to the owner.
+- Email. BEFORE: heading `Prefer to Email Us?`, then `For non-urgent questions
+  or to send photos of damage: Email Our Team: contact@tricountycollision.com
+  - We reply the same business day.` AFTER: heading `Email the shop`, then `For
+  non-urgent questions or to send photos of damage.` with the address on its
+  own line. **"We reply the same business day" is HELD** for the owner. It is
+  a service-level promise, and a customer will hold the shop to it.
+- Estimate. BEFORE: heading `Start with a Free Online Estimate`, then `Get a
+  quick, no-obligation idea of repair costs by submitting your vehicle's
+  details online. Get Your Free Online Estimate Here - Takes about five minutes
+  with photos of the damage.` AFTER: heading `Free online estimate`, then the
+  first sentence alone. Why: Greg asked for one line per CarWise card, so a
+  reader can tell the two apart before tapping. The link text is gone because
+  the whole card is the link. **"Takes about five minutes" is HELD**: it is a
+  timing claim about a third party's tool.
+- Appointment. BEFORE: heading `Book Your In-Shop Appointment Online`, then
+  `Schedule a convenient time for a thorough, in-person assessment at our
+  Southampton facility. Book Your Appointment Now - Pick your time online, and
+  you're booked, with a confirmation to your inbox.` AFTER: heading `Book an
+  appointment`, then the first sentence alone. Same reason. **The
+  confirmation-email line is HELD**, since it describes CarWise's behaviour.
+- Directions. BEFORE: `Address: 995 Jaymor Rd Southampton, PA 18966`, with
+  **the comma missing**. That is a NAP variant, and the audit would fail it.
+  AFTER: a `Get directions` card carrying `995 Jaymor Rd` / `Southampton, PA
+  18966`. It links to the maps URL the footers already use.
+
+**The CarWise hrefs are the live page's own, verbatim.** The live page carries
+each link in three shapes. The body-copy links, which are the ones that
+shipped, are parameter-free:
+
+```
+https://www.carwise.com/online-photo-estimate/tri-county-collision-center-southampton-pa-18966/481195
+https://www.carwise.com/auto-body-shops/book-appointment/tri-county-collision-center-southampton-pa-18966/481195
+```
+
+The header and footer buttons append plugin parameters to the same paths. One
+of the appointment links carries `clientId=1924865829.1668790684`, which is **a
+single visitor's Google Analytics client id**, frozen into the markup. That is
+session-specific, and none of those shapes were carried. Both links open in a
+new tab with `rel="noopener"`, the site's convention for the maps link. **They
+could not be proven live from a terminal.** CarWise answers every automated
+fetch, its own homepage included, with a Cloudflare challenge
+(`cf-mitigated: challenge`, HTTP 403). That is bot protection, not a dead
+link, and it is why the owner's confirmation matters.
+
+#### 3. What did not migrate, and why
+
+Each of these was already ruled:
+
+- **(215) 709-9665**, the CallRail tracking number, printed on the live page as
+  a heading. The audit would score it as a critical.
+- **(215) 515-4662**, **a third number, new to the record**, printed as the
+  live page's "Call Us" line. It is unconfirmed, it ships nowhere, and it
+  joins the owner questions.
+- **`info@tricountycollision.com`**, the banned second address, three times in
+  the live page's closing contact block.
+- **"1,500+ five-star reviews"** and the Trustindex widget's **"Based on 231
+  reviews"**, together with its eight reviews. Both contradict the counted
+  figure in `REVIEW_COUNT`, and they disagree with each other as well. The
+  lifetime-warranty half of the same line is not contradicted. It stays off
+  because this page executes rather than persuades, and every page in front of
+  it carries the warranty in its stat band.
+- **The Google Maps embed** becomes a Get Directions link. Nothing on this site
+  makes a third-party request at runtime, and a link that opens the reader's
+  own navigation app is easier to use anyway.
+- **The form**: first, last, email, phone, a service select and a message. Not
+  migrated, because there is no form. It went with its "Contact Us for Your
+  Free Consultation" block and that block's duplicate address and hours.
+- The CarWise header and footer plugin buttons and the live page's "Call to
+  Speak with an Expert" button, for the reasons above.
+
+#### 4. The page
+
+**No new CSS.** Every piece already existed:
+
+- `.hero` and `.lead` outside a hero: the two base rules restored on
+  2026-09-13 for exactly this.
+- `.band-panel` as the header's ground.
+- `a.svc-card`, the home router's whole-card link, so the lift comes with it.
+- `.grid2` for the five cards.
+
+`stamp-assets.py --check` exits 0.
+
+**The ground is white, not oxblood, argued:**
+
+- **Oxblood means act, and here it goes on the act itself.** On a light
+  ground the call button is filled oxblood, the strongest act signal the site
+  has. On an ox band it turns ink, by the act-button rule, so the colour would
+  sit behind the act instead of on it.
+- **The system lacks the rules an ox header would need.** `.crumb ol` is
+  `--ink-2`, and the only dark-ground breadcrumb rules are scoped to `.heroB`.
+  `.lead` is `--ink-2` with no `.dark` variant. On ox, both print dark on dark.
+  So ox needs two new rules, and Greg's instruction was to stop and say so
+  rather than write them. **If Greg wants ox, those two rules are the whole
+  cost**, and the palette law permits it, because this band asks.
+- Silver was ruled out as well. The cards sit on silver below the header, and
+  3.52's rule is that no two adjacent sections share a ground.
+
+**Two structural choices, both commented in the page:**
+
+- **The header's content sits in a plain `<div>`.** A `.cta-row` that closes a
+  section's `.wrap` is a section-bottom ask, and those centre. This one belongs
+  to the left-aligned copy above it. It is excluded by structure, the way the
+  hero is.
+- **The hours sit inside the call row with no "Hours" label.** They sit beside
+  the button where there is room and under it where there is not. With the
+  label, the block was three lines. At 1440 the flex row stretched the button
+  to 84px to match it, and at 360x640 the hours cleared the fixed call bar by
+  **1px**. Without the label, the button is its own 62px, and the fold numbers
+  are below.
+
+**The page node is a `ContactPage`**, which is what the page is. The builder
+matched `WebPage` by exact type and would have left this page without a
+`lastmod`, so `scripts/build-sitemap.py` now reads a `PAGE_NODE_TYPES` tuple
+instead. The graph is the full `AutoBodyShop` node, copied byte for byte from
+`/paintless-dent-repair/` under the shared `@id`, then `ContactPage`, then
+`BreadcrumbList`. **There is no `primaryImageOfPage`**, because no image is on
+the page. **og:image follows home's**, four lines byte for byte, with a comment
+saying so. It moves to a real shop photograph after the shoot. The CarWise
+links are not in the schema, because they are a third party's pages.
+
+**Hours, from where they actually live.** The brief said to take hours from
+`audit.py`'s constants. **`audit.py` has no hours constant.** The hours live in
+each page's `openingHoursSpecification` and in the footer, as two lines of text
+that are byte-identical on all six pages. This page takes the footer's lines.
+They could drift one day, and a check that holds them together would be
+mechanism over memory. Not written here; it is proposed below.
+
+#### 5. The execution-page ruling, and the rubric
+
+**Greg's ruling, 2026-09-24, option 1, in his reasoning:** the thin-content
+check and the FAQPage check "measure a page whose job is persuading and
+answering, by word count and by FAQ presence. This page's job is executing,
+and its success measure is different: every option within reach, the call
+inside the first screen, which the fold probe already proves. A check that
+forces 300 words of filler or an invented FAQ onto an execution page would be
+the check designing the page, and the check serves the page, never the
+reverse."
+
+Option 2, shipping below the bar with a note, was rejected: "a permanent
+sub-bar score turns the Monday report into something the reader learns to skim
+past, and the monitoring product's value is that its warnings mean something."
+
+**Built to his four conditions:**
+
+1. **Exactly two checks, for exactly the declared kind.** The page declares
+   `<meta name="tri-county-page" content="contact">` in its own head, with a
+   comment. `RUBRIC_EXEMPTIONS = {"contact": ("faq-schema",
+   "thin-content")}` in `audit.py`. Every other check runs, and the page still
+   counts as a page in the report's headline. An exempt check reports as a
+   **note** naming the ruling, so the report says what it did not measure.
+2. **Both directions tested**, `test-audit-checks.py` section 19, 16 checks.
+   A contact page still fails the CallRail number, the second email, a wrong
+   street spelling and a missing H1, and still warns on a bare contact. An
+   undeclared page, a misspelled kind (`contct`) and `utility` get no
+   exemption. The shipped page has no critical and sameAs as its only
+   warning. **The test was itself tested by mutation.** Adding a blanket
+   `utility` kind turns 2 checks red. Emptying the contact kind turns 5 red.
+   Adding a third exemption turns 1 red.
+3. **Recorded with the principle**: here, and in CLAUDE.md under "Execution
+   pages measure differently".
+4. **Per kind, explicit, forever.** The privacy page declares its own kind
+   with its own recorded scope when it lands. The test fails if any kind but
+   `contact` exists today.
+
+**The page scores 94, not 95, and it is exactly as clean.** The score is the
+share of checks passed, and that formula is unchanged on purpose. A service
+page runs 19 checks and passes 18, which is 94.7 and rounds to 95. This page
+runs 16, because the two exempt checks are notes and there is no FAQ to
+mirror. It passes 15: 93.75, which rounds to 94. **Its only warning is sameAs,
+the same one every page carries, and it reaches 100 on the same day they do.**
+Rounding it up by counting an exempt check as a pass would report a check as
+passing that never ran, so that was not done. If Greg wants the table to read
+95 for this page, that is a change to the formula, and it is his to rule on.
+
+#### 6. The landing forces
+
+**13 elements became links, on five pages.** The brief's "15 spans" was the
+whole pending inventory. 13 of them pointed at `contact-us/` and the other 2
+wait on unbuilt pages (`areas-served/` from home,
+`your-right-to-choose-a-body-shop/` from collision), and those 2 are untouched.
+
+```
+docs/index.html                                2   FAQ, footer
+docs/collision-repair/index.html               5   process card, minor repair, insurance, FAQ, footer
+docs/auto-glass-repair-replacement/index.html  2   FAQ, footer
+docs/paintless-dent-repair/index.html          1   footer
+docs/commercial-collision-repair/index.html    3   process card, FAQ, footer
+templates/service-page-template.html           1   footer, so a page built from it is born linked
+```
+
+**The footer's "Send us your details online" keeps its label**, as ruled:
+with CarWise kept, sending your details online is exactly what the page
+offers. On this page it links to `./`, the way every page's footer links to
+itself. The footer item's odd 22-space indentation, left over from the span
+era, was restored to the list's own on the same line.
+
+**3.2 and 3.10 are resolved** by this landing, not by rewriting. The "request
+an estimate online" sentences they worried about now link to a page that
+offers exactly that, through the shop's own CarWise estimate. They are true
+for as long as CarWise is in use, which is the owner question.
+
+**Following 3.47 to 3.50, no page's `dateModified` moved.** Link conversions and
+footer edits have not moved it before. `docs/llms.txt` gains the page, naming
+CarWise as a third-party service. `docs/sitemap.xml` was regenerated and now
+has 6 URLs, with `lastmod` 2026-09-24 from the page's own `dateModified`.
+
+#### Measured
+
+**The fold, with an iframe the size of the viewport**, positions in CSS px from
+the top of the first screen:
+
+```
+             innerHeight  call button  hours      call bar top  clears it by
+390x664          664       419-481     495-551        604            53
+360x640          640       419-481     495-551        580            29
+1440x900         900       463-525     463-525        none          375
+```
+
+The call button and both hours lines are inside the first screen at both phone
+sizes and above the fixed call bar. Before the label came off, the 360x640
+margin was 1px. Laid-out width is true at every size (`scrollWidth` equals
+the viewport).
+
+**Seams hold the 3.46 baseline**, with the iframe taller than the page: 177 at
+1440 and 97 at 390 from the header's last line to the options heading, and
+head-to-body 40 at both. **Rendered and checked by eye** at 1440 full page, at
+390 full page, and at 360x640 as the first screen.
+
+**A probe trap, recorded because it will recur.** Headless Chrome will not
+make a window narrower than about 500px, so a direct screenshot at 360 lays
+the page out wider and crops it, which looks like overflow. It is not.
+Phone renders go through the viewport-sized iframe, which is why the method
+exists.
+
+**The suite.** Both test scripts pass. `stamp-assets.py --check` and
+`build-sitemap.py --check` exit 0. `STAGING=1 audit.py --strict` finds **zero
+criticals and six warnings, one per page, all sameAs**, and exits 1 on the
+sameAs bar as every run has. `/contact-us/` carries none of 709-9665,
+515-4662, `info@`, "1,500" or "231", checked by grep as well as by the audit.
+
+#### Found while building, not changed
+
+- **The form machinery outlives the form.** `templates/service-page-template.html`
+  still carries a `<form>` with `{{FORM_ENDPOINT}}` and `{{FORM_SUBMIT_LABEL}}`,
+  and `docs/assets/site.js` still has its `form_submit` event code. Neither is
+  reached by any page. Removing them is a sweep of its own, and it touches
+  `site.js` and its stamp. `build-sitemap.py`'s docstring was corrected here,
+  because it named the thank-you page as the utility page this repo expects.
+- **CarWise lists the shop as "Tri-County Collision Center"**, going by its
+  own URL slug. That is a business-name variant on a directory this site now
+  links to, and it joins 1.1's name question.
+- **The header's call button and the first card are both a call**, one above
+  the other on a phone, which is the arrangement the brief asked for. Worth
+  Greg's eye on the render. If one of the two goes, the card is the one that
+  should, because the button is what the fold probe proves.
+- **An hours check.** The hours text appears in six footers and now in this
+  header, with nothing holding them together. The shape would be the
+  review-count check's: one constant, every mention compared.
+
 ---
 
 ## 4. The claims list
@@ -6734,11 +7097,29 @@ site.**
 - **"Lifetime warranty on repair work"** on commercial vehicles. The live page
   says it twice, so the stat band is supported here; the question is whether it
   holds for a vehicle that does commercial mileage.
-- **"Free estimates in person or online."** The online half waits on
-  `/contact-us/`.
+- **"Free estimates in person or online."** ~~The online half waits on
+  `/contact-us/`.~~ The online half is the shop's CarWise estimate, on
+  `/contact-us/` since 3.53, and it is true while CarWise is in use.
 - **The hero chip "Built to limit downtime"**, Greg's approved swap (3.51). A
   process claim, not a turnaround promise, but the chip is the strongest form
   the downtime claim takes on the page.
+
+**`/contact-us/`** (3.53). **Four live claims are HELD rather than shipped.**
+The page runs one line per card, and each of these is a promise a customer
+would hold the shop to. Confirm any of them and it can come back:
+
+- **"A real person answers, no phone tree."** The live page says it about
+  (215) 515-4662, not about (215) 322-5350. Is it true of 322-5350?
+- **"We reply the same business day"** to email.
+- **"Takes about five minutes with photos of the damage"**, about the CarWise
+  estimate.
+- **"Pick your time online, and you're booked, with a confirmation to your
+  inbox"**, about CarWise booking.
+
+What the page does carry: "a thorough, in-person assessment at our Southampton
+facility", which is what an appointment is, and "a quick, no-obligation idea of
+repair costs", which is what the estimate is. Both need CarWise to still be in
+use.
 
 ## 5. What the owner needs to answer first
 
@@ -6789,3 +7170,16 @@ Ordered by how much else depends on it.
 17. **The commercial page's scope** (4.10): tractor-trailers and buses above
     all, then on-site assessment, commercial insurance handling, the
     turnaround language, and whether the named customer types are real.
+18. **Is CarWise still in use?** `/contact-us/` sends people to the shop's
+    CarWise online estimate and appointment booking, and three service pages'
+    "request an estimate online" sentences depend on it. If CarWise is retired,
+    two cards come off, those sentences change, and the footer's "Send us your
+    details online" label gets revisited. Also: CarWise names the shop
+    "Tri-County Collision Center" (1.1). See 3.53.
+19. **What is (215) 515-4662?** The live contact page prints it as its "Call Us"
+    number, beside a promise that a real person answers. It is a third number,
+    after 322-5350 and the CallRail line. Is it a line the shop wants
+    published? Until the answer is yes, it ships nowhere. See 3.53.
+20. **The four held contact-page promises** (4.10): a real person answers, a
+    same-business-day email reply, a five-minute estimate, and a booking
+    confirmation email.
