@@ -6,10 +6,11 @@ the **client-owner the fact-checker of record**, and this file is how that role
 gets exercised: read it, say yes or no to each line, and anything that gets a
 no comes off the page.
 
-**Status: 4 pages migrated.** `/collision-repair/`, built 2026-09-05, `/`,
+**Status: 5 pages migrated.** `/collision-repair/`, built 2026-09-05, `/`,
 built 2026-09-10 from `https://tricountycollision.com/` read the same day, and
-`/auto-glass-repair-replacement/` (3.47) and `/paintless-dent-repair/` (3.48),
-both built 2026-09-24 from their live pages read the same day.
+`/auto-glass-repair-replacement/` (3.47), `/paintless-dent-repair/` (3.48) and
+`/commercial-collision-repair/` (3.49), all built 2026-09-24 from their live
+pages read the same day.
 
 The rule this migration ran on: the live page is the content source of record,
 no fact was invented, and the new page claims nothing the old page does not
@@ -5776,6 +5777,251 @@ this repo**; the DocuSign nav link; the CallRail number; `info@`; the live
 schema's price and offer nodes. The contact block retired into the footer, per
 3.45.
 
+### 3.49 Commercial collision repair joins the site, and the promise ships. BUILT 2026-09-24
+
+`/commercial-collision-repair/`, built to the mold of `/collision-repair/`
+from the shop's live page at
+`https://tricountycollision.com/commercial-collision-repair/`, **read on
+2026-09-24.** Slug kept. The live page already carries FAQPage schema; it is
+regenerated here from the same strings as the visible answers. **This page
+carries the heaviest scope claims on the site**, and every one of them is
+migrated as the live page makes it and listed in 4.10.
+
+#### The before and after
+
+| # | Where | Before (live) | After (this build) |
+|---|---|---|---|
+| 1 | `<title>` | Commercial Collision Repair in Southampton, PA \| Tri County | Commercial Collision Repair \| Tri-County Collision |
+| 2 | meta, og and JSON-LD description | Commercial collision repair in Southampton, PA for work vehicles and fleets of all sizes. Certified technicians, free estimates, help with insurance claims. Call (215) 322-5350. (177) | Commercial collision repair in Southampton, PA for work vehicles and fleets. Free estimates, insurance help. Serving Bucks & Montgomery County. (215) 322-5350. (159) |
+| 3 | intro, paragraph 2 | At Tri County Collision Center, we've built... | At Tri-County Collision, we've built... |
+| 4 | the process lead-in | Here's how a commercial repair works at Tri County Collision Center: | Here's how a commercial repair works at Tri-County Collision: |
+| 5 | the Why list's heading | Why Businesses Choose Tri County Collision Center | Why Businesses Choose Tri-County Collision |
+| 6 | the area paragraph | ...businesses throughout the region rely on Tri County Collision Center for... | ...businesses throughout the region rely on Tri-County Collision for... |
+| 7 | the Why list, item 1 | Family owned and operated [em dash] you'll deal with people, not a call center | Family owned and operated: you'll deal with people, not a call center |
+| 8 | FAQ 1 opener | Just about all of them. | We repair just about all types of commercial vehicles. |
+| 9 | FAQ 2 opener | That depends on the damage, and we won't pretend otherwise. | How long your work vehicle will be in the shop depends on the damage, and we won't pretend otherwise. |
+| 10 | FAQ 3 opener | Yes. We work with all major insurance companies... | Yes, we work with commercial insurance policies. We work with all major insurance companies... |
+| 11 | FAQ 4 opener | Yes. We work with businesses of every size. | Yes, we can repair multiple vehicles from the same fleet. We work with businesses of every size. |
+| 12 | FAQ 5 opener | That's the standard. | Pre-accident condition is the standard. |
+| 13 | FAQ 6 opener | Call (215) 322-5350 or request an estimate online. | To get a commercial repair estimate, call (215) 322-5350 or request an estimate online. |
+| 14 | CTA buttons | Call Now for a Free Quote / Get an Estimate Online | Call (215) 322-5350 / Email the shop |
+
+**1. No form of the collision grammar fits this service's name.** "Commercial
+Collision Repair in Southampton, PA | Tri-County Collision" is 69 characters,
+and even "Commercial Collision Repair, Southampton | Tri-County Collision" is 63.
+The live title fitted by cutting the name to "Tri County", which rule 6 does
+not allow. **So the location goes and the name stays**: 50 characters, counted
+by machine. Southampton, PA is in the description, the eyebrow, the intro H2
+and the schema. **Greg's alternative, if he will take a shortened name in
+titles only**: the live pattern, "Commercial Collision Repair in Southampton,
+PA | Tri-County" at 59.
+
+**2. `pagemap.md` asked for "meta to 160", and it was 177.** It now claims
+work vehicles and fleets, free estimates and insurance help (a trim of the live
+"help with insurance claims"). "Certified technicians" and "of all sizes" came
+out for length; both are still on the page. **The three mirrors are
+byte-identical once decoded, proved by hash:**
+
+```
+meta        159  9ee41cbcb7b93a6b
+og          159  9ee41cbcb7b93a6b
+JSON-LD     159  9ee41cbcb7b93a6b
+```
+
+**3 to 6.** The business name, per 1.1. Four places on this page.
+
+**7. The live list carried an em dash**, which the standards ban anywhere. A
+colon does the same job and adds no word.
+
+**8 to 13, the standalone test.** FAQ 1 and 2 opened on a pronoun that was the
+question; FAQ 3, 4 and 6 on a bare "Yes." or an imperative. FAQ 3 and 4 gain
+the question's own words rather than a bare comma-merge, because "Yes, we work
+with all major insurance companies" lifted alone never says "commercial".
+**FAQ 5 deliberately does not say "Yes."** The live answer is "That's the
+standard," and "Pre-accident condition is the standard" is the same claim at
+the same strength. The collision page's FAQ 2 did add a "Yes" (1.3); this one
+did not need to. Nothing after any opening sentence changed, except that the
+phone numbers in FAQ 1 and 6 are `tel:` links and "request an estimate online"
+is a pending link to `/contact-us/`, as on the collision FAQ.
+
+**14.** Per 1.9.
+
+**Split and relevelled, no words changed.** The first two sentences of the live
+opening are the hero lead; the rest, including the closing fragment "Whether
+that's one delivery van or a lineup of tractor-trailers.", follows under the
+intro H2, per 1.5. **The fragment is kept as it is**: it is the live page's
+voice, and the standards protect voice. The live H2s stay H2s. **The six-item
+process list became six `.step` cards**, each titled with its item's own lead
+words and carrying the rest of the item, the treatment 1.13 gave the collision
+process. The tiles are the collision page's own icons, reused, with the lane
+icon from its safety card on step 06, "Back to work". Nothing was drawn.
+
+#### The closing promise ships, byte-identical, on ox
+
+| | |
+|---|---|
+| **The test** | Is "We will get you back on the road with your vehicle restored to its pre-accident condition." honestly true of this page's work? |
+| **The answer** | Yes, in this page's own words: "Every vehicle leaves our shop in pre-accident condition", and its FAQ asks whether a work vehicle will "really be back to pre-accident condition". |
+
+**The band is byte-identical to home's `#start` and the collision page's**,
+proved by comparing the section's inner markup: **True** against both. **The
+ground is ox**, the service-page default. The collision page's ink was that
+page's own ruling, because its two oxblood bands were already spent. This
+page's two are `#why` and this one, with `#area` between them, which is the
+collision page's own tail shape.
+
+**Glass and dent now each hold a proposed variant** (3.47, 3.48). If Greg
+approves them as written, the three service pages share one frame, "We will
+get you back on the road with", and each variant ships byte-identical
+everywhere it appears.
+
+#### A chip swap is proposed, and the default stays
+
+**The live page argues downtime harder than anything else**: an H2 "Built to
+Limit Downtime", a section "Downtime Is the Real Cost of an Accident", and a
+Why item "Fast, efficient turnaround to limit downtime". So, per the ruling, a
+pair is proposed and **the collision four ship unchanged**:
+
+| | |
+|---|---|
+| **Default, shipped** | Free estimates · Insurance paperwork handled · ASE and I-CAR Gold Class certified · Detailed after every repair |
+| **Proposed** | Free estimates · Insurance paperwork handled · ASE and I-CAR Gold Class certified · Built to limit downtime |
+
+"Built to limit downtime" is the live H2's own words. It would replace the
+detailing chip, which is the one of the four a fleet manager weighs least and
+the one 4.2 already questions. **It is a claim about process, not a turnaround
+promise**, and the page makes no numbered turnaround promise anywhere. If
+approved, both chip lists change together, as 3.36 requires.
+
+#### The brand strip is flagged, not added
+
+**This page makes a manufacturer argument**, in `#fleet`: factory
+certification for 12 brands, naming Ford, GM, Dodge and Chrysler, is why a
+fleet's cars, vans and pickups can be repaired to manufacturer standards
+without leaving Southampton. **That may earn the strip here.** One per page is
+a ceiling, not a quota, and certification is the collision page's subject, so
+it is not added. **Greg's call.** If it goes in, it goes in `#fleet` under the
+paragraph that makes the argument, and the brand check will want the count
+agreeing, which it already does.
+
+#### The hero is interim stock, and a cutover blocker
+
+`hero-wrecked-work-van.jpg`, built by
+`scripts/prepare-hero-photo.py --frame commercial` from **AdobeStock_430555209**.
+
+```
+PROVENANCE, read before anything was built on it
+  DigitalSourceType  (none declared)
+  CreatorTool        Capture One 21 Macintosh    a raw converter
+  C2PA               embedded manifest, c2pa.published only
+  VERDICT            clean, no AI tell
+SOURCE   5916x3944, already exact 3:2, so no pixel discarded
+SUBJECT  the van x 1124..5679, y 402..3638, INSIDE
+         (silver on grey under overcast: read off a 592px grid, an
+          inspection and not a scan, exactly as the GMC was)
+RESAMPLE one box downscale, factor 4.93  ->  1200x800
+PLATES   660 boxes of 100x50 on the output, 0 meet all three conditions
+ENCODE   q92, 271,550 bytes; only APP0 JFIF survives the strip
+```
+
+**Three things in the frame were inspected at full resolution before the
+check ran**: the van's own plate mount is **empty**, bare bolts and rust; the
+black car at the right edge shows a **blank** plate strip; and a "2" on the
+van's door is **a reflection of a bay number**, not identifying. The densest
+box the scan found, detail 13.01 at the van's hood, fails on detail alone.
+Alt: "A silver work van with its hood crumpled and its front end torn open,
+parked in a lot beside another car."
+
+#### Real Repairs is withheld
+
+The collision page's Dodge Grand Caravan is a minivan, and nothing this repo
+holds makes it a work vehicle. **No commercial job has been photographed.**
+Recorded where the section would sit.
+
+#### Measured
+
+**Fold**, viewport-sized iframe:
+
+```
+                  innerHeight  min-height  CTA ends  budget
+390x664  banner       664      504.64px      580      604   clears by 24
+390x664  cutover      664      504.64px      523      604   clears by 81
+360x640  banner       640      486.4px       598      580   MISSES by 18
+360x640  cutover      640      486.4px       541      580   clears by 39
+430x745  cutover      745      560px         576      685   clears by 109
+1440x900 cutover      900      522px         533      900   clears by 367
+```
+
+The same shape as glass, for the same reason: "Commercial Collision Repair"
+runs three lines at 360. **The customer row clears by 39**; the banner row is
+recorded, per 3.41. Hero depth at 1440 is 603, as on the other two.
+
+**Scrim:**
+
+| Element | 1440 | 1920 | 430 | 390 | 360 | Needs |
+|---|---|---|---|---|---|---|
+| Breadcrumb | 9.53 | 9.46 | 9.53 | 9.20 | 9.14 | 7 |
+| Eyebrow | 9.53 | 9.65 | 9.66 | 9.39 | 9.39 | 7 |
+| H1 | **5.11** | **6.03** | 9.59 | 9.46 | 9.46 | 4.5 |
+| Lead | 9.39 | 9.33 | 10.05 | 9.53 | 9.53 | 7 |
+| Ghost button label | 9.91 | 9.98 | 10.24 | 10.11 | 10.11 | 7 |
+| Chips (desktop) | 9.98 | 9.91 | n/a | n/a | n/a | 7 |
+
+**Everything clears its standard, and the H1 at 1440 is the thinnest margin
+this run measured.** Its first line, "Commercial Collision", runs to **62.8% of
+the frame**, into the scrim's fade and over the van's pale hood. The collision
+page's H1 stops at 49.6%. At 5.11 against a 4.5 floor for display type, the
+amendment says the scrim does not deepen, and it did not. **The obvious markup
+fix is ruled out**: binding "Collision&nbsp;Repair" would keep the first line
+short, but at 360 those two words need two lines and a bound pair would
+overflow. **If Greg wants more headroom, the lever is the scrim's 68% stop in
+`site.css`**, which is a CSS change and a decision for every hero, not this
+page's to make.
+
+**Seams and heads**, iframe taller than the page, maps agreeing at two heights:
+seams 176-178 at 1440 and 96-98 at 390, head-to-body 40, and 44 on `#start`,
+exactly as the collision page's `#start` measures.
+
+**The ask rhythm:**
+
+```
+                     1440            390
+hero                  471             434
+#intro               1481  gap  948  1947  gap 1377
+#process             3085  gap 1542  4594  gap 2509
+#why                 4686  gap 1539  6668  gap 1936
+#start               5591  gap  843  7587  gap  781
+tail to the footer          817             890
+```
+
+**The longest phone run is 2,509**, from the intro to the foot of the process,
+because six step cards stack to 1,924px on a phone. That is under the 3,000
+bound. **Every ask sits where the live page puts one**, except the live page's
+ask after the insurance section, which would sit one section before `#why`'s.
+
+**The lane draws here.** `site.js` builds it on the first `.steps` of any page,
+below 720px only, and this process runs from the first call to the vehicle back
+in service. That is a road, which is the argument the lane was admitted on.
+Checked at 390: the dashes sit between the six cards.
+
+#### What landing this page moved elsewhere, by mechanism
+
+- **Home's Commercial Collision Repair router card became a link**, the last of
+  the three. **The router grid now links all four services.**
+- **The glass and dent footers' commercial spans became links**, one line each.
+  **The three new footers hash identical** once each page's `./` self-link is
+  expanded to its slug: `70e68e99e9ff3d74`.
+- **No `data-pending-href` points at any of the three service slugs anywhere
+  under `docs/`.**
+- **`docs/llms.txt`** and **`docs/sitemap.xml`** carry the page. **No CSS.**
+
+#### Not carried from the live page
+
+The Trustindex widget; the CarWise links; the live image `accent-welding.jpg`,
+**because old-site imagery is banned from this repo**; the DocuSign nav link;
+the CallRail number; `info@`; the live schema's price and offer nodes. The
+contact block retired into the footer, per 3.45.
+
 ---
 
 ## 4. The claims list
@@ -6081,6 +6327,7 @@ this shop.**
 |---|---|---|---|
 | `/auto-glass-repair-replacement/` | `hero-windshield-replacement-in-shop.jpg` | AdobeStock_64691325 | 3.47 |
 | `/paintless-dent-repair/` | `hero-dent-lifter-on-red-door.jpg` | AdobeStock_1571353580 | 3.48 |
+| `/commercial-collision-repair/` | `hero-wrecked-work-van.jpg` | AdobeStock_430555209 | 3.49 |
 
 **The shoot list gains one photograph per page**, each showing that service's
 own work at this shop:
@@ -6088,7 +6335,10 @@ own work at this shop:
 - **a real Tri-County glass job**, a windshield going in or a chip being
   repaired, in one of the bays (for 3.47);
 - **a real Tri-County dent job**, a technician working a panel paintlessly,
-  ideally with the before and after frames Real Repairs would need (for 3.48).
+  ideally with the before and after frames Real Repairs would need (for 3.48);
+- **a fleet vehicle at the shop**, a work van or box truck in or outside a bay,
+  ideally one of the shop's own commercial customers with their permission
+  (for 3.49).
 
 ---
 
@@ -6140,6 +6390,38 @@ this?"**, not "is it plausible".
   live dent page. Does it cover PDR?
 - **"Detailed after every repair"** on a PDR-only job.
 
+**`/commercial-collision-repair/`** (3.49). **The heaviest scope claims on the
+site.**
+
+- **Tractor-trailers and buses.** Named in the vehicle list, FAQ 1 and FAQ 4
+  ("a company running dozens of tractor-trailers"), and in the intro ("a
+  lineup of tractor-trailers"). **Can 995 Jaymor Rd physically take a
+  tractor-trailer or a bus, and does the shop repair them itself?** If not,
+  five sentences change. The Service schema already leaves both out until this
+  is answered.
+- **"No business is too small for us, and no fleet is too large."**
+- **"Our certified technicians bring years of experience across the full range
+  of working vehicles"** and "Certified technicians with years of commercial
+  vehicle experience." Certified in what, for commercial work?
+- **"We'll arrange to assess the damage."** Does the shop go to the vehicle, or
+  does the vehicle come in?
+- **"We deal with all the major insurance carriers and manage the claims
+  process directly."** Commercial policies included? Direct billing?
+- **Fleet accounts, billing terms and turnaround promises**: the live page
+  makes **none**, and so this page makes none. Worth saying so to the owner,
+  because a fleet manager will ask.
+- **"Fast, efficient turnaround to limit downtime"**, "we work quickly to
+  assess your vehicle and start repairs without unnecessary delays", and "Our
+  team is available to answer questions and give you status updates."
+- **"Top-quality parts and equipment on every job."** OEM, or not always?
+- **"From contractors in Warminster to delivery services in Bensalem."** This
+  reads as real customers. Are there?
+- **"Lifetime warranty on repair work"** on commercial vehicles. The live page
+  says it twice, so the stat band is supported here; the question is whether it
+  holds for a vehicle that does commercial mileage.
+- **"Free estimates in person or online."** The online half waits on
+  `/contact-us/`.
+
 ## 5. What the owner needs to answer first
 
 Ordered by how much else depends on it.
@@ -6184,3 +6466,6 @@ Ordered by how much else depends on it.
     reach PDR-only jobs.
 16. **The dent page's closing promise**, Greg's first: "We will get you back on
     the road with the panel looking like nothing ever happened." See 3.48.
+17. **The commercial page's scope** (4.10): tractor-trailers and buses above
+    all, then on-site assessment, commercial insurance handling, the
+    turnaround language, and whether the named customer types are real.
