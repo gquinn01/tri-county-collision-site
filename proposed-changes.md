@@ -4979,6 +4979,177 @@ person has the number.
 
 `site.css` changed, so all three stamped files carry `?v=ce5093ed`.
 
+### 3.45 The closing promise reaches the collision page, wearing ink. BUILT 2026-09-24
+
+`/collision-repair/`'s "Contact Us for Your Free Estimate" facts block retires,
+and the home page's closing act band takes its place. Client ruling 2026-09-24.
+**The block informed; this one asks.**
+
+#### The before and after
+
+**The heading pair:**
+
+| | |
+|---|---|
+| **Before** | **Contact Us for Your Free Estimate** — "One phone number, one email address, one shop" |
+| **After** | **We will get you back on the road with your vehicle restored to its pre-accident condition.** — "Estimates are free and there is no obligation" |
+
+**The facts block, removed whole.** Its entire visible text was:
+
+```
+Contact Us for Your Free Estimate
+One phone number, one email address, one shop
+Address    995 Jaymor Rd, Southampton, PA 18966
+Phone and email    (215) 322-5350    contact@tricountycollision.com
+Hours    Monday to Friday, 8 a.m. to 6 p.m.    Saturday by appointment only
+Estimates are free. Call (215) 322-5350 or email contact@tricountycollision.com.
+```
+
+**No word of it was rewritten; it was deleted, and nothing it said was lost.**
+
+#### Every fact it carried is already in this page's footer
+
+3.29 made the footer the contact section on the home page on 2026-09-22. **This
+completes the same move on the second page**, and the condition was checked by
+grep before the block was deleted rather than remembered:
+
+```
+address + ZIP   docs/collision-repair/index.html:1147-1148   (again at :1179)
+phone           :1149                                        (again at :1169, :1179)
+email           :1150                                        (again at :1170, :1179)
+hours           :1155-1156
+```
+
+`#area` also names the street in prose. **Nothing the block published stopped
+being published.**
+
+#### Verbatim from home's `#start`, with one difference
+
+The block was copied from `docs/index.html`'s `#start`. The proof is a hash:
+normalising **only** the ground class turns one into the other exactly.
+
+```
+collision block as shipped                    sha256 3c7aa385e03f
+home #start                                   sha256 35bcfe67f30a
+collision with field-ink -> field-ox           sha256 35bcfe67f30a   IDENTICAL
+```
+
+Headline and eyebrow are byte-identical strings, checked separately:
+
+```
+h2       "We will get you back on the road with your vehicle restored to its pre-accident condition."
+sec-sub  "Estimates are free and there is no obligation"
+```
+
+#### The ground is the one difference, and it is not an exception
+
+Home's closing band is `field-ox`; this one is `field-ink`. **The palette law
+and the ruling agree by construction, because ox maps to act, not act to ox.**
+The act-band rule caps a page at its two oxblood bands and this page already
+spends both, on `#after-a-crash` and `#why`. An ink band may still ask, exactly
+as the ink hero on the home page asks. No amendment is needed and none was
+written.
+
+#### The button grammar arrived free, and was verified rather than assumed
+
+Nothing was written for the buttons. `.dark` supplies the treatment and
+`.dark .cta-row` centres the row, the same rules home's band rides. Computed
+style on the rendered page, at 1440 and at 390:
+
+```
+row      justify-content: center     margin-top: 44px
+FILL     background rgb(105, 28, 23)   colour rgb(240, 242, 242)   border 2px rgb(240, 242, 242)
+GHOST    background rgba(0, 0, 0, 0)   colour rgb(240, 242, 242)   border 2px rgb(240, 242, 242)
+```
+
+That is `--ox` filled with `--silver` text and the silver hairline for Call, and
+a silver outline for Email: **the hero's own ink treatment**, which is the
+symmetric act-button rule of 2026-09-10 doing its job on a third ground without
+being told.
+
+#### The id changed and nothing linked to it
+
+`grep` found **no `href="#contact"` anywhere under `docs/` or `templates/`**,
+and this page carries no in-page anchors at all. So the id is now `start`,
+matching its new job and the home page's grammar for the same component.
+
+#### `.contact` came off the section; its rules stay
+
+The brief's sweep condition was tested and **it fails**, so nothing was deleted:
+
+```
+templates/service-page-template.html:612   <section class="dark contact field-both" id="contact">
+templates/service-page-template.html:670   <p class="contact-alt">...
+```
+
+The template still carries `.contact` and `.contact-alt`, and the
+`.contact-grid` rules with them. **This page was not their last user.** A sweep
+deletes only what it owns, so the class came off this one section and
+`site.css` was not touched at all.
+
+#### The band rhythm did not move, because the old block was already ink
+
+This is the cleanest answer to the seam question: the retired block was
+`dark field-ink` too, so **the ground sequence at the page tail is identical
+before and after.** Only the content inside the slot changed.
+
+```
+                 HEAD                          NOW
+#why             OX     t10389 h=874          OX     t10389 h=874
+#area            panel  t11263 h=579          panel  t11263 h=579
+the band         INK    t11843 h=423   ->     INK    t11843 h=439
+#faq             silver t12265 h=883          silver t12281 h=883
+footer.site      INK    t13148 h=591          INK    t13164 h=591
+```
+
+**Same slot, same ground, same neighbours.** No two same-ground bands abut: the
+FAQ puts 883px of silver between the closing ink band and the ink footer, as it
+always did. Rendered and read at 1440 and at 390 to confirm by eye as well as by
+number.
+
+#### Heights, and a page that gets shorter on a phone
+
+```
+              HEAD      NOW     delta
+1440  band     423      439      +16
+      page   13739    13755      +16
+ 390  band     614      444     -170
+      page   21220    21049     -171
+```
+
+**At 390 the page gets shorter by 171px.** The facts block stacked three
+columns on a phone; the promise band is a headline, a line and two buttons.
+At 1440 it costs 16px.
+
+#### Untouched
+
+- **JSON-LD is byte-identical**, one block before and after, sha256
+  `3dc46f8a5b18`. The retired block carried no schema of its own, verified the
+  same way 3.29 verified it.
+- **`site.css` was not touched**, so there is no restamp and **the home page is
+  byte-identical — not even a stamp line changed.** One file is modified in this
+  commit.
+- **The fold is identical on both pages**, viewport-sized probe, eight runs,
+  four report pairs hashing byte-identical:
+
+```
+home 390x664  f12d0a1f    home 360x640  e889cfec
+coll 390x664  a85b1f87    coll 360x640  92d39f42
+```
+
+The same four hashes 3.40, 3.41, 3.42, 3.43 and 3.44 recorded. **Six commits and
+the fold has not moved.**
+
+#### What this leaves open
+
+The contact block was the page's only home for the hours, and the hours now
+appear on this page **only** in the footer and the schema. That is the same
+arrangement the home page has carried since 3.29 and it is deliberate, but it is
+worth the owner knowing that a reader looking for opening times on a service
+page now finds them at the bottom rather than in a band of their own. The form
+question is unchanged: it lands on `/contact-us/` per `pagemap.md`, and the
+retired block's note about it went with the block.
+
 ---
 
 ## 4. The claims list

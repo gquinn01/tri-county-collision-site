@@ -1062,33 +1062,51 @@
       </div>
     </section>
 
-    <section class="dark field-ink contact" id="contact">
+    <!-- ============ THE CLOSING PROMISE ============
+         THE FACTS BLOCK RETIRED HERE ON 2026-09-24, on the client's
+         ruling, and this band took its place. proposed-changes.md 3.45.
+         What stood here was "Contact Us for Your Free Estimate": an
+         address column, a phone and email column, an hours column and a
+         repeat of both. It informed; it did not ask.
+
+         THIS COMPLETES 3.29 ON THE SECOND PAGE. The footer became the
+         contact section on the home page on 2026-09-22, and every fact
+         this block carried already lives in THIS page's footer: the
+         address and ZIP, the phone, the email, and the hours. Checked by
+         grep before the block was deleted, not remembered.
+
+         VERBATIM FROM HOME'S #start, WITH ONE DIFFERENCE: the ground.
+         Home's closing band is field-ox; this one is field-ink. The
+         palette law and the ruling agree by construction, and the reason
+         is worth stating because it looks like an exception and is not:
+         OX MAPS TO ACT, NOT ACT TO OX. The act-band rule caps a page at
+         its oxblood bands, and this page already spends both on
+         #after-a-crash and #why. An ink band may still ask, exactly as
+         the ink hero on the home page asks. Nothing about the button
+         grammar is written here: .dark gives the fill and the silver
+         hairline, and .dark .cta-row centres the row, the same rules
+         home's band rides.
+
+         THE ID IS "start" AND IT USED TO BE "contact". Nothing linked to
+         it: grep found no href="#contact" anywhere under docs/ or
+         templates/, and this page carries no in-page anchors at all. The
+         name now matches the job and home's grammar.
+
+         .contact CAME OFF THIS SECTION BUT ITS RULES STAY. They are not
+         this page's to delete: templates/service-page-template.html
+         still carries class="dark contact field-both" and .contact-alt,
+         so the sweep rule's condition fails. A sweep deletes only what
+         it owns. -->
+    <section class="dark field-ink" id="start">
       <div class="wrap">
-        <div class="sec-head" style="margin-bottom:0">
-          <h2 class="sec-title">Contact Us for Your Free Estimate</h2>
-          <p class="sec-sub">One phone number, one email address, one shop</p>
+        <div class="sec-head">
+          <h2 class="sec-title">We will get you back on the road with your vehicle restored to its pre-accident condition.</h2>
+          <p class="sec-sub">Estimates are free and there is no obligation</p>
         </div>
-        <!-- NO FORM HERE YET, on purpose. The old site's intake form is
-             retired and the new one posts to an endpoint in the CLIENT'S
-             own account, which nobody has set up yet. The template's form
-             fields, its submit label and its thank-you text are all tokens
-             with no defaults for the same reason. The form lands on
-             /contact-us/, per pagemap.md, and this band gains it then. -->
-        <div class="contact-grid">
-          <div>
-            <h3>Address</h3>
-            <p><a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd<br>Southampton, PA 18966</a></p>
-          </div>
-          <div>
-            <h3>Phone and email</h3>
-            <p><a href="tel:+12153225350">(215) 322-5350</a><br><a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a></p>
-          </div>
-          <div>
-            <h3>Hours</h3>
-            <p>Monday to Friday, 8 a.m. to 6 p.m.<br>Saturday by appointment only</p>
-          </div>
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
         </div>
-        <p class="contact-alt">Estimates are free. Call <a href="tel:+12153225350">(215) 322-5350</a> or email <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>.</p>
       </div>
     </section>
 
