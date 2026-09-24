@@ -60,7 +60,7 @@
        SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
   <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/site.css?v=f26d599d">
+  <link rel="stylesheet" href="../assets/site.css?v=bdb05a6c">
   <script src="../assets/site.js?v=9b1fd397" defer></script>
 
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
@@ -847,6 +847,12 @@
 
     <section id="factory-certified">
       <div class="wrap">
+
+        <div class="sec-head">
+          <h2 class="sec-title">Factory-Certified Collision Center</h2>
+          <p class="sec-sub">Twelve manufacturers, and the procedures that come with them</p>
+        </div>
+
         <!-- ============ THE BRAND STRIP, AS A COMPONENT ============
              THE ONE THING ON THIS SITE THAT MAY LOOP, and from 2026-09-23
              it may loop on more than one page. The continuous-motion
@@ -868,14 +874,31 @@
              THE TEST FOR ANYTHING ELSE THAT WANTS TO LOOP IS UNCHANGED,
              and the answer is still expected to be no.
 
-             THE MARKS LEAD AND THE HEAD CAPTIONS THEM. Client ruling
-             2026-09-23, proposed-changes.md 3.40. The strip used to sit
-             UNDER the section head, which made the sub announce it; it
-             now sits above, so "Factory-Certified Collision Center" and
-             "Twelve manufacturers, and the procedures that come with
-             them" caption what the reader has just watched go by. The
-             relationship inverted; the words did not move and neither
-             did the strip's own markup.
+             THE HEAD INTRODUCES, THE MARKS ILLUSTRATE, THE PROSE
+             EXPLAINS. Client ruling 2026-09-24, proposed-changes.md
+             3.43. The strip sits between the sec-head and the first
+             paragraph: you read "Factory-Certified Collision Center"
+             and "Twelve manufacturers, and the procedures that come
+             with them", you see which twelve, then you read what the
+             certification means.
+
+             THIS IS THE THIRD ARRANGEMENT, and the thing that settled
+             it was not composition, it was AIR. It sat under the head
+             through 3.34, above it in 3.40, and it is inline now. The
+             client's requirement was no huge spaces around the strip,
+             and that requirement chooses the position: a LEADING strip
+             needs band-air above it or it collides with the section
+             edge, and an INLINE strip must not have that air or it
+             reads as a stripe with moats instead of a step in the
+             section's flow. One position can be quiet; the other
+             cannot.
+
+             THE AIR IS A CSS ANSWER, NOT A MARKUP ONE. #brands keeps
+             its own band padding, which is right on the home page
+             where the strip IS a band; inside this section a
+             context-scoped rule in site.css trims it so the two gaps
+             either side match the section's own head-to-body grammar.
+             Search for #factory-certified #brands.
 
              THE SUB'S WORDS STILL AGREE WITH THE MARKS, which is the
              part that is enforced rather than argued: the section names
@@ -930,11 +953,6 @@
             </div>
           </div>
         </section>
-
-        <div class="sec-head">
-          <h2 class="sec-title">Factory-Certified Collision Center</h2>
-          <p class="sec-sub">Twelve manufacturers, and the procedures that come with them</p>
-        </div>
 
         <div class="prose">
           <p>When you buy a new vehicle, it comes with a manufacturer's warranty. That warranty covers repairs performed at certified facilities using proper techniques and parts. Our shop is factory-certified for 12 vehicle brands: INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru, and Jeep. What does factory certification actually mean? It means our technicians have completed manufacturer-specific training, we have access to OEM repair procedures and technical bulletins, and we have the proper diagnostic equipment to work on your vehicle correctly. Every repair we perform follows manufacturer specifications exactly. No shortcuts, no guessing.</p>

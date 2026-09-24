@@ -4152,6 +4152,11 @@ On `/collision-repair/`, `<section id="brands">` moves from **under**
 `#factory-certified`'s head to **above** it, becoming the first child of that
 section's `.wrap`. Client ruling 2026-09-23.
 
+*(SUPERSEDED 2026-09-24 by 3.43, which moves the strip a third time, to sit
+BETWEEN the head and the prose. The arrangement below was built and proved as
+written; what unseated it was the client's spacing requirement, not the
+composition. See 3.43.)*
+
 **The relationship inverts and nothing else does.** Before, the sub announced
 the strip: you read "Twelve manufacturers, and the procedures that come with
 them" and then saw twelve marks. Now you watch the marks go by and the
@@ -4602,6 +4607,183 @@ trusted from before them: both test scripts exit 0, stamps and sitemap current,
 audit 0 critical with both pages at 95/100 and `sameAs` the only warning.
 
 `site.css` changed, so all three stamped files carry `?v=f26d599d`.
+
+### 3.43 The marks take their place in the section's flow. BUILT 2026-09-24
+
+On `/collision-repair/`, `<section id="brands">` moves a third time: it now
+sits **between** `#factory-certified`'s head and its first paragraph. Client
+ruling 2026-09-24, revising 3.40.
+
+**The head introduces, the marks illustrate, the prose explains.** You read
+"Factory-Certified Collision Center" and "Twelve manufacturers, and the
+procedures that come with them", you see which twelve, then you read what the
+certification means.
+
+#### The third arrangement, and what actually settled it
+
+```
+3.34   under the head          the sub announced the strip
+3.40   above the head          the head captioned the strip
+3.43   between head and prose  the head introduces, the marks illustrate
+```
+
+**The client's second requirement is what chose the position, and it was not a
+composition argument: no huge spaces around the strip.** That requirement and
+the position are the same decision. A **leading** strip needs band-air above it
+or it collides with the section's top edge. An **inline** strip must not have
+that air, or it reads as a stripe with moats instead of a step in the flow. One
+position can be quiet; the other cannot. The strip's markup did not change and
+neither did a word of copy.
+
+#### The air, and why the strip had too much of it
+
+`#brands` carries `padding: calc(var(--pad) * .55) 0`. That is **band** padding
+and it is correct where the strip is a band: on the home page `#brands` is a
+standalone section between two others. Inside `#factory-certified` the same
+padding sits on top of the section's own gaps and doubles them.
+
+**The reference is not a matter of taste and it was not eyeballed.** The
+section's head-to-body grammar is the margin `.sec-head` already leaves under
+the sub before body text:
+
+```
+.sec-head { margin: 0 auto 40px }      ->   the grammar is 40px, flat at every width
+```
+
+Measured on the page after the move and before the fix, against that reference:
+
+```
+                              1440          390        target
+sec-head box -> #brands        40            40          (the grammar itself)
+sub text -> first mark         88            67           40
+last mark -> first paragraph   48            26           40
+#brands padding             48.4/48.4    26.4/26.4
+first p margin-top              0             0
+```
+
+**The two sides do not start from the same place**, which is why the answer is
+not one symmetric number. Above the strip, `.sec-head`'s own margin already
+supplies the whole 40, so the strip must add **nothing**. Below it nothing else
+contributes at all, because `p` has `margin-top: 0`, so the strip must supply
+**all** of it. Hence:
+
+```css
+#factory-certified #brands { padding-top: 0; padding-bottom: var(--sec-gap); }
+```
+
+Measured again after:
+
+```
+                              1440          390        target
+sub text -> first mark         40            40          40
+last mark -> first paragraph   40            40          40
+#brands padding              0/40px        0/40px
+```
+
+**Both gaps land on the grammar exactly, at both widths.** A consequence worth
+noting: inline, `#brands` is now **70px tall at every width** where it was 127
+at 1440 and 83 at 390. A band scales with `--pad`; an element matching a flat
+grammar is flat.
+
+#### One value plus a derivation
+
+Two places now have to agree on 40px, so it became a token rather than a number
+typed twice:
+
+```css
+--sec-gap: 40px;                                    /* new, beside --statcard-air */
+.sec-head { margin: 0 auto var(--sec-gap); }        /* was the literal 40px */
+```
+
+`.sec-head`'s computed value is unchanged, so nothing renders differently for
+it. This is the same move `--statcard-air` made in 3.31 and the reason is
+CLAUDE.md's own line: two values that must agree are one value plus a
+derivation. **The other `40px` values in the stylesheet were deliberately left
+alone** — the footer's `margin-top` and the badge list's margin are not this
+grammar and tokenising them would be a claim that they are.
+
+#### Scoped to the nested context, on purpose
+
+`#factory-certified #brands` describes **where** the element is, not what it
+is, which is the same genre as the compound-selector lesson. The home page's
+standalone band keeps its band padding untouched, and this was checked rather
+than assumed: `docs/index.html` contains no `#factory-certified` element at all
+— the only occurrence of that string is a stat label, `"Vehicle brands,
+factory-certified"` — so the rule cannot reach it. Confirmed on the rendered
+pages:
+
+```
+collision  #brands padding  0px / 40px
+home       #brands padding  48.4px / 48.4px
+```
+
+#### The marquee limits are untouched
+
+Nothing in the animation block was edited, and the diff proves it: no line
+containing `animation`, `hover`, `focus-within`, `keyframes`, `brandtrack`,
+`brandmarquee` or `prefers-reduced` appears in the stylesheet diff at all. Read
+back off both pages:
+
+```
+.brandmarquee  animation-name brand-drift   duration 40s   linear   infinite
+               play-state running           transform only
+tracks 3   marks in the real track 12   visible 12   flex-wrap nowrap
+.brandstrip    overflow hidden
+```
+
+**Rendered under `--force-prefers-reduced-motion`** at both widths: the static
+wrapped centred row, **all twelve marks visible**, now sitting in the section's
+flow — two rows of 7 + 5 at 1440, three of 4 + 4 + 4 at 390. The resting state
+is still the base in the cascade, and the move is markup order, which the
+animation never read.
+
+#### The section shrinks, which is the point
+
+```
+                          3.42        NOW      delta
+1440  #factory-certified  1065        1009      -56
+      PAGE END           13514       13457      -57
+ 390  #factory-certified  1521        1508      -13
+      PAGE END           20722       20710      -12
+```
+
+**This is the padding coming out, not a regression.** At 1440 the strip loses
+48.4 above and 8.4 below; at 390 it loses 26.4 above and *gains* 13.6 below,
+because a flat 40 is more than a phone's band padding was. The grammar is flat,
+so matching it costs a little height on a phone and saves a lot on a desktop.
+
+#### Order, count and the fold
+
+```
+order inside #factory-certified   .sec-head, #brands, .prose, .payoff, .prose
+strips on the page                1
+brand check                       2 strips of marks, 8 mentions in visible text,
+                                  1 in JSON-LD, all saying 12
+```
+
+**The fold is identical on both pages**, viewport-sized probe, `innerHeight`
+printed beside every answer, eight runs, four report pairs hashing
+byte-identical:
+
+```
+home 390x664  f12d0a1f    home 360x640  e889cfec
+coll 390x664  a85b1f87    coll 360x640  92d39f42
+```
+
+Those are the same four hashes 3.40, 3.41 and 3.42 recorded. **Four commits and
+the fold has not moved.**
+
+**Home is byte-identical except its stamp** — one line changed, the
+`?v=bdb05a6c` on the stylesheet link.
+
+#### Judged by eye, at both widths
+
+Rendered and read: ink band, ground, heading, sub, marks, prose. The marks read
+as a step in the section rather than a stripe with moats, at 1440 and at 390.
+That was the client's requirement and it is the thing the numbers above were
+chosen to produce.
+
+`site.css` changed, so all three stamped files carry `?v=bdb05a6c`.
 
 ---
 

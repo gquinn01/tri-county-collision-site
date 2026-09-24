@@ -497,6 +497,14 @@
      value that shipped before it, so phones pay nothing for a
      desktop rhythm fix. proposed-changes.md 3.31. */
   --statcard-air: clamp(28px, 3.9vw, 56px);
+  /* THE SECTION'S HEAD-TO-BODY GAP, DEFINED ONCE. .sec-head leaves this
+     much air under the sub before a section's body begins, flat at every
+     width. It is a token from 2026-09-24 because a SECOND place now has
+     to agree with it: #factory-certified #brands trims the strip's band
+     padding so the marks sit in that same rhythm rather than in a band's.
+     Two values that must agree are one value plus a derivation.
+     proposed-changes.md 3.43. */
+  --sec-gap: 40px;
   --radius: 4px;
   --font: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --display: "Archivo Black", Impact, "Arial Black", sans-serif;
@@ -1736,6 +1744,33 @@ a.svc-card h3 { color: var(--ox-tx); }
   --brand-gap: clamp(40px, 7vw, 120px);
   --brand-ink: .72;
 }
+
+/* THE STRIP INSIDE A SECTION IS NOT A BAND, added 2026-09-24 on the
+   client's ruling, proposed-changes.md 3.43.
+
+   The padding above is BAND padding, and it is right where the strip is
+   a band: on the home page #brands is a standalone section between two
+   others, and calc(--pad * .55) is what makes it read as one. On
+   /collision-repair/ the strip sits INSIDE #factory-certified, between
+   the sec-head and the prose, and there the same padding doubles the
+   section's own gaps and the marks read as a stripe with moats.
+
+   SCOPED TO THE NESTED CONTEXT ON PURPOSE. The home page's standalone
+   band keeps its band padding untouched; only a #brands that is inside
+   #factory-certified is trimmed. This is the section-within-a-section
+   answer and it is the same genre as the compound-selector lesson: the
+   rule describes WHERE the element is, not what it is.
+
+   THE NUMBERS ARE DERIVED, NOT PICKED. The target is the section's own
+   head-to-body grammar, --sec-gap, which .sec-head leaves under the sub
+   before body text. Above the strip .sec-head already supplies the whole
+   of it, so the strip adds NOTHING; below it nothing else contributes,
+   because p has margin-top 0, so the strip supplies all of it. Hence 0
+   and --sec-gap rather than one symmetric value: the padding is whatever
+   makes each gap equal the grammar, and the two sides do not start from
+   the same place. Measured before and after in 3.43. */
+#factory-certified #brands { padding-top: 0; padding-bottom: var(--sec-gap); }
+
 .brandstrip { overflow: hidden; }
 
 /* THE RESTING STATE. A wrapped, centred, static row of all twelve. */
@@ -1787,7 +1822,7 @@ a.svc-card h3 { color: var(--ox-tx); }
 .crumb li + li::before { content: "/"; margin-right: 8px; color: var(--rule); }
 
 /* ---------- Sections ---------- */
-.sec-head { max-width: 840px; margin: 0 auto 40px; text-align: center; }
+.sec-head { max-width: 840px; margin: 0 auto var(--sec-gap); text-align: center; }
 .sec-title { margin-bottom: .35em; }
 .sec-sub {
   font-size: .84rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
