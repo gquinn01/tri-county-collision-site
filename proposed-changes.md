@@ -5150,6 +5150,142 @@ page now finds them at the bottom rather than in a band of their own. The form
 question is unchanged: it lands on `/contact-us/` per `pagemap.md`, and the
 retired block's note about it went with the block.
 
+### 3.46 The spacing audit finds nothing, and two wrap orphans get bound. BUILT 2026-09-24
+
+A full spacing audit of both pages at 1440 and 390 — a pixel whitespace scan
+plus section-box probes, run against `origin/main` at `b39866e` — **found no
+spacing defects.** What it did surface was two typographic wrap orphans and one
+measurement trap.
+
+#### What the audit found, which is nothing
+
+Recorded because a clean result is worth keeping: it is the baseline the next
+change is measured against, and it is the answer to "should we tune the
+spacing" for as long as the numbers hold.
+
+```
+section seams        two pads, 88-93px at 1440, 48-54px at 390
+head-to-body gaps    40-54px
+brand strip inline   40 / 40, as 3.43 set it
+stat bands           even
+ox act bands         proportionate
+```
+
+**No spacing was changed by this commit.** `site.css` was not touched at all.
+
+#### Two orphans, and only the break points moved
+
+**The footer hours.** At four-column footer widths the line broke as
+`Monday to Friday, 8 a.m. to 6` / `p.m.`, leaving the meridiem alone on a line
+of its own. Bound in all three footer copies:
+
+```
+BEFORE  <p>Monday to Friday, 8 a.m. to 6 p.m.<br>
+AFTER   <p>Monday to Friday, 8&nbsp;a.m. to 6&nbsp;p.m.<br>
+```
+
+`docs/index.html:924`, `docs/collision-repair/index.html:1173`,
+`templates/service-page-template.html:717`. **The Saturday line is untouched**
+in all three.
+
+**The home page's who-we-are heading.** At 1440 it broke as
+`Family Owned and Operated, on Jaymor` / `Rd`.
+
+```
+BEFORE  <h2 class="sec-title">Family Owned and Operated, on Jaymor Rd</h2>
+AFTER   <h2 class="sec-title">Family Owned and Operated, on Jaymor&nbsp;Rd</h2>
+```
+
+`docs/index.html:727`, **the heading only.** The body prose "on Jaymor Rd in
+Southampton", the footer address block and the legal row all keep ordinary
+spaces, deliberately: an address in a narrow column needs its break points, and
+none of them orphans today.
+
+**No word changed, only where a line may break.** Proved by decoding `&nbsp;`
+back to a space and comparing word multisets against HEAD:
+
+```
+docs/index.html                        identical   1261 tokens
+docs/collision-repair/index.html       identical   2893 tokens
+templates/service-page-template.html   identical    148 tokens
+```
+
+Four lines changed across three files.
+
+#### Verified on the lines the browser actually drew
+
+Not by eye and not by arithmetic: each text node was walked a character at a
+time, each character's client rect taken, and the characters grouped by the top
+of their rect, which reconstructs the lines as rendered.
+
+```
+FOOTER HOURS                 BEFORE                          AFTER
+home  1440   [1] "Monday to Friday, 8 a.m. to 6 "   "Monday to Friday, 8 a.m. to "
+             [2] "p.m."                             "6 p.m."
+coll  1440   [1] "Monday to Friday, 8 a.m. to 6 "   "Monday to Friday, 8 a.m. to "
+             [2] "p.m."                             "6 p.m."
+home   900   [1] "Monday to Friday, 8 "             "Monday to Friday, "
+             [2] "a.m. to 6 p.m."                   "8 a.m. to 6 p.m."
+coll   900   [1] "Monday to Friday, 8 "             "Monday to Friday, "
+             [2] "a.m. to 6 p.m."                   "8 a.m. to 6 p.m."
+
+HOME H2
+      1440   [1] "Family Owned and Operated, on Jaymor "   "Family Owned and Operated, on "
+             [2] "Rd"                                      "Jaymor Rd"
+       900   [1] one line, no wrap                         one line, no wrap
+```
+
+**`p.m.` is never alone and no line ever ends with `Jaymor`.** Worth noting
+precisely: at 1440 the break now lands before the **6**, at 900 before the
+**8**. Both are correct — the binding makes `8 a.m.` and `6 p.m.` single units,
+so the line breaks at whichever unit boundary fits, and the orphan cannot recur
+at any width.
+
+#### No CSS, so no stamp
+
+`site.css` was not touched, `stamp-assets.py --check` exits 0 with all stamps
+current, and no `?v=` moved. This is the first change in a while that alters
+both pages and the template without a restamp.
+
+#### The third probe trap, now recorded
+
+`scripts/mobile-check.md` gains an entry beside the `vh` trap, because the
+audit's own section probe produced a map about **400px wrong in the lower half
+of a page** and the cause is worth never rediscovering.
+
+**A probe iframe SHORTER than the page scrolls, and its scrollbar steals about
+15px of layout width.** A frame asked for at 390 then lays the page out at
+about 375. Nothing announces it. What makes it nastier than a flat offset:
+every box is right until the first element whose text re-wraps at the narrower
+width, and from there the error **grows** as more paragraphs re-wrap beneath
+it. The top of the report agrees with the rendered page and the bottom does
+not, which is the shape most likely to be believed.
+
+```
+                     iframe 20000 (short)   iframe 21700 (tall enough)
+page width laid out  ~375                   390
+lower-page boxes     ~400px off             to the pixel
+```
+
+**It is the exact complement of the `vh` trap**, and the two rules pull in
+opposite directions, which is why both are easy to walk into:
+
+```
+a FOLD probe's iframe must EQUAL the real viewport
+a SECTION probe's iframe must be AT LEAST as tall as the page
+```
+
+That is not a contradiction: a fold probe asks what fits on one screen, so its
+frame is one screen; a section probe asks where things sit in the whole
+document, so its frame must contain the document. **Two cheap ways to make the
+mistake visible**: probe twice at two different tall heights and require the
+maps to agree, or check one landmark such as the footer's top edge against
+rendered pixels. Either would have caught it in one run.
+
+The probe used for this record's own measurements reports its laid-out width
+beside every answer for exactly that reason, and read **1440 OK** and **900 OK**
+on all eight runs.
+
 ---
 
 ## 4. The claims list

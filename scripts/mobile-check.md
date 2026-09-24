@@ -115,6 +115,53 @@ measurement needs. Measure page HEIGHT in a tall frame and the FOLD in a
 viewport-sized one; they are two different questions and one frame cannot
 answer both.
 
+## The third trap: a probe iframe SHORTER than the page
+
+Added 2026-09-24, after a section map came back about 400px wrong in the
+lower half of a page.
+
+This is the complement of the one above, and the two pull in opposite
+directions, which is exactly why both are easy to walk into.
+
+**If the iframe is shorter than the page, the iframe scrolls.** A scrollbar
+appears inside it and takes about 15px of layout width with it. A frame you
+asked for at 390 then lays the page out at about 375. Nothing announces
+this. The numbers keep arriving and they look reasonable.
+
+**What it does to a map is worse than a flat offset.** Above the first
+element whose text re-wraps at the narrower width, every box is right. At
+that element the page gets taller, and from there down every reading is
+wrong by an error that GROWS as more paragraphs re-wrap beneath it. So the
+top of the report agrees with the rendered page and the bottom does not,
+which is the shape most likely to be believed.
+
+**What it cost:** a 20000px frame against a 21610px page. The map was out
+by roughly 400px near the footer and correct at the top.
+
+```
+                        iframe 20000 (short)    iframe 21700 (tall enough)
+page width laid out     ~375                    390
+lower-page boxes        ~400px off              to the pixel
+```
+
+**The rule: a section probe's iframe must be AT LEAST as tall as the page it
+measures.** Against the fold rule above — a fold probe's iframe must EQUAL
+the real viewport — that is not a contradiction. They are different
+measurements. A fold probe asks what fits on one screen, so its frame has to
+be one screen. A section probe asks where things sit in the whole document,
+so its frame has to contain the whole document.
+
+**Two ways to make the mistake visible instead of trusting the number:**
+
+1. **Probe twice at two different tall heights and require the maps to
+   agree.** A frame that is tall enough gives the same answer as a taller
+   one. A frame that is short does not.
+2. **Check one landmark against rendered pixels.** The footer's top edge is
+   a good one: find it in the report, then find it in a screenshot. If they
+   disagree, the frame is the suspect, not the page.
+
+Either check is cheap, and either would have caught this in one run.
+
 ## The fold budget on a phone, and the 60px nobody counts
 
 Added 2026-09-10, after the hero CTA pair was found sitting below the
