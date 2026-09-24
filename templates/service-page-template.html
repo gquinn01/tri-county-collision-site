@@ -108,7 +108,10 @@
          {{CONTACT_TITLE}}   contact band heading
          {{CONTACT_SUB}}     contact band subhead
          {{FOOTER_EXPLORE}}  footer Explore <li> items
-         {{FOOTER_SERVICES}} footer Services <li> items
+         (footer Services is not a token. Since 2026-09-24 the four
+          service pages are written in, through {{SERVICES_PATH}}, in
+          the order and words every page carries. On a service page,
+          its own item's href becomes ./ as /collision-repair/ does.)
          {{FOOTER_AREA}}     footer Service Area <li> items
          {{FOOTER_AREA_PROSE}} the line under that list
 
@@ -726,7 +729,10 @@
         <div>
           <h2 class="foot-head">Services</h2>
           <ul class="foot-links">
-{{FOOTER_SERVICES}}
+            <li><a href="{{SERVICES_PATH}}collision-repair/">Collision Repair</a></li>
+            <li><a href="{{SERVICES_PATH}}auto-glass-repair-replacement/">Auto Glass Repair</a></li>
+            <li><a href="{{SERVICES_PATH}}paintless-dent-repair/">Paintless Dent Repair</a></li>
+            <li><a href="{{SERVICES_PATH}}commercial-collision-repair/">Commercial Collision&nbsp;Repair</a></li>
           </ul>
         </div>
         <div>

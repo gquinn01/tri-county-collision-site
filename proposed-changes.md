@@ -6022,6 +6022,76 @@ The Trustindex widget; the CarWise links; the live image `accent-welding.jpg`,
 the CallRail number; `info@`; the live schema's price and offer nodes. The
 contact block retired into the footer, per 3.45.
 
+### 3.50 Every footer lists all four services. BUILT 2026-09-24
+
+The three service pages of 3.47 to 3.49 were born with the four-service footer.
+**Home, the collision page and the template now carry the same column**, in the
+same order and the same words, each at its own depth.
+
+#### The page list, grepped before applying
+
+```
+docs/index.html                                   swept
+docs/collision-repair/index.html                  swept
+docs/auto-glass-repair-replacement/index.html     already four, one label bound
+docs/paintless-dent-repair/index.html             already four, one label bound
+docs/commercial-collision-repair/index.html       already four, one label bound
+templates/service-page-template.html              swept, token retired
+```
+
+#### The before and after
+
+```
+BEFORE  <li><a href="collision-repair/">Collision Repair</a></li>              (home)
+AFTER   <li><a href="collision-repair/">Collision Repair</a></li>
+        <li><a href="auto-glass-repair-replacement/">Auto Glass Repair</a></li>
+        <li><a href="paintless-dent-repair/">Paintless Dent Repair</a></li>
+        <li><a href="commercial-collision-repair/">Commercial Collision&nbsp;Repair</a></li>
+```
+
+The collision page's own item keeps its `./`, and the three new pages carry
+`./` for themselves the same way. The template's `{{FOOTER_SERVICES}}` token
+becomes the four items through `{{SERVICES_PATH}}`, which is the template's
+existing token for cross-links to service pages, so a town page three levels
+down gets the right depth for free. **The token's line in the template's token
+list was rewritten to say so**; that line is the only change outside a footer
+in this commit, and it is the documentation of the footer.
+
+**The column is identical everywhere once depth is normalised**, proved by
+parsing it out of all six files, stripping the relative prefix and expanding
+each `./` to its page's slug: **all six equal.**
+
+#### One label is bound, and it is the 3.46 orphan again
+
+At 900 the new column broke "Commercial Collision Repair" as `Commercial
+Collision` / `Repair`, a single word alone on the last line, the shape 3.46
+bound out of the hours line. **"Collision&nbsp;Repair" is now one unit**, so
+the break lands after "Commercial", and a page's words are unchanged. Because
+the label is pattern text, **it is bound on all six files at once**, and the
+three generated pages were regenerated to prove the build reproduces the swept
+files byte for byte. It did. Rendered at 1440 the item sits on one line, and
+at 900 it reads `Commercial` / `Collision Repair`.
+
+#### Footers only, proved
+
+Every changed line in `docs/` sits below its page's `<footer class="site">`.
+Checked by hunk position, not by eye:
+
+```
+docs/index.html                                 footer at  908, hunk at  933
+docs/collision-repair/index.html                footer at 1159, hunk at 1184
+docs/auto-glass-repair-replacement/index.html   footer at  674, hunk at  701
+docs/paintless-dent-repair/index.html           footer at  698, hunk at  725
+docs/commercial-collision-repair/index.html     footer at  742, hunk at  769
+templates/service-page-template.html            footer at  704, hunks at 111 (token list), 732
+```
+
+**The home router grid was not edited here.** It was converted card by card as
+each page landed (3.47 to 3.49), because the pending-link test forced each one,
+and it now links all four services. **No CSS, no stamp, no sitemap change**:
+no page's `dateModified` moved, following 3.46, which bound a footer line on
+both pages without moving either.
+
 ---
 
 ## 4. The claims list
