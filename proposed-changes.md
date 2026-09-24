@@ -6233,6 +6233,110 @@ forcing reduced motion, which is its base state: two rows at 1440 and three at
 two. It was left alone because this commit's CSS change had to be the selector
 list and nothing else; it wants one sentence in the next CSS commit.
 
+### 3.52 One white band under the hero, and the intros centre. BUILT 2026-09-24
+
+Greg reviewed the three new pages. **Commercial reads right; glass and dent did
+not, for two named reasons**, and both are fixed here, on those two pages only.
+
+#### 1. The stat band is the one white band under the hero
+
+**The fault, measured rather than described.** On both pages `#intro` sat on
+`band-panel`, and `--panel` is `#FFFFFF`, so the white stat band landed on a
+white section: two white grounds back to back. Commercial's 3.51 shape is the
+reference, with `#intro` on silver and the page alternating from there.
+
+**The rules:** no two adjacent sections share a ground; every card sits on a
+ground its edges read on; the oxblood act bands do not move.
+
+**Ground sequences, read off the rendered pages** as each section's computed
+background (silver where a section has none and shows the body):
+
+```
+GLASS  BEFORE  stat(white) > intro(WHITE) > repair-or-replace(silver) > adas(ink)
+               > insurance(silver) > why(ox) > area(white) > start(ox) > faq(silver)
+               adjacent same-ground pairs: stat + intro
+GLASS  AFTER   stat(white) > intro(silver) > repair-or-replace(INK) > adas(WHITE)
+               > insurance(silver) > why(ox) > area(white) > start(ox) > faq(silver)
+               adjacent same-ground pairs: none
+
+DENT   BEFORE  stat(white) > intro(WHITE) > how-it-works(ink) > what-pdr-can-fix(silver)
+               > when-not(white) > why-pdr(silver) > assessment(white) > why(ox)
+               > area(white) > start(ox) > faq(silver)
+               adjacent same-ground pairs: stat + intro
+DENT   AFTER   stat(white) > intro(silver) > how-it-works(ink) > ... unchanged
+               adjacent same-ground pairs: none
+```
+
+**Dent is one class change.** `#intro` leaves `band-panel` and shows the silver
+body, and `#how-it-works` below it is already ink.
+
+**Glass is the page with the decision in it.** `#intro` on silver would sit
+beside `#repair-or-replace`, which is also silver and carries the three white
+cards. Moving the cards to panel would lose them (a white card on a white
+ground), and leaving them on silver would break the adjacency rule. **So the
+cards go to ink**, and that is safe by cascade rather than by hope:
+
+- `.dark .card` gives a card a translucent silver fill and a silver hairline,
+  and `.dark .card p` sets its text in `--silver`.
+- `.card h3` carries no colour of its own, so the heading inherits `--silver`
+  from `.dark`. Checked by grep that no rule pins an `h3` colour on this path,
+  then read off the render: **h3 and p both compute to rgb(240,242,242).**
+- These are `.grid3` cards, not `.payoff`, so the trap recorded in 3.48, where
+  `.payoff .card p` sets `--ink-2` after `.dark .card p`, does not apply.
+- `.dark .card::after` already gives the lift's sweep its silver.
+
+**`#adas` gives its ink to the cards and takes the panel**, so ink does not sit
+beside ink. It is prose, and prose reads on any ground.
+
+**The card edges read better than before, measured on rendered pixels** at the
+first card's left edge:
+
+```
+                     edge vs ground   edge vs fill   fill vs ground
+BEFORE, on silver         1.46            1.64            1.12
+AFTER, on ink             2.81            2.32            1.21
+```
+
+The ox bands are exactly where they were on both pages: `#why` and `#start`.
+
+#### 2. The intro text centres
+
+**Mechanism: home's own inline pattern**, `text-align:center` on the intro's
+`.prose` block. Home carries it as `style="margin-top:34px;text-align:center"`;
+these intros take the centring half, since they need no extra margin. The same
+inline centring already sits on the collision page's `#process` lead and on
+glass's and commercial's section leads.
+
+**A shared rule was considered and not chosen.** The pattern now repeats, but
+every instance is one attribute on one element, and a shared rule would be the
+first CSS in a commit that can otherwise stay CSS-free. That is a reasonable
+next step, not a necessary one. **So this commit is CSS-free, and the pending
+sentence for the comment above `#factory-certified #brands, #fleet #brands`
+(3.51) stays pending for the next CSS commit.**
+
+**Commercial's intro is untouched**, by the ruling's scope. Matching it is one
+attribute if Greg extends the ruling.
+
+#### Measured
+
+**The fold is identical to HEAD, proved by hash**, eight runs, viewport-sized
+iframe, HEAD probed with this commit stashed. The hashes are the same ones 3.51
+recorded, because nothing above the stat band moved:
+
+```
+glass  390x664 banner 80d7a4b1  cutover 4efed6c7   360x640 banner 4ef0b61d  cutover 68ca333d
+dent   390x664 banner 5d6e5c37  cutover ec543417   360x640 banner a1f4ee8d  cutover af47ec0b
+```
+
+**Seams hold the 3.46 baseline**: iframe taller than the page, maps agreeing at
+two heights, laid-out width true. Seams are 176-177 at 1440 and 96-97 at 390,
+head-to-body 40, and 44 on `#start`. **Rendered and checked by eye** from the
+hero through the first two sections at 1440 and 390 on both pages.
+
+**The diff is class and style attributes plus comments**: four attribute changes
+on glass (`#intro`, the intro prose, `#repair-or-replace`, `#adas`) and two on
+dent (`#intro`, the intro prose). Every other page regenerates byte-identical.
+
 ---
 
 ## 4. The claims list
