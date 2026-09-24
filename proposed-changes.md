@@ -1540,6 +1540,17 @@ their face were considered and waived by him:
   no-third-drawing ruling covers **drawings made by us**, not a licensed
   engineering render the client selected. The drawn diagram is still dead.
 
+**Scope clarified by Greg, 2026-09-24 (3.54): the no-third-drawing ruling does
+not reach cartography.** Its subject was illustrative artwork, a decorative
+drawing for this band after two AI assets were rejected, and it ended when the
+client picked a licensed render over a third attempt at art. A map is not
+that. It is a diagram of verifiable fact, rendered from licensed survey data,
+and every line in it can be checked against the world. The same reasoning
+lets this repo draw its own coordinate grids and probe overlays. So
+`/contact-us/`'s road map, drawn by `scripts/prepare-map-image.py` from
+OpenStreetMap data, is outside this ruling. **The drawn intake diagram is
+still dead, and so is any illustration made by us.**
+
 #### The ground bug, and how a passing check missed it
 
 **The first build shipped the 2x file with its entire ground encoded at v=1
@@ -6700,6 +6711,346 @@ sameAs bar as every run has. `/contact-us/` carries none of 709-9665,
   header, with nothing holding them together. The shape would be the
   review-count check's: one constant, every mention compared.
 
+
+### 3.54 The contact header goes ox, and the page learns where the shop is. BUILT 2026-09-24
+
+**Record number: 3.54.** The blog run has not landed, so this is the next
+number after 3.53.
+
+Greg's rulings of 2026-09-24:
+
+- **The compact header goes ox.**
+- **The page gains a details-and-directions section**, after a reference
+  layout he supplied: the details and hours on the left, a map on the right.
+- **The CSS commit pays its debts**: the 3.51 comment sentence, and the hours
+  constant 3.53 proposed.
+- **After this sitting stopped on it: the map is drawn from OpenStreetMap
+  data, not stitched from tiles.** The no-third-drawing ruling does not reach
+  cartography.
+
+#### 1. The header goes ox
+
+`#contact` changes from `band-panel` to `dark field-ox`, reversing 3.53's
+white. Some of it came free. The act button turns ink with the silver
+hairline, by the symmetric rule. The crumb's link is silver through `.dark a`.
+The eyebrow is silver through `.dark .eyebrow`. The H1 and the hours inherit
+silver from `.dark`. **Three rules were written, and each one is commented
+with what it serves:**
+
+- **`.heroB--ox .lead, .field-ox .lead { color: var(--silver); }`**, and
+- **`.heroB--ox .crumb ol, .field-ox .crumb ol { color: var(--silver); }`**.
+  These are the two 3.53 scoped. They are derived, not retyped: the ox hero's
+  own declarations, with `.field-ox` added to the selector list, so there is
+  one line and one value, not a second copy of it.
+- **`.hero.dark .cta-row { justify-content: flex-start; margin-top: 26px; }`**,
+  which 3.53 did not foresee. `.dark .cta-row` centres every button row on a
+  dark ground and gives it a 44px top margin. That is right for an act band,
+  and wrong for a header whose call row belongs to the left-aligned copy above
+  it. It would also have spent 18px of a phone's fold. It restores the base
+  row. **Its reach was checked by grep**: `.hero.dark` exists on exactly one
+  element, this header, because `.hero` is otherwise worn only by `.heroB`, and
+  `.heroB` is never `.dark`.
+
+**Every text tone on the band, measured scrim-style.** The method: render;
+render again with the header's copy set transparent; take each element's
+glyph runs by `Range.getClientRects()`; sample every pixel under them against
+the element's computed colour. Worst case under any glyph:
+
+```
+                  1440    390    360   needs
+crumb link       12.52  12.59  12.52     7
+crumb current    12.16  11.43  11.22     7
+eyebrow          12.08  11.15  11.01     7
+H1               10.93  10.50  10.50   4.5
+lead             10.50  10.50  10.50     7
+hours            10.50  10.50  10.50     7
+button label     15.42  15.42  15.42     7   (silver on the ink fill)
+crumb separator   8.34   7.84   7.69     3   (--rule, a graphic)
+```
+
+**The probe calibrates itself.** Its floor, 10.50, is exactly the stylesheet's
+recorded `--silver` on `--ox`, the gradient's brightest stop. The button
+label's 15.42 is the recorded silver on ink. **The hours take `--silver`**,
+the measured light tone, at 10.50 against a 7 target. The separator stays on
+the base `--rule`, which clears the 3:1 graphic floor by more than double, so
+it needed no rule.
+
+**The fold did not move**, probed with an iframe the size of the viewport:
+
+```
+             innerHeight  call button  hours      call bar top  clears it by
+390x664          664       418-480     494-550        604        54 (53 in 3.53)
+360x640          640       418-480     494-550        580        30 (29 in 3.53)
+```
+
+The one pixel gained is the white band's top hairline, which went with the
+white.
+
+#### 2. Details and directions, `#find-us`
+
+On white (`band-panel`), because the cards above sit on silver and the footer
+below is ink. Two columns in the existing `.split`: one column on a phone,
+two equal columns from 900px.
+
+**The left column.** Eyebrow `Details and directions`, H2 `Find the Shop`.
+BEFORE: none; both are new wording, Greg's name for the section and a plain
+heading. Then three tappable lines: the address (to the directions URL), the
+phone and the email, all the NAP block's values and all checked by the audit.
+Then the **hours box**: `Monday to Friday, 8 a.m. to 6 p.m.` / `Saturday by
+appointment only`, under an h3 `Hours`.
+
+**Only what the record knows.**
+
+- **Sunday is not written.** The gate was the live site's own schema, and it
+  lists Monday to Friday plus "Saturday Hours: By appointment only" and never
+  mentions Sunday. **But the Google Business Profile does**, and it
+  disagrees with more than Sunday. See section 5.
+- The reference's cancellation-fee and no-children lines were that business's,
+  and nothing like them ships.
+- There is no parking or arrival note, because nothing true is known to say.
+  It is offered to the owner.
+
+**New CSS, the minimum**, each rule commented with what it serves:
+`.contact-lines`, `.hours-box` (plus a margin for its label, which is
+`.sec-sub` on an h3 and so needed no type rule), `.map-box`, `.map-credit`,
+and the map's own drawing classes. **The drawing classes are why the map is
+inline**: each mark is a class that `site.css` paints from the palette
+tokens, so no colour is typed outside the one file that defines the palette.
+The only oxblood on the map is the pin.
+
+#### 3. The map
+
+**The brief said to stitch tiles from tile.openstreetmap.org. That was stopped
+before a single tile was fetched**, and Greg agreed: "the tile policy's own
+text prohibits it, and stopping was correct." Two policies were read on
+2026-09-24:
+
+- **The OSMF Tile Usage Policy, section 4**, prohibits "any pre-emptive
+  fetching of tiles other than those a user is actively viewing" and "offline
+  use". A static image built from tiles at build time is both.
+- **The OSMF API Usage Policy** rules out the editing API the same way: "The
+  editing API is provided in order to edit the map data, not for read-only
+  purposes or projects."
+
+**So the map is drawn, from data**, by the new `scripts/prepare-map-image.py`:
+
+- **ONE Overpass API query**, within that service's fair use: the roads in a
+  bbox around the shop, plus the building footprints within 120m. The
+  footprints are used only to verify the pin and are never drawn.
+- **Nominatim was queried once**, within its one-request-per-second rule.
+- Overpass answered 504 for several minutes (load shedding across its
+  servers). The retry was spaced 75 seconds apart and rotated across the
+  main server's backends. It answered on the third attempt.
+
+**The licence basis**, recorded in the script's header:
+
+- OSM data is ODbL 1.0.
+- A map drawn from it is a Produced Work under ODbL 4.3, and it must carry
+  a notice crediting the contributors and saying the data is ODbL.
+- The figcaption carries exactly that, visibly: *Map data (c) OpenStreetMap
+  contributors, available under the Open Database License*, linked to
+  openstreetmap.org/copyright and to the licence text.
+- Share-alike attaches to derivative databases, and none leaves the script:
+  the Overpass response is cached outside the repo, and the script refuses a
+  cache path inside it.
+
+**Greg's scope ruling is recorded where the original ruling lives**, 3.22,
+and beside it in CLAUDE.md: the no-third-drawing ruling does not reach
+cartography.
+
+**Accuracy, which is the whole point.** Three candidate positions for the
+shop, measured against each other:
+
+```
+Google's place pin, "Tri-County Collision" (the footer's search URL)   40.1660232, -75.0512847
+the schema's geo, on every page, migrated from the live site           40.1660232, -75.0538596   ~220m west
+Nominatim, "995 Jaymor Rd"                                            40.1650509, -75.0494633   ~190m southeast
+```
+
+- **The schema's latitude matches Google's to the digit, and its longitude is
+  about 220m off.** That is the signature of a Google Maps URL's
+  `@lat,lon` copied as the pin: that value is the viewport centre, which
+  Google shifts sideways for its side panel. See 4.7, and section 5 item 26.
+- **Nominatim's point is an interpolated house number** on the Jaymor Road
+  way. It is not a building.
+
+**The pin is Google's place point, and the script refuses to draw unless it
+falls inside an OSM building footprint.** It does: building way 902318081,
+unnamed, about 3,600 m². **Checked by eye against Google twice**: the footer's
+own Google Maps link rendered, and the satellite view at the pin. Both show
+"Tri County Collision Center" in the south end of the multi-tenant building on
+the northeast side of Jaymor Rd, at its junction with James Way and Knowles
+Ave. That is this footprint. **The road geometry was checked the same way**:
+
+- Jaymor Road leaves that junction to the southeast and meets Second Street
+  Pike (PA 232).
+- Knowles Avenue runs northeast from the junction, and James Way southwest.
+- The Turnpike (I-276) runs along the south, with County Line Road on the
+  southwest diagonal.
+
+The drawing agrees with Google on every one.
+
+**What the map renders**, and nothing else:
+
+- Roads of the drivable classes, not service drives.
+- The names of the pin's street, the through roads, and the streets within
+  160m of the pin.
+- OSM's route numbers.
+- The pin and the shop's NAP name.
+
+**No business, landmark or POI in the data ships**, by the condition.
+
+**The numbers the script printed:**
+
+```
+data     OSM base timestamp 2026-09-24T20:08:04Z, 707 elements
+pin      40.1660232, -75.0512847 inside building way 902318081
+roads    92 runs in frame: motorway 6, primary 38, residential 48
+frame    480x360 units at 3.4 m/unit = 1632m x 1224m, pin at the centre
+label    Jaymor Road            written "Jaymor Rd"
+label    Pennsylvania Turnpike  written "Pennsylvania Tpke"
+label    2nd Street Pike        written "2nd Street Pike"
+label    East County Line Road  written "E County Line Rd"
+label    Knowles Avenue         written "Knowles Ave"
+shield   I-276   (OSM ref "I 276;PATP")
+shield   PA 232  (OSM ref "PA 232")
+skip     James Way: no stretch long and straight enough to carry its name
+size     22,210 bytes of inline SVG
+```
+
+**The frame leaves Street Road (PA 132) out.** It is over 1km north. Reaching
+it would shrink every label below legibility on a phone, and Google's own view
+at this scale does not show it either.
+
+**The alt text is computed from what was drawn**, so it cannot claim a road
+the map does not show: *"Map of the roads around Tri-County Collision, marked
+on Jaymor Rd in Southampton, near Pennsylvania Tpke, 2nd Street Pike, E County
+Line Rd and Knowles Ave. Opens directions in Google Maps."* It is the SVG's
+`aria-label`, and the SVG has `role="img"`. **The whole map is one link** to
+the directions URL the card and the footers use, and so is the address line
+beside it, so the action exists in text as well. The Get Directions card
+stays: the map is a picture of the answer, and the card is the button for it.
+
+**What the first draws got wrong, and the rule each one became**, every one
+now written into the script:
+
+1. **A name on a hairpin folds over itself.** "James Way" was unreadable at
+   its junction. A name may only sit where the road turns less than 25° under
+   its letters.
+2. **Dual carriageways chained into a U.** PA 232 and County Line Road are two
+   OSM ways each, meeting end to end, and the joiner made each road a U-turn.
+   Runs now join only where they continue within 60°.
+3. **Greedy placement starved later names.** The first name placed took the
+   best spot and blocked more useful ones, and the pin's own label sat right
+   across PA 232. **Placement is now an exhaustive search** over about ten
+   items with up to nine places each. It writes the most items in priority
+   order: the pin's street, the through roads, the route numbers, the corner
+   streets. The pin's name goes left or right, whichever lets more be written.
+   Label footprints are chains of small boxes that follow the letters, not
+   one rectangle around a diagonal.
+4. **A route number on a crossing reads as the other road's.** "PA 232" landed
+   on the Turnpike crossing. A route box is now refused anywhere a major road
+   carrying a different number passes under it.
+5. **"Jaymor Road" on the page failed the NAP check**, and the check was
+   right. OSM spells suffixes out, and the NAP is `995 Jaymor Rd`. Every label
+   now takes the USPS Publication 28 abbreviation for a trailing suffix and a
+   leading direction: the convention Google's own map uses on the link this
+   map opens. It abbreviates what the data says, and it makes the pin's
+   street match the NAP character for character. The check was not weakened.
+
+**Idempotent, proved**: patching twice leaves exactly one map, and the
+patcher refuses a page without exactly one marker pair.
+
+**The audit's parser learned something.** An inline SVG's `<title>` would have
+been read as part of the page's `<title>`, silently lengthening the measured
+title. `PageParser` now ignores a `<title>` inside `<svg>`, and
+`test-audit-checks.py` section 21 holds it. The map carries its alt text as
+`aria-label` in any case.
+
+#### 4. The debts
+
+- **The 3.51 comment sentence.** The comment above `#factory-certified
+  #brands, #fleet #brands` now says the trim applies to a strip nested inside
+  a section, in two contexts, and names both.
+- **The hours constant.** `HOURS_WEEKDAYS`, `HOURS_SATURDAY` and the schema's
+  days, opens and closes now sit in `audit.py` beside the NAP. Every page's
+  visible text and `llms.txt` must write any day name, `Mon-Fri`-style range
+  or clock time only inside those two strings. Anything else is a critical.
+  **Any Sunday is a critical**, because the record has no Sunday. The
+  schema's `openingHoursSpecification` must match too. The copies are eight
+  (six footers, the contact header and the new hours box) and all eight pass,
+  plus `llms.txt`. **`test-audit-checks.py` section 20** holds both
+  directions: the canonical pair passes, `&nbsp;` and all; and each of these
+  fails:
+  - the live contact page's own `Monday - Friday 8 AM - 6 PM`
+  - `Mon-Fri`
+  - the right days at the wrong time
+  - `Saturday By Appointment Only`
+  - a stray clock time
+  - a stray day
+  - Sunday, twice
+  - a schema that closes at 17:00
+
+  Words that only look like hours ("hours of training", "sun damage", "open")
+  are left alone. **Mutation-tested**: a wrong weekday constant turns 5
+  checks red, a wrong closing time 3, a neutered check 11. Disabling the SVG
+  title fix turns section 21 red.
+
+**Scores after the new per-page check.** It is one more pass on every page
+that carries hours, so a service page is 19 of 20 (95) and `/contact-us/` is
+17 of 18 (94). **Each page holds its recorded bar**, and sameAs is still every
+page's only warning.
+
+#### Measured
+
+- **Seams hold the 3.46 baseline.** Header to options heading is 176 at 1440
+  and 96 at 390; head-to-body is 40 at both. Each is one pixel under 3.53, and
+  that pixel is the white band's hairline.
+- **A 30px discrepancy was investigated rather than assumed.** 3.53's first
+  probe ran while the hours still carried their "Hours" label. The label's
+  removal took 28px out of the header, and the two hairlines account for the
+  other 2.
+- **Rendered and inspected** at 1440 full page and at 390 full page through
+  the iframe. The map was inspected in the render, with the pin's position
+  confirmed against the Google link by eye, as section 3 records.
+- **The suite:**
+  - both test scripts pass, sections 19 to 21 included;
+  - `stamp-assets.py --check` and `build-sitemap.py --check` exit 0, after the
+    restamp this CSS commit required on every page and the template;
+  - `STAGING=1 audit.py --strict` finds **zero criticals and six warnings, all
+    sameAs**.
+
+#### Found while building, not changed. Every one goes to the owner.
+
+- **The Google Business Profile disagrees with this site's NAP and hours**,
+  read 2026-09-24 off Google's own data for the footer's search:
+
+  ```
+                     this site / live schema             Google Business Profile
+  name               Tri-County Collision                Tri County Collision Center
+  phone              (215) 322-5350                      (215) 999-3497
+  Mon-Fri            8 a.m. to 6 p.m.                    8 AM-6 PM
+  Saturday           by appointment only                 Closed
+  Sunday             (not stated)                        Closed
+  ```
+
+  **(215) 999-3497 is a fourth number**, after 322-5350, the CallRail
+  709-9665 and the live contact page's 515-4662. It may be a tracking number
+  on the profile; nobody here knows, and CLAUDE.md says the NAP is checked
+  against the profile character for character. **Nothing on this site changed over it.**
+  The owner decides which is true and which side moves. Section 5, items 21
+  to 24.
+- **The schema's geo is about 220m west of the shop**, on all six pages (4.7).
+  The brief's premise that geo is an unfilled token holds only for the
+  template. The coordinates found here did not enter the schema, as ruled.
+  Correcting geo to the verified pin is a one-value change for Greg to rule
+  on. Section 5, item 26.
+- **The focus ring on ox.** `a:focus-visible` draws a 3px `--ox` outline,
+  which on an ox band is oxblood on oxblood. It is site-wide on every `.field-ox`
+  band that carries a link or button, and not new here; the breadcrumb's Home
+  link is simply the first link in an ox band near the top of a page. It wants
+  a `.dark` focus colour in the next CSS commit.
+
 ---
 
 ## 4. The claims list
@@ -6941,8 +7292,16 @@ vehicles.
 - **Geo coordinates** 40.1660232, -75.0538596. Migrated from the live schema.
   `CLAUDE.md` lists coordinates as unconfirmed, so this is a migrated published
   value, not a confirmed one. Check it drops a pin on the building.
+  **Checked 2026-09-24 (3.54): it does not.** The latitude matches Google's
+  place pin to the digit, and the longitude is about 220m west of it, which is
+  a Google Maps URL's viewport centre rather than its pin. The verified pin is
+  40.1660232, -75.0512847: Google's place point, inside the OSM footprint of
+  the building Google shows the shop in. Not changed; section 5 item 26.
 - **Hours**: Monday to Friday 8 a.m. to 6 p.m., Saturday by appointment only.
-  Must match the Google Business Profile exactly.
+  Must match the Google Business Profile exactly. **It does not, as of 2026-09-24**: the
+  profile says Saturday Closed and Sunday Closed (3.54). Now held by
+  `HOURS_*` in `scripts/audit.py`, so when the answer lands it changes in one
+  place and the build fails anywhere it did not.
 - **hasMap**, the `share.google` link, migrated from the live schema.
 
 ### 4.8 The four customer quotes
@@ -7183,3 +7542,23 @@ Ordered by how much else depends on it.
 20. **The four held contact-page promises** (4.10): a real person answers, a
     same-business-day email reply, a five-minute estimate, and a booking
     confirmation email.
+21. **Sunday.** The live site's schema never says, and the site does not
+    either. The Google Business Profile says Closed. Confirm, and it can be
+    written, in one place: `HOURS_*` in `scripts/audit.py`. See 3.54.
+22. **Saturday.** This site and the live schema say "by appointment only";
+    the Google Business Profile says Closed. Both cannot be what a customer is
+    told. Which is it, and which side moves? See 3.54.
+23. **The profile's phone is (215) 999-3497**, a fourth number. Is it a
+    tracking number on the profile, and is (215) 322-5350 on the profile at
+    all, as an additional number? The site and the profile carrying different
+    primary numbers is the NAP mismatch rule 6 exists to prevent, and the
+    answer decides which side moves. See 3.54.
+24. **The profile's name is "Tri County Collision Center"**; the site's is
+    "Tri-County Collision", and CarWise also says "Center" (3.53). This is
+    1.1's question, now with the profile's answer in hand.
+25. **Optional: a parking or arrival note** on the contact page. The shop is
+    one tenant in a multi-tenant building at Jaymor Rd, James Way and Knowles
+    Ave, which is exactly when a line like "the entrance is on the Jaymor Rd
+    side" helps. Only if the owner wants one, and only in their words.
+26. **The schema's geo is about 220m west of the shop** (4.7). For Greg first:
+    correct it to the verified pin, 40.1660232, -75.0512847, on every page?

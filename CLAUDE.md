@@ -115,6 +115,22 @@ pattern demanded a word character after `Rd.` and the canonical string is a
 prefix of the variant. `scripts/test-audit-checks.py` now holds that input
 and the rest of the wrong addresses, so the mechanism has a mechanism.
 
+### The hours are a constant too, 2026-09-24
+
+```
+HOURS_WEEKDAYS   Monday to Friday, 8 a.m. to 6 p.m.
+HOURS_SATURDAY   Saturday by appointment only
+schema           Monday-Friday, opens 08:00, closes 18:00
+```
+
+The live site's values, migrated, and held in `scripts/audit.py` beside the
+NAP (`proposed-changes.md` 3.54). Every day name, `Mon-Fri` range and clock
+time in visible text or `llms.txt` must sit inside one of those two strings,
+the schema must agree, and **any Sunday is a critical**: the record has no
+Sunday hours. **The Google Business Profile disagrees** (Saturday Closed,
+Sunday Closed, and a different phone and name), which is an owner question,
+not a fix; when it is answered the value changes in one place.
+
 ### The CallRail number never reaches the source
 
 **(215) 709-9665 is a CallRail tracking number.** The old WordPress header
@@ -247,6 +263,12 @@ the client's pick amends the spec, and the no-third-drawing rule covers
 **drawings made by us**, not a licensed engineering render he selected. **The
 drawn intake diagram is still dead**, and it was deleted in the same commit
 rather than left standing.
+
+**The ruling does not reach cartography, clarified by Greg 2026-09-24.** Its
+subject was illustrative art. A map drawn from OpenStreetMap data is a diagram
+of verifiable fact, every line of which can be checked against the world, so
+`/contact-us/` carries one, drawn by `scripts/prepare-map-image.py`. Recorded
+in the ruling's own record, `proposed-changes.md` 3.22, and in 3.54.
 
 **Stripping the label is not an option and never becomes one.** The
 provenance is the fact; the label is only where the fact is written down.
@@ -595,6 +617,15 @@ that section's to delete.
 
 ---
 
+### The contact page's header is ox, 2026-09-24
+
+`/contact-us/` carries no hero. Its compact header is a `.hero.dark.field-ox`
+band: the one ox band on that page, because it asks (it carries the call). The
+ox hero's lead and breadcrumb declarations are extended to `.field-ox` rather
+than retyped, and `.hero.dark .cta-row` keeps the call row left and at the
+base margin, so the fold does not pay for the band. Every tone on it measured
+in `proposed-changes.md` 3.54.
+
 ## The motion amendment, 2026-09-10
 
 **Motion used to be zero except the FAQ accordion. It is not zero any more.**
@@ -793,7 +824,7 @@ dark. That archive is the last copy of it that will ever exist.
 |---|---|
 | `pagemap.md` | **The build spec.** The page map of record. |
 | `.claude/skills/corcoran-site-standards/` | The law. Unedited copy of the firm's standards. |
-| `scripts/audit.py` | The SEO and AEO scanner. Scores every page separately. Its NAP block is the one place the canonical name, address and phone live, its review block is the one place the review count, the rating and the day they were counted live, and its brand block is the one place the brand count lives: the marks in the strip, every count claimed in text and every count in the schema have to agree or the build fails. It also reads the provenance metadata of every image under `docs/` and fails the build on an AI-generated one. |
+| `scripts/audit.py` | The SEO and AEO scanner. Scores every page separately. Its NAP block is the one place the canonical name, address and phone live, its review block is the one place the review count, the rating and the day they were counted live, and its hours block is the one place the hours live, its brand block is the one place the brand count lives: the marks in the strip, every count claimed in text and every count in the schema have to agree or the build fails. It also reads the provenance metadata of every image under `docs/` and fails the build on an AI-generated one. |
 | `scripts/test-sitemap-expansion.py` | Tests the sitemap expansion. Run it before touching that code. |
 | `scripts/test-audit-checks.py` | Smoke tests for the checks that must never drift back: the address spelling, the CallRail number, the one email, the review count, and asset provenance. Written after the address check was caught scoring a wrong address as a pass. Its AI-asset fixtures are written at run time, never committed, because committing a known-AI image to prove the check catches them would put a known-AI image in the repo. |
 | `proposed-changes.md` | Every text change made during the migration, as before/after pairs, plus the claims the pages carry. Awaiting the owner's fact-check. |
@@ -803,6 +834,7 @@ dark. That archive is the last copy of it that will ever exist.
 | `scripts/prepare-car-render.py` | Turns the licensed wireframe render into the two assets the We Fix It All band uses. Holds the measured crop box, pulls the black point so the screen blend is invisible on ink, solves a gamma only if the median line falls under the 3:1 graphic floor, and searches every integer JPEG quality against both the 250KB budget and a surviving ground. **A ground that does not decode to exactly 0 fails the export**, proved twice: once by decoding the emitted file, and once from its own quantisation table, which is decoder-independent. Builds in a temp directory and installs only on success, so a failed export cannot leave a broken asset in `docs/`. Prints every number it used. |
 | `scripts/prepare-hero-photo.py` | Turns the client's photograph of a wrecked customer vehicle into the home hero, and since 2026-09-24 the licensed interim-stock service heroes too, one measured `FRAMES` entry per photograph with its own 3:2 crop box. `--out-dir` re-proves a shipped asset byte for byte without touching `docs/`. Reads provenance through the audit's own reader and refuses a flagged file, crops on a measured scan of where the vehicle actually is, runs the plate-detection check even though no plate is visible, strips APP segments structurally by marker walk, asserts the emitted file decodes to the 1200x800 contract, and never emits a file larger than its source. **It imports its helpers from `prepare-repair-photos.py` rather than copying them**, so the APP strip and the detail metric are one implementation. Prints every number it used. |
 | `scripts/prepare-damage-icons.py` | Turns the licensed "Car Accident" icon set into the eight marks the We Fix It All band ships. Reads the source's provenance through the audit's own reader and refuses to process a flagged file, parses the `.ai` as PDF with nothing but the standard library, splits the page on its own occupancy gaps into a 6x6 grid, and emits every mark at ONE derived scale so the set's single stroke weight survives. **The marks are filled outlines and not strokes**, which is why the band's CSS changed. It patches `docs/index.html` item by item and proves the item count and all eight headings before it writes, because an earlier patcher spanned items and ate seven of the eight. Prints every number it used. |
+| `scripts/prepare-map-image.py` | Draws `/contact-us/`'s directions map from OpenStreetMap data and writes it into the page as inline SVG, between two markers. **Drawn, not stitched from tiles**: the OSMF tile policy prohibits prefetching tiles for static use, and Greg ruled 2026-09-24 that the no-third-drawing rule does not reach cartography. One Overpass query, cached outside the repo; the pin must fall inside an OSM building footprint or nothing is drawn; labels take USPS abbreviations so the pin's street matches the NAP; placement is an exhaustive search. The ODbL notice in the figcaption is the licence. `--out-dir` draws without touching `docs/`. Prints every number it used. |
 | `scripts/stamp-assets.py` | Cache-busting stamps for `docs/assets/site.css` and `site.js`. |
 | `scripts/fetch_seo_news.py` | Pulls the headline sweep the Google Watcher reads. |
 | `scripts/cascade-analyzer.html` | CSS cascade analyzer. |

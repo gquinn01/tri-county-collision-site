@@ -32,6 +32,7 @@ Usage:
     python3 scripts/test-audit-checks.py     # exits 1 if anything fails
 """
 
+import glob
 import os
 import re
 import sys
@@ -754,6 +755,63 @@ def main():
     check("     a misspelled kind gets no exemption", "Thin content" in w, w)
     p, w, f, n, kind = run_kind('<meta name="tri-county-page" content="utility">', short)
     check("     and neither does utility", "Thin content" in w and "no FAQPage schema" in w, w)
+
+    # The hours, 3.54: the constants beside the NAP, every copy held to
+    # them. Same shape as the address tests: the canonical form keeps
+    # passing, every way of writing it differently fails, and words that
+    # merely look like hours are left alone.
+    print("20. The hours: one way to write them, and no Sunday")
+    H = "<p>Monday to Friday, 8&nbsp;a.m. to 6&nbsp;p.m.<br>Saturday by appointment only</p>"
+    p, w, f = run(H)
+    check("     the canonical pair passes, no-break spaces and all",
+          "Hours match the constants" in p and "hours are written" not in f, (p, f))
+    for label, body in (
+            ("the live contact page's own spelling", "<p>Hours: Monday - Friday 8 AM - 6 PM</p>"),
+            ("an abbreviated range", "<p>Mon-Fri, 8 a.m. - 6 p.m.</p>"),
+            ("the right days at the wrong time", "<p>Monday to Friday, 8 a.m. to 5 p.m.</p>"),
+            ("Saturday capitalised the live site's way", "<p>Saturday By Appointment Only</p>"),
+            ("a stray clock time beside the canonical pair", H + "<p>Call before 5 p.m.</p>"),
+            ("a stray day beside the canonical pair", H + "<p>Closed Tuesday afternoons.</p>")):
+        p, w, f = run(body)
+        check(f"     caught: {label}", "hours are written a second way" in f, f)
+    for body in ("<p>Sunday: Closed</p>", H + "<p>Open Sundays too.</p>"):
+        p, w, f = run(body)
+        check(f"     Sunday is a critical: {body[-26:]!r}", "Sunday is mentioned" in f, f)
+    p, w, f = run("<p>Hundreds of hours of training. Sun damage fades paint. The door was left open.</p>")
+    check("     words that only look like hours are left alone",
+          "hours are written" not in f and "Sunday" not in f and "Hours match" not in p, (p, f))
+    wrong_schema = ('<script type="application/ld+json">{"@type":"AutoBodyShop",'
+                    '"openingHoursSpecification":[{"@type":"OpeningHoursSpecification",'
+                    '"dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],'
+                    '"opens":"08:00","closes":"17:00"}]}</script>')
+    p, w, f = run(H + wrong_schema)
+    check("     a schema that closes at 17:00 is a critical",
+          "schema's hours disagree" in f, f)
+    n, strays, sundays = audit.hours_findings(
+        "- Hours: Monday to Friday, 8 a.m. to 6 p.m. Saturday by appointment only.")
+    check("     the llms.txt phrasing is canonical", n == 2 and not strays and not sundays,
+          (n, strays, sundays))
+    n, strays, sundays = audit.hours_findings("- Hours: Mon-Fri 8-6, Sat by appt.")
+    check("     and a shorthand llms.txt line is not", bool(strays), strays)
+    _load = audit.load
+    audit.load = lambda src: open(src, encoding="utf-8").read()
+    try:
+        shipped = sorted(glob.glob(os.path.join(root, "docs", "*.html")) +
+                         glob.glob(os.path.join(root, "docs", "*", "index.html")))
+        bad = []
+        for pg in shipped:
+            sp, sw, sf, sn, sk = audit.audit(pg)
+            if not any("Hours match the constants" in x for x in sp) or \
+                    any("hours" in x.lower() or "Sunday" in x for x in sf):
+                bad.append(pg)
+    finally:
+        audit.load = _load
+    check(f"     every shipped page ({len(shipped)}) matches the constants", not bad, bad)
+
+    print("21. An inline SVG's <title> is not the page's title")
+    p, w, f = run('<svg role="img"><title>A map of the roads around the shop, drawn from OpenStreetMap data</title></svg>')
+    check("     the page title is still measured as the head's alone",
+          f"({len('Collision Repair in Southampton, PA | Tri-County Collision')} chars)" in p, p)
 
     # And the page as it actually ships.
     _load = audit.load

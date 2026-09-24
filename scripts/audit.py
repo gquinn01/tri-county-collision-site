@@ -144,6 +144,81 @@ NAP_STREET_CANON = NAP_STREET
 NAP_CITYLINE_CANON = f"{NAP_LOCALITY}, {NAP_REGION} {NAP_POSTAL}"
 NAP_STREET_MENTION_RE = re.compile(r"Jaymor", re.I)
 
+# --- The hours, defined once ------------------------------------------
+# ADDED 2026-09-24, proposed-changes.md 3.54, as the mechanism 3.53
+# proposed. The hours were two lines of footer text on six pages, one more
+# in /contact-us/'s header, a box beside the map there, llms.txt and every
+# page's openingHoursSpecification, with nothing holding them together.
+# They are a fact customers act on, so a copy that drifts is a shop that
+# answers the phone at the wrong time.
+#
+# THE VALUES ARE THE LIVE SITE'S, migrated: its schema says Monday to
+# Friday 08:00 to 18:00 and carries "Saturday Hours: By appointment only".
+# Owner confirmation against the Google Business Profile is outstanding
+# (4.7). SUNDAY IS DELIBERATELY ABSENT. The live schema never mentions it,
+# open or closed, so the record does not know it, and a page that says
+# anything about Sunday is saying something nobody confirmed.
+#
+# The check, per page and on llms.txt: every day name, every "Mon-Fri"
+# style range and every clock time in visible text must sit inside one of
+# the two canonical strings below. Anything else is the hours written a
+# second way, and it is a critical, same as a second spelling of the
+# street. Any Sunday is a critical. The schema must say the same thing.
+HOURS_WEEKDAYS = "Monday to Friday, 8 a.m. to 6 p.m."
+HOURS_SATURDAY = "Saturday by appointment only"
+HOURS_SCHEMA_DAYS = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+HOURS_SCHEMA_OPENS = "08:00"
+HOURS_SCHEMA_CLOSES = "18:00"
+HOURS_DAY_RE = re.compile(
+    r"\b(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)s?\b"
+    r"|\b(?:Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri|Sat|Sun)\.?\s*(?:-|\u2013|to|thru|through)\s*"
+    r"(?:Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri|Sat|Sun)\b", re.I)
+HOURS_TIME_RE = re.compile(
+    r"\b\d{1,2}(?::\d{2})?\s*(?:a\.m\.|p\.m\.|am\b|pm\b)", re.I)
+
+
+def hours_findings(text: str):
+    """(canonical mentions, stray mentions, sunday mentions) in one run of
+    visible text. Entities decoded and no-break spaces flattened first, so
+    8&nbsp;a.m. and 8 a.m. are the same string."""
+    t = " ".join(unescape(text).replace("\u00a0", " ").split())
+    spans = [(m.start(), m.end())
+             for canon in (HOURS_WEEKDAYS, HOURS_SATURDAY)
+             for m in re.finditer(re.escape(canon), t)]
+    inside = lambda m: any(a <= m.start() and m.end() <= b for a, b in spans)
+    strays, sundays = [], []
+    for rx in (HOURS_DAY_RE, HOURS_TIME_RE):
+        for m in rx.finditer(t):
+            if re.match(r"(?i)sun", m.group(0)):
+                continue
+            if not inside(m):
+                strays.append(t[max(0, m.start() - 30):m.end() + 30].strip())
+    for m in re.finditer(r"(?i)\bsundays?\b", t):
+        sundays.append(t[max(0, m.start() - 30):m.end() + 30].strip())
+    return len(spans), strays, sundays
+
+
+def hours_schema_findings(nodes: list) -> list:
+    """Every way the business node's openingHoursSpecification departs
+    from the constants. An absent specification is not a departure; a
+    page with no business node is checked elsewhere."""
+    out = []
+    for node in nodes:
+        specs = node.get("openingHoursSpecification")
+        if specs is None:
+            continue
+        specs = specs if isinstance(specs, list) else [specs]
+        want = (sorted(HOURS_SCHEMA_DAYS), HOURS_SCHEMA_OPENS, HOURS_SCHEMA_CLOSES)
+        got = []
+        for sp in specs:
+            days = sp.get("dayOfWeek", [])
+            days = days if isinstance(days, list) else [days]
+            got.append((sorted(str(d).rsplit("/", 1)[-1] for d in days),
+                        str(sp.get("opens", "")), str(sp.get("closes", ""))))
+        if got != [want]:
+            out.append(f"`openingHoursSpecification` says {got}, the constants say {[want]}")
+    return out
+
 # THE TRAILING PERIOD IS A VARIANT. "995 Jaymor Rd." is not "995 Jaymor
 # Rd", and character-identical has no rounding.
 #
@@ -726,6 +801,11 @@ class PageParser(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.title = ""
         self._in_title = False
+        # An inline <svg> may carry its own <title>, which names the graphic,
+        # not the page. Without this depth count its text was appended to the
+        # page title, so an inline map would have silently lengthened the
+        # measured title. Found while building /contact-us/'s map, 3.54.
+        self._svg_depth = 0
         self._in_jsonld = False
         self.meta = {}            # name/property -> content
         self.h1s = []
@@ -756,7 +836,9 @@ class PageParser(HTMLParser):
         a = dict(attrs)
         if tag in ("script", "style"):
             self._skip_depth += 1
-        if tag == "title":
+        if tag == "svg":
+            self._svg_depth += 1
+        if tag == "title" and not self._svg_depth:
             self._in_title = True
         elif tag == "h1":
             self._in_h1 = True
@@ -794,6 +876,8 @@ class PageParser(HTMLParser):
                 self.links_internal += 1
 
     def handle_endtag(self, tag):
+        if tag == "svg" and self._svg_depth:
+            self._svg_depth -= 1
         if tag == "title":
             self._in_title = False
         elif tag == "h1":
@@ -1224,6 +1308,25 @@ def check_brand_count_local(passes: list, warns: list, fails: list,
             f"text and {len(found['schema'])} in JSON-LD, all saying {BRAND_COUNT}. "
             "The live site's own carousel shows fourteen against its prose's dozen; this "
             "is the check that keeps that from happening here.")
+
+
+def check_hours_llms_local(passes: list, fails: list):
+    """docs/llms.txt states the hours to AI agents, so it answers to the
+    same constants as every page. Same test, same severity."""
+    try:
+        with open(LLMS_PATH, encoding="utf-8") as f:
+            text = f.read()
+    except OSError:
+        return
+    n_ok, strays, sundays = hours_findings(text)
+    for x in strays:
+        fails.append(f"**`{LLMS_PATH}` writes the hours a second way:** \u201c{x}\u201d. "
+                     f"It must say `{HOURS_WEEKDAYS}` and `{HOURS_SATURDAY}` exactly.")
+    for x in sundays:
+        fails.append(f"**`{LLMS_PATH}` mentions Sunday:** \u201c{x}\u201d. The record has "
+                     f"no Sunday hours.")
+    if n_ok and not strays and not sundays:
+        passes.append(f"`{LLMS_PATH}` states the hours exactly as the constants do.")
 
 
 def check_review_count_local(passes: list, warns: list, fails: list,
@@ -1751,6 +1854,38 @@ def audit(source: str, coverage: dict = None):
             passes.append(f"NAP address is the canonical spelling: "
                           f"{NAP_STREET_CANON}, {NAP_CITYLINE_CANON}.")
 
+    # --- The hours: every copy says the constants, and nothing else ---
+    vis = re.sub(r"(?s)<!--.*?-->|<script.*?</script>|<style.*?</style>", " ", html)
+    vis = re.sub(r"<[^>]+>", " ", vis)
+    n_ok, strays, sundays = hours_findings(vis)
+    biz_nodes = []
+    for block in p.jsonld_blocks:
+        try:
+            data = json.loads(block)
+        except (json.JSONDecodeError, ValueError):
+            continue
+        for item in (data if isinstance(data, list) else [data]):
+            if isinstance(item, dict):
+                g = item.get("@graph")
+                biz_nodes.extend(x for x in (g if isinstance(g, list) else [item])
+                                 if isinstance(x, dict) and "openingHoursSpecification" in x)
+    schema_off = hours_schema_findings(biz_nodes)
+    for x in strays:
+        fails.append(f"**The hours are written a second way:** \u201c{x}\u201d. Every copy "
+                     f"says `{HOURS_WEEKDAYS}` and `{HOURS_SATURDAY}`, character for "
+                     f"character (HOURS_* in scripts/audit.py), because a customer acts "
+                     f"on the hours and two versions of them is one wrong.")
+    for x in sundays:
+        fails.append(f"**Sunday is mentioned:** \u201c{x}\u201d. The record has no Sunday "
+                     f"hours, open or closed; the live schema never says. It is an owner "
+                     f"question (proposed-changes.md section 5), not a fact to publish.")
+    for x in schema_off:
+        fails.append(f"**The schema's hours disagree with the constants:** {x}.")
+    if n_ok and not strays and not sundays and not schema_off:
+        passes.append(f"Hours match the constants in all {n_ok} visible mention"
+                      f"{'' if n_ok == 1 else 's'}"
+                      f"{' and the schema' if biz_nodes else ''}.")
+
     # --- Word count (thin content check) ---
     text = re.sub(r"<script[\s\S]*?</script>|<style[\s\S]*?</style>|<[^>]+>", " ", html)
     words = len(text.split())
@@ -1972,6 +2107,7 @@ def main():
         check_asset_provenance_local(site_passes, site_warns, site_fails, site_notes)
         check_comment_convention_local(site_warns, site_notes)
         check_pending_links_local(site_warns, site_notes)
+        check_hours_llms_local(site_passes, site_fails)
     if expand_note:
         site_notes.append(expand_note)
 

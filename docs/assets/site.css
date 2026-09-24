@@ -646,6 +646,14 @@ section { padding: var(--pad) 0; }
 /* The two act bands centre their CTA row under a centred heading. The hero
    row is not in a .dark band and stays left, with the copy it belongs to. */
 .dark .cta-row { justify-content: center; margin-top: 44px; }
+/* A COMPACT HEADER ON A DARK GROUND IS NOT AN ACT BAND, added 2026-09-24
+   for /contact-us/'s ox header, proposed-changes.md 3.54. Its call row
+   belongs to the left-aligned copy above it, like a hero's, so it keeps
+   the base row: left, and the base 26px rather than the band's 44, which
+   the fold budget on a phone cannot spare. .hero is worn only by the
+   hero and this header, and .heroB is never .dark, so this reaches the
+   one header and nothing else. */
+.hero.dark .cta-row { justify-content: flex-start; margin-top: 26px; }
 
 /* ---------- Header ---------- */
 /* INK HEADER. It sits directly under the staging bar, which is also ink, so
@@ -1179,7 +1187,7 @@ section { padding: var(--pad) 0; }
    HAS NO PHOTOGRAPH UNDER IT, so on the oxblood prose band --silver-2 is
    7.34 and stays 7.34, which was measured on the render rather than assumed.
    See .dark .prose p and proposed-changes.md 3.25. */
-.heroB--ox .lead { color: var(--silver); }
+.heroB--ox .lead, .field-ox .lead { color: var(--silver); }
 .heroB .btn { border-color: var(--silver); }
 .heroB .btn-ghost { color: var(--silver); }
 .heroB .cta-row { margin-top: 24px; }
@@ -1192,7 +1200,17 @@ section { padding: var(--pad) 0; }
    .heroB--ox .crumb ol are both (0,2,1), so the override has to sit after
    the rule it overrides. It did not, the first time, and the probe read
    the same 6.34 twice, which is how the mistake announced itself. */
-.heroB--ox .crumb ol { color: var(--silver); }
+.heroB--ox .crumb ol, .field-ox .crumb ol { color: var(--silver); }
+/* THE TWO .field-ox SELECTORS ABOVE, added 2026-09-24 for /contact-us/'s
+   compact ox header, proposed-changes.md 3.54. They are the ox hero's own
+   declarations extended to a band, not new values: the lead and the
+   breadcrumb take --silver on ox for the arithmetic the note above gives,
+   and a band has no photograph, so the numbers only get better. Measured
+   on the render against the band's brightest stop, --ox: lead and crumb
+   text in --silver in 3.54. The crumb's link needs nothing, because .dark a
+   already gives it --silver; its separator keeps the base --rule, measured
+   there too. Without these two, .crumb ol and .lead print --ink-2 on ox,
+   which is dark on dark. */
 .heroB .crumb li + li::before { color: rgb(var(--silver-rgb) / .5); }
 .heroB .badges { margin-top: 22px; }
 .heroB .badges li { background: transparent; border-color: rgb(var(--silver-rgb) / .55); color: var(--silver); }
@@ -1777,8 +1795,10 @@ section > .wrap > .cta-row:last-child { justify-content: center; }
    section's own gaps and the marks read as a stripe with moats.
 
    SCOPED TO THE NESTED CONTEXT ON PURPOSE. The home page's standalone
-   band keeps its band padding untouched; only a #brands that is inside
-   #factory-certified is trimmed. This is the section-within-a-section
+   band keeps its band padding untouched; only a #brands nested inside a
+   section is trimmed, and since 2026-09-24 that is two contexts,
+   #factory-certified on /collision-repair/ and #fleet on
+   /commercial-collision-repair/ (3.51). This is the section-within-a-section
    answer and it is the same genre as the compound-selector lesson: the
    rule describes WHERE the element is, not what it is.
 
@@ -2053,6 +2073,55 @@ section > .wrap > .cta-row:last-child { justify-content: center; }
 @media (min-width: 800px) { .contact-grid { grid-template-columns: repeat(3, 1fr); } }
 .contact-grid h3 { font-size: .84rem; letter-spacing: .1em; text-transform: uppercase; color: var(--silver); margin-bottom: .6em; }
 .contact-alt { margin-top: 30px; }
+
+/* ---------- Details and directions: /contact-us/'s #find-us ----------
+   ADDED 2026-09-24 on Greg's ruling, proposed-changes.md 3.54, for the one
+   section that carries them. The two columns are the existing .split and
+   the heading is the existing .eyebrow and .sec-title, so what is here is
+   only what the system lacked. Each rule names what it serves. */
+
+/* The address, phone and email as three tappable lines. A list, because
+   they are three separate actions; unstyled, because they are lines and
+   not bullets. */
+.contact-lines { list-style: none; margin: 18px 0 26px; padding: 0; display: grid; gap: 12px; font-size: 1.1rem; line-height: 1.5; }
+
+/* The hours box. Silver on the white band, with the site's hairline, so
+   it reads as a box without being a card: it is not a link and does not
+   lift. Its label is .sec-sub on an h3, which gives it the kicker's
+   face, size and tracking with no rule of its own. */
+.hours-box { background: var(--silver); border: 1px solid var(--rule); border-radius: var(--radius); padding: 20px 22px; }
+.hours-box .sec-sub { margin-bottom: 8px; }
+
+/* The map box. A figure, so its credit line is its caption. The link
+   wraps the whole drawing, so the frame is on the link, and the drawing
+   scales to its column at every width. */
+.map-box { margin: 0; }
+.map-box > a { display: block; border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+.map-box svg { display: block; width: 100%; height: auto; }
+
+/* THE CREDIT IS THE LICENCE. OpenStreetMap's data is ODbL, and a map
+   drawn from it must credit its contributors visibly and say the data is
+   available under that licence. Small, but set in --ink-2 at full
+   strength, because a credit nobody can read is not a credit. */
+.map-credit { margin-top: 10px; font-size: .85rem; line-height: 1.5; color: var(--ink-2); }
+.map-credit a { color: var(--ink-2); }
+
+/* THE MAP'S OWN INK. Inline SVG reads these tokens, which is why the map
+   is inline: a standalone file would have to type hex outside this file.
+   Silver ground; roads white with a hairline casing, the through roads
+   wider with an --ink-2 casing; labels --ink-2 over a white halo; route
+   numbers in a white box edged in ink; and ONE oxblood element, the pin,
+   because the map asks the reader to go somewhere and oxblood means act. */
+.map-ground { fill: var(--silver); }
+.map-case { fill: none; stroke: var(--rule); stroke-linecap: round; stroke-linejoin: round; }
+.map-case--major { stroke: var(--ink-2); }
+.map-road { fill: none; stroke: var(--white); stroke-linecap: round; stroke-linejoin: round; }
+.map-label { fill: var(--ink-2); font-family: var(--font); font-weight: 600; paint-order: stroke; stroke: var(--white); stroke-width: 4px; stroke-linejoin: round; }
+.map-shield { fill: var(--white); stroke: var(--ink); stroke-width: 1.5px; }
+.map-shield-text { fill: var(--ink); font-family: var(--font); font-weight: 800; }
+.map-pin { fill: var(--ox); stroke: var(--silver); stroke-width: 2px; }
+.map-pin-dot { fill: var(--silver); }
+.map-pin-label { fill: var(--ink); font-family: var(--font); font-weight: 800; paint-order: stroke; stroke: var(--silver); stroke-width: 5px; stroke-linejoin: round; }
 
 /* ---------- Footer ---------- */
 footer.site { background: var(--ink); color: var(--silver); padding: var(--pad) 0 34px; }
