@@ -6,10 +6,10 @@ the **client-owner the fact-checker of record**, and this file is how that role
 gets exercised: read it, say yes or no to each line, and anything that gets a
 no comes off the page.
 
-**Status: 3 pages migrated.** `/collision-repair/`, built 2026-09-05, `/`,
+**Status: 4 pages migrated.** `/collision-repair/`, built 2026-09-05, `/`,
 built 2026-09-10 from `https://tricountycollision.com/` read the same day, and
-`/auto-glass-repair-replacement/`, built 2026-09-24 from its live page read the
-same day (3.47).
+`/auto-glass-repair-replacement/` (3.47) and `/paintless-dent-repair/` (3.48),
+both built 2026-09-24 from their live pages read the same day.
 
 The rule this migration ran on: the live page is the content source of record,
 no fact was invented, and the new page claims nothing the old page does not
@@ -719,7 +719,7 @@ and each is reversible.
 | The blog feed, ten posts with excerpts | It belongs on `/blog/`, per the page map. |
 | ~~The testimonials carousel~~ | **Now carried**, as of 2026-09-06. The four quotes are migrated verbatim as quote cards on an ink band, moved up the page to sit after the insurance section. The carousel itself is not: they are four cards, all visible, no rotation. See 1.17 and 4.8. |
 | The Trustindex review widget | A third-party script, and **it was wrong**: it showed 231 reviews on 2026-09-05 where the shop's own Google Business Profile showed 274 on 2026-09-10. The count is carried as one line of dated visible text instead, read from the profile. See 4.4. |
-| The link on "paintless dent repair (PDR)" | `/paintless-dent-repair/` has not been built. This site never writes a link to a page that does not exist, and `scripts/test-audit-checks.py` fails the build on one. It goes back when the page lands. |
+| ~~The link on "paintless dent repair (PDR)"~~ | **Now carried**, as of 2026-09-24. `/paintless-dent-repair/` landed and the pending-link test forced the link back in the same commit. See 3.48. |
 | The link in FAQ 5 to the anti-steering blog post | Same reason. The sentence stays; only the link waits. |
 | The rollover image pair | The live page's "Major Collision Repair" photo is a hover swap between two files. One image, shown always. |
 | The duplicate navigation | WordPress rendered the whole nav twice, once for desktop and once for mobile. |
@@ -5571,6 +5571,211 @@ hours line are all there.
   veil translucent, copy at opacity 0. The scrim measurements here all used a
   window equal to the iframe, and were checked by eye to be settled.
 
+### 3.48 Paintless dent repair joins the site, FAQ and all. BUILT 2026-09-24
+
+`/paintless-dent-repair/`, built to the mold of `/collision-repair/` from the
+shop's live page at `https://tricountycollision.com/paintless-dent-repair/`,
+**read on 2026-09-24.** Slug kept. `pagemap.md` said to check the live page for
+a visible FAQ: **it has one, six questions, and no FAQPage schema.** Both are
+migrated. Absence would have beaten invention; there was nothing to invent.
+
+#### The before and after
+
+| # | Where | Before (live) | After (this build) |
+|---|---|---|---|
+| 1 | `<title>` | Paintless Dent Repair in Southampton, PA \| Tri County | Paintless Dent Repair in Southampton \| Tri-County Collision |
+| 2 | meta, og and JSON-LD description | Paintless dent repair (PDR) in Southampton, PA removes door dings, hail dents, and minor damage without repainting. Free estimates. Call (215) 322-5350. | Paintless dent repair in Southampton, PA. Door dings and hail dents, no repainting, free estimates. Serving Bucks & Montgomery County. (215) 322-5350. |
+| 3 | intro, paragraph 2 | At Tri County Collision Center, our skilled technicians use... | At Tri-County Collision, our skilled technicians use... |
+| 4 | the Why list's heading | Why Choose Tri County Collision Center | Why Choose Tri-County Collision |
+| 5 | FAQ 1 opener | PDR is a repair technique that removes minor dents without any repainting. | Paintless dent repair (PDR) is a repair technique that removes minor dents without any repainting. |
+| 6 | FAQ 2 opener | No. Protecting your paint is the entire reason PDR exists. | No, PDR will not damage your paint. Protecting your paint is the entire reason PDR exists. |
+| 7 | FAQ 3 opener | Yes. Hail damage is one of the things PDR handles best. | Yes, hail damage is one of the things PDR handles best. |
+| 8 | FAQ 4 opener | ...usually need conventional bodywork instead. | ...usually need conventional bodywork instead of PDR. |
+| 9 | FAQ 5 opener | That varies with the dent itself: ... | The cost of paintless dent repair varies with the dent itself: ... |
+| 10 | FAQ 6 opener | Yes. Paintless dent repair works on most vehicles, ... | Yes, paintless dent repair works on most vehicles, ... |
+| 11 | CTA buttons | Call Now for a Free Quote / Get an Estimate Online | Call (215) 322-5350 / Email the shop |
+
+**1. The title gives up ", PA" to keep the whole name.** The collision grammar,
+"Paintless Dent Repair in Southampton, PA | Tri-County Collision", is **63
+characters**, three over the limit. The live title fitted by cutting the name
+to "Tri County", which rule 6 does not allow. So the state goes, not the name:
+59 characters, counted by machine. "PA" is still in the description, the
+eyebrow, the intro H2 and the schema. **If Greg would rather keep the state,
+the other 60-character option is "Paintless Dent Repair Southampton, PA |
+Tri-County Collision"**, which reads as a keyword string rather than a
+sentence.
+
+**2.** The collision grammar again, claiming only what the live page claims:
+door dings, hail dents, no repainting, free estimates. 150 characters. **The
+three mirrors are byte-identical once decoded, proved by hash:**
+
+```
+meta        150  851e75c8d3a7ea6d
+og          150  851e75c8d3a7ea6d
+JSON-LD     150  851e75c8d3a7ea6d
+```
+
+**3 and 4.** The business name, per 1.1.
+
+**5 to 10, the standalone test.** FAQ 1 opened on an acronym that means
+nothing once lifted, and now defines it. FAQ 2, 3 and 6 opened on a bare "No."
+or "Yes.": 3 and 6 are comma-merged into the sentence that follows, the
+smallest fix, and FAQ 2 gains a sentence that says in words what "No." said,
+because "No, protecting your paint is the entire reason PDR exists" still does
+not say what is being denied. FAQ 4's "instead" had no antecedent once lifted.
+FAQ 5's "That" was the question. **Nothing after the opening sentence changed**,
+except that FAQ 5's phone number is now a `tel:` link, which it was not on the
+live page.
+
+**11.** Per 1.9.
+
+**Split and relevelled, no words changed.** The live page's first two sentences
+are the hero lead and the rest of its opening follows under the intro H2, per
+1.5. The live H3s become section H2s. **The "What PDR Can Fix" list became
+three cards**, the same shape `/collision-repair/` gives its three-item list
+in `#factory-certified`, down to the closing paragraph's `margin-top:34px`: a
+list inside the prose column rendered its closing sentence flush against the
+last item, and the collision page had already solved that shape. Items
+unchanged, no periods added. **The four "Why Drivers Choose PDR" reasons now
+lead in bold** with their own first sentence, the grammar the collision page's
+`#why` list uses. Plain on the live page; emphasis added, no word changed.
+
+#### The closing promise is held, and a page-true sentence is proposed
+
+| | |
+|---|---|
+| **Home and /collision-repair/** | We will get you back on the road with your vehicle restored to its pre-accident condition. |
+| **Proposed for this page** | We will get you back on the road with the panel looking like nothing ever happened. |
+
+This page opens on a door ding in a grocery store car park and names hail as
+what PDR does best. **Neither is an accident in a customer's mouth**, which is
+exactly the case the ruling anticipated. The proposal keeps the shared frame
+and completes it with the live page's own words: "a dent isn't gone until the
+panel looks like nothing ever happened." **It was chosen over "your factory
+paint exactly as it is" on purpose.** That phrase is true of PDR, but this page
+also promises conventional repair for dents that do not qualify, and
+conventional repair repaints. The panel sentence is true of both routes. **Nothing
+ships until Greg rules**, and the band's slot carries a comment naming its markup.
+
+#### The hero is interim stock, and a cutover blocker
+
+`hero-dent-lifter-on-red-door.jpg`, built by
+`scripts/prepare-hero-photo.py --frame dent` from **AdobeStock_1571353580**.
+
+```
+PROVENANCE, read before anything was built on it
+  DigitalSourceType  (none declared)
+  CreatorTool        Adobe Photoshop 26.8 (Windows)
+  C2PA               embedded manifest, no digitalSourceType asserted
+  VERDICT            clean, no AI tell
+SOURCE   8192x5464
+CROP     columns 1..8190, rows 2..5461  ->  8190x5460, exact 3:2
+SUBJECT  lifter x 4620..7463, y 975..2785, INSIDE
+         (gold scan for the lifter, blue scan for the glue tab: a red car
+          defeats a red scan)
+RESAMPLE one box downscale, factor 6.825  ->  1200x800
+PLATES   660 boxes of 100x50 on the output, 0 meet all three conditions
+ENCODE   q92, 171,011 bytes; only APP0 JFIF survives the strip
+```
+
+**Photoshop is the one creator tool of the three that could have done
+generative work**, so it was checked beyond the audit's reader: the embedded
+manifest was searched for `trainedAlgorithmicMedia` and
+`compositeWithTrainedAlgorithmicMedia` and carries neither. **What the frame
+shows is a glue-pull lifter**, a paintless dent repair method, so the
+photograph honestly shows this service even though it is not this shop. Alt:
+"A gloved hand working a glue-tab dent lifter on a red car door, beside the
+door handle."
+
+#### Chips, stat band, and what is withheld
+
+**The collision four, same order, byte-identical in both chip lists.** The live
+page argues no swap: it says qualifying dents "can often be handled quickly"
+but never "same day", so there is no service-specific chip to propose. **The
+stat band travels byte-identical**, with the same question glass raised: the
+live dent page never mentions the lifetime warranty.
+
+**Real Repairs is withheld, and one pair nearly qualified.** The collision
+page's Nissan Murano pair is captioned "Door dents", and it is still not this
+page's evidence: **nothing records that it was repaired paintlessly**, and a
+pair on the PDR page would claim it was. Recorded in the comment where the
+section would sit. **The brand strip is withheld** as on glass.
+
+#### Measured
+
+**Fold**, viewport-sized iframe:
+
+```
+                  innerHeight  min-height  CTA ends  budget
+390x664  banner       664      504.64px      580      604   clears by 24
+390x664  cutover      664      504.64px      523      604   clears by 81
+360x640  banner       640      486.4px       562      580   clears by 18
+360x640  cutover      640      486.4px       504      580   clears by 76
+430x745  cutover      745      560px         576      685   clears by 109
+1440x900 cutover      900      522px         533      900   clears by 367
+```
+
+**Every row clears, banner state included.** The shorter lead buys back what
+the two-line H1 costs. At 1440 the hero is 603 deep, as on glass, because
+"Paintless Dent Repair" also runs two lines at `max-width: 17ch`.
+
+**Scrim:**
+
+| Element | 1440 | 1920 | 430 | 390 | 360 | Needs |
+|---|---|---|---|---|---|---|
+| Breadcrumb | 10.49 | 10.34 | 9.59 | 10.10 | 10.15 | 7 |
+| Eyebrow | 10.43 | 10.10 | 9.97 | 10.27 | 10.10 | 7 |
+| H1 | 9.59 | 9.46 | 9.65 | 9.53 | 9.39 | 4.5 |
+| Lead | 9.78 | 9.72 | 9.85 | 9.53 | 9.53 | 7 |
+| Ghost button label | 10.43 | 10.10 | 10.11 | 10.24 | 10.18 | 7 |
+| Chips (desktop) | 9.84 | 10.17 | n/a | n/a | n/a | 7 |
+
+**Every element clears 7:1 at every width; the scrim did not deepen.**
+
+**Seams and heads**, iframe taller than the page, maps agreeing at two heights:
+seams 176-178 at 1440 and 96-98 at 390, head-to-body 40 on every section.
+
+**The ask rhythm:**
+
+```
+                     1440            390
+hero                  471             434
+#intro               1509  gap  976  1947  gap 1377
+#when-not            2853  gap 1282  3600  gap 1515
+#why                 4249  gap 1334  5372  gap 1634
+tail to the footer         1228            1190
+```
+
+**`#when-not` carries the second ask because that is where the live page puts
+its second button**: after the page has told you when PDR is the wrong fix, and
+that the shop does the right one too.
+
+**The grounds alternate**: white stat band, panel, ink, silver, panel, silver,
+panel, oxblood, panel, silver. `#how-it-works` took the ink so the list could
+sit on silver. `.payoff .card p` sets `--ink-2` after `.dark .card p` in the
+cascade, so payoff cards on ink would be dark text on a dark card. **That is a
+latent trap in the stylesheet, recorded here and not fixed**, because no page
+puts payoff cards on ink and a rule nobody needs is not this run's to write.
+
+#### What landing this page moved elsewhere, by mechanism
+
+- **`/collision-repair/`'s "paintless dent repair (PDR)" is a link again**, as
+  the live page has it. It waited as a pending span, section 2 promised it
+  back, and the pending-link test forced it the moment the page existed. The
+  comment above it is updated to say so, and section 2's row is struck.
+- **Home's Paintless Dent Repair router card became a link**, as glass's did.
+- **The glass page's footer span became a link**; the generator reads which
+  pages exist, so the one line that changed there is exactly that.
+- **`docs/llms.txt`** and **`docs/sitemap.xml`** carry the page. **No CSS.**
+
+#### Not carried from the live page
+
+The Trustindex widget; the CarWise links; the live image `Paintless-Dent-Repair.jpg`,
+"Dent being buffed out of a car.", **because old-site imagery is banned from
+this repo**; the DocuSign nav link; the CallRail number; `info@`; the live
+schema's price and offer nodes. The contact block retired into the footer, per
+3.45.
+
 ---
 
 ## 4. The claims list
@@ -5875,12 +6080,15 @@ this shop.**
 | Page | Hero | Asset | Record |
 |---|---|---|---|
 | `/auto-glass-repair-replacement/` | `hero-windshield-replacement-in-shop.jpg` | AdobeStock_64691325 | 3.47 |
+| `/paintless-dent-repair/` | `hero-dent-lifter-on-red-door.jpg` | AdobeStock_1571353580 | 3.48 |
 
 **The shoot list gains one photograph per page**, each showing that service's
 own work at this shop:
 
 - **a real Tri-County glass job**, a windshield going in or a chip being
-  repaired, in one of the bays (for 3.47).
+  repaired, in one of the bays (for 3.47);
+- **a real Tri-County dent job**, a technician working a panel paintlessly,
+  ideally with the before and after frames Real Repairs would need (for 3.48).
 
 ---
 
@@ -5912,6 +6120,25 @@ this?"**, not "is it plausible".
   mentions the lifetime warranty. Does it cover glass work?
 - **The hero chip "Detailed after every repair."** On a glass-only job too? 4.2
   asks it; it now applies here.
+
+**`/paintless-dent-repair/`** (3.48)
+
+- **"Skilled technicians experienced in paintless dent repair."** Is PDR done
+  by the shop's own technicians, or by a PDR specialist who comes in? Many
+  shops sublet it, and the page says "our technicians" throughout.
+- **Hail damage**, which the page names as what PDR handles best. 4.1b asks
+  whether hail is taken or sublet; this page is the one that sells it.
+- **"PDR for cars, trucks, and SUVs"** and "works on most vehicles".
+- **"PDR typically costs less than conventional dent repair"** and "one of
+  the most cost-effective repairs you can get." Comparative cost claims.
+- **"Qualifying dents can often be handled quickly."** A timeline claim with no
+  number in it.
+- **"Call (215) 322-5350 or stop by."** Does the shop take walk-ins for a dent
+  look, given Saturday is by appointment only?
+- **"Free estimates and free consultations"**, as on glass.
+- **The stat band's lifetime warranty**, as on glass: never mentioned on the
+  live dent page. Does it cover PDR?
+- **"Detailed after every repair"** on a PDR-only job.
 
 ## 5. What the owner needs to answer first
 
@@ -5952,3 +6179,8 @@ Ordered by how much else depends on it.
 14. **The glass page's closing promise**, Greg's to rule on before the owner
     sees it: "We will get you back on the road with quality glass, installed
     with the same care we bring to every repair." See 3.47.
+15. **The dent page's scope** (4.10): PDR in house or sublet, hail taken or
+    sublet, walk-ins, and whether the warranty and the detailing promise
+    reach PDR-only jobs.
+16. **The dent page's closing promise**, Greg's first: "We will get you back on
+    the road with the panel looking like nothing ever happened." See 3.48.
