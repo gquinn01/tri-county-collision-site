@@ -1790,7 +1790,7 @@ section > .wrap > .cta-row:last-child { justify-content: center; }
    and --sec-gap rather than one symmetric value: the padding is whatever
    makes each gap equal the grammar, and the two sides do not start from
    the same place. Measured before and after in 3.43. */
-#factory-certified #brands { padding-top: 0; padding-bottom: var(--sec-gap); }
+#factory-certified #brands, #fleet #brands { padding-top: 0; padding-bottom: var(--sec-gap); }
 
 .brandstrip { overflow: hidden; }
 

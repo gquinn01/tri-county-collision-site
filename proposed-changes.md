@@ -6092,6 +6092,147 @@ and it now links all four services. **No CSS, no stamp, no sitemap change**:
 no page's `dateModified` moved, following 3.46, which bound a footer line on
 both pages without moving either.
 
+### 3.51 Greg rules on four open items: two promises, a chip, a strip. BUILT 2026-09-24
+
+Greg ruled on the four open items from 3.47 to 3.49. **All four are applied in
+one commit.** The two promise sentences and the chip label are **Greg-approved
+wording, not migrations**, and are recorded as approved pairs.
+
+#### 1 and 2. The glass and dent closing bands ship
+
+| Page | Before | After, approved |
+|---|---|---|
+| `/auto-glass-repair-replacement/` | (band held, pending) | We will get you back on the road with quality glass, installed with the same care we bring to every repair. |
+| `/paintless-dent-repair/` | (band held, pending) | We will get you back on the road with the panel looking like nothing ever happened. |
+
+**The grammar is home's `#start` exactly**: the promise as the headline, the sub
+line "Estimates are free and there is no obligation" byte for byte, and the same
+CTA pair. The NOT-SHIPPED comments came out; the reasoning is in 3.47 and 3.48
+and the approval is here. **Each sentence ships byte-identical everywhere it
+appears, which today is one page each.**
+
+**The ground is ox on both, the recorded service-page default, and each page's
+own sequence agrees rather than argues ink.** On both pages `#why` was the only
+oxblood band, `#area` sits between it and the new band on panel, and FAQ follows
+on silver. That is exactly the tail `/collision-repair/` and
+`/commercial-collision-repair/` carry. Ink would have been the answer only if
+the page's two oxblood bands were already spent, which is why the collision
+page's band is ink, and neither page's were.
+
+#### 3. The commercial chip swap, both lists, this page only
+
+| | |
+|---|---|
+| **Before** | Detailed after every repair |
+| **After, approved** | Built to limit downtime |
+
+**The mark is the road glyph the site already owns**: the lane from
+`/collision-repair/`'s safety card, already on this page as step 06, "Back to
+work". A vehicle back on the road is what limited downtime means, and no other
+glyph the site owns says it. Nothing was drawn. **Both chip lists changed
+together**, as 3.36 requires, the whole `<li>` swapped, mark and label. **The
+other four pages are untouched**: glass, dent and collision still carry
+"Detailed after every repair" in both lists, and home carries no chips.
+
+#### 4. The brand strip joins commercial
+
+**The seat is `#fleet`, between its sec-head and its prose**, the section where
+the page makes its 12-brand argument. That is the same seat the strip holds on
+the collision page, and **the seat was chosen so that collision's padding
+derivation holds unchanged**: the head supplies `--sec-gap` above, the strip
+supplies `--sec-gap` below, and the paragraph after it has no top margin. So
+the selector was extended, not written:
+
+```
+BEFORE  #factory-certified #brands { padding-top: 0; padding-bottom: var(--sec-gap); }
+AFTER   #factory-certified #brands, #fleet #brands { padding-top: 0; padding-bottom: var(--sec-gap); }
+```
+
+**That line is the whole `site.css` diff.** `stamp-assets.py` restamped every
+page and the template from `?v=2983cc72` to `?v=95d0714b`, and on home, the
+collision page and the template the stamp is the only line that moved.
+
+**The seat under the argument paragraph was considered and rejected**, because
+its neighbours differ. Above it sits a paragraph's 1.1em bottom margin, and
+below it the section's own padding, so it would need its own rule. This commit
+permitted one selector-list change and no new rule.
+
+**The strip needed a light ground.** The marks are black alpha masks at
+`--brand-ink`, and `#fleet` was ink, where they would be black on near-black.
+Three ground classes moved, on this page only, so the page still alternates:
+
+```
+            BEFORE   AFTER
+#intro      panel    silver
+#fleet      ink      panel      the strip's section
+#downtime   panel    ink        prose on ink, which is what ink carries
+```
+
+**The markup is collision's, lifted rather than retyped**, and compares
+byte-identical to it, so every limit travels verbatim. **The brand check is
+green: three strips site-wide**, home's standalone band, collision's and this
+one, with **12 mentions in visible text and 1 in JSON-LD, all saying 12.** (The
+ruling said two strips; home carries the third, and always has.) The Real
+Repairs withheld note on this page was corrected to say the strip is no longer
+withheld.
+
+#### Measured
+
+**The fold is identical to HEAD, proved by hash**, twelve runs, viewport-sized
+iframe. Each hash covers `innerHeight`, laid-out width, computed `min-height`,
+and the hero, CTA and stat-band boxes. HEAD was probed with this commit's
+changes stashed:
+
+```
+glass       390x664 banner 80d7a4b1  cutover 4efed6c7   360x640 banner 4ef0b61d  cutover 68ca333d
+dent        390x664 banner 5d6e5c37  cutover ec543417   360x640 banner a1f4ee8d  cutover af47ec0b
+commercial  390x664 banner 5d6e5c37  cutover ec543417   360x640 banner 4ef0b61d  cutover 68ca333d
+```
+
+Expected, since a closing band and a strip change page length rather than the
+hero, and the chip swap is a same-width label inside the same two-row cap.
+
+**The strip's seat matches collision's to the pixel:**
+
+```
+                    head -> marks   marks -> prose   brand padding
+collision  1440          40               40             0 / 40
+collision   390          40               40             0 / 40
+commercial 1440          40               40             0 / 40
+commercial  390          40               40             0 / 40
+```
+
+**The marks read at 9.44:1 on the panel**: the darkest composited pixel is
+rgb(70,70,70) against white, which beats the 8.70 recorded over silver in the
+strip's own note.
+
+**Seams and heads**, iframe taller than the page, maps agreeing at two heights,
+laid-out width true: seams 176-178 at 1440 and 96-98 at 390 on all three pages.
+Head-to-body is 40, and 44 on each new `#start`, exactly as the collision and
+commercial pages' `#start` measure. **The 3.46 baseline holds.**
+
+**The ask rhythm gains a fifth ask on glass and dent**, the band, and the tail to
+the footer shortens:
+
+```
+                     longest run at 390    tail at 390
+glass                      1658              890   (was 1309)
+dent                       1634              772   (was 1190)
+commercial                 2684              890   (was 2509: the strip adds 172)
+```
+
+**Rendered and checked by eye at 1440 and 390**: both bands and the strip's
+seat, and the swapped chip at 1440. The strip was rendered at rest, the probe
+forcing reduced motion, which is its base state: two rows at 1440 and three at
+390, all twelve visible.
+
+#### Found, not fixed
+
+**The comment above the extended selector in `site.css` still says only a
+`#brands` inside `#factory-certified` is trimmed.** It is now one context of
+two. It was left alone because this commit's CSS change had to be the selector
+list and nothing else; it wants one sentence in the next CSS commit.
+
 ---
 
 ## 4. The claims list
@@ -6491,6 +6632,9 @@ site.**
   holds for a vehicle that does commercial mileage.
 - **"Free estimates in person or online."** The online half waits on
   `/contact-us/`.
+- **The hero chip "Built to limit downtime"**, Greg's approved swap (3.51). A
+  process claim, not a turnaround promise, but the chip is the strongest form
+  the downtime claim takes on the page.
 
 ## 5. What the owner needs to answer first
 
@@ -6528,13 +6672,15 @@ Ordered by how much else depends on it.
 13. **The glass page's scope** (4.10): glass in house or sublet, direct
     insurance billing on glass claims, OEM or aftermarket glass, and whether
     the lifetime warranty and the detailing promise reach glass-only jobs.
-14. **The glass page's closing promise**, Greg's to rule on before the owner
-    sees it: "We will get you back on the road with quality glass, installed
+14. ~~**The glass page's closing promise**, Greg's to rule on~~ **Approved by
+    Greg 2026-09-24 and shipped, 3.51.** The owner sees it as a claim like any
+    other: "We will get you back on the road with quality glass, installed
     with the same care we bring to every repair." See 3.47.
 15. **The dent page's scope** (4.10): PDR in house or sublet, hail taken or
     sublet, walk-ins, and whether the warranty and the detailing promise
     reach PDR-only jobs.
-16. **The dent page's closing promise**, Greg's first: "We will get you back on
+16. ~~**The dent page's closing promise**, Greg's first~~ **Approved by Greg
+    2026-09-24 and shipped, 3.51.** The owner sees it as a claim like any other: "We will get you back on
     the road with the panel looking like nothing ever happened." See 3.48.
 17. **The commercial page's scope** (4.10): tractor-trailers and buses above
     all, then on-site assessment, commercial insurance handling, the

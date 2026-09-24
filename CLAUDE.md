@@ -651,7 +651,9 @@ page carries at most one.** That sentence used to end "on this page or any
 other", which made the strip a property of the home page. It is not — it is
 the one thing on this site that may loop, and a service page may carry one.
 `/collision-repair/` now carries it inside `#factory-certified`, whose subject
-it is. **Every limit travels with it, verbatim**: transform only, pauses on
+it is, and from 2026-09-24 `/commercial-collision-repair/` carries it inside
+`#fleet`, where that page makes its 12-brand argument (`proposed-changes.md`
+3.51). Three pages, one strip each. **Every limit travels with it, verbatim**: transform only, pauses on
 hover and focus-within, rests as a wrapped static row with all twelve marks
 visible under `prefers-reduced-motion` with that resting state the base in the
 cascade, and no JavaScript at all. It is the same markup, not a second
