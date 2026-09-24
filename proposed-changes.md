@@ -6,8 +6,10 @@ the **client-owner the fact-checker of record**, and this file is how that role
 gets exercised: read it, say yes or no to each line, and anything that gets a
 no comes off the page.
 
-**Status: 2 pages migrated.** `/collision-repair/`, built 2026-09-05, and `/`,
-built 2026-09-10 from `https://tricountycollision.com/` read the same day.
+**Status: 3 pages migrated.** `/collision-repair/`, built 2026-09-05, `/`,
+built 2026-09-10 from `https://tricountycollision.com/` read the same day, and
+`/auto-glass-repair-replacement/`, built 2026-09-24 from its live page read the
+same day (3.47).
 
 The rule this migration ran on: the live page is the content source of record,
 no fact was invented, and the new page claims nothing the old page does not
@@ -5286,6 +5288,289 @@ The probe used for this record's own measurements reports its laid-out width
 beside every answer for exactly that reason, and read **1440 OK** and **900 OK**
 on all eight runs.
 
+### 3.47 Auto glass joins the site, migrated from the live page. BUILT 2026-09-24
+
+`/auto-glass-repair-replacement/`, built to the mold of `/collision-repair/`
+from the shop's live page at
+`https://tricountycollision.com/auto-glass-repair-replacement/`, **read on
+2026-09-24.** The slug is kept, because the page keeps its purpose and every
+unnecessary redirect spends a little of the rankings the migration promises to
+keep. Nothing on the page was written for the shop; every wording change is
+below, and every claim is on the claims list.
+
+#### The before and after
+
+| # | Where | Before (live) | After (this build) |
+|---|---|---|---|
+| 1 | `<title>` | Auto Glass Repair & Replacement, Southampton PA \| Tri County | Auto Glass Repair in Southampton, PA \| Tri-County Collision |
+| 2 | meta, og and JSON-LD description | Windshield repair, replacement, and side and rear window service in Southampton, PA. Quality materials, insurance help, free estimates. Call (215) 322-5350. | Auto glass repair in Southampton, PA. Windshields, side and rear windows, insurance help, free estimates. Serving Bucks & Montgomery County. (215) 322-5350. |
+| 3 | intro, paragraph 2 | At Tri County Collision Center, we handle auto glass repair... | At Tri-County Collision, we handle auto glass repair... |
+| 4 | the Why list's heading | Why Choose Tri County Collision Center for Auto Glass | Why Choose Tri-County Collision for Auto Glass |
+| 5 | FAQ 1 opener | It depends on the size, depth, and location of the damage. | Whether a chipped windshield can be repaired or needs replacement depends on the size, depth, and location of the damage. |
+| 6 | FAQ 2 opener | It's a risk that grows with time. | Driving with a cracked windshield is a risk that grows with time. |
+| 7 | FAQ 3 opener | Yes. Our technicians handle all types of auto glass: ... | Yes, our technicians handle all types of auto glass: ... |
+| 8 | FAQ 4 opener | That depends on your coverage. | Whether insurance covers your auto glass repair or replacement depends on your coverage. |
+| 9 | FAQ 5 opener | If your vehicle has camera-based safety features like lane departure warning, automatic emergency braking, or adaptive cruise control, then very likely yes. | Your windshield very likely needs recalibration after it's replaced if your vehicle has camera-based safety features like lane departure warning, automatic emergency braking, or adaptive cruise control. |
+| 10 | FAQ 6 opener | Call us at (215) 322-5350 or request an estimate online. | To get an estimate for auto glass work, call us at (215) 322-5350 or request an estimate online. |
+| 11 | CTA buttons | Call Now for a Free Quote / Get an Estimate Online | Call (215) 322-5350 / Email the shop |
+
+**1.** The collision grammar, and 59 characters counted by machine. "&
+Replacement" leaves the title and nothing else: it is still the H1, the
+breadcrumb, the intro H2 and the FAQ heading. The name follows 1.1.
+
+**2.** Adapted from the collision description's grammar, and it claims nothing
+the live page does not: windshields, side and rear windows, "insurance help"
+(the live meta's own words) and free estimates. **ADAS is deliberately not in
+it**: the in-house recalibration claim is the one flagged sentence on this
+page, and a meta description is not where it gets promoted. 156 characters,
+counted by machine. **The three mirrors are byte-identical once decoded,
+proved by hash:**
+
+```
+meta        156  f1447fa5a7a5c886
+og          156  f1447fa5a7a5c886
+JSON-LD     156  f1447fa5a7a5c886
+```
+
+**3 and 4.** The business name, per 1.1. Two places on this page.
+
+**5 to 10, the standalone test.** Every one of the live page's six openers
+failed it: four lean on the question for their subject ("It depends", "It's a
+risk", "That depends", "then very likely yes"), one is a bare "Yes." and one is
+an imperative with no subject matter. Each fix echoes the question's own words
+and **nothing after the opening sentence changed**. FAQ 5 is a reorder, not a
+rewrite: the same clauses, with the answer first. FAQ 6 also gains the
+collision FAQ's link grammar: the number is a `tel:` link and "request an
+estimate online" is a pending link to `/contact-us/`, which the live page left
+as plain text.
+
+**11.** Per 1.9: the number on the button, and the online estimate, which
+pointed at a third-party CarWise form, replaced by the shop's one mailbox until
+`/contact-us/` ships.
+
+**Split and relevelled, no words changed.** The live page's first paragraph's
+first two sentences are the hero lead and every sentence after them opens the
+intro section, exactly as 1.5 did for the collision page. The live H3s become
+section H2s and the three H4s under "Repair or Replace?" become card H3s.
+Heading levels only. Curly quotes are straight, per 1.11, which the new FAQ
+mirror needs anyway.
+
+#### The FAQPage schema is new
+
+**The live page shows six questions and carries no FAQPage node.** This build
+adds it, generated from the same strings as the visible answers, so the mirror
+holds by construction and the audit confirms it: **all 6 questions and answers
+byte-identical, both directions.**
+
+#### The in-house ADAS statement, migrated as written
+
+"We perform ADAS recalibration at our Southampton facility, so your vehicle's
+safety features work the way the manufacturer intended after the new glass goes
+in." **Word for word, in its own section, neither strengthened nor softened
+nor dropped.** It is the explicit claim `pagemap.md`'s ADAS gate rests on, and
+until now it lived only on the live site (4.1b). It now ships on this staging
+page, which makes the owner's answer to 4.2 more urgent rather than less.
+FAQ 5 and the Why list also carry "We perform ADAS recalibration" without the
+location, as the live page does.
+
+#### The closing promise is held, and a page-true sentence is proposed
+
+Tested against this page's own work, home's sentence reads wrong here:
+
+| | |
+|---|---|
+| **Home and /collision-repair/** | We will get you back on the road with your vehicle restored to its pre-accident condition. |
+| **Proposed for this page** | We will get you back on the road with quality glass, installed with the same care we bring to every repair. |
+
+This page opens on a stone chip off Street Road, and **a chip is not an
+accident in a customer's mouth**; the live glass page never uses the word. The
+proposal keeps the shared frame, "We will get you back on the road with", and
+completes it with the live page's own words from the Windshield Replacement
+paragraph: "we install quality glass with the same care we bring to every
+repair." **Nothing ships until Greg rules.** The band's slot carries a comment
+naming the markup it takes, `class="dark field-ox" id="start"`, and it is the
+last thing on this page waiting on an answer.
+
+#### The hero is interim stock, and a cutover blocker
+
+`hero-windshield-replacement-in-shop.jpg`, built by
+`scripts/prepare-hero-photo.py --frame glass` from **AdobeStock_64691325**,
+licensed by Greg with the generative-AI filter excluded. It is not this shop's
+bay. **It joins the three stock accents in 4.9 as a cutover blocker**, and a
+real Tri-County glass job joins the shoot list.
+
+```
+PROVENANCE, read before anything was built on it
+  DigitalSourceType  (none declared)
+  CreatorTool        Capture One 7 Windows       a raw converter
+  C2PA               embedded manifest
+  VERDICT            clean, no AI tell
+SOURCE   4255x2832
+CROP     columns 4..4251, all rows  ->  4248x2832, exact 3:2
+SUBJECT  suction-cup lifters x 962..3544, y 877..2310  (saturated-red scan)
+         INSIDE
+RESAMPLE one box downscale, factor 3.54  ->  1200x800
+PLATES   660 boxes of 100x50 on the output, 0 meet all three conditions
+ENCODE   q92, 260,714 bytes; only APP0 JFIF survives the strip
+```
+
+**The script had to learn a wider source.** Both earlier heroes were 1440 wide;
+these are four to eight thousand. Each new frame carries an explicit crop box,
+the script refuses a box that is not exactly 3:2, and a crop wider than 1440 is
+plate-scanned after the downscale with the box scaled by 1200/1440, so a plate
+is the same fraction of the box in every frame. **The two existing frames take
+exactly the path they always did**: the collision frame was re-run to a temp
+directory and is **byte-identical** to the shipped asset. The home frame's
+original is not on this machine and could not be re-run; it takes the same
+default-box path the collision frame just proved. A new `--out-dir` flag makes
+that proof possible without touching `docs/`.
+
+**The windshield sticker was inspected at full resolution** and is out of
+focus with no legible text. **The alt describes what the photograph shows**:
+"Red suction-cup lifters set on a car's windshield in a repair bay, with a
+second car behind it, hood up, carrying more lifters." og:image,
+og:image:alt and `primaryImageOfPage` are driven from the hero element, per
+3.35, and all three move again when a real photograph lands.
+
+#### Chips, stat band, and what is withheld
+
+**The chips are the collision four, in the same journey order**, byte-identical
+in both chip lists. The live glass page argues no service-specific swap: it
+makes no mobile-service or same-day claim, so there is nothing to propose.
+**"Detailed after every repair" on a glass-only job is the open question 4.2
+already asks**, and it now applies to this page too.
+
+**The stat band travels byte-identical.** It is shop-wide, the same three proof
+figures home's stat card carries. One question comes with it: **the live glass
+page never mentions the lifetime warranty**, and the band says "Warranty on all
+repair work". "All" includes glass work if it is true; see section 5.
+
+**Real Repairs is withheld** under its own gate, since the shop has supplied no
+glass-job photographs, and **the brand strip is withheld** because
+certification is the collision page's subject. Both are recorded in a comment
+where the section would sit.
+
+#### Measured
+
+**Fold**, viewport-sized iframe, `innerHeight` and computed `min-height`
+printed beside every answer. Budget is `innerHeight` less the 60px call bar
+below 900.
+
+```
+                  innerHeight  min-height  CTA ends  budget
+390x664  banner       664      504.64px      599      604   clears by  5
+390x664  cutover      664      504.64px      542      604   clears by 62
+360x640  banner       640      486.4px       598      580   MISSES by 18
+360x640  cutover      640      486.4px       541      580   clears by 39
+430x745  cutover      745      560px         576      685   clears by 109
+1440x900 cutover      900      522px         533      900   clears by 367
+```
+
+**The 360x640 banner-state miss is the H1, and it is recorded rather than
+fixed.** "Auto Glass Repair & Replacement" runs three lines at 360 (127px)
+where "Collision Repair" runs two, while this page's lead is a line shorter
+than collision's. The H1 is the live page's own and it stays. The banner comes
+off at cutover and **the without-banner row is the one that describes a
+customer**, which is the standard 3.41 applied to home's standing 360x640
+miss of 55. At 1440 the same two-line H1 makes the hero **603px deep, 3 past
+the 600 3.21 held**.
+
+**Scrim**, per the readability amendment: copy rendered, then rendered again
+with every glyph transparent so the layout holds and the ground shows, and
+every pixel under every glyph run sampled against its own text node's colour.
+
+| Element | 1440 | 1920 | 430 | 390 | 360 | Needs |
+|---|---|---|---|---|---|---|
+| Breadcrumb | 9.40 | 9.40 | 9.52 | 9.01 | 9.60 | 7 |
+| Eyebrow | 9.79 | 9.72 | 9.66 | 9.72 | 9.72 | 7 |
+| H1 | **6.47** | 7.39 | 9.53 | 9.27 | 9.27 | 4.5 |
+| Lead | 9.53 | 9.33 | 9.66 | 9.53 | 9.53 | 7 |
+| Ghost button label | 9.98 | 10.25 | 9.72 | 9.66 | 9.66 | 7 |
+| Chips (desktop) | 9.46 | 9.40 | n/a | n/a | n/a | 7 |
+
+**Everything clears its standard; the scrim did not deepen.** The H1's 6.47 at
+1440 is display type against a 4.5 floor. It dips because the two-line H1's
+first line, "Auto Glass Repair &", reaches further into the fade than
+collision's one line does. **The probe was calibrated first**, on
+`/collision-repair/`, and landed within 0.3 of every figure in 3.21.
+
+**Seams and heads**, section probe with the iframe taller than the page,
+laid-out width printed, and the map taken at two iframe heights and required
+to agree (**it did, at both widths**):
+
+```
+            seams            head-to-body
+1440        176-178 (88+88)  40 on every section
+390          96-98  (48+48)  40 on every section
+```
+
+Identical to `/collision-repair/`'s own seams on the same probe, 176-177 and
+96-97.
+
+**The ask rhythm.** Four asks: the hero, and the section bottoms of `#intro`,
+`#repair-or-replace` and `#why`, the last being the oxblood act band.
+
+```
+                     1440            390
+hero                  471             434
+#intro               1509  gap  976  1975  gap 1405
+#repair-or-replace   2300  gap  729  3362  gap 1249
+#why                 3705  gap 1343  5158  gap 1658
+tail to the footer         1228            1309
+```
+
+**The `#repair-or-replace` ask is the rhythm's answer, and it is also the live
+page's.** Without it the phone ran 2,881px from `#intro` to `#why`, under the
+3,000 bound but close to five phone screens. The live page puts its second
+call button in the same place. With it, every phone gap is 1,249 to 1,658,
+about two and a half screens.
+
+#### What landing this page moved elsewhere, by mechanism
+
+- **Home's Auto Glass router card became a link.** It was a `div` carrying
+  `data-pending-href`, and the pending-link test fails from the day its target
+  exists. It is now an `<a class="svc-card">`, words, image and alt untouched,
+  so it gains the lift and the oxblood heading the linked cards wear.
+- **The footer's two unbuilt services are pending spans.** This page is born
+  with the four-service footer; Paintless Dent Repair and Commercial Collision
+  Repair are `data-pending-href` until their pages land, and the same test will
+  force each one into a link on its page's commit.
+- **`docs/llms.txt`** lists the page and **`docs/sitemap.xml`** was regenerated
+  with it, `lastmod` 2026-09-24 from the page's own `dateModified`.
+- **No CSS.** Every component on the page already existed; `stamp-assets.py
+  --check` exits 0.
+
+#### Not carried from the live page
+
+The Trustindex review widget and its eight reviews (4.4); the CarWise "Get an
+Estimate Online" and "Book an Appointment" links; the live page's image
+`accent-glass-repair-replacement.jpg`, **because old-site imagery is banned
+from this repo** whatever it looks like, since the old vendor's licences cannot
+be verified; the DocuSign "Authorization Forms" nav link; the duplicate
+navigation; the CallRail number in the header; `info@` in the footer; and the
+live schema's `priceRange`, offer catalogue and credential nodes. **The contact
+block retired into the footer**, per 3.45: address, phone, email and the bound
+hours line are all there.
+
+#### Found while building, not changed
+
+- **3.16 is now overdue.** It asked that the collision page's graph shape and
+  home's agree "before the third page ships", with home's WebSite node the
+  correct one. This page follows the collision page's shape, because the mold
+  rule says the collision page wins and changing it is outside this run.
+- **The collision page's intro paragraph is missing.** 1.12 records "Our
+  family-owned shop has served drivers across Bucks County and Montgomery
+  County for years, delivering expert collision repair with genuine care" as
+  migrated. It was dropped in b7baa89's design fold on 2026-09-06 with no pair,
+  and **"for years" is a live claim that silently disappeared.**
+- **The collision page breaks the 3,000px ask bound at 390.** On the same probe
+  its phone gaps run 4,650 and 4,546, `#services` to `#after-a-crash` and on to
+  `#factory-certified`.
+- **A fourth probe trap.** A screenshot taken with the window TALLER than the
+  iframe froze the page mid-entrance, before the probe's CSS injection ran:
+  veil translucent, copy at opacity 0. The scrim measurements here all used a
+  window equal to the iframe, and were checked by eye to be settled.
+
 ---
 
 ## 4. The claims list
@@ -5579,7 +5864,54 @@ on the answer: a stock photo at the top of the page at 1440px wide is a much
 louder mistake than a stock photo in a card. That slot also needs a file at
 2000px or better regardless of the answer. See 3.6.
 
+#### The service-page heroes are interim stock too, and each is a blocker
+
+**Greg's ruling, 2026-09-24: the heroes of the three remaining service pages
+are licensed stock, and each is a cutover blocker beside the three accents
+above.** Licensed from Adobe Stock with the generative-AI filter excluded,
+provenance read clean before anything was built on them, and **none of them is
+this shop.**
+
+| Page | Hero | Asset | Record |
+|---|---|---|---|
+| `/auto-glass-repair-replacement/` | `hero-windshield-replacement-in-shop.jpg` | AdobeStock_64691325 | 3.47 |
+
+**The shoot list gains one photograph per page**, each showing that service's
+own work at this shop:
+
+- **a real Tri-County glass job**, a windshield going in or a chip being
+  repaired, in one of the bays (for 3.47).
+
 ---
+
+### 4.10 Claims the service pages add
+
+Every claim below is migrated from the live page named, word for word, so none
+is new. The question for each is the scope question, **"do you actually do
+this?"**, not "is it plausible".
+
+**`/auto-glass-repair-replacement/`** (3.47)
+
+- **"We perform ADAS recalibration at our Southampton facility."** Now on a
+  page in this build, not only on the live site. The same question as 4.2 and
+  section 5 item 4, and the answer settles the ADAS page's gate.
+- **"Skilled technicians experienced with all types of auto glass."** Is glass
+  work done in house, or sublet? 4.1b asks it for the homepage's glass items;
+  this page is where the answer matters most.
+- **Windshield chip and crack repair, windshield replacement, and side and rear
+  window replacement.** All three in house?
+- **"We work directly with your insurance company"** on glass claims. Direct
+  billing to the insurer, or help with the claim?
+- **"Fast, efficient service without cutting corners."** A timeline claim with
+  no number in it; the owner should be comfortable being held to it.
+- **"Free estimates and free consultations."** Also in FAQ 6. The same
+  question as 1.7: is a consultation something distinct from an estimate?
+- **"Quality glass, materials, and tools on every vehicle."** OEM glass,
+  aftermarket, or either? The page does not say, and a customer may ask.
+- **The stat band's "Warranty on all repair work."** The live glass page never
+  mentions the lifetime warranty. Does it cover glass work?
+- **The hero chip "Detailed after every repair."** On a glass-only job too? 4.2
+  asks it; it now applies here.
 
 ## 5. What the owner needs to answer first
 
@@ -5614,3 +5946,9 @@ Ordered by how much else depends on it.
     identifiable vehicles. Plates and stickers are destroyed and no person,
     name or date appears, but a customer's car outside a body shop is still
     their car. See 3.23.
+13. **The glass page's scope** (4.10): glass in house or sublet, direct
+    insurance billing on glass claims, OEM or aftermarket glass, and whether
+    the lifetime warranty and the detailing promise reach glass-only jobs.
+14. **The glass page's closing promise**, Greg's to rule on before the owner
+    sees it: "We will get you back on the road with quality glass, installed
+    with the same care we bring to every repair." See 3.47.

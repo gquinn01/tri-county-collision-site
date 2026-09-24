@@ -53,7 +53,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 OUT_DIR = os.path.join(ROOT, "docs", "assets", "img")
 
-CROP_W, CROP_H = 1440, 960
+# The crop every 1440-wide source gets. A frame that needs anything else
+# says so with its own "crop" box, below.
+LEGACY_W, LEGACY_H = 1440, 960
 OUT_W, OUT_H = 1200, 800
 
 # ONE ENTRY PER PHOTOGRAPH, BECAUSE THE CROP IS MEASURED PER FRAME AND
@@ -107,6 +109,75 @@ FRAMES = {
             ((0, 460, 140, 560),
              "the subject's own front alloy wheel on sunlit gravel"),
         ],
+    },
+
+    # THE THREE SERVICE-PAGE HEROES, ADDED 2026-09-24, AND ALL THREE ARE
+    # INTERIM STOCK. Greg licensed them from Adobe Stock with the
+    # generative-AI filter excluded, and each is a cutover blocker until a
+    # real photograph of this shop's own glass, dent and fleet work
+    # replaces it; see proposed-changes.md 3.47 to 3.49 and 4.9. The
+    # licensed originals stay OUTSIDE this public repo like every other
+    # source, and the asset id is recorded here because the shipped file
+    # carries no metadata to say where it came from.
+    #
+    # THESE SOURCES ARE FOUR TO EIGHT THOUSAND PIXELS WIDE, NOT 1440, so
+    # each carries an explicit "crop" box (left, top, width, height) in
+    # source pixels. Every box is the source trimmed to exact 3:2 and no
+    # further: the subject already sits right of centre, which is where
+    # the scrim leaves photograph showing, so there is nothing to gain by
+    # cropping in and a resolution cost to paying for it. The one resample
+    # is still the box downscale to 1200x800.
+    #
+    # THE SUBJECT EXTENTS WERE MEASURED ON A 1000px WORKING COPY AND SCALED
+    # BACK TO SOURCE PIXELS. The working copy exists only to be measured;
+    # nothing built here reads it.
+    "glass": {
+        "asset": "AdobeStock_64691325",
+        "out": "hero-windshield-replacement-in-shop.jpg",
+        "src": (4255, 2832),
+        "crop": (4, 0, 4248, 2832),
+        "subject": (877, 2310),      # the suction-cup lifters, rows
+        "subject_x": (962, 3544),    # and columns
+        "wreck": (877, 2310),
+        "wreck_label": "lifters on glass",
+        "how": "saturated-red scan: the lifters are the only saturated red "
+               "in a teal and grey frame",
+        "note": "7 discarded columns, split 4 left and 3 right",
+        "cleared": [],
+    },
+    "dent": {
+        "asset": "AdobeStock_1571353580",
+        "out": "hero-dent-lifter-on-red-door.jpg",
+        "src": (8192, 5464),
+        "crop": (1, 2, 8190, 5460),
+        # A RED CAR DEFEATS A RED SCAN, so the subject is the tool, found
+        # by a gold scan, with the blue glue tab found by a blue one. The
+        # glove and rods run below and right of both, to the frame edge.
+        "subject": (975, 2785),      # the lifter body and its tab, rows
+        "subject_x": (4620, 7463),   # glue tab's left edge to the lifter's right
+        "wreck": (1901, 2531),       # the glue tab on the dent
+        "wreck_label": "glue tab on dent",
+        "how": "gold scan for the lifter, blue scan for the glue tab",
+        "note": "2 discarded columns and 4 discarded rows, all red paint",
+        "cleared": [],
+    },
+    "commercial": {
+        "asset": "AdobeStock_430555209",
+        "out": "hero-wrecked-work-van.jpg",
+        "src": (5916, 3944),
+        "crop": (0, 0, 5916, 3944),  # the source is already exact 3:2
+        # SILVER ON GREY UNDER AN OVERCAST SKY: no colour test separates
+        # this frame, exactly as with the GMC. Extents read off a
+        # coordinate grid on the working copy, an inspection and not a
+        # scan, written down as one.
+        "subject": (402, 3638),      # roof bars to tyre contact
+        "subject_x": (1124, 5679),   # front bumper corner to the rear door
+        "wreck": (1124, 3550),       # crumpled hood to the torn bumper
+        "wreck_label": "crushed front",
+        "how": "read off a 592px coordinate grid on the working copy",
+        "note": "no pixel discarded; the van's own plate mount is EMPTY, "
+                "bare bolts and rust, inspected at full resolution",
+        "cleared": [],
     },
 }
 
@@ -170,7 +241,7 @@ def sips(*args):
     subprocess.run(["sips", *args], capture_output=True, text=True, check=True)
 
 
-def plate_scan(rp, px, w, h):
+def plate_scan(rp, px, w, h, box_w=PLATE_BOX_W, box_h=PLATE_BOX_H):
     """Every plate-sized box on a grid, reported by detail.
 
     RUN EVEN THOUGH NO PLATE IS VISIBLE, and that is the point. The front
@@ -180,12 +251,12 @@ def plate_scan(rp, px, w, h):
     nothing, which is the failure rule 8 exists to stop.
     """
     hits = []
-    for y in range(0, h - PLATE_BOX_H, PLATE_BOX_H // 2):
-        for x in range(0, w - PLATE_BOX_W, PLATE_BOX_W // 2):
-            box = (x, y, x + PLATE_BOX_W, y + PLATE_BOX_H)
+    for y in range(0, h - box_h, box_h // 2):
+        for x in range(0, w - box_w, box_w // 2):
+            box = (x, y, x + box_w, y + box_h)
             lum = sat = n = 0
-            for yy in range(y, y + PLATE_BOX_H, 2):
-                for xx in range(x, x + PLATE_BOX_W, 2):
+            for yy in range(y, y + box_h, 2):
+                for xx in range(x, x + box_w, 2):
                     i = (yy * w + xx) * 3
                     r, g, b = px[i], px[i + 1], px[i + 2]
                     lum += (r * 299 + g * 587 + b * 114) // 1000
@@ -199,25 +270,37 @@ def plate_scan(rp, px, w, h):
 
 def main() -> int:
     ap = argparse.ArgumentParser(
-        description="Build the home hero from the client's supplied photograph.")
+        description="Build a hero image from a supplied or licensed photograph.")
     ap.add_argument("source", help="the supplied photograph, which lives "
                                    "OUTSIDE this repo")
     ap.add_argument("--frame", required=True, choices=sorted(FRAMES),
                     help="which hero this photograph is, and therefore which "
                          "measured crop applies. There is no default: a crop "
                          "guessed for the wrong frame clips a vehicle.")
+    ap.add_argument("--out-dir", default=OUT_DIR,
+                    help="where the finished file lands. Defaults to "
+                         "docs/assets/img; point it at a temp directory to "
+                         "re-prove a shipped asset byte for byte without "
+                         "touching it.")
     opts = ap.parse_args()
     if not os.path.isfile(opts.source):
         print(f"FAILED: no such file: {opts.source}")
         return 1
     F = FRAMES[opts.frame]
     SRC_W, SRC_H = F["src"]
-    CROP_TOP = F["crop_top"]
+    # A frame without an explicit box is one of the two 1440-wide sources,
+    # and gets exactly the crop it always had.
+    CROP_LEFT, CROP_TOP, CROP_W, CROP_H = F.get(
+        "crop", (0, F.get("crop_top", 0), LEGACY_W, LEGACY_H))
     CAR_TOP, CAR_BOTTOM = F["subject"]
+    CAR_LEFT, CAR_RIGHT = F.get("subject_x", (CROP_LEFT, CROP_LEFT + CROP_W - 1))
+    WRECK_LABEL = F.get("wreck_label", "crushed front")
     WRECK_TOP, WRECK_BOTTOM = F["wreck"]
     OUT_NAME = F["out"]
     print(f"FRAME  {opts.frame}  ->  {OUT_NAME}")
     print(f"  subject rows {CAR_TOP}..{CAR_BOTTOM}, located by {F['how']}")
+    if F.get("asset"):
+        print(f"  licensed asset     {F['asset']}  (interim stock, a cutover blocker)")
     print(f"  {F['note']}")
 
     sys.path.insert(0, HERE)
@@ -249,7 +332,11 @@ def main() -> int:
         print(f"FAILED: this script's crop is measured against {SRC_W}x{SRC_H}. "
               f"A different source needs the scan re-run, not a fudged offset.")
         return 1
-    if w < CROP_W or h < CROP_H:
+    if CROP_W * OUT_H != CROP_H * OUT_W:
+        print(f"FAILED: the crop box {CROP_W}x{CROP_H} is not exactly "
+              f"{OUT_W}:{OUT_H}, so the one downscale would distort it.")
+        return 1
+    if CROP_LEFT + CROP_W > w or CROP_TOP + CROP_H > h or w < CROP_W or h < CROP_H:
         print("FAILED: the source is smaller than the crop. No upscaling.")
         return 1
 
@@ -264,25 +351,52 @@ def main() -> int:
 
         # 3 ------------------------------------------------------ crop
         keep_lo, keep_hi = CROP_TOP, CROP_TOP + CROP_H - 1
-        print(f"\nCROP    rows {keep_lo}..{keep_hi}  ->  {CROP_W}x{CROP_H}  "
-              f"(discarding {ph - CROP_H} rows, all of it foreground concrete)")
-        print(f"  vehicle          y {CAR_TOP}..{CAR_BOTTOM}   "
-              f"{'INSIDE' if keep_lo <= CAR_TOP and keep_hi >= CAR_BOTTOM else 'CLIPPED'}")
-        print(f"  crushed front    y {WRECK_TOP}..{WRECK_BOTTOM}   "
+        col_lo, col_hi = CROP_LEFT, CROP_LEFT + CROP_W - 1
+        print(f"\nCROP    rows {keep_lo}..{keep_hi}, columns {col_lo}..{col_hi}  "
+              f"->  {CROP_W}x{CROP_H}  (discarding {ph - CROP_H} rows and "
+              f"{pw - CROP_W} columns)")
+        inside_y = keep_lo <= CAR_TOP and keep_hi >= CAR_BOTTOM
+        inside_x = col_lo <= CAR_LEFT and col_hi >= CAR_RIGHT
+        print(f"  subject          y {CAR_TOP}..{CAR_BOTTOM}, x {CAR_LEFT}..{CAR_RIGHT}   "
+              f"{'INSIDE' if inside_y and inside_x else 'CLIPPED'}")
+        print(f"  {WRECK_LABEL:<16} y {WRECK_TOP}..{WRECK_BOTTOM}   "
               f"{'INSIDE' if keep_lo <= WRECK_TOP and keep_hi >= WRECK_BOTTOM else 'CLIPPED'}")
-        if not (keep_lo <= CAR_TOP and keep_hi >= CAR_BOTTOM):
-            print("FAILED: the crop clips the vehicle.")
+        if not (inside_y and inside_x):
+            print("FAILED: the crop clips the subject.")
             return 1
         cropped = bytearray()
         for y in range(keep_lo, keep_hi + 1):
-            a = (y * pw) * 3
-            cropped += px[a:a + pw * 3]
-        cw, chh = pw, CROP_H
+            a = (y * pw + col_lo) * 3
+            cropped += px[a:a + CROP_W * 3]
+        del px
+        cw, chh = CROP_W, CROP_H
+
+        # WHERE THE PLATE CHECK RUNS. The plate box is sized for a
+        # 1440-wide frame, where a plate is roughly 120x60. A frame cropped
+        # wider than that is scanned AFTER the downscale, at 1200 wide,
+        # with the box scaled by the same 1200/1440, so a plate is the same
+        # fraction of the box in every frame. Scanning an 8190px crop with
+        # a 120px box would be looking for a plate a sixth of plate size.
+        # Cleared regions for such a frame are in OUTPUT pixels.
+        scan_output = CROP_W > LEGACY_W
+        if scan_output:
+            nw, nh, small = rp.downscale(cropped, cw, chh, OUT_W)
+            print(f"\nDOWNSCALE {cw}x{chh} -> {nw}x{nh}   factor {cw / nw:.4f}  "
+                  f"(box average, the one resample, run before the plate "
+                  f"check because this crop is wider than {LEGACY_W})")
+            del cropped
+            scan_px, scan_w, scan_h = small, nw, nh
+            box_w = round(PLATE_BOX_W * OUT_W / LEGACY_W)
+            box_h = round(PLATE_BOX_H * OUT_W / LEGACY_W)
+        else:
+            scan_px, scan_w, scan_h = cropped, cw, chh
+            box_w, box_h = PLATE_BOX_W, PLATE_BOX_H
 
         # 4 -------------------------------------------- the plate check
         print(f"\nPLATE CHECK, run although no plate is visible")
-        hits = plate_scan(rp, cropped, cw, chh)
-        print(f"  {len(hits)} plate-sized boxes ({PLATE_BOX_W}x{PLATE_BOX_H}) scanned")
+        hits = plate_scan(rp, scan_px, scan_w, scan_h, box_w, box_h)
+        print(f"  {len(hits)} plate-sized boxes ({box_w}x{box_h}) scanned "
+              f"on the {scan_w}x{scan_h} {'output' if scan_output else 'crop'}")
         print(f"  a plate is detail >= {PLATE_DETAIL_FLAG}, luma >= "
               f"{PLATE_LUMA_MIN}, saturation <= {PLATE_SAT_MAX}, ALL THREE")
         print(f"  the five densest boxes, and what they fail on:")
@@ -304,8 +418,8 @@ def main() -> int:
 
         def cleared_by(x, y):
             for (cx0, cy0, cx1, cy1), why in F.get("cleared", []):
-                if cx0 <= x and y >= cy0 and x + PLATE_BOX_W <= cx1 \
-                        and y + PLATE_BOX_H <= cy1:
+                if cx0 <= x and y >= cy0 and x + box_w <= cx1 \
+                        and y + box_h <= cy1:
                     return why
             return None
 
@@ -337,9 +451,10 @@ def main() -> int:
             print("  NOTHING in the frame is a plate.")
 
         # 5 ------------------------------------------------- downscale
-        nw, nh, small = rp.downscale(cropped, cw, chh, OUT_W)
-        print(f"\nDOWNSCALE {cw}x{chh} -> {nw}x{nh}   factor {cw / nw:.4f}  "
-              f"(box average, the one resample)")
+        if not scan_output:
+            nw, nh, small = rp.downscale(cropped, cw, chh, OUT_W)
+            print(f"\nDOWNSCALE {cw}x{chh} -> {nw}x{nh}   factor {cw / nw:.4f}  "
+                  f"(box average, the one resample)")
         if (nw, nh) != (OUT_W, OUT_H):
             print(f"FAILED: expected {OUT_W}x{OUT_H}, got {nw}x{nh}.")
             return 1
@@ -381,7 +496,7 @@ def main() -> int:
               "metadata")
 
         # 8 --------------------------------- post-encode decode assertion
-        out = os.path.join(OUT_DIR, OUT_NAME)
+        out = os.path.join(opts.out_dir, OUT_NAME)
         vw, vh = rp.dims(path)
         vpng = os.path.join(tmp, "verify.png")
         sips("-s", "format", "png", path, "--out", vpng)
@@ -402,7 +517,7 @@ def main() -> int:
         os.replace(path, out)
 
     final = os.path.getsize(out)
-    print(f"\nSHIPPED  docs/assets/img/{OUT_NAME}")
+    print(f"\nSHIPPED  {os.path.relpath(out, ROOT)}")
     print(f"  {OUT_W}x{OUT_H} at q{q}, {final} bytes")
     print(f"  source was {src_bytes} bytes, so the output is "
           f"{src_bytes - final} bytes smaller ({100 * final / src_bytes:.1f}% of it)")
