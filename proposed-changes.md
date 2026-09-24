@@ -4785,6 +4785,200 @@ chosen to produce.
 
 `site.css` changed, so all three stamped files carry `?v=bdb05a6c`.
 
+### 3.44 The ask joins the collision page's section bottoms. BUILT 2026-09-24
+
+The hero's CTA pair is added at the foot of `#process`, `#real-repairs` and
+`#factory-certified` on `/collision-repair/`. Client ruling 2026-09-24. **This
+extends to this page the rhythm the client approved on the home page in 3.30:
+the ask at the moment a section finishes its argument.**
+
+#### It supersedes 3.34's no-CTA reasoning, which is kept rather than deleted
+
+3.34 gave `#real-repairs` no CTA row on this page and said why: the home
+section carries the pair only because the front door had no ask between its
+hero and `#start`; this page already carries two act bands; a third ask inside
+a proof section would be the duplication 3.27 took out.
+
+**That was a real argument and it lost to use.** The home page's
+section-bottom asks proved themselves in practice, and the client extended the
+pattern. The note in the page's own markup now records the reversal in place,
+with the old reasoning quoted inside it, because a comment that simply
+disappears takes the argument with it.
+
+#### The markup: nothing new was written
+
+The hero's own `.cta-row`, copied verbatim, three times, as the last element
+inside each section's `.wrap`. **No new wording, no new claim, no new button.**
+Proven as in 3.30, by normalising indentation and hashing:
+
+```
+                       rows   distinct shapes   sha256
+/collision-repair/      6            1          6a965cc84ded
+/                       4            1          6a965cc84ded
+```
+
+**All ten rows on the site are the same four lines**, and every one carries the
+same two hrefs, `tel:+12153225350` and `mailto:contact@tricountycollision.com`.
+The count on this page goes **3 to 6**: the hero plus the two act bands, plus
+the three new.
+
+#### The generalisation 3.30 asked for
+
+3.30 centred one light section with `#real-repairs .cta-row` and said in as
+many words that a **second** light section wanting the same thing would be the
+moment to generalise. `#process` and `#factory-certified` are the second and
+third, so the trigger has fired. The id-scoped rule is gone and one mold
+replaced it:
+
+```css
+section > .wrap > .cta-row:last-child { justify-content: center; }
+```
+
+**It is position, not identity.** A `.cta-row` that closes a section's `.wrap`
+is a section-bottom ask, and section-bottom asks centre. No page and no section
+is named, and a fourth one needs nothing written for it. The old comment's
+trigger sentence is resolved in place rather than deleted: the new comment
+quotes what 3.30 predicted and says that it happened.
+
+**The hero is excluded by structure, not by an exemption**, which is why there
+is no `:not()` to keep in sync. Both heroes nest their copy as
+`.heroB > .heroB-copy > .wrap`, so the hero's row is not the child of a wrap
+that a **section** owns and the child combinator cannot reach it.
+
+**That was measured before the rule was written, and it is the reason the rule
+has the `section >` step at all.** The obvious selector,
+`.wrap > .cta-row:last-child`, would have been wrong:
+
+```
+home hero row    parent = .wrap    lastChild = TRUE    justify = normal
+```
+
+The home hero's row **is** the last child of its wrap. A positional selector
+without the `section >` step would have centred it and moved the one thing the
+flush-left hero turns on. **The base `.cta-row` stays left-aligned**, as 3.30
+recorded.
+
+#### Every row, measured after
+
+```
+/collision-repair/  1440
+  [0] HERO                light  last=false  mold=false   justify=normal  mt=24px
+  [1] #process            light  last=true   mold=true    justify=center  mt=26px
+  [2] #real-repairs       DARK   last=true   mold=true    justify=center  mt=44px
+  [3] #after-a-crash      DARK   last=true   mold=true    justify=center  mt=44px
+  [4] #factory-certified  light  last=true   mold=true    justify=center  mt=26px
+  [5] #why                DARK   last=true   mold=true    justify=center  mt=44px
+
+/  1440
+  [0] HERO                light  last=TRUE   mold=false   justify=normal  mt=24px
+  [1] #what-we-fix        DARK   last=true   mold=true    justify=center  mt=44px
+  [2] #real-repairs       light  last=true   mold=true    justify=center  mt=26px
+  [3] #start              DARK   last=true   mold=true    justify=center  mt=44px
+```
+
+**Home's values are identical to HEAD's**, row for row, including
+`#real-repairs` at `center` / 26px — which used to come from the id-scoped rule
+and now comes from the mold. That is the home page proved unchanged by computed
+style rather than by assumption.
+
+**The grounds arrive free.** `#process` and `#factory-certified` are light, so
+the base button grammar applies, the ox fill at the 10.50 recorded in 3.30.
+`#real-repairs` is dark, so `.dark .cta-row` gives it centring **and** the
+deeper 44px margin, and the dark button grammar gives the ink fill with silver
+text, exactly as on the home page's ink band. Nothing was written per section.
+
+**`.dark .cta-row` and the mold do not collide**: the first sets
+`justify-content` and `margin-top`, the second sets only `justify-content`, so a
+dark row keeps its deeper air and a light one keeps the base 26px.
+
+#### At 390 the rows stack, as the hero does
+
+```
+          row height   x span
+new rows     138       20..370
+hero row     136       20..370
+```
+
+138 is 62 + 14 + 62, two buttons at natural width with the base gap. The hero
+is 136 because it carries its own `gap: 12px` below 600px. **Same wrap
+behaviour, one pixel pair of difference, and that difference is the hero's own
+rule.**
+
+#### Heights, and what they cost
+
+```
+                      HEAD     NOW    delta
+1440  #process        1079    1167     +88
+      #real-repairs   2640    2746    +106
+      #factory-cert   1009    1097     +88
+      PAGE END       13457   13739    +282
+      screens @604   22.28   22.75   +0.47
+
+ 390  #process        2045    2209    +164
+      #real-repairs   3157    3339    +182
+      #factory-cert   1508    1672    +164
+      PAGE END       20710   21220    +510
+      screens @604   34.40   35.25   +0.85
+```
+
+**Every delta is exact arithmetic**, margin plus row height: at 1440, 26 + 62 =
+88 on the light sections and 44 + 62 = 106 on the dark one, and 88 + 106 + 88 =
+282. At 390 the row stacks, so 26 + 138 = 164 and 44 + 138 = 182, and
+164 + 182 + 164 = 510. `#services`, `#after-a-crash` and `#why` are unchanged.
+
+**The page costs a phone reader about nine tenths of one screen** for three
+more chances to call.
+
+#### The ask rhythm, which is the point of the ruling
+
+Measured at 1440, every ask on the page including the contact block:
+
+```
+                        HEAD                          NOW
+1  HERO                 466                           466
+2  #process             --                           2071   gap 1543
+3  #real-repairs        --                           4817   gap 2684
+4  #after-a-crash      7229   gap 6701               7423   gap 2544
+5  #factory-certified   --                          10239   gap 2753
+6  #why               10831   gap 3540              11113   gap  812
+7  #contact           11561   gap  668              11843   gap  668
+```
+
+**The finding is the 6,701px hole.** A reader who did not act in the hero had
+to scroll nearly seven thousand pixels before the page asked again. It is now
+1543, then a steady 2544 to 2753 through the body, and the tail is unchanged:
+the act band, the area block and the contact block still cluster at 812 and
+668, because they always did.
+
+An annotated full-page render at 1440, with every ask marked and every gap
+labelled, was produced for the client's eye and is in the session scratchpad as
+`askrhythm.png` (1450 x 14200). It is not committed: a staging render is not a
+repo asset.
+
+#### The fold, and the rule that was not swept
+
+**The fold is identical on both pages**, viewport-sized probe, eight runs, four
+report pairs hashing byte-identical:
+
+```
+home 390x664  f12d0a1f    home 360x640  e889cfec
+coll 390x664  a85b1f87    coll 360x640  92d39f42
+```
+
+The same four hashes 3.40, 3.41, 3.42 and 3.43 recorded. **Five commits and the
+fold has not moved.**
+
+**`.prose + .cta-row` is now redundant and was deliberately left standing.**
+Measured by DOM matching: it matches 2 rows on this page and 0 on the home
+page, and the count it matches that the mold does **not** is **zero**. So it
+changes nothing today. It was not swept because it is not this rule's to sweep:
+it centres a row following a `.prose` anywhere, including mid-section, and the
+service-page template can still produce that shape. A sweep deletes only what
+it owns. The finding is recorded in the stylesheet beside the mold so the next
+person has the number.
+
+`site.css` changed, so all three stamped files carry `?v=ce5093ed`.
+
 ---
 
 ## 4. The claims list

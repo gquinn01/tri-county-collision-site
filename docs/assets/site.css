@@ -1497,29 +1497,50 @@ a.svc-card h3 { color: var(--ox-tx); }
   font-size: 1rem; color: var(--ink-2);
 }
 
-/* THE SECTION-BOTTOM CTA ROW, CENTRED. Added 2026-09-22 with the row
-   itself, proposed-changes.md 3.30.
+/* THE SECTION-BOTTOM ASK, CENTRED. One mold, 2026-09-24.
 
-   SCOPED TO THIS SECTION, AND THAT IS THE POINT RATHER THAN A SHORTCUT.
-   Three centring mechanisms already exist and none of them reaches a
-   light-ground row at the foot of a section:
+   THE TRIGGER 3.30 PREDICTED HAS FIRED, AND THIS IS THE ANSWER IT ASKED
+   FOR. That record centred a single light section with
+   #real-repairs .cta-row and said, in as many words, that if a SECOND
+   light section ever wanted the same thing, that would be the moment to
+   generalise and this was not it. On 2026-09-24 the client put the ask
+   at the foot of #process and #factory-certified on /collision-repair/
+   as well. Second and third. So the id-scoped rule is gone and this is
+   what replaced it. proposed-changes.md 3.44.
 
-     .dark .cta-row      centres, but only on a dark ground. #what-we-fix
-                         is .dark and gets its centring from this rule for
-                         free, with nothing written for it.
-     .prose + .cta-row   centres, but only as the adjacent sibling of a
-                         .prose. This row follows .repairs-grid, so the
-                         selector cannot fire.
-     .sec-head           centres the heading, not the row.
+   WHAT THE SELECTOR MEANS: a .cta-row that CLOSES a section's .wrap is
+   a section-bottom ask, and section-bottom asks centre. It is position,
+   not identity, so no page and no section is named and a fourth one
+   needs nothing written for it.
 
-   THE BASE .cta-row IS LEFT-ALIGNED AND MUST STAY THAT WAY. The hero's
+   THE BASE .cta-row IS STILL LEFT-ALIGNED AND STILL MUST BE. The hero's
    copy is anchored left inside the scrim and the whole flush-left hero
    reads off that edge, so centring the base rule would move the one
-   thing the design turns on. The narrowest change that centres this row
-   is a rule for the one section that needs it, and if a second light
-   section ever wants the same thing, THAT is the moment to generalise,
-   not this one. */
-#real-repairs .cta-row { justify-content: center; }
+   thing the design turns on.
+
+   THE HERO IS EXCLUDED BY STRUCTURE RATHER THAN BY AN EXEMPTION, which
+   is why there is no :not() here and nothing to keep in sync. Both
+   heroes nest their copy as .heroB > .heroB-copy > .wrap, so the hero's
+   row is not a child of a wrap that a SECTION owns, and the child
+   combinator cannot reach it. That was measured on both pages before
+   this rule was written, because the home hero's row IS the last child
+   of its wrap and a positional selector without the section > step
+   would have centred it. See 3.44.
+
+   .dark .cta-row STILL CARRIES THE GROUND, and the two do not collide:
+   it sets justify-content AND margin-top 44px, this sets only
+   justify-content, so a dark section-bottom row keeps its deeper air
+   and a light one keeps the base 26px.
+
+   .prose + .cta-row IS NOW REDUNDANT AND IS DELIBERATELY LEFT STANDING.
+   Measured by DOM matching on both pages: it matches 2 rows on
+   /collision-repair/ and 0 on /, and the number it matches that this
+   mold does NOT is ZERO. So it changes nothing today. It is not swept
+   because it is not this rule's to sweep: it centres a row that follows
+   a .prose ANYWHERE, including mid-section, and the service-page
+   template can still produce that shape. A sweep deletes only what it
+   owns. If it is ever removed, re-measure that number first. */
+section > .wrap > .cta-row:last-child { justify-content: center; }
 
 .repairs-grid { display: grid; gap: 44px; }
 
