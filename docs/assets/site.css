@@ -1541,10 +1541,15 @@ a.svc-card h3 { color: var(--ox-tx); }
    Measured both ways in 3.33.
 
    ON A DARK GROUND THIS SHADOW IS INK ON INK AND EFFECTIVELY INVISIBLE,
-   which is true on /collision-repair/ since 3.38 and is DELIBERATELY LEFT
-   ALONE. A shadow that vanishes costs nothing, and scoping it off would
-   fork a shared component into two implementations to save nothing. If
-   you came here to fix the invisible shadow: it is not broken. */
+   which is true on /collision-repair/ since 3.38. THIS RULE IS STILL
+   DELIBERATELY LEFT ALONE: scoping it off would fork a shared component
+   into two implementations to save nothing. If you came here to fix the
+   invisible shadow by editing THIS rule: it is not broken.
+
+   THE SANCTIONED ANSWER IS .dark .ba img, further down this file, added
+   2026-09-23 on the client's ruling. It paints a true black shadow OVER
+   this one on a dark ground rather than replacing it, so the base keeps
+   its --ink and nothing forks. proposed-changes.md 3.42. */
 .ba img {
   display: block; width: 100%; height: auto;
   border-radius: var(--radius); background: var(--rule);
@@ -1603,6 +1608,25 @@ a.svc-card h3 { color: var(--ox-tx); }
    are the reason the rule exists at all: --ink-2 on ink measures 1.77 and
    --ink on ink measures 1.00.
 
+   THE PRINT SHADOW SPEAKS DARK-GROUND HERE, added 2026-09-23 on the
+   client's ruling, proposed-changes.md 3.42. The base shadow is --ink by
+   its channels, so on the ink ground it is ink on ink and does not read.
+   The answer is the same idea in the ground's own language: a TRUE BLACK
+   shadow, which reads because black is darker than ink and ink is the
+   darkest ground this section can sit on. BLACK IS THE FLOOR, and a
+   shadow has to be darker than whatever it lies on.
+
+   IT PAINTS OVER THE BASE RULE RATHER THAN SCOPING IT OFF. .ba img keeps
+   its --ink shadow untouched; this rule simply wins the cascade on a dark
+   ground. Nothing forks, and a page that never darkens the section never
+   sees this rule.
+
+   THE GEOMETRY RUNS LARGER AND THE ALPHA DEEPER THAN THE LIGHT-GROUND
+   SHADOW, deliberately. Dark grounds eat shadow contrast: the same
+   numbers that describe weight on silver describe nothing on ink. The
+   client picked the assertive strength from rendered comparisons for
+   exactly that reason, and it is his pick rather than a derivation.
+
    THE HEADING AND THE KICKER NEED NOTHING. .dark gives the sec-title
    --silver and .dark .sec-sub gives the kicker the same, exactly as
    #what-we-fix gets them on the home page.
@@ -1620,6 +1644,10 @@ a.svc-card h3 { color: var(--ox-tx); }
    --ink-2 on the intro line while the captions had already turned. */
 .dark .ba figcaption { color: var(--silver-2); }
 .dark .ba figcaption strong { color: var(--silver); }
+.dark .ba img {
+  box-shadow: 0 14px 32px rgb(0 0 0 / .62),
+              0 4px 10px rgb(0 0 0 / .50);
+}
 #real-repairs.dark .repairs-note { color: var(--silver-2); }
 
 @media (max-width: 760px) {

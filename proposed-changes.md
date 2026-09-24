@@ -4427,6 +4427,182 @@ reverted file.
 needs both of its own pseudo-elements free to join**, and `figure.ba` has both
 free again, so this is a withdrawal rather than a door closing.
 
+### 3.42 The print shadow learns to speak dark-ground. BUILT 2026-09-23
+
+On a dark ground the Real Repairs photographs get their lifted look back.
+Client ruling 2026-09-23. One scoped rule, in the `.ba` component's dark mode,
+beside the caption grammar that already lives there:
+
+```css
+.dark .ba img {
+  box-shadow: 0 14px 32px rgb(0 0 0 / .62),
+              0 4px 10px rgb(0 0 0 / .50);
+}
+```
+
+**It is the dark-ground expression of an idea the site already has, not a new
+one.** The print shadow 3.33 added is `--ink` by its channels, so on the ink
+section it is ink on ink and describes nothing. The answer is the same
+argument in the ground's own language: a **true black** shadow, which reads
+because black is darker than ink. **Black is the floor** — a shadow has to be
+darker than whatever it lies on, and ink is the darkest ground this section can
+sit on.
+
+**The geometry runs larger and the alpha deeper than the light-ground shadow,
+deliberately.** Dark grounds eat shadow contrast, so the numbers that describe
+weight on silver describe nothing on ink. **The client picked the assertive
+strength from rendered comparisons**, and it is his pick rather than a
+derivation from anything in this file.
+
+#### It paints over the base rule; nothing forks
+
+`.ba img` keeps its `--ink` shadow untouched. This rule simply wins the cascade
+on a dark ground, at `(0,2,1)` against `(0,1,1)`. **The not-broken note is
+updated rather than deleted**: it still says the base rule is deliberately left
+alone and still tells anyone who came to "fix" the invisible shadow that it is
+not broken, and it now ends by naming `.dark .ba img` as the sanctioned answer.
+The old note's sentence "a shadow that vanishes costs nothing" is gone, because
+the client has now decided it costs something.
+
+#### Scoped through `.dark`, so it is the component's rule
+
+Any page that darkens this section gets lifted prints with nothing written per
+page, exactly as the captions have worked since 3.38. **Its reach was measured
+structurally rather than assumed** — every `<section>` carrying `dark` on both
+pages, counting `figure.ba` inside:
+
+```
+docs/index.html              #what-we-fix 0   #who-we-are 0   #testimonials 0   #start 0
+docs/collision-repair/...    #real-repairs 5  #after-a-crash 0  #testimonials 0
+                             #why 0   #contact 0
+```
+
+**So the rule can fire in exactly one place on the whole site**, and the ten
+photographs inside it. The home page's Real Repairs carries no class at all, so
+it is not a near miss; there is no dark `.ba` on that page to reach.
+
+#### Computed style, read off the rendered pages
+
+Both pages, at 1440 and at 390:
+
+```
+                      HEAD                                    NOW
+home       rgba(18,27,39,.16) 0 12px 28px            unchanged
+           rgba(18,27,39,.10) 0 3px 8px
+collision  rgba(18,27,39,.16) 0 12px 28px            rgba(0,0,0,.62) 0 14px 32px
+           rgba(18,27,39,.10) 0 3px 8px              rgba(0,0,0,.50) 0 4px 10px
+```
+
+`.ba img count=10` on both pages, so the rule reaches every photograph in the
+section and nothing else.
+
+#### The chips are untouched, by construction
+
+The rule names `img`. The chips are spans lying on top of the photographs, and
+they report identically before and after, at both widths:
+
+```
+AFTER chip   background rgb(105, 28, 23)   border rgb(240, 242, 242)   box-shadow none
+```
+
+#### Nothing moved
+
+Shadows paint outside the box, so no section grows:
+
+```
+                    HEAD                           NOW
+collision 1440  #real-repairs t2133 h=2640     identical
+                #factory-certified t9098 h=1065  #brands t9186 h=127
+                PAGE END 13514   doc 13514
+collision  390  #real-repairs t3551 h=3157     identical
+                #factory-certified t14403 h=1521
+home      1440  #real-repairs t2820 h=2728     identical
+                #what-we-fix t1630 h=1191   PAGE END 8689
+home       390  #real-repairs t4894 h=3321     identical
+                #what-we-fix t3054 h=1840
+```
+
+**The fold is identical on both pages**, measured with the viewport-sized probe
+from `mobile-check.md`'s second trap, `innerHeight` printed beside every
+answer. Eight runs, and the four report pairs hash byte-identical:
+
+```
+home 390x664  f12d0a1f    home 360x640  e889cfec
+coll 390x664  a85b1f87    coll 360x640  92d39f42
+```
+
+Those are the same four hashes 3.40 and 3.41 recorded, so the fold has not
+moved across three commits.
+
+#### The pixel diff, and what it found
+
+Full-page renders at 1440, working tree against HEAD, compared row by row. The
+`#brands` marquee band is excluded from both counts: **3.41 proved it is
+animation phase** by rendering one page twice and finding it the only thing
+that differs.
+
+**Collision: 2,215 differing rows, 30 of them the marquee, and the other 2,185
+fall in exactly five bands.**
+
+```
+y2354..2730   x141..1298   120498 px
+y2764..3140   x141..1298   120510 px
+y3174..3650   x141..1298   132215 px
+y3684..4160   x141..1298   131877 px
+y4194..4670   x141..1298   132090 px
+sample A=(18, 27, 39)  ->  B=(17, 26, 38)
+```
+
+**Five bands, one per `figure.ba`**, each spanning both photographs in its row,
+and every one of them inside `#real-repairs`, which runs 2133 to 4773. Nothing
+outside that section changed. The sampled pixel is the ink ground one level
+darker, which is the black shadow's outermost falloff.
+
+**Home: 31 differing rows, 30 of them the marquee, and one row left over.**
+
+```
+y1143   x429..1010   12 px   A=(223, 223, 223) -> B=(222, 223, 223)
+```
+
+Twelve pixels, one level of red, on the antialiased top edges of the services
+router photographs — nowhere near a `.ba`, and unreachable by a `.dark`-scoped
+rule. **It was chased rather than waved away, and it is rasterization noise.**
+HEAD was rendered a second time and diffed against its own first render:
+
+```
+HEAD vs HEAD, second render     row 1142  0 px  identical
+                                row 1143  12 px  first x429  A=(223,223,223) B=(222,223,223)
+                                row 1144  0 px  identical
+```
+
+**The identical twelve pixels, at the identical x, with the identical colours,
+between two renders of the same build.** A difference that reproduces with the
+stylesheet held constant is not caused by the stylesheet. For completeness the
+working tree was also rendered twice against itself and differed by **zero**
+rows outside the marquee.
+
+**And the assets are not the explanation either**: `diff -r` between the two
+served trees reports `site.css` and nothing else, so every image is
+byte-identical.
+
+#### Rendered, and it reads
+
+The section was rendered at 1440 and at 390. Each photograph now sits on a
+visible dark halo and reads as a print lying on the ink rather than a picture
+pasted into it; at HEAD the same frames are flat against the ground with no
+separation at all.
+
+#### The run was interrupted, and the proofs were finished across sessions
+
+The machine slept repeatedly during this work. The edit sat proven but
+uncommitted in the working tree, and several long pixel diffs were killed by
+the sleeps and re-run. **Every number above is a real measurement that was read
+back**, and the gates were re-run fresh after the interruptions rather than
+trusted from before them: both test scripts exit 0, stamps and sitemap current,
+audit 0 critical with both pages at 95/100 and `sameAs` the only warning.
+
+`site.css` changed, so all three stamped files carry `?v=f26d599d`.
+
 ---
 
 ## 4. The claims list
