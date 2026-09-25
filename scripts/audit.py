@@ -658,8 +658,23 @@ SPECIAL_KINDS = ("redirect-stub", "error-404")
 #     the report says what was not measured rather than going quiet.
 # scripts/test-audit-checks.py holds both directions: a contact-kind page
 # still fails what it should, and an undeclared page gets no exemption.
+#
+# THE BLOG'S TWO KINDS, RULED BY GREG 2026-09-25, proposed-changes.md 3.57.
+# A POST IS A READ AND AN INDEX ROUTES: neither page type answers questions,
+# so neither is measured for an answer block. Each is exempt from
+# faq-schema and NOTHING ELSE. Thin-content stays live on both, on purpose:
+# a post under 300 words SHOULD warn, because a thin post is a real
+# editorial problem in a way a missing FAQ is not.
+#
+# THE EXEMPTION MEANS NOT REQUIRED, NEVER UNMEASURED. It applies only to a
+# page that shows NO visible FAQ. A post that carries one (an FAQ-rich post
+# is a real AEO play) is measured like every other page: no schema warns,
+# and the mirror law fails any difference between the visible text and the
+# FAQPage node, both directions. That holds for contact too.
 RUBRIC_EXEMPTIONS = {
     "contact": ("faq-schema", "thin-content"),
+    "post": ("faq-schema",),
+    "blog-index": ("faq-schema",),
 }
 
 REFRESH_RE = re.compile(
@@ -1604,8 +1619,16 @@ def audit(source: str, coverage: dict = None):
     # A declared execution kind keeps this whole rubric and loses only the
     # checks RUBRIC_EXEMPTIONS names for it. It still reports as a page.
     exempt = RUBRIC_EXEMPTIONS.get(kind, ())
-    exempt_why = (f"Declared `tri-county-page` kind `{kind}`, an execution page: "
-                  f"exempt by Greg's ruling of 2026-09-24, proposed-changes.md 3.53.")
+    exempt_why = {
+        "contact": (f"Declared `tri-county-page` kind `contact`, an execution page: "
+                    f"exempt by Greg's ruling of 2026-09-24, proposed-changes.md 3.53."),
+        "post": (f"Declared `tri-county-page` kind `post`: a post is a read, not an "
+                 f"answer block. Exempt by Greg's ruling of 2026-09-25, "
+                 f"proposed-changes.md 3.57."),
+        "blog-index": (f"Declared `tri-county-page` kind `blog-index`: an index routes, "
+                       f"it does not answer. Exempt by Greg's ruling of 2026-09-25, "
+                       f"proposed-changes.md 3.57."),
+    }.get(kind, "")
     kind = "page"
 
     passes, warns, fails, notes = [], [], [], []
@@ -1687,7 +1710,10 @@ def audit(source: str, coverage: dict = None):
     # text is the closest thing to raising your hand.
     if "FAQPage" in types:
         passes.append("AEO: FAQPage schema present — the page offers ready-made Q&As for AI answers and rich results.")
-    elif "faq-schema" in exempt:
+    elif "faq-schema" in exempt and not p.faq_visible:
+        # Not required, never unmeasured: a page of an exempt kind that DOES
+        # show a visible FAQ falls through to the warning below and to the
+        # mirror law, exactly like every other page (3.57).
         notes.append(f"**No FAQPage schema, not measured here.** {exempt_why}")
     else:
         warns.append("**AEO gap: no FAQPage schema.** Add a real FAQ section (the questions customers "

@@ -711,8 +711,11 @@ def main():
     check("     the contact kind lists exactly the two ruled checks",
           audit.RUBRIC_EXEMPTIONS.get("contact") == ("faq-schema", "thin-content"),
           audit.RUBRIC_EXEMPTIONS.get("contact"))
-    check("     no blanket kind exists, utility above all",
-          set(audit.RUBRIC_EXEMPTIONS) == {"contact"}, sorted(audit.RUBRIC_EXEMPTIONS))
+    check("     no blanket kind exists, utility above all: exactly the ruled kinds",
+          audit.RUBRIC_EXEMPTIONS == {"contact": ("faq-schema", "thin-content"),
+                                      "post": ("faq-schema",),
+                                      "blog-index": ("faq-schema",)},
+          audit.RUBRIC_EXEMPTIONS)
 
     def run_kind(meta: str, body: str):
         html = PAGE.replace("</head>", meta + "</head>").format(body=body)
@@ -812,6 +815,44 @@ def main():
     p, w, f = run('<svg role="img"><title>A map of the roads around the shop, drawn from OpenStreetMap data</title></svg>')
     check("     the page title is still measured as the head's alone",
           f"({len('Collision Repair in Southampton, PA | Tri-County Collision')} chars)" in p, p)
+
+    # The blog's kinds, 3.57. A post is a read and an index routes, so each
+    # is exempt from faq-schema and nothing else, and thin-content stays
+    # live on both. Greg's condition: NOT REQUIRED, NEVER UNMEASURED. A post
+    # that shows a visible FAQ is held to the mirror law like any page.
+    print("23. The blog kinds: no FAQ required, and an FAQ is still measured")
+    long_body = "<p>" + " ".join(["word"] * 320) + "</p>"
+    faq_vis = ('<details><summary>Is it free?<span class="faq-ico"></span></summary>'
+               '<p>Yes, estimates are free.</p></details>')
+
+    def faq_schema(ans):
+        return ('<script type="application/ld+json">{"@type":"FAQPage","mainEntity":[{'
+                '"@type":"Question","name":"Is it free?","acceptedAnswer":{"@type":"Answer",'
+                f'"text":"{ans}"}}}}]}}</script>')
+
+    for k in ("post", "blog-index"):
+        meta = f'<meta name="tri-county-page" content="{k}">'
+        p, w, f, n, kind = run_kind(meta, long_body)
+        check(f"     a {k} with no FAQ draws no FAQPage warning, and says so in a note",
+              "no FAQPage schema" not in w and "not measured here" in n, (w, n))
+        check(f"     a {k} still reports as a page", kind == "page", kind)
+        p, w, f, n, kind = run_kind(meta, "<p>Too short to be a real post.</p>")
+        check(f"     a thin {k} STILL warns: thin-content is live on this kind",
+              "Thin content" in w, w)
+        p, w, f, n, kind = run_kind(meta, long_body + faq_vis + faq_schema("No, it costs money."))
+        check(f"     a {k} WITH a visible FAQ and a mismatched schema FAILS the mirror",
+              "FAQ answer does not match its schema" in f, f)
+        p, w, f, n, kind = run_kind(meta, long_body + faq_vis)
+        check(f"     a {k} with a visible FAQ and NO schema is warned, not excused",
+              "no FAQPage schema" in w and "not measured here" not in n, (w, n))
+        p, w, f, n, kind = run_kind(meta, long_body + faq_vis + faq_schema("Yes, estimates are free."))
+        check(f"     a {k} with a matching FAQ passes the mirror",
+              "byte-identical" in p and "FAQ" not in f, (p, f))
+    p, w, f, n, kind = run_kind('<meta name="tri-county-page" content="posts">', long_body)
+    check("     a misspelled blog kind gets no exemption", "no FAQPage schema" in w, w)
+    p, w, f, n, kind = run_kind(contact_meta, long_body + faq_vis + faq_schema("No."))
+    check("     and contact, too, is held to the mirror when it shows an FAQ",
+          "FAQ answer does not match its schema" in f, f)
 
     # The shop's coordinates, 3.56: GEO_LAT and GEO_LON, the verified pin.
     # Same shape as the address and hours tests: the right value passes,

@@ -7270,6 +7270,302 @@ The suite:
   sameAs**, with **every page at 95**;
 - the geo check is green on all six.
 
+
+### 3.57 The blog tier: the index, the post shape, and the first post. BUILT 2026-09-25
+
+**Record numbers: 3.57 and 3.58.** This record covers `/blog/`, the post shape
+and the one post that proves it. **3.58** covers the other fifteen posts,
+landed in batches of five with a commit per batch. The two category-archive
+301s are cutover redirect-map material, not this run's.
+
+#### The inventory, before anything was built
+
+The live `/blog/` is paginated: 9 posts on page one and 7 on page two, and
+pages three and four are empty. **16 distinct posts, the same 16 as the live
+`post-sitemap.xml`**, which is `pagemap.md`'s count, so the map stands.
+Dates are the live posts' own `article:published_time` and
+`article:modified_time`, in Eastern time. **Every visible date on the live
+index matches its post's Eastern publish date.** Word counts are the article
+body, measured on the live page.
+
+```
+ #  published   modified    words  slug
+ 1  2023-03-29  2023-03-29    875  what-do-all-those-lights-mean-in-my-car-understanding-your-vehicles-language
+ 2  2023-05-02  2023-05-02    477  the-ultimate-guide-to-collision-repair-services-what-to-expect-and-how-to-choose-the-best-provider
+ 3  2023-05-02  2023-05-02    448  the-importance-of-oem-parts-in-collision-repair-ensuring-quality-and-safety-for-your-vehicle
+ 4  2023-05-23  2023-05-23    591  the-art-of-paintless-dent-repair
+ 5  2023-05-23  2023-05-23    491  assessing-collision-damage
+ 6  2023-07-10  2025-06-06    590  preserving-value-how-tri-county-collision-center-impacts-the-resale-value-of-your-car-through-collision-repair
+ 7  2023-07-11  2023-07-11    570  unveiling-the-hidden-benefits-of-paintless-dent-repair-in-collision-restoration
+ 8  2025-05-22  2025-06-06    758  collision-repair-near-me-in-southampton-how-to-choose-the-right-auto-body-shop
+ 9  2025-06-06  2025-06-06   2447  critical-questions-to-ask-any-collision-center-in-bucks-county-before-handing-over-your-keys
+10  2025-07-31  2025-07-31    502  is-my-car-totaled-expert-insights-from-your-southampton-collision-repair-specialists
+11  2025-07-31  2025-07-31    488  after-the-unthinkable-your-first-steps-following-a-car-accident-in-bucks-county-before-calling-a-collision-shop
+12  2025-08-12  2025-08-12    734  misconceptions-about-collision-repair
+13  2025-08-12  2025-08-12    612  the-risks-of-driving-a-damaged-vehicle-in-the-southampton-area
+14  2025-09-16  2025-10-02    739  deer-season-in-bucks-county-insurance-coverage-next-steps
+15  2025-09-16  2025-09-16    829  your-right-to-choose-a-body-shop
+16  2025-09-24  2025-09-24    781  adas-calibrations-after-a-crash
+```
+
+**What the survey found across all sixteen**, before a line was written:
+
+- **Only post 1 uses images**: 21 warning-light screenshots. It is flagged
+  in 3.58.
+- **Only post 1 trips the hours check**, and its trips are genuine HOURS
+  mentions ("shop hours are Monday-Friday 8am-6pm, and Saturday by
+  appointment"). That is the check doing its job, the hours written a
+  second way, so it is a pair in 3.58 and not the question the brief feared.
+- **No post mentions a day or a time outside the hours.** The brief's
+  non-hours question, "rear-ended on a Saturday", does not arise in this
+  blog.
+- **Post 1 prints "995 Jaymor Road"**, the one address variant.
+- **Two posts carry em dashes, and two carry spaced en dashes used as em
+  dashes.** Numeric ranges ("1–3 business days") are correct en-dash use
+  and stay.
+- **"Tri County Collision Center" and its variants appear 77 times** across
+  all sixteen posts, counted by the script.
+- **Two posts carry real FAQ sections**: deer season, 4 questions, and this
+  record's post, 4 questions.
+- **The live posts carry a "Greg Quinn" byline and author box.** Per the
+  brief, authorship is the shop's, and no personal byline migrates.
+
+#### Greg's ruling: two new declared kinds
+
+Asked before anything was built, because the FAQPage warning would have held
+all seventeen pages under the gate. **Ruling, 2026-09-25: two kinds, `post`
+and `blog-index`, each exempt from `faq-schema` and nothing else.**
+
+In his words: "a post is a read and an index routes; neither page type
+answers questions, so neither is measured for an answer block." **Thin
+content stays live on both, deliberately**: "a post below 300 words SHOULD
+warn, because a thin post is a real editorial problem in a way a missing FAQ
+is not."
+
+**His condition, beyond the proposal**: the exemption means a post is not
+REQUIRED to carry FAQPage, **never that FAQs on a post go unmeasured**.
+
+**Building to it found a real gap.** On an ordinary page, a visible FAQ with
+NO schema is caught only by the general FAQPage warning; the mirror branch
+deliberately stays quiet there. With `faq-schema` exempted, such a page would
+have gone entirely unmeasured. **So the exemption applies only to a page that
+shows no visible FAQ.** A post-kind page with one is measured like any page:
+
+- no schema warns;
+- a mismatched schema fails the mirror;
+- a matching schema passes.
+
+This holds for contact too.
+
+**`test-audit-checks.py` section 23**, 14 checks, covers both kinds and both
+directions:
+
+- **Exempt:** a post or index with no FAQ gets no warning, and a note says
+  so.
+- **Still measured:**
+  - a thin one still warns;
+  - one with a visible FAQ and a mismatched schema fails;
+  - one with a visible FAQ and no schema is warned, not excused;
+  - one with a matching FAQ passes.
+- **No exemption:** a misspelled kind, and contact showing an FAQ.
+
+Section 19's "no blanket kind" test now pins exactly three kinds with their
+exact scopes. **Mutation-tested**: dropping the visible-FAQ guard turns both
+"warned, not excused" checks red. Restored.
+
+#### The post shape, built once for sixteen
+
+Built by the new **`scripts/migrate-blog.py`**:
+
+- It reads the live posts from a cache outside the repo.
+- It takes the site's current shell from `/contact-us/`: the head assets,
+  the nav, the four-service footer and the call bar.
+- It applies every rule mechanically, and prints every change as a pair.
+- **It refuses to write** if a title or meta is over its limit, or if an
+  edit does not match exactly once.
+
+**The shape:**
+
+- **Header**, white (`hero band-panel`): breadcrumb Home / Blog / the post,
+  the H1, and a quiet date line, "Published ..." with "Updated ..." added
+  when the live post was modified on a later day.
+- **Body** on silver: the prose in `.prose`, the site's existing reading
+  width, **no new CSS**.
+- **A visible FAQ, if the live post has one**, on white, in the site's FAQ
+  grammar with a byte-identical FAQPage node.
+- **ONE ask at the foot**: the Call and Email CTA row in the mold, centred as
+  a section-bottom ask. Not the promise band: a post is a read, not a service
+  argument.
+- **The four-service footer**, with Send us your details linking to
+  `/contact-us/`.
+
+**Schema, one `@graph` per post:**
+
+- **The full `AutoBodyShop` node** under the shared `@id`, carrying the NAP,
+  the hours and the verified geo, all green on the audit's checks.
+- **A `WebPage`**, whose `dateModified` is the sitemap's `lastmod`.
+- **A `BlogPosting`**, with headline = the H1, datePublished and
+  dateModified = the live post's own, **author and publisher = the business
+  node**, and no image.
+- **A `BreadcrumbList`.**
+- **An `FAQPage`**, only where the post shows one.
+
+**Staging noindex on every page, with the canonical absolute per slug.**
+og:image follows home's, commented, as `/contact-us/`'s does.
+
+**Titles drop the `| Tri-County Collision` suffix**, and this is argued
+rather than defaulted. At 60 characters, a 22-character brand name leaves 38
+for the promise, which would cut the words the post exists for. **Every
+title is the live H1's own words, trimmed.** Google shows the site name in
+results separately. The service pages keep their suffix; a post's title is
+the headline's promise.
+
+**Mechanical rules, applied to every post:**
+
+- the business name as the NAP writes it;
+- own-site links made relative, or made pending spans until their target
+  lands;
+- Google Maps and search links become the footers' one directions URL;
+- a malformed href repaired to what its anchor says;
+- no image;
+- markup reduced to the prose the site styles (`p`, `h2` to `h4`, lists,
+  `strong`, `em`, `a`);
+- no-break spaces and empty paragraphs removed.
+
+**Dates are facts**: nothing is freshened.
+
+**The AI-disclosure rule does not bite here**, because these posts are
+migrated, not drafted. It applies the day a new post is drafted in this
+repo.
+
+#### The index, `/blog/`
+
+**Its `pagemap.md` row: add the H1 and the meta the live index lacks.**
+
+- **H1: "Collision Repair Tips & Advice"**, which is the live index's own
+  `<title>`.
+- **Title: "Collision Repair Tips & Advice | Tri-County Collision"** (53).
+  BEFORE: "Collision Repair Tips &amp; Advice | Tri County Collision".
+- **Meta** (153, new; BEFORE: none): "Collision repair tips and advice from
+  Tri-County Collision in Southampton, PA: insurance claims, your right to
+  choose a shop, dent repair, ADAS and more."
+- **The same sentence is the header's lead, word for word**, so the index
+  adds no copy beyond that one pair.
+
+**The 16 posts are cards** in the home router's whole-card grammar
+(`a.svc-card` in `.grid2`, which is even, so no lone card), newest first.
+Each card carries the post's H1, its date line and **the first sentence of
+its own opening**. **A card whose post has not landed is a
+`div.svc-card data-pending-href`** with no lift and an ink heading, which is
+the home router's precedent. The pending-link test turns each into a link the
+day its post exists. Today that is 1 linked and 15 pending.
+
+**Schema:** `CollectionPage` (added to `build-sitemap.py`'s
+`PAGE_NODE_TYPES`, as that constant's comment anticipated), plus a `Blog`
+node whose `blogPost` lists only the posts that exist, each as a bare `@id`.
+Its `dateModified` is 2026-09-25, the day it was built, because the index is
+new.
+
+**The ground is white, not ox, argued:**
+
+- The band routes rather than asks, and the palette law keeps oxblood for
+  asking.
+- Ink would need a breadcrumb and a lead rule the system lacks. That is the
+  gap 3.53 found for ox, and 3.54 closed it for ox only.
+- White is fully supported: the crumb at `--ink-2` reads 9.80 there, and the
+  cards below sit on silver, per 3.52's adjacency rule.
+
+**Reachability is deliberately deferred.** Nothing in the nav or the footers
+links `/blog/` yet: the header-nav sweep is its own queued sitting, and the
+footer's columns have no honest seat for it. The index is in the sitemap and
+`llms.txt` today, and the nav sweep gives it its visible door.
+
+**`llms.txt`** gains `/blog/` under Key pages and a "Blog posts" section, one
+line per post (title and date), generated from the built pages so it cannot
+drift from them.
+
+#### The first post: `/your-right-to-choose-a-body-shop/`
+
+**Chosen because it proves the most at once:**
+
+- a visible FAQ;
+- a held certification claim;
+- standalone-test openers;
+- and it is the target of `/collision-repair/`'s long-pending link.
+
+**That link landed**: the collision page's "our blog post on the topic" in
+its right-to-choose FAQ was a pending span, the test failed the day this post
+existed, and it is now a link.
+
+**The pairs, as the script printed them:**
+
+| Where | Before | After | Why |
+|---|---|---|---|
+| title | PA Law: Your Right to Choose a Body Shop (Anti-Steering Explained) \| Tri County Collision | PA Law: Your Right to Choose a Body Shop (Anti-Steering) | 56 characters, machine-counted |
+| meta | In Pennsylvania, the repair shop is your choice, not the insurer's. Learn how anti-steering rules work, how to document your choice with Tri County Collision in Southampton, and more. | In Pennsylvania, the repair shop is your choice, not the insurer's. How anti-steering rules work and how to document your choice with Tri-County Collision. | 155 characters, machine-counted |
+| name, 5 places | Tri County Collision Center (and variants) | Tri-County Collision | the NAP's name; the service pages' precedent |
+| body | (Honda, Toyota, Subaru, Ford, GM, and more) | (Honda, Subaru, Ford, GM, and more) | **HELD**: Toyota is not among the twelve factory certifications the site checks and publishes. An unconfirmed certification does not ship. Owner question 27 |
+| FAQ 1 opener | No. In Pennsylvania, you choose where to repair your vehicle. | No, in Pennsylvania you choose where to repair your vehicle. | standalone test: a bare "No." comma-merges |
+| FAQ 2 opener | It shouldn't be. | No, your claim shouldn't be delayed if you use a different shop. | standalone test: says nothing when lifted |
+| FAQ 4 opener | It's not required by the PA Insurance Department's guidance; | Multiple estimates are not required by the PA Insurance Department's guidance; | standalone test: "It's" has no antecedent |
+
+The H1 is the live one, unchanged.
+
+**FAQ 3's opener stands alone and is untouched:** "The repair warranty comes
+from the shop that performs the work."
+
+**The four FAQs mirror byte-identically**, and the audit passes the mirror.
+
+#### Measured
+
+- **The mirrors, by hash.** Title, og:title and the page node's name, and
+  meta, og:description and the node's description, are each byte-identical,
+  decoded:
+
+  ```
+  /blog/                    title 53  af721126cbaf x3   description 153  bde39160cb85 x3
+  /your-right-to-choose-.../ title 56  ef384218edbc x3   description 155  ab5298390ade x3
+  ```
+
+- **The banned strings, grepped before the audit ran.** Neither page carries
+  709-9665, 515-4662, 999-3497, `info@`, "Jaymor Road", "Jaymor Rd.", "Tri
+  County" or an em dash. The one grep hit, "Any Collision Center" in a post
+  title on the index, is a generic phrase, not the shop's name.
+- **The fold at 390x664**, with an iframe the size of the viewport:
+  - **Index:** the H1 is at 239 to 320 and the lead ends at 465. **The first
+    card starts at 562, inside the first screen**, above the call bar at
+    604.
+  - **The post:** the H1 is at 263 to 466 (five lines), the date line at 484
+    to 512, and **the first paragraph starts at 609**, just under the call
+    bar at 604. See the first open question below.
+- **Seams hold the 3.46 baseline:**
+  - **The post:** header to body 177 at 1440 and 97 at 390; body to FAQ the
+    same; head-to-body 40.
+  - **The index:** 177 and 97, **after a fix**. Its header first ended on
+    the H1, whose .5em bottom margin put the seam at 208 and 115. Closing it
+    on the lead paragraph, whose last-child margin is 0, fixed that.
+- **Rendered and inspected** at 1440 and 390, the index and the post.
+- **The suite:**
+  - both test scripts pass, sections 19 to 23;
+  - `stamp-assets.py --check` and `build-sitemap.py --check` exit 0, and the
+    sitemap now has 8 URLs, the post's `lastmod` 2025-09-16;
+  - `STAGING=1 audit.py --strict`: **eight pages, every one at 95, zero
+    criticals, sameAs the only warning.**
+
+#### Open, for Greg
+
+1. **A post-scale H1.** The site's H1 is sized for short service titles:
+   `clamp(2.3rem, 6.2vw, 3.9rem)`. Post headlines run 60 to 114 characters.
+   On a phone, this post's 66-character H1 takes five lines, and its first
+   paragraph lands under the call bar. The longest, post 11 at 114
+   characters, will take about nine lines. **Not written, per Part C.**
+   Proposed: one rule scoped to the post header, e.g. `#post-head h1 {
+   font-size: clamp(1.9rem, 4.6vw, 2.9rem); }`, measured on the render
+   before it lands.
+2. **The breadcrumb's third item wraps onto its own line on a phone**, with
+   its separator leading. It reads, but a post title in a crumb is long by
+   nature. Truncating it would need CSS too; noted, not proposed.
+
 ---
 
 ## 4. The claims list
@@ -7701,6 +7997,34 @@ facility", which is what an appointment is, and "a quick, no-obligation idea of
 repair costs", which is what the estimate is. Both need CarWise to still be in
 use.
 
+### 4.11 Claims the blog adds
+
+Every claim below is migrated from the live post named, word for word unless
+a pair says otherwise. **The posts' legal statements are the heaviest**: a
+misstated law on the shop's own site is a real harm to a reader. They go to
+Greg as well as the owner.
+
+**`/your-right-to-choose-a-body-shop/`** (3.57)
+
+- **Toyota factory certification, HELD** (removed by a pair). The live post
+  says "factory-certified for brands our neighbors drive (Honda, Toyota,
+  Subaru, Ford, GM, and more)", and Toyota is not among the twelve. Section 5
+  item 27.
+- **"your repairs carry a lifetime warranty"** (FAQ 3) and "a lifetime
+  warranty on our work": the warranty question, 4.1.
+- **"We coordinate directly with adjusters so inspections and supplements
+  happen at our facility"** and "we also document OEM procedures and provide
+  you with final paperwork."
+- **The legal claims**, for a fact-check against the source:
+  - "§146.8 of the PA Code prohibits requiring repairs at a specific shop or
+    making you travel unreasonably";
+  - the PA Insurance Department quote, "The choice of where your vehicle is
+    repaired is up to you";
+  - "If an insurer prepares an appraisal, they must give you a copy";
+  - the first-party-claim "reasonable time" rule.
+- **"family-owned, Southampton-based" and "ASE/I-CAR® Gold technicians"**:
+  already on the list (4.1, 4.5).
+
 ## 5. What the owner needs to answer first
 
 Ordered by how much else depends on it.
@@ -7786,3 +8110,7 @@ Ordered by how much else depends on it.
     **RULED by Greg 2026-09-25 and shipped, 3.56**: every page's geo is the
     verified pin. The owner's confirmation folds into his NAP sign-off
     (section 2), not a new question.
+27. **Is the shop Toyota factory-certified?** The live right-to-choose post
+    says so; the site's twelve do not include Toyota. The claim is held off
+    the migrated post until the answer is yes, and a yes also moves
+    BRAND_COUNT and the strip. See 3.57 and 4.11.

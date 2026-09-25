@@ -778,6 +778,16 @@ check (3.56) added one pass to every page, and contact is now 18 of 19, which
 rounds to 95. It is exactly as clean as it was at 94, and no less; a table
 reading 94 or 95 for this page is the denominator talking, not a regression.
 
+### The blog's two kinds, 2026-09-25
+
+**A post is a read and an index routes; neither answers questions**, so each
+is exempt from `faq-schema` and nothing else (`post`, `blog-index`, Greg's
+ruling, `proposed-changes.md` 3.57). **Thin content stays live on both**: a
+post under 300 words should warn. **Not required, never unmeasured**: the
+exemption applies only to a page that shows no visible FAQ, so a post that
+carries one is held to the mirror law like any page. `test-audit-checks.py`
+section 23 holds it.
+
 ## Staging ships noindexed on purpose
 
 **Three things are deliberately "wrong" on every page in `docs/` until
@@ -856,6 +866,7 @@ dark. That archive is the last copy of it that will ever exist.
 | `scripts/prepare-hero-photo.py` | Turns the client's photograph of a wrecked customer vehicle into the home hero, and since 2026-09-24 the licensed interim-stock service heroes too, one measured `FRAMES` entry per photograph with its own 3:2 crop box. `--out-dir` re-proves a shipped asset byte for byte without touching `docs/`. Reads provenance through the audit's own reader and refuses a flagged file, crops on a measured scan of where the vehicle actually is, runs the plate-detection check even though no plate is visible, strips APP segments structurally by marker walk, asserts the emitted file decodes to the 1200x800 contract, and never emits a file larger than its source. **It imports its helpers from `prepare-repair-photos.py` rather than copying them**, so the APP strip and the detail metric are one implementation. Prints every number it used. |
 | `scripts/prepare-damage-icons.py` | Turns the licensed "Car Accident" icon set into the eight marks the We Fix It All band ships. Reads the source's provenance through the audit's own reader and refuses to process a flagged file, parses the `.ai` as PDF with nothing but the standard library, splits the page on its own occupancy gaps into a 6x6 grid, and emits every mark at ONE derived scale so the set's single stroke weight survives. **The marks are filled outlines and not strokes**, which is why the band's CSS changed. It patches `docs/index.html` item by item and proves the item count and all eight headings before it writes, because an earlier patcher spanned items and ate seven of the eight. Prints every number it used. |
 | `scripts/prepare-map-image.py` | Draws `/contact-us/`'s directions map from OpenStreetMap data and writes it into the page as inline SVG, between two markers. **Drawn, not stitched from tiles**: the OSMF tile policy prohibits prefetching tiles for static use, and Greg ruled 2026-09-24 that the no-third-drawing rule does not reach cartography. One Overpass query, cached outside the repo; the pin must fall inside an OSM building footprint or nothing is drawn; labels take USPS abbreviations so the pin's street matches the NAP; placement is an exhaustive search. The ODbL notice in the figcaption is the licence. `--out-dir` draws without touching `docs/`. Prints every number it used. |
+| `scripts/migrate-blog.py` | Migrates the 16 blog posts and builds `/blog/` from the live WordPress pages, cached outside the repo. Applies every rule mechanically (the NAP name, links relative or pending, no image, the prose markup, a live FAQ into the site's FAQ grammar, the live post's own dates), holds per-post titles, metas and edits, refuses to write a title over 60, a meta over 160 or an edit that does not match exactly once, and prints every change as a before/after pair for the record. |
 | `scripts/stamp-assets.py` | Cache-busting stamps for `docs/assets/site.css` and `site.js`. |
 | `scripts/fetch_seo_news.py` | Pulls the headline sweep the Google Watcher reads. |
 | `scripts/cascade-analyzer.html` | CSS cascade analyzer. |

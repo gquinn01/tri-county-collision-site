@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       THE BLOG INDEX, built by scripts/migrate-blog.py, proposed-changes.md
+       3.57. pagemap.md's row: migrate, and add the H1 and the meta the
+       live index lacks. The H1 is the live index's own title, "Collision
+       Repair Tips & Advice"; the meta is new, a pair in the record.
+
+       AN INDEX ROUTES. Sixteen posts as cards in the site's whole-card
+       grammar (a.svc-card, so the lift comes with it), newest first, each
+       with its title, its date and one line from its own opening. A card
+       whose post has not landed yet is a div with data-pending-href and no
+       lift, the home router's precedent; the pending-link test turns each
+       into a link the day its post exists.
+
+       THE TOP IS COMPACT AND WHITE, not ox: this band routes rather than
+       asks, and the palette law keeps oxblood for asking. The argument is
+       in the record.
+
+       NOTHING IN NAV OR FOOTER LINKS HERE YET, deliberately: the
+       header-nav sweep is its own queued sitting and the footer has no
+       honest seat for it. The sitemap and llms.txt carry it today.
+
+       STAGING, DELIBERATE, AND NOT A DEFECT: noindex, robots.txt, and an
+       absolute canonical. All three come off together at cutover.
+       ============================================================ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Ink. The palette lives in assets/site.css; a meta tag cannot read a
+       custom property, which is why this one hex is duplicated. -->
+  <meta name="theme-color" content="#121B27">
+
+  <title>Collision Repair Tips &amp; Advice | Tri-County Collision</title>
+  <meta name="description" content="Collision repair tips and advice from Tri-County Collision in Southampton, PA: insurance claims, your right to choose a shop, dent repair, ADAS and more.">
+
+  <link rel="canonical" href="https://tricountycollision.com/blog/">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- AN INDEX ROUTES, declared. Greg's ruling of 2026-09-25,
+       proposed-changes.md 3.57: scripts/audit.py does not require an FAQ
+       of it, and measures every other check, thin content included. -->
+  <meta name="tri-county-page" content="blog-index">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Collision Repair Tips &amp; Advice | Tri-County Collision">
+  <meta property="og:description" content="Collision repair tips and advice from Tri-County Collision in Southampton, PA: insurance claims, your right to choose a shop, dent repair, ADAS and more.">
+  <meta property="og:url" content="https://tricountycollision.com/blog/">
+  <!-- NO IMAGE ON THIS PAGE, SO ITS SHARE CARD FOLLOWS HOME'S, byte for
+       byte, as /contact-us/'s does. Old-site imagery is banned from this
+       repo; this moves to a real shop photograph after the shoot. -->
+  <meta property="og:image" content="https://tricountycollision.com/assets/img/hero-wrecked-sedan-in-shop.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="800">
+  <meta property="og:image:alt" content="A red sedan with its front end crushed and the bumper torn loose, in the shop before repair.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- No analytics tag yet. GA4 goes in the CLIENT'S OWN Google account at
+       cutover, and the CallRail snippet goes in beside it. Neither is here,
+       because a measurement ID nobody has given us is a fact nobody has
+       confirmed. docs/privacy/ ships in the same commit as the first tag. -->
+
+  <!-- Both faces are self-hosted and both are needed above the fold, so they
+       are preloaded rather than discovered inside the stylesheet. They are
+       SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
+  <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/site.css?v=a4fa0546">
+  <script src="../assets/site.js?v=9b1fd397" defer></script>
+
+  <!-- One @graph. The AutoBodyShop node repeats in full on every page under
+       the SAME @id, so the whole site resolves to one business entity, and
+       here it is the author and the publisher: authorship is the shop's.
+       geo IS THE SHOP'S VERIFIED PIN, GEO_LAT and GEO_LON in scripts/audit.py,
+       adopted by Greg's ruling of 2026-09-25 (proposed-changes.md 3.56). It is
+       never a map URL's @lat,lon, which is the viewport centre, not the pin.
+       sameAs IS DELIBERATELY ABSENT until the client's verified list lands.
+       blogPost lists only posts that exist; each is a bare @id to its page. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AutoBodyShop",
+        "@id": "https://tricountycollision.com/#business",
+        "name": "Tri-County Collision",
+        "url": "https://tricountycollision.com/",
+        "telephone": "+12153225350",
+        "email": "contact@tricountycollision.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "995 Jaymor Rd",
+          "addressLocality": "Southampton",
+          "addressRegion": "PA",
+          "postalCode": "18966",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 40.1660232,
+          "longitude": -75.0512847
+        },
+        "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "08:00",
+            "closes": "18:00"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-bucks-county",
+            "name": "Bucks County, Pennsylvania"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-montgomery-county",
+            "name": "Montgomery County, Pennsylvania"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-philadelphia",
+            "name": "Philadelphia, Pennsylvania"
+          },
+          {
+            "@type": "City",
+            "name": "Southampton, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Feasterville-Trevose, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Richboro, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Warminster, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Langhorne, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Bensalem, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Huntingdon Valley, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Hatboro, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Willow Grove, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Horsham, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Jenkintown, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "Place",
+            "name": "Northeast Philadelphia, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-philadelphia"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "CollectionPage",
+        "@id": "https://tricountycollision.com/blog/#webpage",
+        "url": "https://tricountycollision.com/blog/",
+        "name": "Collision Repair Tips & Advice | Tri-County Collision",
+        "description": "Collision repair tips and advice from Tri-County Collision in Southampton, PA: insurance claims, your right to choose a shop, dent repair, ADAS and more.",
+        "inLanguage": "en-US",
+        "dateModified": "2026-09-25",
+        "isPartOf": {
+          "@id": "https://tricountycollision.com/#business"
+        },
+        "breadcrumb": {
+          "@id": "https://tricountycollision.com/blog/#breadcrumb"
+        },
+        "mainEntity": {
+          "@id": "https://tricountycollision.com/blog/#blog"
+        }
+      },
+      {
+        "@type": "Blog",
+        "@id": "https://tricountycollision.com/blog/#blog",
+        "name": "Collision Repair Tips & Advice",
+        "url": "https://tricountycollision.com/blog/",
+        "publisher": {
+          "@id": "https://tricountycollision.com/#business"
+        },
+        "blogPost": [
+          {
+            "@id": "https://tricountycollision.com/your-right-to-choose-a-body-shop/#article"
+          }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://tricountycollision.com/blog/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://tricountycollision.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog",
+            "item": "https://tricountycollision.com/blog/"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Removed at cutover, with the noindex tag and the robots.txt disallow.
+       A human who opens this page should not have to guess why it is not
+       indexed. -->
+  <p class="staging">Staging build. Not the live site. The shop's live site is at tricountycollision.com</p>
+
+  <header class="nav">
+    <div class="wrap inner">
+      <a class="nav-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+      <nav class="nav-main" aria-label="Main"><ul>
+        <li><a href="../collision-repair/">Collision Repair</a></li>
+      </ul></nav>
+      <a class="btn btn-sm" href="tel:+12153225350">Call (215) 322-5350</a>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero band-panel" id="blog-head">
+      <div class="wrap">
+        <!-- Mirrors the BreadcrumbList, same labels and same order. -->
+        <nav class="crumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="../">Home</a></li>
+            <li>Blog</li>
+          </ol>
+        </nav>
+        <p class="eyebrow">Southampton, PA</p>
+        <h1>Collision Repair Tips &amp; Advice</h1>
+        <!-- The meta description, word for word, so the index adds no copy
+             beyond the one recorded pair. It also closes the header on a
+             paragraph, whose last-child margin is 0: ending on the H1 put
+             its .5em bottom margin into the seam, 208 at 1440 against the
+             177 baseline (3.57). -->
+        <p class="lead">Collision repair tips and advice from Tri-County Collision in Southampton, PA: insurance claims, your right to choose a shop, dent repair, ADAS and more.</p>
+      </div>
+    </section>
+
+    <section id="posts">
+      <div class="wrap">
+        <h2 class="sr-only">All posts, newest first</h2>
+        <div class="grid2">
+          <div class="svc-card" data-pending-href="../adas-calibrations-after-a-crash/">
+            <div class="svc-card-body">
+              <h3>ADAS Calibrations After a Crash: The Hidden Step That Protects Your Family</h3>
+              <p>Published <time datetime="2025-09-24">September 24, 2025</time></p>
+              <p>Today’s vehicles quietly watch the road for you, braking in a split second, reading lane lines, and warning about the car in your blind spot.</p>
+            </div>
+          </div>
+          <a class="svc-card" href="../your-right-to-choose-a-body-shop/">
+            <div class="svc-card-body">
+              <h3>PA Law: Your Right to Choose a Body Shop (Anti-Steering Explained)</h3>
+              <p>Published <time datetime="2025-09-16">September 16, 2025</time></p>
+              <p>If you’ve just had a fender-bender on Street Road or a not-so-minor run-in on County Line, the last thing you need is confusion about who gets to fix your car.</p>
+            </div>
+          </a>
+          <div class="svc-card" data-pending-href="../deer-season-in-bucks-county-insurance-coverage-next-steps/">
+            <div class="svc-card-body">
+              <h3>Deer Season in Bucks County: Insurance Coverage &amp; Next Steps</h3>
+              <p>Published <time datetime="2025-09-16">September 16, 2025</time> &middot; Updated <time datetime="2025-10-02">October 2, 2025</time></p>
+              <p>Between dusk commutes on County Line Road and early-morning runs down Street Road, deer are on the move across Bucks County.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../the-risks-of-driving-a-damaged-vehicle-in-the-southampton-area/">
+            <div class="svc-card-body">
+              <h3>Don’t Delay Repairs! The Risks of Driving a Damaged Vehicle in the Southampton Area</h3>
+              <p>Published <time datetime="2025-08-12">August 12, 2025</time></p>
+              <p>It’s tempting to brush off a minor fender bender in a bustling parking lot or a scrape from a tight spot on a busy road.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../misconceptions-about-collision-repair/">
+            <div class="svc-card-body">
+              <h3>Top 5 Misconceptions About Collision Repair (And the Truth from Your Southampton Experts)</h3>
+              <p>Published <time datetime="2025-08-12">August 12, 2025</time></p>
+              <p>That sudden crunch of metal. The sinking feeling in your stomach.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../after-the-unthinkable-your-first-steps-following-a-car-accident-in-bucks-county-before-calling-a-collision-shop/">
+            <div class="svc-card-body">
+              <h3>After the Unthinkable: Your First Steps Following a Car Accident in Bucks County (Before Calling a Collision Shop)</h3>
+              <p>Published <time datetime="2025-07-31">July 31, 2025</time></p>
+              <p>One second you’re driving along Route 132 or cutting through County Line Road, and the next, everything stops.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../is-my-car-totaled-expert-insights-from-your-southampton-collision-repair-specialists/">
+            <div class="svc-card-body">
+              <h3>Is My Car Totaled? Expert Insights from Your Southampton Collision Repair Specialists</h3>
+              <p>Published <time datetime="2025-07-31">July 31, 2025</time></p>
+              <p>If you’ve just been in an accident, you may be staring at your vehicle wondering the big question: “Is my car totaled?” It’s a stressful situation, and getting clear answers quickly can make a world of difference.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../critical-questions-to-ask-any-collision-center-in-bucks-county-before-handing-over-your-keys/">
+            <div class="svc-card-body">
+              <h3>Critical Questions to Ask Any Collision Center in Bucks County Before Handing Over Your Keys</h3>
+              <p>Published <time datetime="2025-06-06">June 6, 2025</time></p>
+              <p>Dealing with car damage after an accident or unexpected incident in Bucks County is undeniably stressful.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../collision-repair-near-me-in-southampton-how-to-choose-the-right-auto-body-shop/">
+            <div class="svc-card-body">
+              <h3>“Collision Repair Near Me” in Southampton? How to Choose the Right Auto Body Shop</h3>
+              <p>Published <time datetime="2025-05-22">May 22, 2025</time> &middot; Updated <time datetime="2025-06-06">June 6, 2025</time></p>
+              <p>That sinking feeling after a car accident is something no one wants.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../unveiling-the-hidden-benefits-of-paintless-dent-repair-in-collision-restoration/">
+            <div class="svc-card-body">
+              <h3>Unveiling the Hidden Benefits of Paintless Dent Repair in Collision Restoration</h3>
+              <p>Published <time datetime="2023-07-11">July 11, 2023</time></p>
+              <p>When it comes to collision restoration, Tri-County Collision is committed to providing the most efficient and effective solutions for our customers.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../preserving-value-how-tri-county-collision-center-impacts-the-resale-value-of-your-car-through-collision-repair/">
+            <div class="svc-card-body">
+              <h3>Preserving Value: How Tri-County Collision Impacts the Resale Value of Your Car through Collision Repair</h3>
+              <p>Published <time datetime="2023-07-10">July 10, 2023</time> &middot; Updated <time datetime="2025-06-06">June 6, 2025</time></p>
+              <p>When it comes to car ownership, protecting your investment is crucial.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../assessing-collision-damage/">
+            <div class="svc-card-body">
+              <h3>From Fender Benders to Major Crashes: Assessing Collision Damage Severity at Tri-County Collision</h3>
+              <p>Published <time datetime="2023-05-23">May 23, 2023</time></p>
+              <p>Every collision, regardless of its scale, can leave a lasting impact on your vehicle.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../the-art-of-paintless-dent-repair/">
+            <div class="svc-card-body">
+              <h3>The Art of Paintless Dent Repair: A Cost-Effective Solution for Minor Collisions</h3>
+              <p>Published <time datetime="2023-05-23">May 23, 2023</time></p>
+              <p>At Tri-County Collision, we get that even minor collisions can leave a lasting impact on your vehicle’s appearance.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../the-importance-of-oem-parts-in-collision-repair-ensuring-quality-and-safety-for-your-vehicle/">
+            <div class="svc-card-body">
+              <h3>The Importance of OEM Parts in Collision Repair: Ensuring Quality and Safety for Your Vehicle</h3>
+              <p>Published <time datetime="2023-05-02">May 2, 2023</time></p>
+              <p>When it comes to collision repair, the choice of parts used can significantly impact the quality, safety, and value of your vehicle.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../the-ultimate-guide-to-collision-repair-services-what-to-expect-and-how-to-choose-the-best-provider/">
+            <div class="svc-card-body">
+              <h3>The Ultimate Guide to Collision Repair Services: What to Expect and How to Choose the Best Provider</h3>
+              <p>Published <time datetime="2023-05-02">May 2, 2023</time></p>
+              <p>At Tri-County Collision , we understand that finding the right collision repair service can be a daunting task, especially after experiencing the stress of an auto accident.</p>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../what-do-all-those-lights-mean-in-my-car-understanding-your-vehicles-language/">
+            <div class="svc-card-body">
+              <h3>What do all those lights mean in my car? Understanding your vehicle’s language!</h3>
+              <p>Published <time datetime="2023-03-29">March 29, 2023</time></p>
+              <p>Have you ever had to learn another language? If so, it’s similar to your car telling you how it feels, sending you warning signs, or letting you know what needs some maintenance.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <a class="foot-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+          <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
+          <p class="foot-nap">
+            Tri-County Collision<br>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd<br>
+            Southampton, PA 18966</a><br>
+            <a href="tel:+12153225350">(215) 322-5350</a><br>
+            <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>
+          </p>
+        </div>
+        <div>
+          <h2 class="foot-head">Hours</h2>
+          <p>Monday to Friday, 8&nbsp;a.m. to 6&nbsp;p.m.<br>
+          Saturday by appointment only</p>
+        </div>
+        <div>
+          <!-- These columns list only pages that exist. They grow as pages
+               land, and never before. -->
+          <h2 class="foot-head">Services</h2>
+          <ul class="foot-links">
+            <li><a href="../collision-repair/">Collision Repair</a></li>
+            <li><a href="../auto-glass-repair-replacement/">Auto Glass Repair</a></li>
+            <li><a href="../paintless-dent-repair/">Paintless Dent Repair</a></li>
+            <li><a href="../commercial-collision-repair/">Commercial Collision&nbsp;Repair</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="foot-head">Get Started</h2>
+          <ul class="foot-links">
+            <li><a href="tel:+12153225350">Call (215) 322-5350</a></li>
+            <li><a href="mailto:contact@tricountycollision.com">Email the shop</a></li>
+            <li><a href="../contact-us/">Send us your details online</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <!-- The year is written into the markup so it is right with
+             JavaScript off, and assets/site.js updates it so it is right
+             next January. A hard-coded year is a stale-clock claim. -->
+        <p>&copy; <span data-year>2026</span> Tri-County Collision &middot; <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> &middot; <a href="tel:+12153225350">(215) 322-5350</a> &middot; <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- The one element the whole design turns on. Fixed to the bottom of
+       every phone viewport, hidden above 900px where the header's own call
+       button is always visible. -->
+  <a class="callbar" href="tel:+12153225350">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h3l1.5 3.8-2 1.4a12.5 12.5 0 0 0 6.2 6.2l1.4-2 3.8 1.5v3a1.8 1.8 0 0 1-2 1.8A16.5 16.5 0 0 1 4.8 5.5a1.8 1.8 0 0 1 1.8-2z"/></svg>
+    Call (215) 322-5350
+  </a>
+
+</body>
+</html>

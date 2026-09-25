@@ -72,10 +72,11 @@ JSONLD_RE = re.compile(
 
 # The page node's type. ContactPage is a schema.org subtype of WebPage and
 # /contact-us/ carries one, because that is what the page is (added
-# 2026-09-24, proposed-changes.md 3.53). A page that declares another
+# 2026-09-24, proposed-changes.md 3.53), and /blog/ carries a CollectionPage
+# (2026-09-25, 3.57). A page that declares another
 # subtype adds it here; until then its lastmod is missing and the build
 # says so, which is the right way round.
-PAGE_NODE_TYPES = ("WebPage", "ContactPage")
+PAGE_NODE_TYPES = ("WebPage", "ContactPage", "CollectionPage")
 
 
 def date_modified(html: str):
