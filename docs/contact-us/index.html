@@ -89,6 +89,9 @@
        the SAME @id, so the whole site resolves to one business entity: a
        bare @id reference carries no type and no sameAs, which is what
        search engines and the audit both read.
+       geo IS THE SHOP'S VERIFIED PIN, GEO_LAT and GEO_LON in scripts/audit.py,
+       adopted by Greg's ruling of 2026-09-25 (proposed-changes.md 3.56). It is
+       never a map URL's @lat,lon, which is the viewport centre, not the pin.
        sameAs IS DELIBERATELY ABSENT. The live site publishes five profile
        URLs and they are listed in proposed-changes.md, but a sameAs claims
        "this profile is us" and only profiles the shop actually controls
@@ -120,7 +123,7 @@
         "geo": {
           "@type": "GeoCoordinates",
           "latitude": 40.1660232,
-          "longitude": -75.0538596
+          "longitude": -75.0512847
         },
         "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
         "openingHoursSpecification": [

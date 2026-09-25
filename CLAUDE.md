@@ -131,6 +131,23 @@ Sunday hours. **The Google Business Profile disagrees** (Saturday Closed,
 Sunday Closed, and a different phone and name), which is an owner question,
 not a fix; when it is answered the value changes in one place.
 
+### The coordinates are a constant, 2026-09-25
+
+```
+GEO_LAT   40.1660232
+GEO_LON   -75.0512847
+```
+
+Google's own place point for the shop, verified 2026-09-24 against the
+OpenStreetMap building footprint and the satellite view, and adopted by Greg's
+ruling of 2026-09-25 (`proposed-changes.md` 3.54 and 3.56). A vendor-verified
+exception like the NAP's; owner sign-off folds into his NAP sign-off. Held in
+`scripts/audit.py`, which fails any page whose business node says otherwise,
+and read by `scripts/prepare-map-image.py`, so the map's pin and the schema
+are one value. **The value it replaced, -75.0538596, was a Google Maps URL's
+`@lat,lon`: the viewport centre, 220m west, not the pin. Never take
+coordinates from a map URL.**
+
 ### The CallRail number never reaches the source
 
 **(215) 709-9665 is a CallRail tracking number.** The old WordPress header
@@ -153,8 +170,7 @@ invisible by eye.
 
 **Still unconfirmed, and therefore still off:**
 
-- **Everything else the template still tokenizes**: geo coordinates,
-  socials and `sameAs`, area served, GA4 ID, taglines, and the proof line.
+- **Everything else the template still tokenizes**: socials and `sameAs`, area served, GA4 ID, taglines, and the proof line.
   The form endpoint is answered, not pending: **there is no form on this
   site**, by Greg's ruling of 2026-09-24, so there is no endpoint.
   `{{FORM_ENDPOINT}}` still sits in the template until someone removes the
@@ -756,6 +772,11 @@ rounds differently.** With sameAs as its one warning, `/contact-us/` is 15 of
 16, which is 94, where a service page is 18 of 19, which is 95. Both are
 exactly as clean. Nobody counts an exempt check as a pass to round it up,
 because that would report a check as passing that never ran.
+
+**Since 2026-09-25 the table reads 95 for it anyway, by arithmetic.** The geo
+check (3.56) added one pass to every page, and contact is now 18 of 19, which
+rounds to 95. It is exactly as clean as it was at 94, and no less; a table
+reading 94 or 95 for this page is the denominator talking, not a regression.
 
 ## Staging ships noindexed on purpose
 

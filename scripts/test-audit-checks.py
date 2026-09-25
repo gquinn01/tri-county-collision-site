@@ -813,6 +813,50 @@ def main():
     check("     the page title is still measured as the head's alone",
           f"({len('Collision Repair in Southampton, PA | Tri-County Collision')} chars)" in p, p)
 
+    # The shop's coordinates, 3.56: GEO_LAT and GEO_LON, the verified pin.
+    # Same shape as the address and hours tests: the right value passes,
+    # the known-wrong one fails, and so does every other way to drift.
+    print("22. The schema's geo is the verified pin, and only that")
+
+    def biz(geo):
+        g = "" if geo is None else f',"geo":{geo}'
+        return ('<script type="application/ld+json">{"@context":"https://schema.org",'
+                '"@graph":[{"@type":"AutoBodyShop","@id":"https://tricountycollision.com/#business"'
+                f'{g}}}]}}</script>')
+
+    def gc(lat, lon):
+        return f'{{"@type":"GeoCoordinates","latitude":{lat},"longitude":{lon}}}'
+
+    p, w, f = run(biz(gc(audit.GEO_LAT, audit.GEO_LON)))
+    check("     the verified pin passes", "Schema geo is the verified pin" in p
+          and "not the shop's verified pin" not in f, (p, f))
+    for label, geo in (
+            ("the old live-site value, a map URL's centre, 220m west", gc(40.1660232, -75.0538596)),
+            ("latitude and longitude swapped", gc(audit.GEO_LON, audit.GEO_LAT)),
+            ("one digit off in the seventh place", gc(audit.GEO_LAT, -75.0512848)),
+            ("Nominatim's interpolated point", gc(40.1650509, -75.0494633)),
+            ("coordinates that are not numbers", gc('"north"', '"west"'))):
+        p, w, f = run(biz(geo))
+        check(f"     caught: {label}", "not the shop's verified pin" in f, f)
+    p, w, f = run(biz(None))
+    check("     caught: a business node with no geo at all", "carries no `geo`" in f, f)
+    p, w, f = run('<script type="application/ld+json">{"@type":"Place",'
+                  f'"geo":{gc(40.0, -75.0)}}}</script>')
+    check("     a geo on a node that is not the business is left alone",
+          "verified pin" not in f and "verified pin" not in p, (p, f))
+    _load = audit.load
+    audit.load = lambda src: open(src, encoding="utf-8").read()
+    try:
+        bad = []
+        for pg in shipped:
+            sp, sw, sf, sn, sk = audit.audit(pg)
+            if not any("Schema geo is the verified pin" in x for x in sp) or \
+                    any("verified pin" in x for x in sf):
+                bad.append(pg)
+    finally:
+        audit.load = _load
+    check(f"     every shipped page ({len(shipped)}) carries the verified pin", not bad, bad)
+
     # And the page as it actually ships.
     _load = audit.load
     audit.load = lambda src: open(src, encoding="utf-8").read()

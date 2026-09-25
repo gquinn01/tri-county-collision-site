@@ -56,8 +56,6 @@
        against the Google Business Profile before any page using it goes
        live. NAP consistency is exact-match or it is nothing.
 
-         {{GEO_LAT}}         latitude, bare number, no quotes
-         {{GEO_LON}}         longitude, bare number, no quotes
          {{SAME_AS}}         schema sameAs list: the GBP place_id URL
                              plus real, claimed social profiles only.
                              A profile the shop does not control does
@@ -331,7 +329,12 @@
        reference carries no type and no sameAs, which is what search
        engines and the audit both read to confirm the entity.
        No offers, priceRange, hasOfferCatalog, Review or AggregateRating
-       anywhere: pricing is not published on this site. -->
+       anywhere: pricing is not published on this site.
+       geo IS NO LONGER A TOKEN. It is the shop's verified pin, GEO_LAT and
+       GEO_LON in scripts/audit.py, adopted by Greg's ruling of 2026-09-25
+       (proposed-changes.md 3.56), and the audit fails a page that says
+       anything else. Never take coordinates from a map URL's @lat,lon,
+       which is the viewport centre, not the pin. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -351,7 +354,7 @@
           "postalCode": "18966",
           "addressCountry": "US"
         },
-        "geo": { "@type": "GeoCoordinates", "latitude": {{GEO_LAT}}, "longitude": {{GEO_LON}} },
+        "geo": { "@type": "GeoCoordinates", "latitude": 40.1660232, "longitude": -75.0512847 },
         "sameAs": [
 {{SAME_AS}}
         ]

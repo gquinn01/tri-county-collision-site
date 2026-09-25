@@ -169,6 +169,56 @@ HOURS_SATURDAY = "Saturday by appointment only"
 HOURS_SCHEMA_DAYS = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 HOURS_SCHEMA_OPENS = "08:00"
 HOURS_SCHEMA_CLOSES = "18:00"
+
+# --- The shop's coordinates, defined once ------------------------------
+# ADOPTED BY GREG'S RULING OF 2026-09-25, proposed-changes.md 3.56. This is
+# Google's own place point for the shop, VERIFIED 2026-09-24 three ways
+# (3.54): it is the point Google's data gives for the footer's search; it
+# falls inside the OpenStreetMap footprint of the building (way 902318081);
+# and the satellite view shows the shop in that building, on the northeast
+# side of Jaymor Rd at James Way and Knowles Ave.
+#
+# A VENDOR-VERIFIED EXCEPTION, recorded like the NAP's: the standards make
+# the owner the fact-checker of record, and owner sign-off is outstanding.
+# It folds into his NAP sign-off rather than being a separate ask.
+#
+# WHAT IT REPLACED, so nobody pastes that class of coordinate again: the
+# live site's geo, 40.1660232, -75.0538596, about 220m west of the shop. Its
+# latitude matched and its longitude did not, because it was a Google Maps
+# URL's "@lat,lon", the viewport CENTRE, which Google shifts sideways for
+# its side panel. It is not the pin. Take coordinates from the place's
+# own data, never from a map URL.
+#
+# The check: every business node's geo in every page's schema equals these
+# exactly. scripts/prepare-map-image.py draws its pin from the same two
+# values, so the map and the schema cannot disagree.
+GEO_LAT = 40.1660232
+GEO_LON = -75.0512847
+
+
+def geo_findings(nodes: list) -> tuple:
+    """(business nodes checked, every way their geo departs from the
+    constants). A business node with no geo is a departure: the node
+    repeats in full on every page, so a missing value is drift."""
+    out, n = [], 0
+    for node in nodes:
+        t = node.get("@type")
+        names = {type_name(x) for x in (t if isinstance(t, list) else [t]) if x}
+        if not LOCAL_BUSINESS_TYPES.intersection(names):
+            continue
+        n += 1
+        geo = node.get("geo")
+        if not isinstance(geo, dict):
+            out.append("the business node carries no `geo`")
+            continue
+        try:
+            lat, lon = float(geo.get("latitude")), float(geo.get("longitude"))
+        except (TypeError, ValueError):
+            out.append(f"`geo` is not two numbers: {geo!r}")
+            continue
+        if (lat, lon) != (GEO_LAT, GEO_LON):
+            out.append(f"`geo` is {lat}, {lon}; the constants say {GEO_LAT}, {GEO_LON}")
+    return n, out
 HOURS_DAY_RE = re.compile(
     r"\b(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)s?\b"
     r"|\b(?:Mon|Tue|Tues|Wed|Thu|Thur|Thurs|Fri|Sat|Sun)\.?\s*(?:-|\u2013|to|thru|through)\s*"
@@ -1885,6 +1935,27 @@ def audit(source: str, coverage: dict = None):
         passes.append(f"Hours match the constants in all {n_ok} visible mention"
                       f"{'' if n_ok == 1 else 's'}"
                       f"{' and the schema' if biz_nodes else ''}.")
+
+    # --- The shop's coordinates: every business node says the constants ---
+    all_nodes = []
+    for block in p.jsonld_blocks:
+        try:
+            data = json.loads(block)
+        except (json.JSONDecodeError, ValueError):
+            continue
+        for item in (data if isinstance(data, list) else [data]):
+            if isinstance(item, dict):
+                g = item.get("@graph")
+                all_nodes.extend(x for x in (g if isinstance(g, list) else [item])
+                                 if isinstance(x, dict))
+    n_geo, geo_off = geo_findings(all_nodes)
+    for x in geo_off:
+        fails.append(f"**The schema's geo is not the shop's verified pin:** {x}. "
+                     f"GEO_LAT and GEO_LON in scripts/audit.py are the one place it "
+                     f"lives (proposed-changes.md 3.56). Never take coordinates from a "
+                     f"map URL: its @lat,lon is the viewport centre, not the pin.")
+    if n_geo and not geo_off:
+        passes.append(f"Schema geo is the verified pin, {GEO_LAT}, {GEO_LON}.")
 
     # --- Word count (thin content check) ---
     text = re.sub(r"<script[\s\S]*?</script>|<style[\s\S]*?</style>|<[^>]+>", " ", html)

@@ -41,8 +41,13 @@ centre copied as if it were the pin. The pin is PIN below, and it is
 checked against the OSM building footprints: the script prints which
 footprint contains it, and refuses to draw if none does.
 
-THE COORDINATES DO NOT ENTER THE SCHEMA. They exist to draw a picture. geo in
-the schema is a separate fact with its own owner question (4.7).
+THE SCHEMA NOW CARRIES THIS PIN, corrected forward 2026-09-25. When this
+script was written (3.54) the coordinates were kept out of the schema, which
+had its own owner question (4.7). Greg's ruling of 2026-09-25 (3.56) adopted
+the verified pin as the schema's geo, so the pin and geo are now ONE pair of
+values: GEO_LAT and GEO_LON in scripts/audit.py, which this script reads.
+The map and the schema cannot disagree, because there is nothing to
+disagree with.
 
 WHY INLINE SVG. The palette lives in one place, docs/assets/site.css. An SVG
 file loaded through <img> cannot read that stylesheet, so every colour would
@@ -67,15 +72,21 @@ import sys
 import time
 import urllib.parse
 import urllib.request
+import importlib.util
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 PAGE = os.path.join(ROOT, "docs", "contact-us", "index.html")
 
-# THE PIN. Google's own place coordinate for "Tri-County Collision" at the
-# footer's search URL, read 2026-09-24, and it must fall inside an OSM
-# building footprint for this script to draw at all. See 3.54.
-PIN_LAT, PIN_LON = 40.1660232, -75.0512847
+# THE PIN is the schema's geo, read from scripts/audit.py rather than
+# typed here: two values that must agree are one value. Google's own place
+# point for the shop, verified 2026-09-24 (3.54) and adopted 2026-09-25
+# (3.56). It must still fall inside an OSM building footprint for this
+# script to draw at all.
+_spec = importlib.util.spec_from_file_location("audit", os.path.join(HERE, "audit.py"))
+_audit = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_audit)
+PIN_LAT, PIN_LON = _audit.GEO_LAT, _audit.GEO_LON
 
 # THE QUERY, and the only request this script ever makes. The bbox is the
 # frame below plus a margin, so roads that cross the edge are whole; the

@@ -7045,9 +7045,10 @@ page's only warning.
   to 24.
 - **The schema's geo is about 220m west of the shop**, on all six pages (4.7).
   The brief's premise that geo is an unfilled token holds only for the
-  template. The coordinates found here did not enter the schema, as ruled.
+  template. ~~The coordinates found here did not enter the schema, as ruled.
   Correcting geo to the verified pin is a one-value change for Greg to rule
-  on. Section 5, item 26.
+  on.~~ **RULED 2026-09-25, 3.56: the schema's geo is now the verified pin,
+  held by `GEO_LAT` and `GEO_LON` in `scripts/audit.py`.** Section 5, item 26.
 - **The focus ring on ox.** `a:focus-visible` draws a 3px `--ox` outline,
   which on an ox band is oxblood on oxblood. It is site-wide on every `.field-ox`
   band that carries a link or button, and not new here; the breadcrumb's Home
@@ -7155,6 +7156,119 @@ The half pixel is subpixel rounding in the track split.
     exits 0, as does `build-sitemap.py --check`;
   - `STAGING=1 audit.py --strict` finds **zero criticals and six warnings,
     all sameAs**, with every page at its bar (95, and contact at 94).
+
+
+### 3.56 The schema's geo takes the verified pin. BUILT 2026-09-25
+
+**Record number: 3.56**, the next after 3.55. Greg's ruling, 2026-09-25: the
+schema's geo **adopts the verified pin**, the point 3.54 proved three ways:
+
+- it is Google's own place point for the shop;
+- it falls inside the OpenStreetMap footprint of the building (way
+  902318081);
+- the satellite view shows the shop in that building, on the northeast side
+  of Jaymor Rd at James Way and Knowles Ave.
+
+#### The pair
+
+On all six pages' `AutoBodyShop` node, and in the template:
+
+```
+BEFORE  "latitude": 40.1660232,  "longitude": -75.0538596
+AFTER   "latitude": 40.1660232,  "longitude": -75.0512847
+```
+
+**Why the old one was wrong, in one line, so nobody pastes that class of
+coordinate again:** it was a Google Maps URL's `@lat,lon`, which is the
+viewport centre that Google shifts sideways for its side panel, not the pin.
+The shift is about 220m west. **The latitude was already right**, which is why
+only the longitude moves. **Take coordinates from the place's own data, never
+from a map URL.**
+
+#### The constants, and the check
+
+- **`GEO_LAT` and `GEO_LON` in `scripts/audit.py`**, beside the NAP and the
+  hours. The comment carries the provenance: Google's pin, verified
+  2026-09-24 against the OSM footprint and the satellite view, and adopted by
+  Greg's ruling of 2026-09-25. **Owner sign-off is outstanding**, a recorded
+  vendor-verified exception like the NAP's, **and it folds into his NAP
+  sign-off rather than being a new ask.** The comment also records the old
+  value and the diagnosis.
+- **The check:** every business node's `geo`, on every page, must equal the
+  constants exactly. A business node with no `geo` fails too, because the
+  node repeats in full on every page, so a missing value is drift. It is one
+  pass line per page.
+- **`scripts/prepare-map-image.py` now reads the same two values** instead of
+  keeping its own `PIN_LAT, PIN_LON`. The map's pin and the schema's geo are
+  one pair of values, so they cannot disagree. **Redrawn from the cached data,
+  the page came out byte-identical** (`d091eeba5157` before and after), which
+  proves the pin did not move.
+- **Each page's schema comment gains the same three lines**, naming where geo
+  comes from and why a map URL is never the source. The **template's
+  `{{GEO_LAT}}`/`{{GEO_LON}}` tokens become the values**. Their entries leave
+  the token list, and a comment above the schema says geo is no longer a
+  token.
+
+#### Proved, both directions
+
+**`test-audit-checks.py` section 22**, 9 checks:
+
+- **Passes:** the verified pin.
+- **Fails:**
+  - the old live-site value;
+  - latitude and longitude swapped;
+  - one digit off in the seventh decimal place;
+  - Nominatim's interpolated point;
+  - coordinates that are not numbers;
+  - a business node with no `geo`.
+- **Left alone:** a `geo` on a node that is not the business.
+- **All six shipped pages** carry the pin.
+
+**Red under a mutated value, proved and restored:**
+
+1. **Before the pages changed**, the new check failed the old value on all
+   six pages: one critical each, 6 in all. That is the check catching the
+   exact error it was written for.
+2. **In memory**, moving `GEO_LON` one digit turns section 22's
+   seventh-place case and the shipped-pages check red.
+3. **On disk**, setting `GEO_LON` back to the old value makes the full audit
+   report **6 criticals**. Restored from a copy, the audit reports **0**, and
+   `grep` confirms the constant reads `-75.0512847`.
+
+#### The corrections forward
+
+- **`prepare-map-image.py`'s header** said "THE COORDINATES DO NOT ENTER THE
+  SCHEMA". It now says the schema carries this pin by this record, and that
+  the map reads it from the constants.
+- **3.54's paragraph** saying the coordinates stayed out of the schema is
+  struck with a pointer here.
+- **4.7's geo line** is marked RULED.
+- **Section 5 item 26 closes as RULED**, with the note that the owner's
+  confirmation folds into his NAP sign-off.
+- **CLAUDE.md**: geo leaves the template's still-tokenized list and joins the
+  constants beside the NAP and the hours.
+
+#### The score table moved, and nothing got cleaner
+
+**`/contact-us/` now reads 95, not 94.** The new check is one more pass on
+every page: a service page is 20 of 21 (95.2), and contact is 18 of 19
+(94.7), which rounds to 95. That is arithmetic, not improvement: contact
+still runs two fewer checks by the execution-page ruling, and sameAs is still
+its only warning. CLAUDE.md's paragraph on why contact read 94 now carries the
+same note, so the next reader is not puzzled either way.
+
+**No `dateModified` moved**, following 3.47 to 3.50. **No CSS, and no
+restamp.** `stamp-assets.py --check` exits 0 unchanged.
+
+#### Measured
+
+The suite:
+
+- both test scripts pass, section 22 included;
+- `stamp-assets.py --check` and `build-sitemap.py --check` exit 0;
+- `STAGING=1 audit.py --strict` finds **zero criticals and six warnings, all
+  sameAs**, with **every page at 95**;
+- the geo check is green on all six.
 
 ---
 
@@ -7401,7 +7515,9 @@ vehicles.
   place pin to the digit, and the longitude is about 220m west of it, which is
   a Google Maps URL's viewport centre rather than its pin. The verified pin is
   40.1660232, -75.0512847: Google's place point, inside the OSM footprint of
-  the building Google shows the shop in. Not changed; section 5 item 26.
+  the building Google shows the shop in. ~~Not changed; section 5 item 26.~~
+  **RULED 2026-09-25 and shipped, 3.56: every page's geo is now the verified
+  pin, and `GEO_LAT`/`GEO_LON` in `scripts/audit.py` hold it.**
 - **Hours**: Monday to Friday 8 a.m. to 6 p.m., Saturday by appointment only.
   Must match the Google Business Profile exactly. **It does not, as of 2026-09-24**: the
   profile says Saturday Closed and Sunday Closed (3.54). Now held by
@@ -7665,5 +7781,8 @@ Ordered by how much else depends on it.
     one tenant in a multi-tenant building at Jaymor Rd, James Way and Knowles
     Ave, which is exactly when a line like "the entrance is on the Jaymor Rd
     side" helps. Only if the owner wants one, and only in their words.
-26. **The schema's geo is about 220m west of the shop** (4.7). For Greg first:
-    correct it to the verified pin, 40.1660232, -75.0512847, on every page?
+26. ~~**The schema's geo is about 220m west of the shop** (4.7). For Greg first:
+    correct it to the verified pin, 40.1660232, -75.0512847, on every page?~~
+    **RULED by Greg 2026-09-25 and shipped, 3.56**: every page's geo is the
+    verified pin. The owner's confirmation folds into his NAP sign-off
+    (section 2), not a new question.
