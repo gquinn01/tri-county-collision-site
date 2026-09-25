@@ -7566,6 +7566,69 @@ from the shop that performs the work."
    its separator leading. It reads, but a post title in a crumb is long by
    nature. Truncating it would need CSS too; noted, not proposed.
 
+
+### 3.58 The other fifteen posts, in batches of five. BUILT 2026-09-25
+
+The post shape and every rule are 3.57's. `scripts/migrate-blog.py` built each
+batch and printed its pairs, and **every batch passed the gates before its
+commit**:
+
+- the banned-string grep, before the audit;
+- both test scripts;
+- `STAGING=1 audit.py --strict`: every page at 95, sameAs the only warning,
+  zero criticals.
+
+Each landing turns the index's pending cards into links. `llms.txt` and the
+sitemap regenerate with each batch.
+
+**Every post in this record carries its own publish date as `lastmod`**, so
+the sitemap now says truthfully that most of the blog is old. The three
+posts the live site modified later carry that later date and an "Updated"
+line.
+
+#### Batch 1, posts 1 to 5 (2023-03-29 to 2023-05-23)
+
+**FLAGGED, post 1, `/what-do-all-those-lights-mean-in-my-car-.../`: NO
+IMAGE.** The live post pairs each of its 21 warning lights with a screenshot
+of the symbol, and a reader matches a light by its symbol. **The text names
+and explains every light and stands on its own, but the post is weaker
+without them.** The screenshots are old-site imagery, and so banned. Shipped
+text-first. A licensed or owner-supplied symbol set would restore it.
+
+| Post | Where | Before | After | Why |
+|---|---|---|---|---|
+| 1 lights | title | What do all those lights mean in my car? Understanding your vehicle's language! \| Tri County Collision | What do all those lights mean in my car? | 40, the H1's own question |
+| 1 | meta | In this blog post, Tri County Collision helps drivers understand their vehicle's warning lights and indicators. From the check engine light to the oil pressure warning, our experts explain what each light means and what to do if it comes on. | What your car's warning lights mean, from engine temperature and oil pressure to tire pressure and traction control, and what to check when one comes on. | 153. **The live meta promised "the check engine light", which the post never covers**; the new one names only lights it explains |
+| 1 | name, 5 places | Tri-County Collision Center | Tri-County Collision | the NAP's name |
+| 1 | body | such as[em dash]the anti-lock | such as the anti-lock | no em dashes; the glyph is named here, not printed |
+| 1 | body | 995 Jaymor Road, Southampton, PA  18966 | 995 Jaymor Rd, Southampton, PA 18966 | the NAP's street, and one space before the ZIP |
+| 1 | body, and the link | 215.322.5350, `tel:12153225350` | (215) 322-5350, `tel:+12153225350` | the NAP's phone and tel: form |
+| 1 | body | shop hours are Monday-Friday 8am-6pm, and Saturday by appointment. | shop hours are Monday to Friday, 8 a.m. to 6 p.m., and Saturday by appointment only. | the hours as `HOURS_*` write them; the audit fails any other spelling |
+| 2 guide | title | The Ultimate Guide to Collision Repair Services: What to Expect and How to Choose the Best Provider \| Tri County Collision | The Ultimate Guide to Collision Repair Services | 47, the H1 to its colon |
+| 2 | meta | Discover the ultimate guide to collision repair services, including what to expect during the process and expert tips on selecting the best provider for your vehicle's needs. | The ultimate guide to collision repair services: what to expect during the process and expert tips on choosing the best provider for your vehicle. | 146 |
+| 2 | name, 9 places | Tri County Collision Center | Tri-County Collision | the NAP's name |
+| 2 | link | google.com/search?q=tri+county+collision+center&... | the footers' directions URL | "Research online reviews and testimonials": one Google destination, no tracking parameters |
+| 3 OEM | title | The Importance of OEM Parts in Collision Repair: Ensuring Quality and Safety for Your Vehicle \| Tri County Collision | The Importance of OEM Parts in Collision Repair | 47, the H1 to its colon |
+| 3 | meta | Learn why Tri County Collision Center prioritizes OEM parts in collision repair, and discover how they ensure the highest quality, safety, and value for your vehicle during the repair process. | Learn why Tri-County Collision prioritizes OEM parts in collision repair and how they ensure quality, safety, and value for your vehicle. | 137 |
+| 3 | name, 6 places | Tri County Collision Center | Tri-County Collision | the NAP's name |
+| 4 PDR | title | The Art of Paintless Dent Repair: A Cost-Effective Solution for Minor Collisions \| Tri County Collision | The Art of Paintless Dent Repair: A Cost-Effective Solution | 59 |
+| 4 | meta | Discover the art of paintless dent repair at Tri County Collision Center. Explore the cost-effective and efficient solution for minor collisions, preserving your vehicle's original finish. | The art of paintless dent repair at Tri-County Collision: a cost-effective, efficient fix for minor collisions that preserves your vehicle's original finish. | 157 |
+| 4 | name, 7 places | Tri County Collision Center | Tri-County Collision | the NAP's name |
+| 5 damage | H1 | ... Assessing Collision Damage Severity at Tri County Collision Center | ... Assessing Collision Damage Severity at Tri-County Collision | the NAP's name |
+| 5 | title | From Fender Benders to Major Crashes: Assessing Collision Damage Severity at Tri County Collision Center \| Tri County Collision | Assessing Collision Damage: Fender Benders to Major Crashes | 59; the promise words kept, reordered |
+| 5 | meta | Discover how Tri County Collision Center accurately assesses collision damage severity, from minor fender benders to major crashes | Discover how Tri-County Collision accurately assesses collision damage severity, from minor fender benders to major crashes | 123; the name only |
+| 5 | name, 7 places | Tri County Collision Center | Tri-County Collision | the NAP's name |
+
+**Gates:**
+
+- the grep is clean on all five;
+- both test scripts pass;
+- **thirteen pages, every one at 95, zero criticals, thirteen sameAs
+  warnings and nothing else**;
+- post 1's rewritten hours line passes the hours check;
+- the index now has 6 linked cards and 10 pending;
+- the sitemap has 13 URLs.
+
 ---
 
 ## 4. The claims list
@@ -8024,6 +8087,31 @@ Greg as well as the owner.
   - the first-party-claim "reasonable time" rule.
 - **"family-owned, Southampton-based" and "ASE/I-CAR® Gold technicians"**:
   already on the list (4.1, 4.5).
+
+**Batch 1** (3.58)
+
+- **Post 1, the dashboard lights: the heaviest.**
+  - "We are OEM certified collision repair facility for INFINITI, Nissan,
+    Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge and Jeep". That is
+    **eleven**, without Subaru, dated 2023, against the site's twelve. Was
+    Subaru added since? The brand check reads counts, not lists, so this
+    passes it; it is on this list instead.
+  - "conveniently located near the PA turnpike, **route 95** and Street Road,
+    County Line Road and Second Street Pike". I-95 is several miles from
+    Jaymor Rd; does the shop want that landmark?
+  - "Tri-County Collision also provides services for **tow, rental car**, and
+    insurance claims assistance." A service-scope claim: does the shop
+    arrange tows and rentals?
+  - "We would be happy to supply you with an auto repair quote online or over
+    the phone". Quotes by phone?
+  - "ASE / I-CAR® GOLD certified": 4.1.
+- **Post 2, the ultimate guide.** "Tri-County Collision offers a lifetime
+  warranty on all repairs" (4.1). ASE/I-CAR Gold, repeated.
+- **Post 3, OEM parts.** "prioritizes OEM parts" and "committed to OEM
+  parts": always OEM, or OEM where available? 4.10 asks the same of the
+  commercial page.
+- **Post 4 and post 5.** The PDR and damage-assessment process claims mirror
+  the service pages' (4.10); nothing new beyond ASE/I-CAR Gold.
 
 ## 5. What the owner needs to answer first
 
