@@ -1969,7 +1969,32 @@ section > .wrap > .cta-row:last-child { justify-content: center; }
 .prose + .cta-row { justify-content: center; }
 
 .grid2, .grid3, .grid4 { display: grid; gap: 22px; }
-@media (min-width: 700px) { .grid2 { grid-template-columns: repeat(2, 1fr); } .grid3 { grid-template-columns: repeat(2, 1fr); } .grid4 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 700px) { .grid3 { grid-template-columns: repeat(2, 1fr); } .grid4 { grid-template-columns: repeat(2, 1fr); } }
+/* THE TWO-COLUMN CARD GRID CENTRES A LONE LAST CARD, 2026-09-24 on Greg's
+   ruling, proposed-changes.md 3.55. An odd count leaves the last card
+   alone in its row, and pinned left it reads as a card that lost its
+   partner. So it keeps its siblings' width and sits in the middle.
+
+   FOUR TRACKS, EVERY CARD SPANNING TWO, which is exactly two columns: a
+   card is two tracks plus one gap, which is (width - gap) / 2, the same as
+   before to the pixel (3.55 measures it). A lone last card starts at
+   track 2 and so lands centred. Written this way so the gap stays the one
+   value above and nothing here re-derives it: a calc() with the gap typed
+   in again would be a second copy of it.
+
+   WHAT IT REACHES TODAY, grepped across every page: one grid, the five
+   action cards on /contact-us/, and every .grid2 the service-page
+   template builds. No other page uses .grid2. WHAT IT DOES NOT REACH, on
+   purpose: glass's three .grid3 cards are two across between 700 and
+   999px, with the third alone; .grid3 is designed as three across and
+   that width is its transition, so it is a separate decision. .payoff goes
+   from one column straight to three and .repairs-grid is always one, so
+   neither ever has a lone card in two columns. */
+@media (min-width: 700px) {
+  .grid2 { grid-template-columns: repeat(4, 1fr); }
+  .grid2 > * { grid-column: span 2; }
+  .grid2 > :last-child:nth-child(odd) { grid-column: 2 / span 2; }
+}
 @media (min-width: 1000px) { .grid3 { grid-template-columns: repeat(3, 1fr); } .grid4 { grid-template-columns: repeat(4, 1fr); } }
 
 .card {

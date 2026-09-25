@@ -6555,12 +6555,14 @@ Each of these was already ruled:
   section's `.wrap` is a section-bottom ask, and those centre. This one belongs
   to the left-aligned copy above it. It is excluded by structure, the way the
   hero is.
-- **The hours sit inside the call row with no "Hours" label.** They sit beside
+- ~~**The hours sit inside the call row with no "Hours" label.** They sit beside
   the button where there is room and under it where there is not. With the
   label, the block was three lines. At 1440 the flex row stretched the button
   to 84px to match it, and at 360x640 the hours cleared the fixed call bar by
   **1px**. Without the label, the button is its own 62px, and the fold numbers
-  are below.
+  are below.~~ **SUPERSEDED 2026-09-24 by Greg's ruling, 3.55: the hours left
+  the header. Do not restore them there, or the requirement below, from this
+  paragraph.**
 
 **The page node is a `ContactPage`**, which is what the page is. The builder
 matched `WebPage` by exact type and would have left this page without a
@@ -6670,8 +6672,9 @@ the top of the first screen:
 1440x900         900       463-525     463-525        none          375
 ```
 
-The call button and both hours lines are inside the first screen at both phone
-sizes and above the fixed call bar. Before the label came off, the 360x640
+The call button and ~~both hours lines are~~ is inside the first screen at both
+phone sizes and above the fixed call bar. **The hours-in-the-first-screen
+requirement is SUPERSEDED, 3.55: the hours left the header by Greg's ruling.** Before the label came off, the 360x640
 margin was 1px. Laid-out width is true at every size (`scrollWidth` equals
 the viewport).
 
@@ -7050,6 +7053,108 @@ page's only warning.
   band that carries a link or button, and not new here; the breadcrumb's Home
   link is simply the first link in an ox band near the top of a page. It wants
   a `.dark` focus colour in the next CSS commit.
+
+
+### 3.55 The header is the call alone, and the lone card centres. BUILT 2026-09-24
+
+**Record number: 3.55**, the next after 3.54. Two rulings from Greg on
+`/contact-us/`, 2026-09-24, in one commit.
+
+#### 1. The hours come out of the ox header
+
+The header keeps the breadcrumb, the kicker, the H1, the just-call lead and
+the call button. **The hours line beside the button is gone.** The hours still
+live on the page in `#find-us`'s hours box, and in the footer and the schema.
+
+**THE 3.53 REQUIREMENT IS SUPERSEDED, NOT FORGOTTEN.** 3.53 required the hours
+inside the first screen on a phone, next to the call. **Greg's ruling
+withdraws it: do not restore it from reading 3.53 or 3.54.** 3.53's own
+paragraphs are struck where they state it, with a pointer here. The page's
+header comment says the same thing where the next editor will look.
+
+**The fold, probed with an iframe the size of the viewport:**
+
+```
+             innerHeight  call button  call bar top  clears it by
+390x664          664       418-480        604        124 (54 in 3.54)
+360x640          640       418-480        580        100 (30 in 3.54)
+```
+
+The button did not move. On a phone the hours wrapped under it, so what came
+back is the room they took: **the header is 70px shorter on a phone** (473 to
+403), and everything below it rises by the same. At 1440 the hours sat beside
+the button, so the header's height there is unchanged at 480.
+
+**The hours constants check counts one fewer copy.** The copies site-wide are
+seven, not the eight 3.54 counted: six footers and the hours box.
+`/contact-us/` now reports four visible mentions (two copies, two strings
+each), and every page still passes.
+
+The `.hero.dark .cta-row` rule stays. It keeps the row left at the base
+margin, which the fold still benefits from. Its comment already argues from
+the fold rather than from the hours.
+
+#### 2. The Get Directions card centres in its row
+
+**Written as a general rule on `.grid2`**, the site's two-column card grid:
+a lone last card keeps its siblings' width and centres. **What it reaches
+today, grepped across every page** (comments and SVG stripped, direct
+children counted):
+
+```
+docs/contact-us/                  .grid2 x5   <- the one grid it reaches
+templates/service-page-template   .grid2 (template shell, cards from a token)
+every other page                  no .grid2
+```
+
+**What it does not reach, on purpose**, named in the comment:
+
+- **Glass's three `.grid3` cards** are two across from 700 to 999px, with the
+  third alone. `.grid3` is designed as three across, and that width is its
+  transition, so it is a separate decision.
+- **`.payoff`** (3 on collision, 3 on dent) goes from one column straight to
+  three.
+- **`.repairs-grid`** (5 on home and collision) is always one column.
+
+So neither of those ever has a lone card in two columns.
+
+**The mechanism avoids a second copy of the gap.** `.grid2` becomes four
+tracks with every card spanning two, which is exactly the old two columns: a
+card is two tracks plus one gap, which is (width - gap) / 2. A lone last card
+(`:last-child:nth-child(odd)`) starts at track 2 and lands centred. The
+alternative, a `calc()` width with the 22px gap typed in again, would be two
+values that must agree kept as two values. `.grid2` leaves the shared
+`.grid2, .grid3, .grid4` media line, because its column definition is now its
+own.
+
+**Measured, the card widths are unchanged to the pixel**, before against
+after:
+
+```
+width   cards before          cards after             lone card centre  column centre
+1440    529 x5, 5th at 180    529 x5, 5th at 456          720.5            720
+1000    -                     469 x5                      500.5            500
+760     -                     349 x5                      380.5            380
+700     -                     319 x5                      350.5            350
+699     one column            one column, 659             349.5            349.5
+390     one column, 350       one column, 350               -                -
+```
+
+The half pixel is subpixel rounding in the track split.
+
+#### Measured
+
+- **Seams hold the 3.46 baseline**, the same as 3.54: header to options
+  heading is 176 at 1440 and 96 at 390; head-to-body is 40 at both.
+- **Rendered and inspected** at 1440 and 390, the header and the cards: the
+  header is the call alone, the fifth card sits centred under the four at
+  1440, and phones are unchanged.
+- **The suite:**
+  - both test scripts pass;
+  - `stamp-assets.py` restamped every page and the template, and `--check`
+    exits 0, as does `build-sitemap.py --check`;
+  - `STAGING=1 audit.py --strict` finds **zero criticals and six warnings,
+    all sameAs**, with every page at its bar (95, and contact at 94).
 
 ---
 
