@@ -131,7 +131,10 @@ POSTS = {
         title="“Collision Repair Near Me”? Choosing a Southampton Body Shop",
         meta=("Searching \"collision repair near me\" in Southampton? Our guide helps you "
               "choose the RIGHT auto body shop with expert tips. Make a confident choice!"),
-        edits=[]),
+        edits=[
+            ("the Tri County Difference", "the Tri-County Difference",
+             "the name as the NAP writes it; the mechanical rule only catches the full name"),
+        ]),
     "critical-questions-to-ask-any-collision-center-in-bucks-county-before-handing-over-your-keys": dict(
         title="Critical Questions to Ask a Bucks County Collision Center",
         meta=("Stressed about collision repair in Bucks County? Ask these 7 crucial "

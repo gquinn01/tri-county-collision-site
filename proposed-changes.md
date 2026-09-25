@@ -7629,6 +7629,54 @@ text-first. A licensed or owner-supplied symbol set would restore it.
 - the index now has 6 linked cards and 10 pending;
 - the sitemap has 13 URLs.
 
+#### Batch 2, posts 6 to 10 (2023-07-10 to 2025-07-31)
+
+**Post 6 links to post 3**, the blog's one post-to-post link. Post 3 landed
+in batch 1, so it is a real link from the start.
+
+**Two posts keep their live metas verbatim**, because they already fit: post
+8 (147) and post 9 (153).
+
+| Post | Where | Before | After | Why |
+|---|---|---|---|---|
+| 6 value | H1 | Preserving Value: How Tri County Collision Center Impacts ... | Preserving Value: How Tri-County Collision Impacts ... | the NAP's name |
+| 6 | title | Preserving Value: How Tri County Collision Center Impacts the Resale Value of Your Car through Collision Repair \| Tri County Collision | Preserving Value: How Collision Repair Impacts Resale Value | 59; the brand leaves the title, where it is not the promise |
+| 6 | meta | Protect your car's resale value with Tri County Collision Center's expert collision repair services. Trust us to restore your vehicle to its pre-collision condition and enhance its appeal. | Protect your car's resale value with Tri-County Collision's expert collision repair, restoring your vehicle to its pre-collision condition and appeal. | 150 |
+| 6 | name, 7 places | Tri County Collision Center | Tri-County Collision | the NAP's name |
+| 7 PDR benefits | title | Unveiling the Hidden Benefits of Paintless Dent Repair in Collision Restoration \| Tri County Collision | Unveiling the Hidden Benefits of Paintless Dent Repair | 54 |
+| 7 | meta | Discover the hidden benefits of paintless dent repair at Tri County Collision Center. Preserve your vehicle's original factory finish, save money, and get back on the road faster with this cost-effective and environmentally friendly collision restoration technique. | The hidden benefits of paintless dent repair at Tri-County Collision: your original factory finish preserved, money saved, and back on the road faster. | 151; "environmentally friendly" leaves the meta only |
+| 7 | name, 6 places | Tri County Collision Center | Tri-County Collision | the NAP's name |
+| 8 near me | title | "Collision Repair Near Me" in Southampton? How to Choose the Right Auto Body Shop \| Tri County Collision | "Collision Repair Near Me"? Choosing a Southampton Body Shop | 60; the searched phrase kept, which is the post's promise |
+| 8 | name, 4 places | Tri County Collision Center | Tri-County Collision | the NAP's name |
+| 8 | body | the Tri County Difference | the Tri-County Difference | the name as the NAP writes it; caught by the grep, not by the mechanical rule, which needs the full name |
+| 8 | link | google.com/maps/place/Tri+County+Collision+Center/@40.1660232,-75.0512847,... | the footers' directions URL | "Online reviews": one Google destination |
+| 9 questions | title | Critical Questions to Ask Any Collision Center in Bucks County Before Handing Over Your Keys \| Tri County Collision | Critical Questions to Ask a Bucks County Collision Center | 57 |
+| 9 | name, 9 places | Tri County Collision Center | Tri-County Collision | the NAP's name |
+| 9 | body, 3 places | (like ADAS [spaced dash] Advanced ...), (Original Equipment Manufacturer [spaced dash] parts made by ...), updates [spaced dash] a simple | (like ADAS, Advanced ...), (Original Equipment Manufacturer: parts made by ...), updates: a simple | a spaced dash is an em dash by another glyph |
+| 9 | link, 2 places | google.com/maps/place/... | the footers' directions URL | review links: one Google destination |
+| 10 totaled | title | Is My Car Totaled? Expert Insights from Your Southampton Collision Repair Specialists \| Tri County Collision | Is My Car Totaled? Expert Insights from Southampton | 51 |
+| 10 | meta | Wondering if your car is totaled? Get expert insights from Southampton's trusted collision repair specialists. Learn what 'totaled' really means and get a free professional assessment today. | Wondering if your car is totaled? Southampton's collision repair specialists explain what 'totaled' really means and offer a free professional assessment. | 154 |
+| 10 | name, 3 places | Tri County Collision Center | Tri-County Collision | the NAP's name |
+| 10 | body | close to[em dash]or exceeds[em dash]its market value | close to, or exceeds, its market value | no em dashes; commas carry the aside |
+
+**The review links carry the verified pin.** The live posts' three Google
+Maps links carry `@40.1660232,-75.0512847`, which is 3.56's value exactly:
+independent confirmation that the place point adopted is the one the shop
+itself linked to.
+
+**Post 9's Toyota mentions are illustrations, not claims**: "a Toyota
+collision center", "a new Toyota", and what a good shop "might say". They
+stay.
+
+**Gates:**
+
+- the grep is clean;
+- both test scripts pass;
+- **eighteen pages, every one at 95, zero criticals, eighteen sameAs
+  warnings and nothing else**;
+- the index now has 11 linked cards and 5 pending;
+- the sitemap has 18 URLs.
+
 ---
 
 ## 4. The claims list
@@ -8112,6 +8160,22 @@ Greg as well as the owner.
   commercial page.
 - **Post 4 and post 5.** The PDR and damage-assessment process claims mirror
   the service pages' (4.10); nothing new beyond ASE/I-CAR Gold.
+
+**Batch 2** (3.58)
+
+- **Post 9, critical questions: a warranty with terms.** "Reputable shops,
+  including Tri-County Collision, offer a lifetime warranty on paint and
+  workmanship for as long as you own [the vehicle]". This is the most
+  specific warranty statement anywhere on the site, and it is exactly 4.1's
+  question: lifetime of what, covering what, and transferable or not.
+- **Posts 8, 9 and 10: "for decades"** and "family-owned and operated". The
+  1974 and second-generation question, 4.5.
+- **Post 10: "Certified technicians with expertise in all makes and models."**
+  All makes?
+- **Post 10: "a free professional assessment"**, and post 9's "fully-certified
+  expertise".
+- **Post 7**, in the body: "environmentally friendly". PDR does avoid paint
+  and filler; the owner should be comfortable with the word.
 
 ## 5. What the owner needs to answer first
 
