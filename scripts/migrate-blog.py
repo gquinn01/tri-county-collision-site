@@ -179,7 +179,10 @@ POSTS = {
         title="Deer Season in Bucks County: Insurance Coverage & Next Steps",
         meta=("Navigate deer season smart: safety and documentation tips, how claims work, "
               "and expert repairs from Tri-County Collision to restore your vehicle."),
-        edits=[],
+        edits=[
+            ("How Tri County handles", "How Tri-County handles",
+             "the name as the NAP writes it; the mechanical rule only catches the full name"),
+        ],
         faq_edits=[
             ("Yes, if you carry comprehensive coverage.",
              "Hitting a deer is covered by your insurance if you carry comprehensive coverage.",
@@ -215,7 +218,13 @@ POSTS = {
               "after repairs. Our Bucks County team handles testing, documentation, and "
               "peace of mind."),
         spaced_dash_to_colon=True,
-        edits=[]),
+        edits=[
+            ("How Tri County coordinates", "How Tri-County coordinates",
+             "the name as the NAP writes it; the mechanical rule only catches the full name"),
+            ('<a href="../auto-glass-repair-replacement/">', '<a href="../auto-glass-repair-replacement/#adas">',
+             "the brief's ruling: the ADAS post stays a post and links to the glass page's ADAS "
+             "section today, and to an ADAS page only if that page ever clears its gate"),
+        ]),
 }
 
 NAME_RE = re.compile(r"Tri[ \-]County Collision Center|Tri County Collision")

@@ -7677,6 +7677,100 @@ stay.
 - the index now has 11 linked cards and 5 pending;
 - the sitemap has 18 URLs.
 
+#### Batch 3, posts 11 to 14 and 16 (2025-07-31 to 2025-09-24)
+
+**The ADAS post stays a post**, as `pagemap.md`'s ADAS gate names it as
+source material. Its live link to the glass page ("Book Auto Glass Repair &
+Replacement and we'll coordinate the calibration step") now lands on the
+glass page's `#adas` section. It gains a link to an ADAS page only if that
+page ever clears its gate.
+
+| Post | Where | Before | After | Why |
+|---|---|---|---|---|
+| 11 first steps | title | After the Unthinkable: Your First Steps Following a Car Accident in Bucks County (Before Calling a Collision Shop) \| Tri County Collision | Your First Steps Following a Car Accident in Bucks County | 57; the promise kept, the flourish dropped. The H1 is unchanged |
+| 11 | meta | Just had a car accident in Bucks County? Stay calm with our step-by-step guide on what to do before choosing a collision shop. Local tips from Southampton's trusted repair experts. | Just had a car accident in Bucks County? A step-by-step guide to what to do before choosing a collision shop, from Southampton's trusted repair experts. | 152; the live non-breaking hyphens become plain ones |
+| 11 | name, 2 places | Tri County Collision Center | Tri-County Collision | the NAP's name |
+| 12 myths | title | Top 5 Misconceptions About Collision Repair (And the Truth from Your Southampton Experts) \| Tri County Collision | Top 5 Misconceptions About Collision Repair | 43 |
+| 12 | meta | ... Get the expert facts from Tri County Collision. | ... Get the expert facts from Tri-County Collision. | 155; the name only |
+| 12 | name, 2 places | Tri County Collision Center | Tri-County Collision | the NAP's name |
+| 12 | link | `http://ASE/ I-CAR® Gold technicians` | `../contact-us/` | "Contact Us today": a malformed href; the anchor says Contact Us |
+| 13 risks | title | Don't Delay Repairs! The Risks of Driving a Damaged Vehicle in the Southampton Area \| Tri County Collision | Don't Delay Repairs! The Risks of Driving a Damaged Vehicle | 59 |
+| 13 | meta | ... dangers of delaying your collision repair. Protect yourself and your vehicle. | ... dangers of delaying your collision repair. | 133 |
+| 13 | name, 2 places | Tri County Collision Center | Tri-County Collision | the NAP's name |
+| 14 deer | title | Deer Season in Bucks County: Insurance Coverage & Next Steps \| Tri County Collision | Deer Season in Bucks County: Insurance Coverage & Next Steps | 60, the H1 exactly |
+| 14 | meta | Navigate deer season smart: Safety and documentation tips, how claims work, and expert repairs from Tri County Collision to restore your vehicle to pre-accident condition. | Navigate deer season smart: safety and documentation tips, how claims work, and expert repairs from Tri-County Collision to restore your vehicle. | 145 |
+| 14 | name, 2 places, and a heading | Tri County Collision Center; How Tri County handles | Tri-County Collision; How Tri-County handles | the NAP's name; the heading caught by the grep |
+| 14 | FAQ 1 opener | Yes, if you carry comprehensive coverage. | Hitting a deer is covered by your insurance if you carry comprehensive coverage. | standalone test: "Yes, if" carries no subject |
+| 14 | FAQ 4 opener | Only if it's truly safe: | You can drive home after hitting a deer only if it's truly safe: | standalone test: "Only if" carries no subject |
+| 16 ADAS | title | ADAS Calibrations After a Crash: The Hidden Step That Protects Your Family \| Tri County Collision | ADAS Calibrations After a Crash: The Hidden Step | 48 |
+| 16 | meta | Not just body work: ADAS calibrations after a crash restores lane, brake, and blind-spot tech ... | ADAS calibrations after a crash restore lane, brake, and blind-spot tech ... | 160; the verb agrees with its subject |
+| 16 | name, and a heading | Tri County Collision Center; How Tri County coordinates | Tri-County Collision; How Tri-County coordinates | the NAP's name |
+| 16 | body, 6 places | Label [spaced dash] Text, in the six-step list | Label: Text | a spaced dash is an em dash by another glyph; "1–3 business days", a range, stays |
+| 16 | link | ../auto-glass-repair-replacement/ | ../auto-glass-repair-replacement/#adas | the brief's ruling on the ADAS post |
+
+**The deer post's four FAQs and the right-to-choose post's four mirror
+byte-identically.** FAQs 2 and 3 of the deer post already stood alone:
+"Pennsylvania law says insurers may not increase your premium..." and "Call
+police if anyone is hurt or the vehicle needs a tow...".
+
+**Gates:**
+
+- the grep is clean, and **"Tri County" appears nowhere on the site**;
+- both test scripts pass;
+- **twenty-three pages, every one at 95, zero criticals, twenty-three sameAs
+  warnings and nothing else**;
+- seven FAQ mirrors pass site-wide;
+- **the index links all 16**, none pending;
+- the sitemap has 23 URLs.
+
+#### Measured, and one proof owed
+
+**Part D asked for the fold probe, renders and seams on EVERY commit. They
+ran for 3.57's commit and for this last one, NOT for batches 1 and 2**,
+whose commits were gated on the suite alone. That is recorded rather than
+smoothed over. **To cover it, the seams were measured on all sixteen posts
+and the index at this commit**, which includes every page those two batches
+landed:
+
+- **The index and 15 of 16 posts hold the 3.46 baseline**: 177 at 1440 and
+  97 at 390, and every page's laid-out width is true.
+- **The deer post's body-to-FAQ seam is 194 and 114, 17px over.** Its prose
+  ends on a list, and `ul` keeps its bottom margin where a last paragraph's
+  is zeroed. Right-to-choose ends on a paragraph, which is why it measured
+  clean. **One CSS rule fixes it, and per Part C it is not written.** Open
+  item 2.
+
+**The fold at 390x664:**
+
+- **Index:** the first card at 562, inside the first screen.
+- **The worst-case post**, 11, with its 114-character headline: the H1 runs
+  eight lines (263 to 587), and **the first paragraph starts at 731, below
+  the call bar at 604.**
+
+**Headline heights on a phone** run 202 to 324px: 5 to 8 lines at the
+site's H1 scale.
+
+**Rendered and inspected at this commit:**
+
+- the index at 1440 and 390;
+- post 11 at 1440 and 390;
+- the deer post at 1440, with its FAQ on white and the one ask at its foot.
+
+#### Open, for Greg, ranked
+
+1. **A post-scale H1.** Measured across all sixteen: 5 to 8 lines on a
+   phone. On the worst case the first line of reading starts below the fold.
+   Proposed: `#post-head h1 { font-size: clamp(1.9rem, 4.6vw, 2.9rem); }`,
+   measured before it lands.
+2. **A list that ends the prose keeps its margin**, putting the deer post's
+   seam 17px over baseline. Proposed: `.prose > :last-child {
+   margin-bottom: 0; }`. It reaches every `.prose` block, so the grep and a
+   re-measure come first.
+3. **The post breadcrumb's long third item wraps on a phone.** It reads;
+   noted, not proposed.
+4. **Owner questions 27 and 28**, and the claims in 4.11. The heaviest are
+   the posts' **legal statements** and post 9's **specific warranty terms**.
+
 ---
 
 ## 4. The claims list
@@ -8177,6 +8271,30 @@ Greg as well as the owner.
 - **Post 7**, in the body: "environmentally friendly". PDR does avoid paint
   and filler; the owner should be comfortable with the word.
 
+**Batch 3** (3.58)
+
+- **Post 16, ADAS: this bears on the ADAS page's gate.** "We perform many
+  calibrations on site; for brand-specific targets or equipment, we
+  coordinate with our vetted calibration partner or dealer." That answers
+  section 5 item 4 partly, in the shop's own published words: some in-house,
+  some partnered. The owner confirms which, and it settles the gate. Also
+  "Same-day to 1-3 business days", "calibration certificates for each system
+  addressed", and pre- and post-scan reports.
+- **Post 14, deer: the legal and statistical claims.**
+  - "Pennsylvania law requires immediate notice to police" when there is
+    injury, death or a tow;
+  - "a written report is required within five days" if police don't
+    respond;
+  - "Pennsylvania law prohibits raising your rate solely because you filed a
+    claim unless you were at fault";
+  - "Pennsylvania sees thousands of deer-related crashes each year". A
+    statistic without a source.
+- **Post 12, myths: "we maintain an I-CAR Gold Class certification, the
+  highest standard in the industry."** 4.1, and "highest" is a superlative.
+- **Post 11: "A family-owned shop with decades of local trust"** (4.5), and
+  ASE/I-CAR Gold.
+- **Post 13: "Our certified technicians."**
+
 ## 5. What the owner needs to answer first
 
 Ordered by how much else depends on it.
@@ -8266,3 +8384,9 @@ Ordered by how much else depends on it.
     says so; the site's twelve do not include Toyota. The claim is held off
     the migrated post until the answer is yes, and a yes also moves
     BRAND_COUNT and the strip. See 3.57 and 4.11.
+28. **The blog's claims, 4.11.** Sixteen migrated posts carry the shop's
+    older statements: an eleven-brand certification list without Subaru, a
+    warranty "on paint and workmanship for as long as you own" the vehicle,
+    tow and rental-car services, I-95 as a nearby landmark, ADAS calibration
+    "many on site", and PA legal statements. Each is live on the old site
+    today; each needs the owner's yes before this site is the one serving it.
