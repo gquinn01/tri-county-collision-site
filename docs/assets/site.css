@@ -1958,6 +1958,19 @@ section > .wrap > .cta-row:last-child { justify-content: center; }
 .field-ink { background: var(--ink); }
 .dark .sec-sub, .dark .eyebrow { color: var(--silver); }
 .dark a { color: var(--silver); }
+/* THE FOCUS RING ON A DARK GROUND, added 2026-09-28, proposed-changes.md
+   3.59, queued since 3.54. It serves a keyboard reader, who has to see
+   where they are. The base ring is --ox, which on an ox band is oxblood on
+   oxblood, 1.00, and on an ink band is 1.47: both invisible. --silver is
+   the one tone that reads on both grounds, measured against the worst
+   pixel of each: 10.50 on --ox, the gradient's brightest stop, and 15.42
+   on --ink, against a 3:1 floor for a focus indicator.
+
+   ONLY THE COLOUR CHANGES. Width, style and offset stay the base rule's,
+   so a ring is the same shape on every ground. Scoped to .dark like every
+   other dark-ground answer in this file, so it reaches the ox and ink
+   bands and nothing on silver or white, where --ox already reads. */
+.dark a:focus-visible, .dark button:focus-visible, .dark summary:focus-visible { outline-color: var(--silver); }
 .band-panel { background: var(--panel); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 
 /* THE MEASURE IS CENTERED, not pinned left. At 1440 a 68ch column inside an
@@ -1967,6 +1980,26 @@ section > .wrap > .cta-row:last-child { justify-content: center; }
 .prose { max-width: 70ch; margin-left: auto; margin-right: auto; }
 .prose h3 { margin-top: 1.6em; }
 .prose + .cta-row { justify-content: center; }
+/* THE LAST THING IN A PROSE BLOCK CARRIES NO MARGIN, added 2026-09-28,
+   proposed-changes.md 3.59. It serves the section seam. p:last-child
+   already zeroes a closing paragraph, and a closing list or heading kept
+   its margin, which pushed the deer post's body-to-FAQ seam 17px past the
+   3.46 baseline. A block's spacing is the section's to set, not its last
+   child's.
+
+   IT REACHES EVERY .prose ON THE SITE, and was measured on all of them
+   before it landed: three blocks end on a child with a margin, and only
+   the deer post's seam moves. The other two end above a .cta-row, whose
+   26px top margin wins the collapse either way. */
+.prose > :last-child { margin-bottom: 0; }
+
+/* POST HEADLINES ARE SENTENCES, added 2026-09-28, proposed-changes.md
+   3.59. It serves the first screen of a post. The site's H1 scale is sized
+   for short service titles; a post headline runs 60 to 114 characters,
+   took up to nine lines on a phone and pushed the first paragraph under
+   the call bar. Scoped to the post header, so no service page, the home
+   page and the blog index keep their H1 exactly. */
+#post-head h1 { font-size: clamp(1.9rem, 4.6vw, 2.9rem); }
 
 .grid2, .grid3, .grid4 { display: grid; gap: 22px; }
 @media (min-width: 700px) { .grid3 { grid-template-columns: repeat(2, 1fr); } .grid4 { grid-template-columns: repeat(2, 1fr); } }

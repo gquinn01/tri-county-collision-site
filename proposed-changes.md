@@ -7053,7 +7053,7 @@ page's only warning.
   which on an ox band is oxblood on oxblood. It is site-wide on every `.field-ox`
   band that carries a link or button, and not new here; the breadcrumb's Home
   link is simply the first link in an ox band near the top of a page. It wants
-  a `.dark` focus colour in the next CSS commit.
+  a `.dark` focus colour in the next CSS commit. **BUILT 2026-09-28, 3.59.**
 
 
 ### 3.55 The header is the call alone, and the lone card centres. BUILT 2026-09-24
@@ -7561,7 +7561,7 @@ from the shop that performs the work."
    characters, will take about nine lines. **Not written, per Part C.**
    Proposed: one rule scoped to the post header, e.g. `#post-head h1 {
    font-size: clamp(1.9rem, 4.6vw, 2.9rem); }`, measured on the render
-   before it lands.
+   before it lands. **BUILT 2026-09-28, 3.59.**
 2. **The breadcrumb's third item wraps onto its own line on a phone**, with
    its separator leading. It reads, but a post title in a crumb is long by
    nature. Truncating it would need CSS too; noted, not proposed.
@@ -7761,15 +7761,283 @@ site's H1 scale.
 1. **A post-scale H1.** Measured across all sixteen: 5 to 8 lines on a
    phone. On the worst case the first line of reading starts below the fold.
    Proposed: `#post-head h1 { font-size: clamp(1.9rem, 4.6vw, 2.9rem); }`,
-   measured before it lands.
+   measured before it lands. **BUILT 2026-09-28, 3.59.**
 2. **A list that ends the prose keeps its margin**, putting the deer post's
    seam 17px over baseline. Proposed: `.prose > :last-child {
    margin-bottom: 0; }`. It reaches every `.prose` block, so the grep and a
-   re-measure come first.
+   re-measure come first. **BUILT 2026-09-28, 3.59.**
 3. **The post breadcrumb's long third item wraps on a phone.** It reads;
    noted, not proposed.
 4. **Owner questions 27 and 28**, and the claims in 4.11. The heaviest are
    the posts' **legal statements** and post 9's **specific warranty terms**.
+
+### 3.59 Three CSS rules: post headlines, the prose seam, the focus ring on dark. BUILT 2026-09-28
+
+One housekeeping commit carrying three rules that were already proposed and
+measured, or queued, in earlier records: 3.57 and 3.58 open item 1, 3.58 open
+item 2, and the focus-ring note in 3.54. **The number is 3.59, taken in
+sequence**: nothing has landed since 3.58. One restamp covers all three
+(`?v=078d4f49`), and the diff is `site.css` plus the 24 stamp lines and
+nothing else. **No copy, markup or schema changed.**
+
+**How it was measured.** Headless Chrome with reduced motion forced, and every
+page in an iframe inside a wider window, per `scripts/mobile-check.md`:
+
+- **Fold probes** use an iframe exactly the viewport's size, with
+  `innerHeight` printed beside every answer.
+- **Section maps** use an iframe taller than the page, taken twice at two
+  heights. The two maps agree on all 23 pages at 1440 and 390, and every
+  page lays out at its true width.
+- **The layout hash** fingerprints every element box on the page, at
+  quarter-pixel resolution, at 1440x900, 390x664 and 360x640. It was taken on
+  all 23 pages before the change and again after it.
+
+#### 1. Post headlines scale down
+
+```css
+#post-head h1 { font-size: clamp(1.9rem, 4.6vw, 2.9rem); }
+```
+
+**It is the proposed value, unchanged**, and the reason it was not tuned is
+below. On a phone the floor governs, so the size is 30.4px where it was
+36.8px. At 1440 the cap governs, so it is 46.4px where it was 62.4px.
+
+**Across all sixteen posts:**
+
+```
+            lines before   lines after   H1 height before   after
+1440           3 to 4         2 to 3         206 to 275     102 to 153
+ 390           5 to 8         4 to 7         202 to 324     134 to 234
+ 360           5 to 9         4 to 8         202 to 364     134 to 268
+```
+
+**The worst three titles, by length**, measured before and after with the
+iframe equal to the viewport. `innerHeight` was 664 and 640 on every row, and
+the page laid out at 390 and 360. "Line 1 ends" is the bottom of the first
+paragraph's first line box. The call bar starts at 604 on a 390x664 viewport
+and at 580 on 360x640.
+
+```
+                                        H1 lines   para top   line 1 ends   against the bar
+post 11, 114 chars   390 cutover  before    8         673         699        below by 69
+                                  after     7         581         607        top on screen, line 1 cut by 3
+                     390 banner   before    8         731         757        below by 127
+                                  after     7         638         664        below by 34
+                     360 cutover  before    9         714         740        below by 134
+                                  after     8         614         640        below by 34
+                     360 banner   before    9         771         797        below by 191
+                                  after     8         671         697        below by 91
+post 6, 104 chars    390 cutover  before    7         633         659        below by 29
+                                  after     6         547         573        ON SCREEN, 31 to spare
+                     390 banner   before    7         690         716        below by 86
+                                  after     6         604         630        below by 0
+                     360 cutover  before    8         701         727        below by 121
+                                  after     6         575         601        top on screen, line 1 cut by 21
+                     360 banner   before    8         759         785        below by 179
+                                  after     6         632         658        below by 52
+post 7, 99 chars     390 cutover  before    7         608         635        below by 4
+                                  after     6         522         549        ON SCREEN, 55 to spare
+                     390 banner   before    7         665         692        below by 61
+                                  after     6         579         606        top on screen, line 1 cut by 2
+                     360 cutover  before    8         648         675        below by 68
+                                  after     6         522         549        ON SCREEN, 31 to spare
+                     360 banner   before    8         706         733        below by 126
+                                  after     6         579         606        top on screen, line 1 cut by 26
+```
+
+**The worst case does not quite make it, and here is how close.** On post 11
+at 390x664, in the state a customer will see after cutover, the first
+paragraph now starts on screen at 581, and its first line ends at 607, **3px
+under the call bar**. A render with a 2px line drawn at 604 agrees: the line
+sits across the descenders of "One second you're driving along Route 132 or".
+At 360 the same post misses by 34. The first paragraph rose 86 to 127px on
+every row, and posts 6 and 7 clear at 390 in the cutover state.
+
+**Why the value was not tuned to close the 3px.** A size that clears it was
+measured:
+
+```
+clamp(1.8rem, 4.6vw, 2.9rem)   28.8px on a phone, 1440 unchanged
+  post 11   390 cutover  line 1 ends 562   ON SCREEN, 42 to spare
+            360 cutover  para top 599      below by 19
+  post 6    360 cutover  line 1 ends 590   cut by 10
+```
+
+**It clears the worst case at 390 and still misses at 360.** It also brings the
+post H1 to 28.8px against a post H2 of 25.6px, a ratio of 1.125 where 1.9rem
+holds 1.19. That spends the headline hierarchy for a result that stays short
+at 360, which is a design call and not a housekeeping one. It is Greg's, and
+it is open item 2 below.
+
+**The larger lever is above the H1.** Post 11's breadcrumb is 83px tall at 390
+(158 to 241), three lines, because its third item wraps onto two of its
+own. That is the 3.57 open item on the breadcrumb, still not
+proposed here, but it is now the biggest remaining cost in the first screen.
+
+**No other page's H1 moved, by computed style and by layout hash.** On
+the seven pages that are not posts, the H1's computed `font-size` and box are
+identical before and after at all three widths:
+
+```
+/ and the four service pages   64px at 1440, 38.4px at 390 and 360
+/blog/ and /contact-us/        62.4px at 1440, 36.8px at 390 and 360
+```
+
+The layout hash of **every element on those seven pages is identical before
+and after at all three widths**, with one qualification recorded below the
+seam table. On the sixteen posts, the only boxes that changed SIZE are
+`MAIN`, the post-head `SECTION` and `DIV`, and the `H1` itself. Every other
+change is a vertical shift below the H1.
+
+#### 2. The last child of a prose block carries no margin
+
+```css
+.prose > :last-child { margin-bottom: 0; }
+```
+
+**Every `.prose` on the site was listed first**: 43 blocks on 21 pages. The
+contact page and the blog index carry none. **Three end on a child with a
+margin**:
+
+```
+page                          block    last child   margin   followed by   seam effect
+deer-season post              #post    ul           17px     nothing       +17, the defect
+adas-calibrations post        #post    ul           17px     .cta-row      none: the row's 26px wins the collapse
+collision-repair-near-me post #post    h2 (EMPTY)   18.4px   .cta-row      none: the row's 26px wins the collapse
+```
+
+Of the other 40, 39 end on a paragraph, which `p:last-child` already
+zeroes, and one, commercial's `#fleet`, ends on a `ul.ticks` whose margin is
+already 0.
+
+**Every seam on every page was re-measured against the 3.46 baseline.** The
+maps were taken twice at two tall heights, agreed, and were diffed before
+against after on all 23 pages at 1440 and 390:
+
+```
+deer post, body to FAQ    1440   194 -> 177     390   114 -> 97     the 17px correction, exactly
+every other section seam  unchanged, 176-177 at 1440 and 96-97 at 390
+```
+
+**Nothing moved by more than the deer post's 17px, and nothing unexpected
+moved at all.** Two readings changed by 1px: the FAQ-to-footer figure on the
+deer post (132 to 131, 16 to 15) and on right-to-choose at 390 (71 to 72).
+Both are on posts whose H1 changed height, and that measurement runs to the
+footer's contents, so these are sub-pixel roundings of a shifted page and not
+seam changes. Every other seam on those two pages is unchanged.
+
+**The layout hash's one qualification.** On `/collision-repair/` at 390 and
+360 and `/commercial-collision-repair/` at 390, a handful of 3px-wide spans
+moved: the lane's dashes. **They vary between Chrome launches with the CSS
+held fixed.** Three probes of the new CSS reproduced the old hash exactly on
+`/collision-repair/`. With those spans left out, both pages hash identical
+before and after at all three widths. The cause is recorded as a finding
+below.
+
+#### 3. The focus ring on a dark ground
+
+```css
+.dark a:focus-visible, .dark button:focus-visible, .dark summary:focus-visible { outline-color: var(--silver); }
+```
+
+**Only the colour changes.** The width, style and 2px offset stay the base
+rule's. It is scoped to `.dark`, like `.dark a`, `.dark .btn` and every other
+dark-ground answer, so it reaches the ox and ink bands and nothing on silver
+or white, where `--ox` already measures 10.50 and 11.80.
+
+**Silver, measured on both dark grounds:** 10.50 on `--ox` (the gradient's
+brightest stop, and therefore the worst case), 12.39 on `--ox-dk` and 15.42 on
+`--ink`. The floor for a focus indicator is 3:1.
+
+**Tabbed through in the render.** Focus was moved through each scope's
+focusables in document order, which is the tab order because nothing on
+these pages sets a `tabindex`. Each stop was confirmed to match
+`:focus-visible`, then shot, and the rendered ring's pixels were sampled
+against the ground 5px outside them:
+
+```
+                                   stop                  before   after
+/contact-us/ header   390          Home (crumb)           1.23    12.96
+                                   Call (215) 322-5350    1.06    11.14
+/contact-us/ header   1440         Home (crumb)           1.21    12.67
+                                   Call (215) 322-5350    1.14    12.01
+/ #start, ox promise  1440         Call (215) 322-5350    1.01    10.65
+                                   Email the shop         1.07    11.21
+/collision-repair/ #start, ink     Call (215) 322-5350    1.47    15.42
+                      1440         Email the shop         1.47    15.42
+```
+
+**Rendered ring before:** rgb(105, 28, 23), which is `--ox` on `--ox`.
+**After:** rgb(240, 242, 242), which is `--silver`, on every stop. Inspected by
+eye as well: on home's promise band, "Email the shop" with focus showed no
+ring at all before, and shows a clear silver ring after.
+
+**Site-wide, the `.dark` bands this reaches:** every focusable in `#start`,
+`#why`, `#after-a-crash`, `#contact`, `#what-we-fix`, `#repair-or-replace`,
+`#real-repairs` and the ink `#start`: fourteen bands on six pages. Every stop
+in them measured 1.00 on ox or 1.47 on ink before.
+
+#### Found while building, not changed
+
+1. **The same invisible ring is on every page's header and footer, and on the
+   photo heroes.** None of them is `.dark`, so the brief's scope does not
+   reach them. Measured site-wide at 1440, before and after, with nothing
+   changed:
+
+   ```
+   header (.nav), ink            69 stops on 23 pages   1.47
+   footer (footer.site), ink    322 stops on 23 pages   1.47
+   .heroB--ox, service heroes    12 stops on 4 pages    1.00
+   .heroB, home hero              2 stops               1.47
+   .callbar, ox                  phones only            ox on ox
+   ```
+
+   **The header is every page's first tab stop**, so a keyboard reader still
+   starts every page unable to see where they are. The same one-colour answer
+   fits all of them: silver reads 15.42 on ink and 10.50 on ox. The hero
+   rings sit over the scrim and need the scrim measurement before they land.
+   Open item 1.
+
+2. **An empty `<h2></h2>` closes the collision-repair-near-me post's prose.**
+   It was carried over from WordPress. A screen reader announces it as a
+   heading with no name. `migrate-blog.py` drops empty paragraphs and not
+   empty headings, which is how it got through. It is the only empty heading
+   or empty paragraph on the site, by grep. Removing it is a markup change
+   outside a CSS commit, and rule 2 does not move it. Open item 3.
+
+3. **The lane's dashes are measured before the webfonts may have loaded.**
+   `buildLane()` in `site.js` runs once at script time and again on resize,
+   never after `document.fonts.ready`. If Source Sans 3 swaps in after the
+   lane is built and the step text rewraps, the dashes sit off their gaps.
+   That is what made them vary between probe runs. It would do the same on a
+   phone with a slow font. Open item 4.
+
+4. **Post 6's date line wraps to two lines at 360** (56px, not 28), which is
+   part of why it misses there.
+
+#### The suite
+
+- Both test scripts pass.
+- `stamp-assets.py --check` and `build-sitemap.py --check` exit 0, and the
+  sitemap is 23 pages.
+- `STAGING=1 audit.py --strict`: **23 pages, every one at 95, zero
+  criticals, 431 passing, and 23 warnings, every one of them sameAs.** It
+  exits 1 on the sameAs bar, as every run has.
+- The grep is clean: no em dash in `site.css`.
+
+#### Open, for Greg, ranked
+
+1. **Carry the silver ring to the header, the footer, the call bar and the
+   heroes.** Same defect, same colour, and it reaches every page. The header
+   and footer are ink with no photograph, so they are one selector each. The
+   heroes need the scrim measured under the ring first.
+2. **The post H1 at 1.8rem**, if 3px at 390 is worth the H1-to-H2 ratio
+   dropping from 1.19 to 1.125. Measured above. It still misses at 360.
+3. **Delete the empty `<h2>`**, and teach `migrate-blog.py` to drop empty
+   headings the way it drops empty paragraphs.
+4. **Rebuild the lane after `document.fonts.ready`**: one line in `site.js`.
+5. **The post breadcrumb's long third item**, now measured at 83px on post 11
+   at 390, and the largest remaining cost above the H1.
 
 ---
 
