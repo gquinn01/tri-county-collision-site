@@ -1065,6 +1065,26 @@ def main():
     check("     caught: shared prose OUTSIDE the chips and pairs still reads as a copy",
           any(r >= audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
 
+    # The case for the trip, 3.64: byte-identical on every town page by
+    # design, by the #why-the-trip id. It carries its own H2, so only the id
+    # keeps it from the H2 half as well as from the phrase measure.
+    band = ('<section id="why-the-trip"><h2>Why drivers pass closer shops</h2>'
+            + "<p>A collision repair is two drives: one to drop the car off, one to pick it up. "
+              "Everything between them is on us: the estimate, the insurance paperwork, and a "
+              "repair done to your manufacturer's own procedures.</p>" * 4 + '</section>')
+
+    def town_364(name, h2, prose):
+        return town(name, [h2], [prose]).replace('<section id="start">', band + '<section id="start">')
+
+    f = vary({"jamison": town_364("Jamison", "Getting here from Jamison", a_text),
+              "warminster": town_364("Warminster", "Getting here from Warminster", b_text)})
+    check("     left alone: an identical case-for-the-trip band on two town pages",
+          not f["shared_h2"] and all(r < audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
+    f = vary({"jamison": town_364("Jamison", "Getting here from Jamison", a_text),
+              "warminster": town_364("Warminster", "Getting here from Warminster", a_text)})
+    check("     caught: shared prose OUTSIDE the band still reads as a copy",
+          any(r >= audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
+
     # An empty H2 on both pages is the empty-heading check's critical.
     f = vary({"jamison": town("Jamison", ["", "From Jamison"], ["", a_text]),
               "warminster": town("Warminster", ["", "From Warminster"], ["", b_text])})

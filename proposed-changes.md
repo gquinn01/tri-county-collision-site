@@ -9298,6 +9298,151 @@ photographs.
   both. "Follow it" is true; the rename is noted in case a reader looks for
   a sign that says West.
 
+### 3.64 The case for the trip: "Why drivers pass closer shops". TEMPLATE AMENDMENT. BUILT 2026-09-28
+
+A new band joins the town template directly after the opening, and the
+opening gives up its own ask to it. **Run two's eleven pages inherit all of
+it:** the band, byte-identical, on silver, closing on its ask; and no
+separate opening ask. One commit. No CSS changed, so there was no restamp;
+`stamp-assets.py --check` confirms it.
+
+**Why the band exists.** A town-page reader always has closer options. The
+3.63 opening conceded the distance honestly without arguing that the trip
+is worth it. This band is the argument, placed where it lands while the
+objection is forming. **Greg approved the copy on 2026-09-28 as
+fact-checker of record, including the customer-behaviour claim in its
+second paragraph.**
+
+#### Greg's rulings, 2026-09-28, after the build stopped twice
+
+1. **The opening's section-bottom ask is dropped; the band's ask replaces
+   it.** In Greg's words, **the opening's ask was scaffolding.** 3.62 added
+   it for one reason, a 3,016px askless run, and the band solves that
+   problem with an ask its own copy argues for. **An ask added for rhythm
+   yields to an ask with a reason.** Two identical Call/Email rows 668px
+   apart would read as nagging, which is exactly what the range's floor
+   exists to prevent. All four measured runs land in range.
+2. **The band takes silver, sharing the opening's ground, and nothing else
+   moves.** Strict alternation is a means, not a law. The separation it buys
+   is already delivered by the band's `.sec-head` and its own spacing.
+   **The precedent it leans on:** `/paintless-dent-repair/`'s
+   `#real-repairs` and `#what-pdr-can-fix` are two silver neighbours
+   already. Alternating would have re-decided two sections Greg approved by
+   eye in the pilot, which is churn in service of a rule that was never
+   written down.
+
+#### The band, `#why-the-trip`
+
+The copy is Greg's, verbatim, except the brief's instruction on its two
+spaced hyphens. **Both introduce what follows, so they are recast as colons,
+the house style's form** (the FAQ answers use it: "...is not in Jamison: the
+shop is..."):
+
+| The brief | As shipped |
+|---|---|
+| Everything between them is on us - the estimate, ... | Everything between them is on us: the estimate, ... |
+| Call first - the estimate is free, ... | Call first: the estimate is free, ... |
+
+- **The link** is on "the choice of shop is yours", to
+  `/your-right-to-choose-a-body-shop/`, the page that proves it.
+- **"12 brands" is `BRAND_COUNT`'s count, in the digit form.** The brand
+  check reads it as 12, and it agrees everywhere: 3 strips of marks, **14**
+  text mentions (was 13) and 1 in the schema, all saying 12. **It adds no new
+  rendering.** "12" is the site's majority form. The site has carried four
+  renderings since before this band ("12", "12+", "a dozen", "Twelve", in
+  4.1's claims question), and the band uses the first.
+- **It closes on the Call/Email row**, the section-bottom ask grammar, and
+  centres by the existing `.prose + .cta-row` rule, on silver. It is not a
+  promise band and takes no ox.
+- **It is pattern text, by design.** The reasons do not change by town, and
+  per-town paraphrases of one argument would be fake variance. It is
+  byte-identical on every town page.
+
+#### The pairs
+
+| Where | Before | After |
+|---|---|---|
+| #for-jamison | the Call/Email section-bottom ask (3.62) | removed, ruling 1; the band's ask replaces it |
+| (new) #why-the-trip | (none) | the band, as above |
+| #getting-here | ...takes about the same time. There is a map on our contact page. | ...takes about the same time. |
+
+**3.63's two leftovers are closed:**
+
+- **(a) "There is a map on our contact page" is dropped**, approved by Greg:
+  the map now sits beside it, and a page should not point at another page's
+  map while showing its own.
+- **(b) Step 2's "West Bristol Road" STANDS**, considered and kept, per
+  Greg. The sign at the turn reads West Bristol, and the map labels both
+  names where OSM renames the road.
+
+#### The variance gate, amended
+
+`TOWN_PATTERN_SECTIONS` gains **"why-the-trip"**. It lives in code, never in
+markup.
+
+**Section 25 gains two fixtures, 16 checks now:**
+
+- **Left alone:** an identical band on two town pages. The band carries its
+  own H2, so only its id keeps it from the H2 half as well as from the
+  phrase measure.
+- **Caught:** the same pages with shared prose OUTSIDE the band.
+
+**Mutation-tested, ten mutants against the final code,** restored from a
+copy with the checksum confirmed (`70b4d3c9e2ba` before and after):
+
+```
+3.64: "why-the-trip" dropped    1 red     3.63: "real-repairs" dropped    1 red
+3.63: "badges" dropped          1 red     pattern sections not excluded   7 red
+place-name masking off          1 red     ceiling to 35%                  1 red
+single-word shingles            5 red     Jaccard for containment         1 red
+the H2 half off                 2 red
+```
+
+#### Measured
+
+**The ask rhythm at 390, every run, with the ruling applied:**
+
+```
+header call        ->  #why-the-trip ask     1,951    in range
+#why-the-trip ask  ->  #start                2,422    in range  (the longest)
+#start             ->  #real-repairs ask     1,979    in range
+#real-repairs ask  ->  footer                1,723    in range
+footer's own links                        426, 171    the footer's contact list, as on every page
+```
+
+**Every run between in-page asks is inside the site's 1,634 to 2,684.** With
+both asks kept, the sequence was 1,385, **668**, 2,422, 1,979 and 1,723. The
+668 was the two rows the ruling removed, and the 1,385 is the run the
+opening's ask had shortened.
+
+**The fold, iframe equal to the viewport:** unchanged, because the band
+sits below the first screen.
+
+```
+390x664 cutover  innerHeight 664  CALL 401-463, clears the call bar by 141
+390x664 banner   innerHeight 664  clears by 84
+360x640 cutover  innerHeight 640  clears by 117      360x640 banner  clears by 60
+```
+
+**Rendered and inspected at 1440 and 390:** the opening without its ask; the
+band on the same silver, set apart by its heading and spacing; the band's ask
+centred under its prose; and the directions without the pointer to the
+contact page.
+
+**Nothing else moved:** the Jamison page, `audit.py` and the test file are
+the only files this commit touches. No stylesheet or script changed, so the
+other 23 pages are identical by construction.
+
+#### The suite
+
+- Both test scripts pass, **181 checks**.
+- `stamp-assets.py --check` exits 0 (no CSS changed), and
+  `build-sitemap.py --check` exits 0 (24 pages).
+- `STAGING=1 audit.py --strict`: **24 pages at 95, sameAs the only warning
+  on each; 2 stubs at 100; zero criticals; 483 passing.** It exits 1 on the
+  sameAs bar, as every run has.
+- No em dash was added.
+
 ---
 
 ## 4. The claims list

@@ -1435,8 +1435,10 @@ def check_brand_count_local(passes: list, warns: list, fails: list,
 # PATTERN TEXT IS DEFINED HERE, NEVER IN MARKUP. What the template repeats
 # on every town page by design is left out of both measures: anything in
 # a <nav> (the crumb), the sections whose ids are in TOWN_PATTERN_SECTIONS
-# (the trust band, the promise band, the nearby-towns links, and from 3.63
-# the Real Repairs pairs), the .svc-card links to the four service pages,
+# (the trust band, the promise band, the nearby-towns links, from 3.63
+# the Real Repairs pairs, and from 3.64 the "Why drivers pass closer
+# shops" band, whose reasons do not change by town, so a per-town
+# paraphrase of it would be fake variance), the .svc-card links to the four service pages,
 # and from 3.63 the .badges chip row, which covers both the header's list
 # and the phone strip's, byte-identical on every town page by design. A page cannot mark its own
 # shared prose as pattern to escape the measure, because the list is not
@@ -1448,7 +1450,7 @@ def check_brand_count_local(passes: list, warns: list, fails: list,
 # catches a page that only swapped the name.
 TOWN_KIND = "town"
 TOWN_HUB_PATH = os.path.join("areas-served", "index.html")
-TOWN_PATTERN_SECTIONS = ("proof", "start", "nearby", "real-repairs")
+TOWN_PATTERN_SECTIONS = ("proof", "start", "nearby", "real-repairs", "why-the-trip")
 TOWN_PATTERN_CLASSES = ("svc-card", "badges")
 TOWN_SHINGLE = 3
 TOWN_SHARED_MAX = 0.30
