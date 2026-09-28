@@ -908,6 +908,49 @@ def main():
     check("     /contact-us/ as it ships: no critical, and sameAs its only warning",
           not cf and len(cw) == 1 and "sameAs" in cw[0], (cf, cw))
 
+    # Empty headings, 3.60. One shipped in 3.58, an <h2></h2> closing a
+    # migrated post, and nothing could see it: it has no box to look at and
+    # no words to read. Same shape as the address tests: the clean page
+    # passes, every way of being empty fails, and headings whose words sit
+    # inside other markup are left alone.
+    print("24. Empty headings: a heading with no words is a critical")
+    p, w, f = run("<h2>What happens next</h2><p>Words.</p>")
+    check("     a page whose headings all carry words passes",
+          "No empty headings: all 2 h1 to h6 carry words" in p and "Empty heading" not in f, (p, f))
+    for label, body in (
+            ("the shipped case, an empty h2 closing the prose", "<p>Words.</p><h2></h2>"),
+            ("spaces and a line break", "<h3>  \n  </h3>"),
+            ("a no-break space, which a reader hears as nothing", "<h2>&nbsp;</h2>"),
+            ("an empty strong, WordPress's other leftover", "<h2><strong> </strong></h2>"),
+            ("a comment and nothing else", "<h4><!-- a heading went here --></h4>"),
+            ("an empty link", '<h2><a href="../contact-us/"></a></h2>'),
+            ("the smallest heading", "<h6></h6>"),
+            ("an empty second H1 beside the real one", "<h1></h1>")):
+        p, w, f = run(body)
+        check(f"     caught: {label}", "Empty heading:" in f, f)
+    p, w, f = run("<h2></h2><p>Words.</p><h3> </h3>")
+    check("     two empty headings are both named, with their tags",
+          "<h2> on line" in f and "<h3> on line" in f, f)
+    for label, body in (
+            ("words inside a link", '<h2><a href="../contact-us/">Contact us</a></h2>'),
+            ("words beside an empty icon span", '<h3><span class="faq-ico"></span>Is it free?</h3>'),
+            ("a heading that is only a number", "<h3>01</h3>"),
+            ("an empty heading inside a script string, which is not markup",
+             '<script>var t = "<h2></h2>";</script>')):
+        p, w, f = run(body)
+        check(f"     left alone: {label}", "Empty heading" not in f, f)
+    _load = audit.load
+    audit.load = lambda src: open(src, encoding="utf-8").read()
+    try:
+        bad = []
+        for pg in shipped:
+            sp, sw, sf, sn, sk = audit.audit(pg)
+            if not any("No empty headings" in x for x in sp) or any("Empty heading" in x for x in sf):
+                bad.append(pg)
+    finally:
+        audit.load = _load
+    check(f"     every shipped page ({len(shipped)}) has no empty heading", not bad, bad)
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} check(s) failed:")

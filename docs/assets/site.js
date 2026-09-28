@@ -197,6 +197,12 @@
   var steps = document.querySelector(".steps");
   if (steps) {
     buildLane(steps);
+    /* MEASURED AGAIN ONCE THE FONTS HAVE LANDED, 2026-09-28,
+       proposed-changes.md 3.60. The first build can run before Source
+       Sans 3 swaps in, and a step that rewraps then moves its gap out
+       from under the dash. One promise, settled once: no listener, no
+       polling. */
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { buildLane(steps); }); }
     sections.push(steps.closest("section") || steps);
     var t = null;
     window.addEventListener("resize", function () {

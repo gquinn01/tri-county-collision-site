@@ -1861,6 +1861,21 @@ section > .wrap > .cta-row:last-child { justify-content: center; }
 .crumb { margin: 0 0 22px; font-size: .95rem; }
 .crumb ol { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; color: var(--ink-2); }
 .crumb li + li::before { content: "/"; margin-right: 8px; color: var(--rule); }
+/* THE LAST CRUMB IS ONE LINE, added 2026-09-28, proposed-changes.md 3.60,
+   on Greg's ruling that the first screen of a post is paid for in the
+   crumb and not the headline. It serves the first screen: a post's last
+   crumb repeats its H1, and on a phone it wrapped to two lines of its own.
+
+   CLIPPED, NEVER HIDDEN. The whole title stays in the DOM, visible and in
+   the accessibility tree, so a screen reader still reads it in full and it
+   still mirrors the BreadcrumbList word for word; only the painted line
+   ends in an ellipsis. min-width: 0 is what lets a flex item shrink below
+   its text, without which the ellipsis never fires.
+
+   ONE RULE AT EVERY WIDTH. At 1440 no crumb on the site is long enough to
+   trigger it, measured, and on a phone it fires only on the posts whose
+   title wrapped: 25px back on each. */
+.crumb li:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ---------- Sections ---------- */
 .sec-head { max-width: 840px; margin: 0 auto var(--sec-gap); text-align: center; }
@@ -1971,6 +1986,25 @@ section > .wrap > .cta-row:last-child { justify-content: center; }
    other dark-ground answer in this file, so it reaches the ox and ink
    bands and nothing on silver or white, where --ox already reads. */
 .dark a:focus-visible, .dark button:focus-visible, .dark summary:focus-visible { outline-color: var(--silver); }
+/* THE SAME RING ON THE DARK SURFACES .dark DOES NOT REACH, added
+   2026-09-28, proposed-changes.md 3.60. The ink header, the ink footer and
+   the photo heroes are dark without wearing .dark, and each drew the --ox
+   ring at 1.00 to 1.47. The header is the first tab stop on every page.
+
+   MEASURED UNDER THE RING'S OWN FOOTPRINT, worst pixel: 15.42 in the header
+   and footer, and on the heroes, over the photograph through the scrim,
+   6.65 at the worst stop and 8.24 or better at every other, against a 3:1
+   floor. Colour only, as on .dark. */
+.nav a:focus-visible, .nav button:focus-visible,
+footer.site a:focus-visible,
+.heroB a:focus-visible { outline-color: var(--silver); }
+/* THE CALL BAR'S RING SITS INSIDE IT, on Greg's ruling, 3.60. The bar is
+   fixed to the viewport's foot, so an outside ring lands on whatever has
+   scrolled up behind it: silver on the silver page is 1.00, and --ox on an
+   ox band is 1.00 too. No colour survives every ground, so the ring moves
+   onto the one ground that never changes, the bar's own --ox, where silver
+   is 10.50 at every scroll position. */
+.callbar:focus-visible { outline-color: var(--silver); outline-offset: -6px; }
 .band-panel { background: var(--panel); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 
 /* THE MEASURE IS CENTERED, not pinned left. At 1440 a 68ch column inside an
@@ -2205,6 +2239,19 @@ footer.site a { color: var(--silver); }
 @media (min-width: 760px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 900px) { .foot-grid { grid-template-columns: 1.4fr 1fr 1fr 1fr; } }
 .foot-home img { width: 200px; height: 80px; object-fit: contain; }
+/* THE FOOTER LOGO GETS A BOX OF ITS OWN, added 2026-09-28 on Greg's
+   ruling, proposed-changes.md 3.60. It serves the focus ring. The link was
+   inline, and an inline link wrapped around a block image has an empty
+   inline box: the image sits outside it, so the outline had no box to be
+   drawn around and no ring painted at all, in any colour, on every page.
+   display: block gives the link a box; width: fit-content keeps that box,
+   and so the focus target, the logo's size rather than the column's.
+
+   MEASURED: the link's own box is the only box that changes, column width
+   down to 200x80, on all 23 pages at 1440, 390 and 360. The header's
+   .nav-home did not share the defect: it is display: block already and a
+   flex item besides, one box exactly the logo's size. */
+.foot-home { display: block; width: fit-content; }
 .foot-tag { margin-top: 16px; max-width: 38ch; color: var(--silver-2); }
 .foot-nap { margin-top: 18px; line-height: 1.8; }
 .foot-head { font-size: .84rem; letter-spacing: .1em; text-transform: uppercase; color: var(--silver); margin: 0 0 14px; }

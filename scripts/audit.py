@@ -859,6 +859,16 @@ def special_audit(source: str, html: str, p, kind: str, coverage: dict):
 
 
 
+# THE EMPTY-HEADING CHECK, 2026-09-28, proposed-changes.md 3.60. A heading
+# with no words is announced by a screen reader as a heading with no name,
+# and it is invisible by eye, which is how a WordPress leftover, an empty
+# <h2> closing a migrated post, shipped in 3.58 and was found only by a
+# layout probe in 3.59. A CRITICAL, on Greg's ruling of 2026-09-28: nobody
+# means to ship one. "Empty" is text content that is nothing but
+# whitespace, no-break spaces included, which is what a reader hears.
+HEADING_TAGS = ("h1", "h2", "h3", "h4", "h5", "h6")
+
+
 class PageParser(HTMLParser):
     """Walks the HTML and collects everything the audit needs."""
 
@@ -896,6 +906,11 @@ class PageParser(HTMLParser):
         self._faq_q = None
         self._faq_a = None
         self._skip_faq_ico = 0    # the chevron <span>, art with no words
+        # Every h1 to h6 as (tag, line, text), for the empty-heading check.
+        # A stack rather than a flag, so a heading's text is its own even
+        # if markup ever nests one inside another by mistake.
+        self.headings = []
+        self._heading_stack = []
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -903,6 +918,8 @@ class PageParser(HTMLParser):
             self._skip_depth += 1
         if tag == "svg":
             self._svg_depth += 1
+        if tag in HEADING_TAGS:
+            self._heading_stack.append([tag, self.getpos()[0], ""])
         if tag == "title" and not self._svg_depth:
             self._in_title = True
         elif tag == "h1":
@@ -941,6 +958,8 @@ class PageParser(HTMLParser):
                 self.links_internal += 1
 
     def handle_endtag(self, tag):
+        if tag in HEADING_TAGS and self._heading_stack and self._heading_stack[-1][0] == tag:
+            self.headings.append(tuple(self._heading_stack.pop()))
         if tag == "svg" and self._svg_depth:
             self._svg_depth -= 1
         if tag == "title":
@@ -980,6 +999,8 @@ class PageParser(HTMLParser):
             self._faq_a += data
         if self._skip_depth:
             return
+        for h in self._heading_stack:
+            h[2] += data
         if not NAP_CONTACT_RES:
             return
         linked = any(h.startswith(("tel:", "mailto:")) for h in self._href_stack)
@@ -1659,6 +1680,16 @@ def audit(source: str, coverage: dict = None):
         warns.append(f"**{len(h1s)} H1 headings found** — use exactly one; demote the rest to H2.")
     else:
         passes.append(f"Exactly one H1: “{h1s[0][:80]}”")
+
+    # --- Empty headings (3.60) ---
+    empty = [(tag, line) for tag, line, text in p.headings if not text.strip()]
+    if empty:
+        where = ", ".join(f"<{tag}> on line {line}" for tag, line in empty)
+        fails.append(f"**Empty heading: {where}.** A heading with no words is announced by a "
+                     f"screen reader as a heading with no name, and nobody sees it by eye. "
+                     f"Delete the element; do not fill it with filler.")
+    else:
+        passes.append(f"No empty headings: all {len(p.headings)} h1 to h6 carry words.")
 
     # --- Structured data (JSON-LD) ---
     types = []

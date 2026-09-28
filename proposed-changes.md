@@ -8030,14 +8030,329 @@ in them measured 1.00 on ox or 1.47 on ink before.
 1. **Carry the silver ring to the header, the footer, the call bar and the
    heroes.** Same defect, same colour, and it reaches every page. The header
    and footer are ink with no photograph, so they are one selector each. The
-   heroes need the scrim measured under the ring first.
+   heroes need the scrim measured under the ring first. **BUILT 2026-09-28,
+   3.60**, the call bar with its ring inset, on Greg's ruling.
 2. **The post H1 at 1.8rem**, if 3px at 390 is worth the H1-to-H2 ratio
    dropping from 1.19 to 1.125. Measured above. It still misses at 360.
+   **RULED 2026-09-28, 3.60: the 1.9rem clamp stands; the crumb is fixed
+   instead.**
 3. **Delete the empty `<h2>`**, and teach `migrate-blog.py` to drop empty
-   headings the way it drops empty paragraphs.
+   headings the way it drops empty paragraphs. **BUILT 2026-09-28, 3.60**,
+   with an audit check.
 4. **Rebuild the lane after `document.fonts.ready`**: one line in `site.js`.
+   **BUILT 2026-09-28, 3.60.**
 5. **The post breadcrumb's long third item**, now measured at 83px on post 11
-   at 390, and the largest remaining cost above the H1.
+   at 390, and the largest remaining cost above the H1. **BUILT 2026-09-28, 3.60.**
+
+### 3.60 The crumb, the rest of the ring, one empty heading, one font race. BUILT 2026-09-28
+
+A housekeeping bundle closing 3.59's open items 1, 3, 4 and 5, in one commit
+with one restamp (`site.css ?v=64bea0dd`, `site.js ?v=e67e271c`). **No copy
+changed.** One element left the markup: an empty heading with no words in it.
+
+#### Greg's rulings, 2026-09-28
+
+1. **The post H1 clamp from 3.59 STANDS**, and is not dropped to 1.8rem. The
+   first-screen cost on a post is the breadcrumb, whose last item repeats the
+   H1. We fix the crumb, not the headline.
+2. **The call bar's ring sits inside the bar**, with a negative offset (item 2
+   below).
+3. **The breadcrumb mirror check is recorded, not added.** The brief assumed
+   a visible-crumb / BreadcrumbList mirror check in `audit.py`. **There is
+   none**: the only mirror law in the audit is the FAQ's, and the crumb
+   markup carries only a comment saying it mirrors the schema. The mirror was
+   therefore proved by probe instead (item 1). A real check is open item 1.
+4. **The empty-heading check is a critical.**
+5. **The footer logo gets a box of its own**, with the mechanism named in the
+   comment and the header logo checked for the same defect (item 2).
+
+**How it was measured:** the 3.59 harness, unchanged. It uses headless Chrome
+with reduced motion forced, iframes sized per `scripts/mobile-check.md`, and a
+layout hash of every element box on all 23 pages at 1440x900, 390x664 and
+360x640. The hash was taken at HEAD (`053d7bf`) and again with the finished
+tree.
+
+#### 1. The last crumb is one line
+
+```css
+.crumb li:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+```
+
+**Adapted to what the crumb CSS actually is.** `.crumb ol` is a wrapping flex
+row. The last item keeps `display: list-item` and the wrap is untouched;
+**`min-width: 0` is the one adjustment**, because a flex item's automatic
+minimum is its content, and without it the item cannot shrink below its text
+and the ellipsis never fires. The item still drops to its own row under
+"Home / Blog", as it did before. What changes is that it takes one line on
+that row instead of two.
+
+**The worst title's crumb, computed, before and after**
+(`after-the-unthinkable...`):
+
+```
+                         BEFORE, 390        AFTER, 390          AFTER, 360
+crumb height             83                 58                  58  (83 before)
+last li display          list-item          list-item           list-item
+white-space              normal             nowrap              nowrap
+overflow                 visible            hidden              hidden
+text-overflow            clip               ellipsis            ellipsis
+min-width                auto               0px                 0px
+lines                    2                  1                   1
+clientWidth/scrollWidth  350/350            350/374, clipped    320/374, clipped
+visibility, aria-hidden  visible, none      visible, none       visible, none
+textContent              "Your First Steps Following a Car Accident in Bucks County", all three
+BreadcrumbList name      the same string; the mirror holds
+```
+
+**Clipped, never hidden.** No `display: none`, no `visibility: hidden`, no
+`aria-hidden`. The full title stays in the DOM and in the accessibility tree.
+Only the painted line ends in an ellipsis.
+
+**Across the site**, on 69 probes (23 pages at three widths):
+
+- **Every visible crumb equals its BreadcrumbList, before and after.**
+- **The crumb moves only where the title wrapped.** Ten posts at 390 and
+  twelve at 360 go from 83 to 58. The other posts already fit on one line of
+  their own and do not move, and neither does any service page, the index,
+  contact, or home, which has no crumb.
+- **At 1440 nothing triggers it.** The widest last item there is 423px, in a
+  1080px crumb, and every 1440 hash is identical before and after.
+
+**It reclaims 25px, not the roughly 29 the brief estimated.** A crumb line box
+is 25px, measured.
+
+**The fold, `after-the-unthinkable...` at 390x664**, with the iframe equal to
+the viewport and `innerHeight` 664 on every row. The call bar starts at 604:
+
+```
+                       crumb   H1           first paragraph   line 1 ends   against the bar
+cutover   before (3.59)  83    206 to 440   581               607           cut by 3
+          after          58    181 to 415   555               581           ON SCREEN, 23 to spare
+banner    before         83    263 to 498   638               664           below by 34
+          after          58    238 to 472   613               639           below by 9
+```
+
+**The worst title now clears the first screen in the state a customer will
+see.** It has 23px to spare, where 3.59 left it 3px short. The line moved 26px
+where the crumb gave back 25; the extra pixel is sub-pixel rounding of a
+shifted page. With the staging banner showing, it is 9px short, and the banner
+comes off at cutover. At 360 in the cutover state, the first paragraph starts
+at 589 against a bar at 580: 9px short, where it was 34.
+
+#### 2. The ring on the dark surfaces `.dark` missed
+
+```css
+.nav a:focus-visible, .nav button:focus-visible,
+footer.site a:focus-visible,
+.heroB a:focus-visible { outline-color: var(--silver); }
+.callbar:focus-visible { outline-color: var(--silver); outline-offset: -6px; }
+.foot-home { display: block; width: fit-content; }
+```
+
+**Measured before anything was added to a selector.** Each stop was focused
+in document order, which is the tab order here, and each matched
+`:focus-visible`. Two renders were taken of every stop: one with the ring, and
+one with the ring made transparent. The second gives the ground under the
+ring's exact footprint, 2 to 5px outside the element. Silver was then measured
+against every pixel of that ground, and the worst pixel is the figure.
+
+```
+surface                      stops   before (--ox)   silver, worst pixel   silver, median
+header, ink                    10      1.47            15.42                 15.42
+footer, ink                    28      1.47            15.42 on the ground   15.42
+heroes, photo under scrim      42      1.00 to 1.36    6.65                  9.39 lowest
+call bar, ring outside         40      1.00            1.00                  1.00 lowest   HELD, see below
+call bar, ring inset 6px       40      -               10.50                 10.50         SHIPPED
+```
+
+**The heroes, every stop at every width.** Worst pixel over median, for the
+crumb's Home link (on the four service pages), the call button and the email
+button:
+
+```
+                              1440                 390                  360
+/ (ink scrim, no crumb)       13.95 13.73          14.07 14.13          14.10 14.30
+/collision-repair/            9.78  9.66  9.72     9.64  9.91  9.78     8.24  9.78  9.85
+/commercial-collision-repair/ 9.66  9.79  9.98     9.33  10.05 10.11    6.65  10.05 10.11
+/paintless-dent-repair/       10.50 10.50 10.10    10.42 9.85  10.11    10.16 9.85  10.04
+/auto-glass-repair-replacement/ 9.85 9.78 10.05    9.01  9.66  9.79     9.07  9.66  9.79
+```
+
+**Every stop clears the 3:1 floor, so the heroes shipped**, per the brief's
+rule that they ship whole or not at all. The one reading under 8.24 is
+commercial's Home at 360, at 6.65.
+
+**The footer's three low worst-pixels are not the ground.** The stops are the
+inline address, phone and email in the bottom line, which read 1.43 to 1.77.
+Under 3:1 there are **2 to 4 pixels out of 600 to 1,600**. They are the
+anti-aliased edges of the neighbouring `--silver-2` words (201, 204, 211),
+which the ring's footprint crosses. The ground under every footer ring is ink,
+15.42.
+
+**The call bar could not take the pattern.** The bar is fixed to the foot of
+the viewport, so a ring drawn outside it lands on whatever has scrolled up
+behind it. Measured at five scroll positions on four pages, silver outside the
+bar reads 1.00 on the silver page, and the old `--ox` reads 1.00 on an ox band.
+**No colour survives every ground.** Greg's ruling: the ring moves inside, onto
+the bar's own `--ox`. With a `-6px` offset it sits 3 to 6px in from the edge,
+clear of the 2px top border. Measured shipped, at 390 and 360, at scroll 0,
+.25, .5, .75 and 1, on home, a post, `/collision-repair/` and `/contact-us/`:
+**10.50 at all 40 positions, and 100% of the ring's pixels are exactly
+`--silver`.**
+
+**The footer logo drew no ring at all, and it never had.** `.foot-home` was
+an inline `<a>` around a `display: block` image. An inline box around a block
+child is empty: the image sits outside it, so the outline had nothing to be
+drawn around. The link matched `:focus-visible` and computed a 3px outline,
+and **nothing painted, in silver or in `--ox`**. A render at HEAD showed the
+same. `display: block` gives the link a box. `width: fit-content` keeps that
+box, which is also the focus target, the logo's 200x80 rather than the
+column's 311px (350 at 390, 320 at 360).
+
+**Measured before it landed:** the link's own box is the only box that
+changes, on all 23 pages at all three widths. After it landed, its ring
+renders 100% silver.
+
+**The header logo does not share the defect**, checked because it is the
+same shape:
+
+```
+            display   parent   boxes   <a> box            <img> box          ring pixels exactly silver
+.nav-home   block     flex     1       168x67 at 1440     168x67 at 1440     100%, 1440 and 390
+.foot-home  inline    block    3       311x80 at 1440     200x80 at 1440     none, before the fix
+```
+
+`.nav-home` is `display: block` by its own rule, and a flex item besides, so
+it is one box exactly the logo's size. **The site's first tab stop draws its
+ring**, and a render shows it plainly.
+
+**Two partial readings are geometry, not a missing ring.** The two-line NAP
+address, and at 390 the bottom line's address, read 81% and 48% silver under
+a single-rectangle footprint. The outline follows each line fragment of a
+wrapped link separately, and a render shows the ring whole around both lines.
+
+#### 3. The empty heading, and the mechanism behind it
+
+**The instance.** The collision-repair-near-me post lost its closing
+`<h2></h2>`:
+
+```
+BEFORE  ...<a href="../contact-us/">We’re here when you need us.</a></p><h2></h2>
+AFTER   ...<a href="../contact-us/">We’re here when you need us.</a></p>
+```
+
+It had a height of 0, so removing it moves nothing. At 1440 every other
+element box on the page is identical before and after.
+
+**`migrate-blog.py`** now drops any h1 to h6 whose text is empty, after the
+empty strong and em go, so `<h2><strong> </strong></h2>` is caught as well.
+Proved on the cached live posts in two throwaway copies of the repo:
+
+- With the unmodified script, the post regenerates **byte-identical to the
+  shipped file**, so the round trip is a fair test.
+- Regenerating **all sixteen posts and the index**, old script against new,
+  the output differs in **exactly one place**, the trailing `<h2></h2>`. All
+  73 printed pairs are identical.
+- **The new script's output equals the hand-edited post byte for byte.**
+
+**`audit.py`** gains a check: any h1 to h6 whose text content is empty, or
+only whitespace (no-break spaces included), is a **critical**. It names each
+tag and line. The parser collects headings on a stack, and a heading's text
+counts through any nested markup. Against the shipped HEAD version of the
+post, the check fails it at `<h2> on line 322`; against the fixed page, it
+passes.
+
+**Every page gains one pass.** Posts go from 18 of 19 to 19 of 20, and the
+others from 20 of 21 to 21 of 22. Both still round to 95.
+
+**`test-audit-checks.py` section 24**, both directions:
+
+- **Passes:** a page whose headings all carry words.
+- **Caught:**
+  - the shipped case;
+  - spaces and a line break;
+  - `&nbsp;`;
+  - an empty strong;
+  - a comment alone;
+  - an empty link;
+  - an empty `h6`;
+  - an empty second `h1`;
+  - two empty headings, both named.
+- **Left alone:**
+  - words inside a link;
+  - words beside an empty icon span;
+  - a heading that is only "01";
+  - `<h2></h2>` inside a script string, which is not markup.
+- **Every shipped page (23) has no empty heading.**
+
+**Mutation-tested, in place, restored from a copy with the checksum
+confirmed** (`b3a4d2d2be57` before and after):
+
+```
+mutant                                   red, beyond the pending restamp
+the check switched off                   9: every "caught" case, and the two-named case
+no-break spaces counted as words         1: the &nbsp; case
+h4 to h6 dropped from the tags           2: the comment-only h4 and the empty h6
+text in nested markup not counted        3: both "left alone" nesting cases, and the shipped-pages sweep
+```
+
+#### 4. The lane waits for the fonts
+
+```js
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { buildLane(steps); }); }
+```
+
+One promise, settled once, after the first build. There is no listener and no
+polling. The resize handler is untouched.
+
+**Proved on the race itself.** For every dash, the check was whether its
+position equals the gap `buildLane` would compute from the final layout. It
+ran 24 separate Chrome launches per state: `/collision-repair/` and
+`/commercial-collision-repair/`, at 390 and 360, six launches each.
+
+```
+HEAD      3 of 24 aligned in one run, 4 of 24 in a second; worst dash 80px off its gap
+after     24 of 24 aligned
+```
+
+That is the variance 3.59 saw in its layout hashes, and it is what a phone on
+a slow font would show: dashes on the step cards instead of between them.
+
+#### What else moved, and nothing else did
+
+Layout hash, HEAD against the finished tree, all 23 pages at three widths.
+The lane dashes are left out, since item 4 moved them on purpose:
+
+- **47 of 69 page-widths:** the only change is the footer logo link's width.
+- **22 of 69:** that, plus the crumb's 25px and the vertical shift of
+  everything beneath it. These are the post-widths where a title wrapped.
+- **Nothing else, on any page, at any width.**
+- **Section seams unchanged on all 23 pages.** The two FAQ-to-footer readings
+  flipped by 1px, the sub-pixel rounding recorded in 3.59.
+
+#### Found, not changed
+
+- **An 8px strip of silver between the footer and the call bar** at the very
+  end of every page on a phone. `body` reserves 68px of bottom padding for a
+  60px bar. It is pre-existing, and it was seen in the footer ring renders.
+
+#### The suite
+
+- Both test scripts pass: 164 checks, including section 24.
+- `stamp-assets.py --check` and `build-sitemap.py --check` exit 0, and the
+  sitemap is 23 pages.
+- `STAGING=1 audit.py --strict`: **23 pages, every one at 95, zero
+  criticals, 454 passing, and 23 warnings, every one sameAs.** It exits 1 on
+  the sameAs bar, as every run has.
+- No em dash was added to any file this commit touches.
+
+#### Open, for Greg
+
+1. **A breadcrumb mirror check**, since the audit has none (ruling 3). The
+   visible crumb against the BreadcrumbList, both directions, in the FAQ
+   mirror's shape.
+2. **The 360 fold on the worst post**, still 9px short in the cutover state.
+3. **The 8px strip above the call bar**, found above.
 
 ---
 

@@ -28,7 +28,8 @@ WHAT EVERY POST GETS, mechanically:
     vendor's licences cannot be verified. Posts ship text-first, and a post
     that leaned on its images is flagged in the record.
   - Markup reduced to the prose the site styles: p, h2, h3, h4, ul, ol, li,
-    strong, em, a. WordPress classes, empty paragraphs and no-break spaces go.
+    strong, em, a. WordPress classes, empty paragraphs, empty headings and
+    no-break spaces go.
   - A visible FAQ in the live post migrates as the site's FAQ, <details> and
     a byte-identical FAQPage node, because Greg's ruling of 2026-09-25 is
     that a post is not REQUIRED to carry an FAQ, never that one goes
@@ -291,6 +292,12 @@ def clean(body):
     h = re.sub(r"\s*(</?(?:p|h2|h3|h4|ul|ol|li)>)\s*", r"\1", h)
     h = re.sub(r"<p>\s*</p>", "", h)
     h = re.sub(r"<(strong|em)>\s*</\1>", "", h)
+    # AN EMPTY HEADING GOES TOO, 3.60. A heading with no words is announced
+    # by a screen reader as a heading with no name, and WordPress leaves
+    # them behind: one closed the collision-repair-near-me post until 3.60.
+    # Run after the empty strong and em go, so <h2><strong> </strong></h2>
+    # is caught as well. audit.py fails the page if one ever ships anyway.
+    h = re.sub(r"<(h[1-6])>(.*?)</\1>", lambda m: m.group(0) if text_of(m.group(2)) else "", h, flags=re.S)
     h = re.sub(r"(\S) +(</(?:strong|em|a)>)", r"\1\2 ", h)
     h = re.sub(r"  +", " ", h)
     return h
