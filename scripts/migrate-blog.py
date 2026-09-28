@@ -611,7 +611,7 @@ def render_post(p, assets, biz, nav, foot):
 {STAGING}{nav}
   <main>
 
-    <section class="hero band-panel" id="post-head">
+    <section class="hero dark field-ox" id="post-head">
       <div class="wrap">
         <!-- Mirrors the BreadcrumbList, same labels and same order. -->
         <nav class="crumb" aria-label="Breadcrumb">
@@ -687,6 +687,9 @@ def render_index(posts, record, assets, biz, nav, foot):
        THE TOP IS COMPACT AND WHITE, not ox: this band routes rather than
        asks, and the palette law keeps oxblood for asking. The argument is
        in the record.
+       WIDENED 2026-09-28, proposed-changes.md 3.61: Greg ruled the compact
+       ox header a page-header identity, chrome and not an in-flow band, so
+       this top is now ox. The band test still governs bands in the flow.
 
        NOTHING IN NAV OR FOOTER LINKS HERE YET, deliberately: the
        header-nav sweep is its own queued sitting and the footer has no
@@ -720,7 +723,7 @@ def render_index(posts, record, assets, biz, nav, foot):
 {STAGING}{nav}
   <main>
 
-    <section class="hero band-panel" id="blog-head">
+    <section class="hero dark field-ox" id="blog-head">
       <div class="wrap">
         <!-- Mirrors the BreadcrumbList, same labels and same order. -->
         <nav class="crumb" aria-label="Breadcrumb">

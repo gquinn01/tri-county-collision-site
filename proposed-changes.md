@@ -8354,6 +8354,235 @@ The lane dashes are left out, since item 4 moved them on purpose:
 2. **The 360 fold on the worst post**, still 9px short in the cutover state.
 3. **The 8px strip above the call bar**, found above.
 
+### 3.61 The ox header comes to the blog. BUILT 2026-09-28
+
+`/blog/` and all sixteen posts take the compact ox header `/contact-us/` has
+worn since 3.54. One commit, one restamp (`site.css ?v=8cba00cb`). **No copy
+changed**, and no header's contents changed.
+
+#### Greg's ruling, recorded as given
+
+**The compact ox header (`.hero.dark.field-ox`) is a PAGE-HEADER IDENTITY:
+chrome, not an in-flow band.** The band test, "does it ask?", still governs
+bands in the page flow. It does not govern the page header field. The 3.54
+comment in `/contact-us/` that justified ox "because this band asks" described
+that instance, not the boundary of the rule.
+
+**Scope:** this ruling covers `/contact-us/`, `/blog/` and the sixteen posts.
+**It is not a standing ruling for future tiers**: areas, towns and privacy are
+decided when they are built.
+
+**Asked and ruled while building:** the index's own head comment, written by
+`migrate-blog.py`, read "THE TOP IS COMPACT AND WHITE, not ox: this band
+routes rather than asks, and the palette law keeps oxblood for asking." It
+would have shipped false. Greg ruled to append a 3.61 line to it, as with the
+contact comment, and accept a second hunk on `/blog/` beside the header's.
+
+#### The change
+
+```
+BEFORE  <section class="hero band-panel" id="post-head">     16 posts
+AFTER   <section class="hero dark field-ox" id="post-head">
+BEFORE  <section class="hero band-panel" id="blog-head">     /blog/
+AFTER   <section class="hero dark field-ox" id="blog-head">
+```
+
+- **Both ids are unchanged**, so `#post-head h1`, the 3.59 clamp, still binds.
+  It was not touched.
+- **Every header's contents are byte-identical.** The index keeps crumb,
+  eyebrow, H1 and lead; the posts keep crumb, H1 and date line.
+- **No call button was added.** The nav and the call bar carry the ask on
+  every page.
+- **The posts' `#faq` band-panel sections and the index's card grid are
+  unchanged.**
+
+#### Mechanism, not hand-edits
+
+**The path taken: the template first, then regeneration.** The cached live
+pages were intact, and that was proved before relying on them. With the
+unmodified script at HEAD, all seventeen pages regenerated in a throwaway
+copy **byte-identical to the shipped files**, each built under the record it
+shipped with: 3.57 for right-to-choose, 3.58 for the other fifteen and the
+index.
+
+The template then changed in `migrate-blog.py`: the two class attributes, and
+the appended index-comment line. The seventeen pages were regenerated in the
+repo. **The script's 73 content pairs came out identical to the HEAD run.**
+
+**The diff is the proof.** Every changed line, before the restamp:
+
+```
+  16  -    <section class="hero band-panel" id="post-head">
+  16  +    <section class="hero dark field-ox" id="post-head">
+   1  -    <section class="hero band-panel" id="blog-head">
+   1  +    <section class="hero dark field-ox" id="blog-head">
+   3  +    (the appended index-comment lines, below)
+```
+
+Nothing else moved on any of the seventeen pages. After the restamp, the
+per-page count of non-stamp lines is:
+
+- **each post:** 2, the header's class line;
+- **`/blog/`:** 5, the class line and the three comment lines;
+- **`/contact-us/`:** 1, its appended line;
+- **home and the four service pages:** 0.
+
+**The two appended comments, old text kept:**
+
+```
+/blog/ head comment, after "...The argument is in the record.":
+       WIDENED 2026-09-28, proposed-changes.md 3.61: Greg ruled the compact
+       ox header a page-header identity, chrome and not an in-flow band, so
+       this top is now ox. The band test still governs bands in the flow.
+
+/contact-us/ header comment, after "...Every text tone on it is measured in 3.54.":
+         WIDENED 2026-09-28 (3.61): Greg ruled the compact ox header a page-header identity, chrome not an in-flow band; /blog/ and its posts now wear it too.
+```
+
+**`site.css` also gained one appended sentence**, on the `.hero.dark .cta-row`
+comment, whose claim that it "reaches the one header and nothing else" was
+about to go false. The blog headers wear `.hero.dark` and carry no `.cta-row`,
+so the rule still reaches `/contact-us/` alone. The comment now says so. No old
+text was removed; only its closing `*/` moved down a line.
+
+#### The one new tone: the date line
+
+```css
+#post-head.field-ox > .wrap > p { color: var(--silver); }
+```
+
+**Before**, the date line was a plain `<p>` with no declaration. It inherited
+`--ink` from the body and read on white. **On ox it would only have inherited
+a tone from `.dark`.** It now declares `--silver` itself, the tone
+`.field-ox .crumb ol` and `.field-ox .lead` already take, so the header's text
+is one family. The comment names the constant, not the value. The rule is
+scoped to the ox header, so a post header on any other ground would not pick
+up a light tone meant for a dark one.
+
+**Every tone in the new headers, measured on the render.** Glyph boxes come
+from `Range.getClientRects()`. The ground comes from a second render with the
+header's text, and the crumb separators, made transparent. The figure is the
+worst composited pixel:
+
+```
+                         BEFORE, on white              AFTER, on the ox gradient
+                         tone       worst              tone        worst (1440 / 390)
+date line (posts)        --ink      17.33              --silver    11.51-11.72 / 10.50
+H1                       --ink      17.33              --silver    10.50 / 10.50
+crumb links              --ox-tx     8.95              --silver    11.80-12.52
+crumb current page       --ink-2     9.80              --silver    10.50-12.30
+crumb separator          --rule      1.64              --rule       8.39-8.53
+eyebrow (/blog/)         --ox-tx     8.95              --silver    11.01-12.01
+lead (/blog/)            --ink-2     9.80              --silver    10.50 / 10.50
+```
+
+**The date line reads 10.50 at its worst**, over the gradient's brightest
+stop, `--ox` exactly. It reads better toward the band's darker ends, which is
+where it sits at 1440. Every tone clears the 7:1 body target. These are the
+same figures `/contact-us/` measures on the same probe: 10.50 for its lead and
+H1, 8.44 to 8.53 for its separator.
+
+**The separator improved rather than regressed.** `--rule` on white was
+1.64, a hairline-grade grey. On ox it is 8.39.
+
+#### The focus ring on these headers, confirmed (no new rule)
+
+The crumb links in these headers take the 3.59 `.dark a:focus-visible` ring
+through the `.dark` class. Nothing else could supply it, since these headers
+are not `.nav`, `footer.site` or `.heroB`. Each link was focused in document
+order and matched `:focus-visible`:
+
+```
+page                 link    width   ring            ground               ring px silver   silver vs ground, worst / median
+/blog/               Home    1440    --silver 3px    ox gradient          100%             12.52 / 12.67
+                             390                                           100%             12.52 / 12.95
+after-the-unthinkable Home   1440                                          100%             12.45 / 12.67
+                             390                                           100%             12.52 / 12.96
+                     Blog    1440                                          100%             12.30 / 12.45
+                             390                                           100%             11.87 / 12.20
+your-right-to-choose Home    1440                                          100%             12.45 / 12.67
+                             390                                           100%             12.45 / 12.89
+                     Blog    1440                                          100%             12.30 / 12.42
+                             390                                           100%             11.80 / 12.16
+```
+
+**One correction to the brief's wording: the ground is not flat ox.**
+`.field-ox` is the sanctioned 104-degree gradient. The crumb sits on its
+darker left, which is why the ring reads 11.80 to 12.52 rather than flat
+`--ox`'s 10.50. Before, on white, the `--ox` ring read 11.80.
+
+#### What moved, and nothing else did
+
+Layout hash, HEAD against the finished tree, all 23 pages at 1440, 390 and
+360, lane dashes left out:
+
+- **Home, contact and the four service pages: identical** at all three widths
+  (18 of 69 page-widths).
+- **The seventeen blog pages** (51 page-widths): the header section is 2px
+  shorter, because `.band-panel` drew a 1px border top and bottom and
+  `.field-ox` draws none. Its contents rise 1px, and everything beneath rises
+  2px. Only `MAIN` and the header `SECTION` change size.
+- **Every H1's computed size and height is unchanged** on all 23 pages at all
+  three widths.
+
+**The header-to-body seam moves 177 to 176 at 1440, and 97 to 96 at 390**,
+the border it lost. It stays inside the 3.46 baseline of 176 to 177 and 96 to
+97, and **it now matches `/contact-us/`'s own header seam, 176 and 96.** Every
+other seam on every page is unchanged.
+
+#### The first screen of the worst post, on the new band
+
+`after-the-unthinkable...` at 390x664, with the iframe equal to the viewport
+and `innerHeight` 664. The call bar starts at 604:
+
+```
+                  nav    ox header   crumb      H1                 date       prose line 1 ends   against the bar
+cutover  BEFORE   0-68   (white)     101-159    181-415, 7 lines   430-458    581                  +23
+         AFTER    0-68   68-505      100-158    180-414, 7 lines   429-457    579                  +25
+banner   AFTER    0-125  125-563     157-215    237-471            487-515    637                  -33
+```
+
+**The composition, cutover state:** the ink nav takes the top 68px. **The ox
+header takes 68 to 505: 437 of the 604 usable pixels, 72% of the screen.** All
+of the crumb, all seven H1 lines and the date line sit on ox. The silver
+reading field starts at 505, and **the first prose line is fully on screen,
+ending 25px above the bar.** One of the first paragraph's seven lines is
+visible. The 2px lift is the lost border.
+
+**Still short:** at 360x640 cutover, line 1 ends at 613 against 580 (it
+starts at 587). With the staging banner showing at 390, it ends at 637.
+
+#### Rendered and inspected
+
+`/blog/`, `after-the-unthinkable...` and `your-right-to-choose` were rendered
+at 1440 and 390, before and after, and inspected:
+
+- The ox header runs edge to edge under the ink nav, with the nav's 4px `--ox`
+  rule meeting it.
+- The crumb truncates inside it as 3.60 left it.
+- The post H1 keeps its 3.59 scale.
+- The date line reads in silver.
+- The index's cards begin on the silver ground below, unchanged.
+
+#### The suite
+
+- Both test scripts pass: 164 checks.
+- `stamp-assets.py --check` and `build-sitemap.py --check` exit 0, and the
+  sitemap is 23 pages. Every `lastmod` is unchanged, because no page's
+  `dateModified` moved.
+- `STAGING=1 audit.py --strict`: **23 pages, every one at 95, zero
+  criticals, 454 passing, and 23 warnings, every one sameAs.** It exits 1 on
+  the sameAs bar, as every run has.
+- No em dash was added.
+
+#### Not changed, and worth Greg's eye
+
+- **CLAUDE.md still describes the contact header as "the one ox band on that
+  page, because it asks"**, and the palette note in `site.css` lists ox's
+  sanctioned extensions without this one. Neither was in the brief, and
+  neither was edited. The ruling lives here, and in the two appended
+  comments.
+
 ---
 
 ## 4. The claims list

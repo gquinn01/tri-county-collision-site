@@ -652,7 +652,10 @@ section { padding: var(--pad) 0; }
    the base row: left, and the base 26px rather than the band's 44, which
    the fold budget on a phone cannot spare. .hero is worn only by the
    hero and this header, and .heroB is never .dark, so this reaches the
-   one header and nothing else. */
+   one header and nothing else.
+   WIDENED 2026-09-28, proposed-changes.md 3.61: /blog/ and the sixteen
+   posts wear .hero.dark too, and carry no .cta-row, so this still reaches
+   /contact-us/ alone. */
 .hero.dark .cta-row { justify-content: flex-start; margin-top: 26px; }
 
 /* ---------- Header ---------- */
@@ -2034,6 +2037,15 @@ footer.site a:focus-visible,
    the call bar. Scoped to the post header, so no service page, the home
    page and the blog index keep their H1 exactly. */
 #post-head h1 { font-size: clamp(1.9rem, 4.6vw, 2.9rem); }
+/* THE DATE LINE ON OX, added 2026-09-28, proposed-changes.md 3.61, when
+   the post header took the compact ox header on Greg's ruling. It serves
+   the one line in that header with no tone of its own: a plain paragraph,
+   which would otherwise only inherit one from .dark. It takes --silver,
+   the tone .field-ox .crumb ol and .field-ox .lead already take, so the
+   header's text is one family. Measured on the band's brightest stop,
+   --ox, in the record. Scoped to the ox header, so a post header on any
+   other ground would not inherit a light tone meant for a dark one. */
+#post-head.field-ox > .wrap > p { color: var(--silver); }
 
 .grid2, .grid3, .grid4 { display: grid; gap: 22px; }
 @media (min-width: 700px) { .grid3 { grid-template-columns: repeat(2, 1fr); } .grid4 { grid-template-columns: repeat(2, 1fr); } }
