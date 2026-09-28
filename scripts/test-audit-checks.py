@@ -1038,6 +1038,33 @@ def main():
     check("     left alone: identical pattern text, and the pattern H2s it carries",
           not f["shared_h2"] and all(r < audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
 
+    # The chip row and the Real Repairs pairs, 3.63: byte-identical on every
+    # town page by design, so pattern text, by the .badges class and the
+    # #real-repairs id. The chip row sits INSIDE the header, a substantive
+    # section, so only its class keeps it out; the pairs carry their own
+    # "Real Repairs" H2, so only their id keeps it from the H2 half.
+    chips = ('<ul class="badges"><li>Free estimates</li><li>Insurance paperwork handled</li>'
+             '<li>ASE and I-CAR Gold Class certified</li><li>Detailed after every repair</li></ul>')
+    pairs = ('<section id="real-repairs"><h2>Real Repairs</h2><p>Restored to pre-accident condition</p>'
+             + "".join(f'<figure class="ba"><figcaption><strong>{car}</strong> {dmg}</figcaption></figure>'
+                       for car, dmg in (("Dodge Grand Caravan", "Front-end collision"),
+                                        ("Mercedes CLE 300", "Rear-end collision"),
+                                        ("Nissan Murano", "Door dents"))) * 6 + '</section>')
+
+    def town_363(name, h2, prose):
+        return town(name, [h2], [prose]).replace(
+            "<main>", f'<main><section id="town-head"><h1>For {name}</h1>{chips * 4}</section>').replace(
+            '<section id="nearby">', pairs + '<section id="nearby">')
+
+    f = vary({"jamison": town_363("Jamison", "Getting here from Jamison", a_text),
+              "warminster": town_363("Warminster", "Getting here from Warminster", b_text)})
+    check("     left alone: identical chip rows and identical pairs on two town pages",
+          not f["shared_h2"] and all(r < audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
+    f = vary({"jamison": town_363("Jamison", "Getting here from Jamison", a_text),
+              "warminster": town_363("Warminster", "Getting here from Warminster", a_text)})
+    check("     caught: shared prose OUTSIDE the chips and pairs still reads as a copy",
+          any(r >= audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
+
     # An empty H2 on both pages is the empty-heading check's critical.
     f = vary({"jamison": town("Jamison", ["", "From Jamison"], ["", a_text]),
               "warminster": town("Warminster", ["", "From Warminster"], ["", b_text])})

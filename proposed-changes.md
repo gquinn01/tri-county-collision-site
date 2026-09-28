@@ -8979,6 +8979,325 @@ introduced.
 4. **CLAUDE.md's line that "area served" is still tokenized** is out of
    date: every page's business node carries it. It was not edited here.
 
+### 3.63 Jamison round two: chips, the drawn map, the pairs, a centred opening. TEMPLATE AMENDMENTS. BUILT 2026-09-28
+
+**Every item here amends the town template in 3.62, not just the Jamison
+page.** Run two's eleven pages inherit each amendment exactly as written
+under "The template, amended". One commit, one restamp (`site.css
+?v=27fb8dc4`).
+
+#### Greg's rulings, 2026-09-28, after the build stopped three times
+
+1. **Chips: the service heroes' standard set, with their phone grammar.**
+   The brief said home carries a chip row. **It does not, and the correction
+   is recorded here.** Home's hero is eyebrow, H1, lead and Call/Email. The
+   vetted chip row lives on the service heroes, and that is what the town
+   template adopts: the collision/glass/dent set, not commercial's variant,
+   because a town page speaks to every driver. In the header from 600px up;
+   below that, in the strip after the header. **Option (b), chips in the
+   header at every width, was not attempted:** 210px of chips against 141px
+   of spare at 390 is arithmetic, not a judgement.
+2. **The map: the primary route only, every road named or shielded.** The
+   reason, in Greg's words: **this map is a directions DIAGRAM, not
+   cartography for its own sake.** It shows exactly what the page's four
+   numbered steps say, and the alternative route lives in prose, where it
+   already is. A road drawn as the way through but left unnamed, as option
+   A's County Line Road was, fails the diagram's own standard. **This is the
+   template rule for run two: each town's map draws its page's primary
+   route, so the steps and the map mirror each other.**
+3. **The pairs go after the promise band, closing on the Call/Email row
+   home's pairs already end on.** It was the only measured placement inside
+   the site's range, and it adds no new copy: the ask is one the site
+   already vetted.
+4. **The opening is Greg's copy, verbatim, centred** (from the 3.63 brief).
+   The old first sentence was also a T1 violation, copy about the copy.
+
+---
+
+#### The template, amended
+
+The 3.62 section order becomes:
+
+```
+ #   id              ground   CHANGE IN 3.63
+ 1   #town-head      ox       + the chip row (.badges) after the Call button, shown from 600px up
+ 1a  .proofstrip     silver   NEW: the same four chips, shown below 600px only (the service pages' own grammar)
+ 2   #proof          white
+ 3   #for-[town]     silver   CENTRED: .prose style="text-align:center", the 3.52 intro shape; per-town prose
+ 4   #getting-here   panel    + the map: .split, steps left, figure.split-media.map-box right, ODbL credit
+ 5   #fix            silver
+ 6   #start          ox
+ 6a  #real-repairs   silver   NEW: three of home's five pairs, byte for byte, closing on home's own ask
+ 7   #faq            silver
+ 8   #nearby         panel
+```
+
+**A1, the chips.** Lift both lists from `/collision-repair/` byte for byte,
+never retype them. They are the standard four: Free estimates, Insurance
+paperwork handled, ASE and I-CAR Gold Class certified, Detailed after every
+repair. They are pattern text.
+
+**A2, the map.** Draw it with `scripts/prepare-map-image.py --frame [town]`
+from one Overpass query and the town's recorded OSRM routing, both cached
+outside the repo. **The primary route only.** Build order: the page first,
+then the map, which draws between the page's `MAP:BEGIN`/`MAP:END` markers.
+Rebuilding the page empties them. A frame entry in `FRAMES` names the
+page, the viewBox, the scale, the centre, the query box and the town's
+corner.
+
+**A3, the pairs.** Three of home's five, chosen for visual variety, with
+captions byte-identical. The section sits after the promise band and
+closes on home's own Call/Email row. The cars are the shop's real work,
+and the section makes no claim they came from the town. They are pattern
+text.
+
+**A4, the opening.** The SHAPE is the template's: centred; the served
+neighbors in the first sentence; "not in [town]" said plainly; the town's
+corner as a map fact; the distance, and the drive time **with its "without
+traffic" qualifier, which is load-bearing**; and the section-bottom ask.
+**The PROSE is per-town: run two writes each town's own opening to this
+pattern, does not reuse these sentences, and the variance gate holds them
+apart.**
+
+---
+
+#### A4, the opening: the pair
+
+| Before (3.62) | After (3.63, Greg's copy) |
+|---|---|
+| This page is for anyone who lives or works in Jamison and needs a car fixed after an accident. We are not in Jamison, and we won't pretend to be: Tri-County Collision is a family-owned shop in Southampton, and we repair cars for drivers from Jamison and from its neighbors Warminster, Richboro and Ivyland. | Tri-County Collision is a family-owned body shop in Southampton, and we fix cars for drivers from Jamison, Warminster, Richboro and Ivyland. We are not in Jamison, and we won't pretend to be. We are about 8 miles down the road. |
+| Jamison is in Warwick Township, Bucks County, where York Road (PA 263) crosses Almshouse Road. From there the shop is about 8 miles away by road, and about 15 minutes without traffic. | Jamison sits in Warwick Township, where York Road (PA 263) meets Almshouse Road. From that corner to our shop is about 15 minutes without traffic. |
+| If your car has been in an accident, call before you decide where it goes. Estimates are free and there is no obligation. | (unchanged) |
+
+**Every fact survives:** 8 miles; 15 minutes "without traffic"; the served
+cluster; the township. "Bucks County" left this paragraph and stays in the
+header's kicker. The section is centred by the 3.52 markup, and the Call/Email
+row centres beneath it by the existing `.prose + .cta-row` rule.
+
+#### A1, the chips
+
+**Placed by the service grammar.** The header's `ul.badges` follows the
+Call row; the `section.proofstrip`, with the same four chips, follows the
+header. Exactly one list renders at any width: `.proofstrip` hides at 600px
+and up, and the header's list hides below 600px.
+
+**CSS: the four existing chip rules name `.hero.field-ox` beside `.heroB`,**
+so there is one source and not a copy. They cover the margin, the outlined
+pill, the icon and the phone hide. The scrim cap (`.heroB .badges {
+max-width: 620px }`) does not apply: it exists to keep chips over a
+photograph inside the scrim's strong zone, and the ox header has no
+photograph. **Contact's and the blog's ox headers carry no chips, so the
+rules reach only this page.**
+
+**Measured on the ox ground, at the gradient's brightest stop, the worst
+case:**
+
+```
+chip text and icons, --silver           10.50   (12.39 on --ox-dk, 13.68 at the deep end)
+chip hairline, --silver at .55           4.17   (4.65, 5.02)   against 3:1 for a shape
+```
+
+#### A2, the map
+
+**`scripts/prepare-map-image.py` now draws frames.** The "contact" frame is
+the original and draws exactly what it always drew: **redrawn from its own
+2026-09-24 Overpass cache, it is byte-identical to the SVG shipped on
+`/contact-us/`** (22,210 bytes). That was re-proved after every change
+below.
+
+**The Jamison frame:**
+
+```
+viewBox 360 x 480 (portrait: the town and the shop lie nearly north and south), 24 m a unit,
+centre 40.2104 -75.0703, frame 8,640 m x 11,520 m; type scaled to the frame (labels 11,
+shields 10, pin name 12.5 units) so it renders at the contact map's size, about 16px at 1440
+and 11px on a phone; road widths x 0.42
+```
+
+**The refusal rules.** The script draws from verified constants and data,
+or it draws nothing:
+
+- **The pin** must lie inside an OSM building footprint, as before. It lies
+  in way 902318081.
+- **New, the corner:** the town's corner must be a point the two named
+  roads share in the data, within 60 m of the town's recorded place point.
+  York Road meets Almshouse Road at 40.2548692, -75.0891801, **14 m from
+  Jamison's recorded point.**
+- **New, the route:** it must start within 60 m of the corner and end within
+  60 m of the pin. It starts 8 m from the corner and ends 22 m from the pin.
+
+**How it was drawn, and what each failed draft taught.** Recorded because
+run two will meet the same things:
+
+1. **The contact frame's settings at a wider scale were unreadable.** Every
+   road was as wide as every other, there was no route, and PA 332 got a
+   shield while PA 263 and PA 232 were refused. **Fix:** widths scaled to
+   the frame; the route drawn with the major casing and everything else as
+   quiet context. **No new colour:** the pin stays the map's one oxblood
+   mark, and the corner is an ink ring with a silver core (`.map-corner`,
+   the one new map class).
+2. **OSM renames a road as it goes.** West Bristol Road becomes East
+   Bristol Road at -75.066; York Road has North and South pieces; the Pike
+   has three spellings. **A typed list of road names was wrong in exactly
+   the places a driver turns. Fix: the ROUTING decides.** An OSM way is on
+   the route when it runs along the recorded OSRM geometry, and its own
+   names and route numbers are the labels and shields.
+3. **Crossing roads were caught as on-route at junctions.** **Fix:** a way
+   counts only where its segments run PARALLEL to the route (within 30
+   degrees) for at least 15 m, and for half its length or 150 m. A road
+   that crosses counts for nothing, however close it passes.
+4. **A road that OSM splits at every junction never joined into a stretch
+   long enough for a name.** **Fix:** the join tolerance scales with the
+   frame (2 units here, about 48 m; 0.5 on contact, unchanged), so it is
+   about the same distance on the ground.
+5. **With both routes drawn, County Line Road could not be named** at this
+   scale. Greg ruled option B, the primary route only.
+
+**As shipped:**
+
+- **Named:** York Rd, W Bristol Rd, E Bristol Rd.
+- **Shielded:** PA 263 (York Road) and PA 232 (Second Street Pike).
+- **Unlabeled: Jaymor Rd, 23 units long against a 51-unit name.** The pin's
+  own label, "Tri-County Collision", marks the destination.
+
+**The alt text is the route, in driving order**, from the routing's steps:
+"Map of the drive from Jamison, at York Rd and Almshouse Rd, by York Rd (PA
+263), W Bristol Rd, Second Street Pike (PA 232) and Jaymor Rd to
+Tri-County Collision in Southampton. Opens directions in Google Maps."
+**The first draft ended "...and Jaymor Rd."**, and `audit.py` failed the
+page as a critical: that is the second-address spelling. The sentence now
+ends on the shop's name, so no town's route can put a street before a full
+stop. **The NAP check caught its first real slip.**
+
+**The weight, seen and not missed: 120,119 bytes of inline SVG against
+contact's 22,210.** It is text and compresses well, and a future sitting
+that wants it smaller can drop the context roads outside the route's
+corridor.
+
+**Layout.** `#getting-here` is now a `.split`, the contact page's own grid.
+A new rule keeps the steps one column inside it at 900px and up:
+`.split .numbered { grid-template-columns: 1fr }`. Grepped first: the town
+page's directions are the only `.numbered` inside a `.split`.
+
+#### A3, the pairs
+
+**The three, for variety:**
+
+- the **Dodge Grand Caravan** (a minivan's front end);
+- the **Mercedes CLE 300** (a coupe's rear end);
+- the **Nissan Murano** (an SUV's door dents).
+
+**Left out:** the BMW 5 Series (a second front end) and the Jeep Grand
+Cherokee L (its caption carries the mid-repair caveat). The figures are
+lifted from home byte for byte, with the image path gaining `../`. All three
+captions compare byte-identical to home's. All six files exist and match
+their declared sizes, and all carry home's `loading="lazy"`.
+
+**The ask rhythm at 390, as measured to decide the placement:**
+
+```
+placement                                          longest run
+before the promise band, as briefed                   3,781
+after the band, no ask                                3,600
+before the band, with home's ask                      3,501
+after the band, with home's ask   (RULED)             1,979
+```
+
+**As shipped, with the map in the page:**
+
+```
+ask at 390          top    gap
+header call          401
+#for-jamison        1848   1385
+#start              4360   2450    <- longest run: 2,450, inside the site's 1,634 to 2,684
+#real-repairs       6401   1979
+footer              8186   1723
+```
+
+**The longest run is 2,450, not the 1,979 quoted to Greg.** The map, which
+landed after that measurement, stacks under the steps on a phone and added
+about 550 px to the directions section. It is still inside the range.
+
+#### The variance gate, amended
+
+`TOWN_PATTERN_SECTIONS` gains **"real-repairs"** and `TOWN_PATTERN_CLASSES`
+gains **"badges"**. Both are in code, never in markup. The chip class
+covers both lists; the strip holds nothing else.
+
+**Section 25 gains two fixtures, both directions, 14 checks now:**
+
+- **Left alone:** two town pages carrying identical chip rows and identical
+  pairs. The chip row sits inside the header, a substantive section, so
+  only its class keeps it out. The pairs carry their own "Real Repairs"
+  H2, so only their id keeps it from the H2 half.
+- **Caught:** the same two pages with the same prose OUTSIDE the chips and
+  pairs.
+
+**Mutation-tested, all nine against the final code,** restored from a copy
+with the checksum confirmed (`fa7d7ebfb10f` before and after):
+
+```
+place-name masking off                 1 red     ceiling to 35%                   1 red
+single-word shingles                   4 red     pattern sections not excluded    6 red
+3.63: "real-repairs" dropped           1 red     3.63: "badges" dropped           1 red
+Jaccard for containment                1 red     the H2 half off                  2 red
+```
+
+#### Measured
+
+**The fold, iframe equal to the viewport:**
+
+```
+390x664 cutover  innerHeight 664  ox header 68-511, CALL 401-463, clears the call bar by 141 (unchanged: chips hidden below 600)
+                                  the chip strip 511-737, the trust band from 737
+390x664 banner   innerHeight 664  CALL clears by 84
+360x640 cutover  innerHeight 640  CALL clears by 117      360x640 banner  clears by 60
+600x800          innerHeight 800  chips in the header; header 531px; strip hidden
+1440x900         innerHeight 900  chips in the header; header 96-641 (545px, was 480)
+```
+
+**The first screen at 390x664, cutover.** The ink nav takes 0 to 68. The ox
+header fits whole, 68 to 511: crumb, kicker, a two-line H1, a three-line
+lead, and Call, 141 px above the bar. **The chip strip begins at 511: its
+first chip, "Free estimates", is on screen whole, and the second is cut by
+the call bar at 604.** In 3.62 the trust
+band's first figure was on screen there; it now starts at 737.
+
+**Nothing else moved:** all 23 other pages are **identical to 3.62, 69 of
+69 page-widths**. The stub files are byte-unchanged in git. Their probe
+readings vary, because their 0-second refresh fires mid-probe, so they are
+recorded by their bytes and not by a layout hash.
+
+**Rendered and inspected, 1440 and 390, whole page**: the header with chips
+at 1440, the strip at 390, the map beside the steps at 1440 and under them
+at 390, and the pairs.
+
+**The pairs' grey boxes in a single tall headless render are lazy-loading,
+not missing images.** A viewport-sized render scrolled to them shows the
+photographs.
+
+#### The suite
+
+- Both test scripts pass, **179 checks**.
+- `stamp-assets.py --check` exits 0 (27 files), and `build-sitemap.py
+  --check` exits 0 (24 pages).
+- `STAGING=1 audit.py --strict`: **24 pages at 95, sameAs the only warning
+  on each; 2 stubs at 100; zero criticals; 483 passing.** The variance gate
+  reports one town and no hub. It exits 1 on the sameAs bar, as every run
+  has.
+- No em dash was added.
+
+#### Found, not changed
+
+- **"There is a map on our contact page"** ends the directions' prose, and
+  now sits beside a map on this page. It is approved copy and this brief
+  changed only the opening, so it stands. **Proposed pair for Greg:** drop
+  the sentence, or change it to "The map opens directions in Google Maps."
+- **Step 2 says "follow it for about 4 miles".** OSM renames the road from
+  West Bristol Road to East Bristol Road partway along, and the map labels
+  both. "Follow it" is true; the rename is noted in case a reader looks for
+  a sign that says West.
+
 ---
 
 ## 4. The claims list

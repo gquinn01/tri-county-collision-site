@@ -1215,14 +1215,20 @@ section { padding: var(--pad) 0; }
    there too. Without these two, .crumb ol and .lead print --ink-2 on ox,
    which is dark on dark. */
 .heroB .crumb li + li::before { color: rgb(var(--silver-rgb) / .5); }
-.heroB .badges { margin-top: 22px; }
-.heroB .badges li { background: transparent; border-color: rgb(var(--silver-rgb) / .55); color: var(--silver); }
-.heroB .badges svg { stroke: var(--silver); }
+/* THE TOWN HEADER WEARS THE SAME CHIPS, added 2026-09-28, proposed-changes.md
+   3.63: the service heroes' chip row is the town template's, so these
+   rules name .hero.field-ox beside .heroB rather than being copied. On the
+   ox header there is no photograph under a chip, so the flat band's
+   measured tones hold; the scrim cap further down is not needed and does
+   not apply. Contact's and the blog's ox headers carry no chips. */
+.heroB .badges, .hero.field-ox .badges { margin-top: 22px; }
+.heroB .badges li, .hero.field-ox .badges li { background: transparent; border-color: rgb(var(--silver-rgb) / .55); color: var(--silver); }
+.heroB .badges svg, .hero.field-ox .badges svg { stroke: var(--silver); }
 /* CHIPS IN THE HERO ARE A DESKTOP ARRANGEMENT ONLY. Four rows of them
    over a phone photograph costs about 210px, which fails the fold and
    buries the picture. Below 600px the strip below the hero carries them
    instead. See .proofstrip. */
-@media (max-width: 599px) { .heroB .badges { display: none; } }
+@media (max-width: 599px) { .heroB .badges, .hero.field-ox .badges { display: none; } }
 
 /* THE PHONE COPY BLOCK IS TIGHTENED, because on a phone the block's own
    height is what decides whether the CTA clears the fold, not the hero's
@@ -2132,6 +2138,12 @@ footer.site a:focus-visible,
    own, so the list reads as one more block in the run of prose. Grepped:
    the town page's directions are the only list followed by a paragraph. */
 .numbered + p { margin-top: 1.1em; }
+/* STEPS BESIDE A MAP STAY ONE COLUMN, added 2026-09-28, proposed-changes.md
+   3.63. .numbered goes two across at 900px, which suits a full-width list;
+   in half of a .split, beside the town page's map, two columns of steps
+   would be about 250px each and read out of order. Grepped: the town
+   page's directions are the only .numbered inside a .split. */
+@media (min-width: 900px) { .split .numbered { grid-template-columns: 1fr; } }
 .dark .ticks li::before { border-color: var(--silver); }
 
 /* ---------- Figures ---------- */
@@ -2234,6 +2246,12 @@ footer.site a:focus-visible,
 .map-pin { fill: var(--ox); stroke: var(--silver); stroke-width: 2px; }
 .map-pin-dot { fill: var(--silver); }
 .map-pin-label { fill: var(--ink); font-family: var(--font); font-weight: 800; paint-order: stroke; stroke: var(--silver); stroke-width: 5px; stroke-linejoin: round; }
+/* THE TOWN'S CORNER, added 2026-09-28 for the town-page map, proposed-
+   changes.md 3.63: where the route starts, marked in the map's structural
+   ink with a silver core, so it reads as a place and not as the goal. The
+   pin stays the one oxblood mark, because the shop is where the reader is
+   going. Its name takes .map-pin-label, the same face and halo. */
+.map-corner { fill: var(--silver); stroke: var(--ink); stroke-width: 3px; }
 
 /* ---------- Footer ---------- */
 footer.site { background: var(--ink); color: var(--silver); padding: var(--pad) 0 34px; }

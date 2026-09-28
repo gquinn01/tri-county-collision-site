@@ -55,9 +55,22 @@ be a hex typed here. Inline, every mark carries a class (.map-road,
 .map-label, .map-pin...) that site.css paints, and the labels are set in the
 site's own self-hosted Source Sans 3. No extra request, either.
 
+A TOWN FRAME, added 2026-09-28, proposed-changes.md 3.63. The town-page
+template carries a map in its directions section: one drawing that shows
+the town and the shop together, made the same way, from the same one
+Overpass query, at a wider frame. FRAMES below holds each frame; "contact"
+is the original and draws exactly what it always drew. A town frame adds
+ONE refusal to the pin's: the town's reference corner must be a node the
+two named roads actually share in the data, within max_m of the town's
+recorded place point, or nothing is drawn. At a town frame's scale only
+the main road classes are drawn, and only the roads the recorded routing
+uses are named, because a directions diagram labels the way and not the
+county.
+
 USAGE:
     python3 scripts/prepare-map-image.py --data PATH          # draw from a cached response
     python3 scripts/prepare-map-image.py --fetch PATH         # one query, cache it, draw
+    ... --frame NAME     which frame, from FRAMES: contact (the default), jamison
     ... --out-dir DIR    write map.svg there and do NOT touch docs/
 
 No external packages, pure Python standard library.
@@ -149,6 +162,96 @@ MIN_LABEL_RUN = 150          # units of road a name needs to be written along
 MAPS_HREF = ("https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision"
              "%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966")
 
+# THE FRAMES. "contact" repeats the constants above exactly, so choosing it
+# changes nothing; a town frame overrides them. Every value is recorded in
+# proposed-changes.md with the record that set it.
+MAIN_CLASSES = ("motorway", "trunk", "primary", "secondary", "tertiary",
+                "motorway_link", "trunk_link", "primary_link", "secondary_link",
+                "tertiary_link")
+FRAMES = {
+    "contact": {},
+    # 3.63. The corner is where the 3.62 routing starts: OSM node 158375416,
+    # Jamison, place=village, 40.2548297 -75.0893372, which sits at York Road
+    # and Almshouse Road. The frame is portrait because the two points lie
+    # nearly north and south; 24 m a unit reaches both routes the record
+    # names, the one by Bristol Road and Second Street Pike and the one by
+    # County Line Road. Only the roads those routes use are named.
+    "jamison": {
+        "PAGE": os.path.join(ROOT, "docs", "areas-served-collision-repair-jamison-pa", "index.html"),
+        "VB_W": 360, "VB_H": 480, "M_PER_UNIT": 24.0,
+        "FRAME_CX_LAT": 40.2104, "FRAME_CX_LON": -75.0703,
+        "QUERY_BBOX": (40.1520, -75.1300, 40.2690, -75.0100),
+        "ROAD_CLASSES": MAIN_CLASSES,
+        "LABEL_NEAR_M": 0,
+        # THE ROUTE DECIDES WHAT IS NAMED, not a list typed here. OSM renames
+        # a road as it goes (West Bristol Road becomes East Bristol Road,
+        # York Road has North and South pieces), so a typed list is wrong in
+        # exactly the places a driver turns. The recorded OSRM routing is
+        # drawn as the way through; its ways' own names and route numbers
+        # are the labels and shields; everything else is context.
+        "ROUTE_REQUIRED": True,
+        # THE PRIMARY ROUTE ONLY, Greg's ruling of 2026-09-28 and the town
+        # template's rule (3.63). The map is a directions DIAGRAM: it draws
+        # exactly what the page's numbered steps say, and the alternative
+        # lives in the page's prose. Drawn with both, the alternative's
+        # County Line Road could not be named at this scale, and a road
+        # drawn as the way through but unnamed fails the diagram's standard.
+        "PRIMARY_ONLY": True,
+        # Minor roads are fetched only near the two ends, where the first
+        # and last turns are: the shop's corner is the same for every town.
+        "MINOR_NEAR_M": 450,
+        "WIDTH_SCALE": 0.42,
+        "JOIN_TOL": 2.0,
+        # TYPE SCALED TO THE FRAME, so it renders at the contact map's size:
+        # this viewBox is 360 units wide against contact's 480 and sits in
+        # a column of about the same width, so 11 units read as the contact
+        # map's 16 do, about 16px at 1440 and 11px on a phone.
+        "LABEL_SIZE": 11, "SHIELD_SIZE": 10, "PIN_LABEL_SIZE": 12.5,
+        "CORNER": {"label": "Jamison", "roads": ("York Road", "Almshouse Road"),
+                   "place": (40.2548297, -75.0893372), "max_m": 60},
+        "TOWN": "Jamison",
+    },
+}
+LABEL_ONLY = None
+CORNER = None
+TOWN = None
+ROUTE_ROADS = None          # set in draw() from the route, never typed
+SHIELD_REFS = None
+ROUTE_REQUIRED = False
+PRIMARY_ONLY = False
+ROUTE_STEPS = []            # the drawn route's roads in driving order, set in draw()
+MINOR_NEAR_M = 0
+WIDTH_SCALE = 1.0
+ROUTE_ON_M = 25             # a way is on the route when its points lie this close to it
+# Two runs of one road join when their ends meet within this many units.
+# 0.5 is the contact frame's value, 1.7m on the ground; a wider frame holds
+# the ground distance about the same by scaling it, so a road that OSM
+# splits at every intersection still reads as one road (3.63).
+JOIN_TOL = 0.5
+ROUTE_ALIGN_DEG = 30        # ...and runs along it: a segment counts only when it is within
+                            # this angle of the route segment it lies on, so a road that
+                            # CROSSES the route counts for nothing however close it passes
+ROUTE_MIN_M = 15            # the aligned length a way needs; OSM splits roads into short ways
+OSRM = "https://router.project-osrm.org/route/v1/driving/"
+
+
+def use_frame(name: str):
+    """Sets the module's frame constants from FRAMES[name] and rebuilds the
+    query from them. The contact frame sets nothing and so is unchanged."""
+    g = globals()
+    for k, v in FRAMES[name].items():
+        g[k] = v
+    g["QUERY"] = ('[out:json][timeout:50];('
+                  'way["highway"~"^(' + "|".join(g["ROAD_CLASSES"]) + ')$"]'
+                  '({0},{1},{2},{3});'
+                  'way["building"](around:120,{4},{5}););out geom tags;').format(
+                      *g["QUERY_BBOX"], PIN_LAT, PIN_LON)
+    if g["MINOR_NEAR_M"]:
+        ends = [(PIN_LAT, PIN_LON)] + ([g["CORNER"]["place"]] if g["CORNER"] else [])
+        g["QUERY"] = g["QUERY"].replace('way["building"]', "".join(
+            'way["highway"~"^(unclassified|residential)$"](around:{0},{1},{2});'.format(
+                g["MINOR_NEAR_M"], la, lo) for la, lo in ends) + 'way["building"]')
+
 
 # ----------------------------------------------------------------------
 def fetch(cache_path: str) -> dict:
@@ -167,6 +270,24 @@ def fetch(cache_path: str) -> dict:
         except Exception as e:  # noqa: BLE001, every failure is reported and the next tried
             print(f"fetch    {ep}  FAILED  {e}")
     raise SystemExit("FAILED: no Overpass endpoint answered. Nothing was drawn.")
+
+
+def fetch_route(cache_path: str) -> dict:
+    """ONE OSRM request for a town frame: from the town's recorded place
+    point to the pin, with alternatives, full geometry. Cached outside the
+    repo like the Overpass response, and never retried in a loop."""
+    (la, lo) = CORNER["place"]
+    url = (f"{OSRM}{lo},{la};{PIN_LON},{PIN_LAT}"
+           "?alternatives=true&overview=full&geometries=geojson&steps=true")
+    raw = urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": USER_AGENT}),
+                                 timeout=70).read()
+    data = json.loads(raw)
+    if data.get("code") != "Ok":
+        raise SystemExit(f"FAILED: OSRM answered {data.get('code')}. Nothing was drawn.")
+    with open(cache_path, "wb") as f:
+        f.write(raw)
+    print(f"fetched  {url.split('?')[0]}  {len(raw)} bytes  -> {cache_path}")
+    return data
 
 
 def project(lat: float, lon: float) -> tuple:
@@ -269,9 +390,9 @@ def join_runs(runs):
                 if i == j:
                     continue
                 a, b = runs[i], runs[j]
-                if math.dist(a[-1], b[0]) < 0.5 and continues(a, b):
+                if math.dist(a[-1], b[0]) < JOIN_TOL and continues(a, b):
                     runs[i] = a + b[1:]
-                elif math.dist(a[-1], b[-1]) < 0.5 and continues(a, b[::-1]):
+                elif math.dist(a[-1], b[-1]) < JOIN_TOL and continues(a, b[::-1]):
                     runs[i] = a + b[::-1][1:]
                 else:
                     continue
@@ -377,7 +498,8 @@ def text_w(s: str, size: float) -> float:
 
 
 # ----------------------------------------------------------------------
-def draw(data: dict):
+def draw(data: dict, route: dict = None):
+    global ROUTE_ROADS, SHIELD_REFS, LABEL_ONLY, ROUTE_STEPS
     els = data.get("elements", [])
     stamp = data.get("osm3s", {}).get("timestamp_osm_base", "unknown")
     print(f"data     OSM base timestamp {stamp}, {len(els)} elements")
@@ -398,6 +520,112 @@ def draw(data: dict):
           f"(building={bt.get('building')}, name={bt.get('name', '-')!r}, "
           f"addr={bt.get('addr:housenumber', '-')} {bt.get('addr:street', '-')})")
 
+    # 1b. A TOWN FRAME'S CORNER must be a point the two named roads share in
+    # the data, within max_m of the town's recorded place point, or nothing
+    # is drawn: the same rule as the pin, for the other end of the route.
+    corner = None
+    if CORNER:
+        ra, rb = CORNER["roads"]
+        pa = {(g["lat"], g["lon"]) for e in els if e.get("tags", {}).get("name") == ra
+              and e.get("tags", {}).get("highway") for g in e.get("geometry", [])}
+        pb = {(g["lat"], g["lon"]) for e in els if e.get("tags", {}).get("name") == rb
+              and e.get("tags", {}).get("highway") for g in e.get("geometry", [])}
+        shared = pa & pb
+        plat, plon = CORNER["place"]
+        def metres(q):
+            return math.hypot((q[0] - plat) * 110574.0,
+                              (q[1] - plon) * 111320.0 * math.cos(math.radians(plat)))
+        if not shared:
+            raise SystemExit(f"FAILED: {ra} and {rb} share no point in the data. Nothing was drawn.")
+        corner = min(shared, key=metres)
+        if metres(corner) > CORNER["max_m"]:
+            raise SystemExit(f"FAILED: the nearest {ra}/{rb} junction is {metres(corner):.0f}m from "
+                             f"{CORNER['label']}'s recorded point, over {CORNER['max_m']}m. Nothing was drawn.")
+        print(f"corner   {ra} meets {rb} at {corner[0]}, {corner[1]}, "
+              f"{metres(corner):.0f}m from {CORNER['label']}'s recorded point {plat}, {plon}")
+
+    # 1c. A TOWN FRAME'S ROUTE, from the recorded routing. Every route must
+    # start at the corner and end at the pin, or nothing is drawn. A way is
+    # on the route when most of its points lie within ROUTE_ON_M of one.
+    on_route = set()
+    if ROUTE_REQUIRED:
+        if not route:
+            raise SystemExit("FAILED: this frame draws its route and was given none. Nothing was drawn.")
+        k = math.cos(math.radians(PIN_LAT))
+        def m(a, b):
+            return math.hypot((a[0] - b[0]) * 110574.0, (a[1] - b[1]) * 111320.0 * k)
+        lines = []
+        drawn_routes = route["routes"][:1] if PRIMARY_ONLY else route["routes"]
+        # The alt text reads the primary route as a driver drives it: each
+        # road once, in order, with its route number; a road that only
+        # changes its name under the same number is not a new turn.
+        ROUTE_STEPS = []
+        for st in drawn_routes[0]["legs"][0]["steps"]:
+            nm, rf = st.get("name", ""), st.get("ref", "")
+            if not nm or st["maneuver"]["type"] in ("depart", "arrive"):
+                continue
+            if ROUTE_STEPS and (ROUTE_STEPS[-1][0] == nm or (rf and ROUTE_STEPS[-1][1] == rf)):
+                continue
+            ROUTE_STEPS.append((nm, rf))
+        for i, rt in enumerate(drawn_routes):
+            pts = [(la, lo) for lo, la in rt["geometry"]["coordinates"]]
+            s_m, e_m = m(pts[0], corner), m(pts[-1], (PIN_LAT, PIN_LON))
+            if s_m > CORNER["max_m"] or e_m > 60:
+                raise SystemExit(f"FAILED: route {i} starts {s_m:.0f}m from the corner or ends "
+                                 f"{e_m:.0f}m from the pin. Nothing was drawn.")
+            lines.append(pts)
+            print(f"route    {i}: {rt['distance'] / 1609.344:.2f} mi, {rt['duration'] / 60:.1f} min "
+                  f"free-flow, {len(pts)} points, starts {s_m:.0f}m from the corner, ends {e_m:.0f}m from the pin")
+        # Segments bucketed by ~200m cells, so the test is quick.
+        cell = 0.002
+        grid = {}
+        for pts in lines:
+            for a, b in zip(pts, pts[1:]):
+                for la in (a[0], b[0]):
+                    for lo in (a[1], b[1]):
+                        grid.setdefault((round(la / cell), round(lo / cell)), set()).add((a, b))
+        def near_route(q):
+            """The route segment's bearing, in degrees mod 180, if q lies
+            within ROUTE_ON_M of it; None otherwise."""
+            key = (round(q[0] / cell), round(q[1] / cell))
+            for dla in (-1, 0, 1):
+                for dlo in (-1, 0, 1):
+                    for a, b in grid.get((key[0] + dla, key[1] + dlo), ()):
+                        ax, ay = 0.0, 0.0
+                        bx, by = (b[1] - a[1]) * 111320.0 * k, (b[0] - a[0]) * 110574.0
+                        qx, qy = (q[1] - a[1]) * 111320.0 * k, (q[0] - a[0]) * 110574.0
+                        L = bx * bx + by * by
+                        t = 0.0 if not L else max(0.0, min(1.0, (qx * bx + qy * by) / L))
+                        if L and math.hypot(qx - t * bx, qy - t * by) <= ROUTE_ON_M:
+                            return math.degrees(math.atan2(by, bx)) % 180
+            return None
+        for e in els:
+            t = e.get("tags", {})
+            if t.get("highway") and e.get("geometry"):
+                g = [(p["lat"], p["lon"]) for p in e["geometry"]]
+                near = [near_route(q) for q in g]
+                along = 0.0
+                for (a, na), (b, nb) in zip(zip(g, near), zip(g[1:], near[1:])):
+                    if na is None or nb is None:
+                        continue
+                    seg = math.degrees(math.atan2((b[0] - a[0]) * 110574.0,
+                                                  (b[1] - a[1]) * 111320.0 * k)) % 180
+                    off = min(abs(seg - na), 180 - abs(seg - na))
+                    if off <= ROUTE_ALIGN_DEG:
+                        along += m(a, b)
+                way_len = sum(m(a, b) for a, b in zip(g, g[1:]))
+                # A way counts when enough of it runs along the route: at
+                # least ROUTE_MIN_M, and either half the way or 150m of it,
+                # so a side road that only touches the route at a junction
+                # does not come along whole.
+                if along >= ROUTE_MIN_M and (along >= 0.5 * way_len or along >= 150):
+                    on_route.add(e["id"])
+        ROUTE_ROADS = True
+        names_on = sorted({e["tags"].get("name") for e in els if e["id"] in on_route and e["tags"].get("name")})
+        refs_on = sorted({e["tags"].get("ref") for e in els if e["id"] in on_route and e["tags"].get("ref")})
+        LABEL_ONLY, SHIELD_REFS = tuple(names_on), tuple(refs_on)
+        print(f"route    {len(on_route)} OSM ways lie on it; named {names_on}; numbered {refs_on}")
+
     # 2. Roads, clipped to the frame, by class.
     roads = []
     for e in els:
@@ -407,15 +635,39 @@ def draw(data: dict):
             continue
         pts = [project(g["lat"], g["lon"]) for g in e["geometry"]]
         for run in clip_polyline(pts):
-            roads.append((hw, t.get("name", ""), t.get("ref", ""), run))
+            roads.append((hw, t.get("name", ""), t.get("ref", ""), run, e["id"] in on_route))
     by_class = {}
     for hw, *_ in roads:
         by_class[hw] = by_class.get(hw, 0) + 1
+    if ROUTE_ROADS:
+        # A context road far from both ends is drawn only if it is a main
+        # road; the minor ones were fetched for the ends' last turns.
+        roads = [r for r in roads if r[4] or r[0] in MAIN_CLASSES]
     print(f"roads    {len(roads)} runs in frame: " +
           ", ".join(f"{k} {v}" for k, v in sorted(by_class.items())))
 
     out = [f'<rect class="map-ground" width="{VB_W}" height="{VB_H}"/>']
-    for layer in ("case", "road"):
+    if ROUTE_ROADS is not None:
+        # A TOWN FRAME'S HIERARCHY IS THE ROUTE. Every road is scaled to the
+        # frame; the context roads take the quiet casing, the route's roads
+        # the major one and a wider line. No new colour: the pin stays the
+        # map's one oxblood mark.
+        route = [r for r in roads if r[4]]
+        ctx = [r for r in roads if not r[4]]
+        roads = ctx + route
+        for group, major, scale in ((ctx, False, 0.8), (route, True, 1.35)):
+            for layer in ("case", "road"):
+                for cls in DRAW_ORDER:
+                    runs = [r for r in group if r[0] == cls]
+                    if not runs:
+                        continue
+                    case_w, road_w, _m = STYLE[cls]
+                    w = (case_w if layer == "case" else road_w) * WIDTH_SCALE * scale
+                    klass = (("map-case map-case--major" if major else "map-case")
+                             if layer == "case" else "map-road")
+                    out.append(f'<path class="{klass}" stroke-width="{fmt(w)}" '
+                               f'd="{" ".join(d_of(r[3]) for r in runs)}"/>')
+    for layer in (() if ROUTE_ROADS is not None else ("case", "road")):
         for cls in DRAW_ORDER:
             runs = [r for r in roads if r[0] == cls]
             if not runs:
@@ -432,8 +684,13 @@ def draw(data: dict):
     near_u = LABEL_NEAR_M / M_PER_UNIT
     defs, labels, shields, report = [], [], [], []
     names = {}
-    for hw, name, ref, run in roads:
+    for hw, name, ref, run, _on in roads:
         if not name:
+            continue
+        if LABEL_ONLY is not None:
+            # A town frame names only the roads its recorded route uses.
+            if _on and name in LABEL_ONLY:
+                names.setdefault(name, []).append(run)
             continue
         near = min(math.dist((px, py), q) for q in run) <= near_u
         if hw in LABEL_CLASSES or name == PIN_STREET or near:
@@ -447,6 +704,10 @@ def draw(data: dict):
     # longest first within each, measured JOINED, because a road split
     # into many OSM ways is still one road.
     cls_of = {r[1]: r[0] for r in roads if r[1]}
+    if LABEL_ONLY is not None:
+        # Every road a town frame names is a road the route uses, so each
+        # ranks as a through road.
+        cls_of.update({n: "tertiary" for n in names if cls_of.get(n) not in LABEL_CLASSES})
     order = sorted(names.items(), key=lambda kv: (
         kv[0] != PIN_STREET, cls_of.get(kv[0]) not in LABEL_CLASSES,
         -max(length(j) for j in join_runs(kv[1]))))
@@ -482,8 +743,9 @@ def draw(data: dict):
     # anywhere a major road carrying a different number passes under it.
     def other_major_points(ref):
         pts = []
-        for hw, _n, rref, run in roads:
-            if hw in LABEL_CLASSES and rref != ref:
+        for hw, _n, rref, run, _on in roads:
+            major = _on if ROUTE_ROADS else hw in LABEL_CLASSES
+            if major and rref != ref:
                 for a_, b_ in zip(run, run[1:]):
                     steps = max(1, int(math.dist(a_, b_) / 3))
                     pts.extend((a_[0] + (b_[0] - a_[0]) * k / steps,
@@ -491,9 +753,11 @@ def draw(data: dict):
         return pts
 
     shield_c = []
-    for ref in sorted({r[2] for r in roads if r[2]}):
+    for ref in sorted({r[2] for r in roads if r[2]
+                       and (SHIELD_REFS is None or r[2] in SHIELD_REFS)}):
         shown = ref_text(ref)
-        vis = visible(max(join_runs([r[3] for r in roads if r[2] == ref]), key=length), 16)
+        vis = visible(max(join_runs([r[3] for r in roads if r[2] == ref
+                                     and (r[4] or not ROUTE_ROADS)]), key=length), 16)
         ln = length(vis) if len(vis) >= 2 else 0
         w = text_w(shown, SHIELD_SIZE) + 14
         others = other_major_points(ref)
@@ -538,13 +802,24 @@ def draw(data: dict):
                 search(i + 1, placed + boxes, pick + [(frac, boxes)], score + [1])
         search(i + 1, placed, pick + [None], score + [0])
 
+    corner_opts = [(None, [])]
+    if corner:
+        cx, cy = project(*corner)
+        cw = text_w(CORNER["label"], PIN_LABEL_SIZE)
+        corner_opts = [(side, [box]) for side, box in (
+            ("right", (cx - 10, cy - 14, cx + 18 + cw, cy + 14)),
+            ("left", (cx - 18 - cw, cy - 14, cx + 10, cy + 14)))
+            if box[0] >= 2 and box[2] <= VB_W - 2]
+        if not corner_opts:
+            raise SystemExit("FAILED: the corner's name fits on neither side. Nothing was drawn.")
     chosen = None
     for side, pbox in pin_opts:
-        best["score"], best["pick"] = None, None
-        search(0, list(pbox), [], [])
-        if chosen is None or best["score"] > chosen[0]:
-            chosen = (best["score"], best["pick"], side, pbox)
-    _, pick, pin_side, pin_box = chosen
+        for cside, cbox in corner_opts:
+            best["score"], best["pick"] = None, None
+            search(0, list(pbox) + list(cbox), [], [])
+            if chosen is None or best["score"] > chosen[0]:
+                chosen = (best["score"], best["pick"], side, pbox, cside)
+    _, pick, pin_side, pin_box, corner_side = chosen
     for i, (c, got) in enumerate(zip(cands, pick)):
         if got is None:
             why = ("no stretch long and straight enough" if not c["opts"]
@@ -569,6 +844,8 @@ def draw(data: dict):
                            f'x="{fmt(at[0])}" y="{fmt(at[1] + 4.5)}" text-anchor="middle">{c["shown"]}</text>')
             report.append(f"  shield {c['shown']!r} (OSM ref {c['key']!r}) at {frac:.0%} of its stretch")
     report.append(f"  pin    name set {pin_side} of the pin")
+    if corner:
+        report.append(f"  corner {CORNER['label']!r} set {corner_side} of the corner")
     print("labels")
     print("\n".join(report))
 
@@ -580,6 +857,14 @@ def draw(data: dict):
            + (f'x="{fmt(px + 16)}" y="{fmt(py - 16)}">' if pin_side == "right" else
               f'x="{fmt(px - 16)}" y="{fmt(py - 16)}" text-anchor="end">')
            + f'{PIN_LABEL}</text>')
+    if corner:
+        cx, cy = project(*corner)
+        pin += (f'<circle class="map-corner" cx="{fmt(cx)}" cy="{fmt(cy)}" r="7"/>'
+                f'<text class="map-pin-label" font-size="{PIN_LABEL_SIZE}" '
+                + (f'x="{fmt(cx + 14)}" y="{fmt(cy + 6)}">' if corner_side == "right" else
+                   f'x="{fmt(cx - 14)}" y="{fmt(cy + 6)}" text-anchor="end">')
+                + f'{CORNER["label"]}</text>')
+        print(f"corner   drawn at ({cx:.1f}, {cy:.1f})")
     print(f"pin      drawn at ({px:.1f}, {py:.1f}) of {VB_W}x{VB_H}; "
           f"frame {VB_W * M_PER_UNIT:.0f}m x {VB_H * M_PER_UNIT:.0f}m at {M_PER_UNIT} m/unit")
 
@@ -588,6 +873,17 @@ def draw(data: dict):
 
 
 def alt_text(drawn: list) -> str:
+    if CORNER:
+        a, b = (as_signed(r) for r in CORNER["roads"])
+        # THE SENTENCE ENDS ON THE SHOP, NEVER ON A ROAD. The route's last
+        # road is the shop's own street, and "Jaymor Rd." with the period is
+        # a spelling scripts/audit.py fails as a second address, which is
+        # how the first draft of this line was caught (3.63).
+        way = [as_signed(n) + (f" ({ref_text(r)})" if r else "") for n, r in ROUTE_STEPS]
+        return (f"Map of the drive from {CORNER['label']}, at {a} and {b}, "
+                + ("by " + ", ".join(way[:-1]) + (" and " if len(way) > 1 else "") + way[-1] + " "
+                   if way else "")
+                + "to Tri-County Collision in Southampton. Opens directions in Google Maps.")
     near = [as_signed(n) for n in drawn if n != PIN_STREET]
     tail = ""
     if near:
@@ -630,7 +926,14 @@ def main() -> int:
     src.add_argument("--data", help="a cached Overpass response to draw from")
     src.add_argument("--fetch", help="make the one query and cache it here (outside the repo)")
     ap.add_argument("--out-dir", help="write map.svg here and leave docs/ alone")
+    ap.add_argument("--route", help="a town frame's cached OSRM routing to draw")
+    ap.add_argument("--fetch-route", help="make the one OSRM request and cache it here (outside the repo)")
+    ap.add_argument("--frame", default="contact", choices=sorted(FRAMES),
+                    help="which frame to draw, from FRAMES (default: contact)")
     a = ap.parse_args()
+    use_frame(a.frame)
+    print(f"frame    {a.frame}: {VB_W}x{VB_H} at {M_PER_UNIT} m/unit, centre "
+          f"{FRAME_CX_LAT}, {FRAME_CX_LON}, page {os.path.relpath(PAGE, ROOT)}")
 
     if a.fetch:
         if os.path.abspath(a.fetch).startswith(ROOT + os.sep):
@@ -640,7 +943,15 @@ def main() -> int:
         with open(a.data, encoding="utf-8") as f:
             data = json.load(f)
 
-    svg, alt, stamp = build_svg(draw(data))
+    route = None
+    if a.fetch_route:
+        if os.path.abspath(a.fetch_route).startswith(ROOT + os.sep):
+            raise SystemExit("FAILED: the routing cache stays outside the repo")
+        route = fetch_route(a.fetch_route)
+    elif a.route:
+        with open(a.route, encoding="utf-8") as f:
+            route = json.load(f)
+    svg, alt, stamp = build_svg(draw(data, route))
     print(f"alt      {alt}")
     print(f"size     {len(svg.encode())} bytes of inline SVG")
 
