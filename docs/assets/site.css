@@ -2124,6 +2124,14 @@ footer.site a:focus-visible,
 /* On an oxblood band an oxblood counter would vanish, so it inverts: a paper
    disc with oxblood numerals. Same idea for the tick marks in .ticks. */
 .dark .numbered li::before { background: var(--silver); color: var(--ox); }
+/* A PARAGRAPH AFTER THE LIST GETS ITS GAP BACK, added 2026-09-28,
+   proposed-changes.md 3.62. .numbered zeroes its own margin, which is right
+   where the list closes a block and a CTA row follows it with its own
+   margin, and wrong where prose carries on beneath it: the Jamison page's
+   second route sat flush against the last step. The gap is a paragraph's
+   own, so the list reads as one more block in the run of prose. Grepped:
+   the town page's directions are the only list followed by a paragraph. */
+.numbered + p { margin-top: 1.1em; }
 .dark .ticks li::before { border-color: var(--silver); }
 
 /* ---------- Figures ---------- */

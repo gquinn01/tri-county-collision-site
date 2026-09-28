@@ -671,10 +671,19 @@ SPECIAL_KINDS = ("redirect-stub", "error-404")
 # is a real AEO play) is measured like every other page: no schema warns,
 # and the mirror law fails any difference between the visible text and the
 # FAQPage node, both directions. That holds for contact too.
+#
+# A TOWN PAGE IS DECLARED AND EXEMPT FROM NOTHING, Greg's ruling of
+# 2026-09-28, proposed-changes.md 3.62. It carries a real FAQ and has to
+# earn its words, so faq-schema and thin-content both stay measured. The
+# empty tuple is written out rather than left to the .get() default, so the
+# kind is a ruled entry like the others and a later edit that adds an
+# exemption to it is a visible change to a ruled list, not a new key.
+# The tier's own gate is check_town_variance_local, further down.
 RUBRIC_EXEMPTIONS = {
     "contact": ("faq-schema", "thin-content"),
     "post": ("faq-schema",),
     "blog-index": ("faq-schema",),
+    "town": (),
 }
 
 REFRESH_RE = re.compile(
@@ -1394,6 +1403,203 @@ def check_brand_count_local(passes: list, warns: list, fails: list,
             f"text and {len(found['schema'])} in JSON-LD, all saying {BRAND_COUNT}. "
             "The live site's own carousel shows fourteen against its prose's dozen; this "
             "is the check that keeps that from happening here.")
+
+
+# --- Town-page variance, the areas tier's gate (3.62) -------------------
+# The doctrine's rule 7: a town page exists only with verified variance
+# against its hub and every sibling, under 30 percent shared vocabulary and
+# no shared substantive H2. Built with the first town page, 2026-09-28, so
+# the second cannot ship a lookalike. With one town it compares nothing,
+# and says so.
+#
+# THE MEASURE, proposed in proposed-changes.md 3.62 and calibrated there:
+# THREE-WORD SHINGLES, CONTAINMENT, PLACE NAMES MASKED. Each page's
+# substantive text is lowercased and every place name in TOWN_PLACE_NAMES,
+# plus the page's own town from its slug, becomes one token; the text is
+# cut into every run of three consecutive words; and a pair's figure is
+# the phrases they share over the phrases of the SMALLER page. A pair at
+# or over TOWN_SHARED_MAX fails.
+#
+# WHY NOT SINGLE WORDS: two honest pages about one shop share "collision",
+# "insurance" and "estimate" by necessity. Single-word overlap between our
+# own four service pages is 46 to 65 percent, and they are not lookalikes.
+# The doorway problem is shared PHRASING, and three-word phrases separate
+# it cleanly: 7 to 10 percent between the service pages, 1 to 3 between
+# posts, 56 to 65 between the shop's eleven live town pages, which differ
+# by little more than the town's name. Measured by these functions, not a
+# prototype of them, 2026-09-28. WHY MASKED: a copy with the name
+# swapped must read as the copy it is. WHY CONTAINMENT, NOT JACCARD: a
+# short page tucked inside a long one is a lookalike, and Jaccard would
+# let the long one's extra text dilute it away.
+#
+# PATTERN TEXT IS DEFINED HERE, NEVER IN MARKUP. What the template repeats
+# on every town page by design is left out of both measures: anything in
+# a <nav> (the crumb), the sections whose ids are in TOWN_PATTERN_SECTIONS
+# (the trust band, the promise band, the nearby-towns links), and the
+# .svc-card links to the four service pages. A page cannot mark its own
+# shared prose as pattern to escape the measure, because the list is not
+# the page's to write. Everything else, the FAQ included, is compared.
+#
+# THE H2 HALF compares substantive H2s literally, case and spacing aside,
+# with no masking: the template puts the town's name in every substantive
+# H2 on purpose (Greg's brief, 3.62), and the phrase measure above is what
+# catches a page that only swapped the name.
+TOWN_KIND = "town"
+TOWN_HUB_PATH = os.path.join("areas-served", "index.html")
+TOWN_PATTERN_SECTIONS = ("proof", "start", "nearby")
+TOWN_PATTERN_CLASSES = ("svc-card",)
+TOWN_SHINGLE = 3
+TOWN_SHARED_MAX = 0.30
+TOWN_PLACE_NAMES = (
+    "feasterville-trevose", "feasterville", "trevose", "huntingdon valley",
+    "northeast philadelphia", "willow grove", "bryn athyn", "bensalem",
+    "hatboro", "horsham", "jamison", "jenkintown", "langhorne", "richboro",
+    "warminster", "ivyland", "churchville", "holland", "newtown",
+    "northampton", "southampton", "warwick", "warrington", "hartsville",
+    "philadelphia", "bucks", "montgomery",
+)
+_VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link",
+         "meta", "source", "track", "wbr"}
+
+
+class _TownText(HTMLParser):
+    """The substantive text and H2s inside <main>, pattern text left out."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.stack = []           # (tag, skipping) for every open element
+        self.main = 0
+        self.words = []
+        self.h2s = []
+        self._h2 = None
+
+    def _skipping(self):
+        return bool(self.stack) and self.stack[-1][1]
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag == "main":
+            self.main += 1
+        if tag in _VOID:
+            return
+        classes = (a.get("class") or "").split()
+        skip = (self._skipping() or tag in ("nav", "script", "style")
+                or (tag == "section" and a.get("id") in TOWN_PATTERN_SECTIONS)
+                or any(c in TOWN_PATTERN_CLASSES for c in classes))
+        self.stack.append((tag, skip))
+        if tag == "h2" and not skip:
+            self._h2 = ""
+
+    def handle_endtag(self, tag):
+        if tag == "main" and self.main:
+            self.main -= 1
+        if tag == "h2" and self._h2 is not None:
+            # An empty H2 is the empty-heading check's critical, not a
+            # heading two pages can share.
+            if self._h2.strip():
+                self.h2s.append(" ".join(self._h2.split()))
+            self._h2 = None
+        for i in range(len(self.stack) - 1, -1, -1):
+            if self.stack[i][0] == tag:
+                del self.stack[i:]
+                break
+
+    def handle_data(self, data):
+        if not self.main or self._skipping():
+            return
+        self.words.append(data)
+        if self._h2 is not None:
+            self._h2 += data
+
+
+def town_place_mask(text: str, own: tuple = ()) -> list:
+    """Lowercased words with every place name, and the page's own town,
+    reduced to one token, so a renamed copy reads as a copy."""
+    t = text.lower().replace("’", "'")
+    for name in sorted(set(TOWN_PLACE_NAMES) | set(own), key=len, reverse=True):
+        t = re.sub(r"\b" + re.escape(name) + r"\b", " zzplace ", t)
+    return re.findall(r"[a-z0-9']+", t)
+
+
+def town_shingles(html_text: str, own: tuple = ()) -> tuple:
+    p = _TownText()
+    p.feed(html_text)
+    w = town_place_mask(" ".join(p.words), own)
+    grams = {" ".join(w[i:i + TOWN_SHINGLE]) for i in range(len(w) - TOWN_SHINGLE + 1)}
+    return grams, p.h2s
+
+
+def town_variance_findings(pages: dict) -> dict:
+    """pages is {label: (html, own_names)}. Every pair is compared, the hub
+    included when it is among them. Returns the shared substantive H2s and
+    every pair's shared-phrase figure."""
+    data = {k: town_shingles(h, own) for k, (h, own) in pages.items()}
+    shared_h2, pairs = [], []
+    keys = sorted(data)
+    for i, a in enumerate(keys):
+        for b in keys[i + 1:]:
+            ga, ha = data[a]
+            gb, hb = data[b]
+            common = {x.lower() for x in ha} & {x.lower() for x in hb}
+            shared_h2 += [(a, b, h) for h in sorted(common)]
+            small = min(len(ga), len(gb))
+            pairs.append((a, b, len(ga & gb) / small if small else 1.0))
+    return {"shared_h2": shared_h2, "pairs": pairs}
+
+
+def own_town_names(path: str) -> tuple:
+    """The town a town page is about, read off its slug:
+    areas-served-collision-repair-jamison-pa -> ("jamison",)."""
+    slug = os.path.basename(os.path.dirname(path))
+    m = re.match(r"areas-served-collision-repair-(.+?)(?:-pa)?$", slug)
+    return (m.group(1).replace("-", " "),) if m else ()
+
+
+def check_town_variance_local(passes: list, warns: list, fails: list, notes: list,
+                              root: str = None):
+    """Rule 7's variance, measured across every declared town page and the
+    hub. A shared substantive H2 and a pair over the ceiling are criticals:
+    this is the gate that stops the second town page shipping as a copy of
+    the first."""
+    root = root or SITE_DIR
+    towns = {}
+    for dirpath, _dirs, files in os.walk(root):
+        if "index.html" not in files:
+            continue
+        path = os.path.join(dirpath, "index.html")
+        with open(path, encoding="utf-8") as f:
+            raw = f.read()
+        m = re.search(r'<meta name="tri-county-page" content="([^"]*)"', raw)
+        if m and m.group(1).strip().lower() == TOWN_KIND:
+            towns[os.path.relpath(path, root)] = (raw, own_town_names(path))
+    hub = os.path.join(root, TOWN_HUB_PATH)
+    compared = dict(towns)
+    if os.path.isfile(hub):
+        with open(hub, encoding="utf-8") as f:
+            compared[TOWN_HUB_PATH] = (f.read(), ())
+    if len(compared) < 2:
+        notes.append(
+            f"**Town variance: {len(towns)} town page{'' if len(towns) == 1 else 's'}"
+            f"{', no hub yet' if not os.path.isfile(hub) else ''}, so nothing to compare.** "
+            f"The gate arms the day a second town page or the hub lands: no shared "
+            f"substantive H2, and under {TOWN_SHARED_MAX:.0%} shared three-word phrases "
+            f"between any two (proposed-changes.md 3.62).")
+        return
+    found = town_variance_findings(compared)
+    for a, b, h in found["shared_h2"]:
+        fails.append(f"**Town pages share a substantive H2:** `{a}` and `{b}` both carry "
+                     f"“{h}”. Rule 7 forbids it; give each section its own heading.")
+    over = [(a, b, r) for a, b, r in found["pairs"] if r >= TOWN_SHARED_MAX]
+    for a, b, r in over:
+        fails.append(f"**Town pages read as copies:** `{a}` and `{b}` share {r:.0%} of their "
+                     f"three-word phrases, place names masked, against a ceiling under "
+                     f"{TOWN_SHARED_MAX:.0%}. Rewrite one of them; the doctrine calls a page "
+                     f"like this a doorway.")
+    if not found["shared_h2"] and not over:
+        worst = max(r for _a, _b, r in found["pairs"])
+        passes.append(f"Town variance holds across {len(compared)} pages: no shared substantive "
+                      f"H2, and the closest pair shares {worst:.0%} of its three-word phrases "
+                      f"(ceiling under {TOWN_SHARED_MAX:.0%}).")
 
 
 def check_hours_llms_local(passes: list, fails: list):
@@ -2232,6 +2438,7 @@ def main():
         check_staging_local(site_passes, site_warns, site_notes)
         check_review_count_local(site_passes, site_warns, site_fails, site_notes)
         check_brand_count_local(site_passes, site_warns, site_fails, site_notes)
+        check_town_variance_local(site_passes, site_warns, site_fails, site_notes)
         check_asset_provenance_local(site_passes, site_warns, site_fails, site_notes)
         check_comment_convention_local(site_warns, site_notes)
         check_pending_links_local(site_warns, site_notes)

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       JAMISON, THE PILOT OF THE TOWN-PAGE TEMPLATE. Built 2026-09-28,
+       proposed-changes.md 3.62, which is the template's home: section
+       order, the fact discipline, the schema and the variance gate are
+       defined there, and the eleven migrating towns and the hub follow it
+       once Greg approves this page.
+
+       A REBUILD, NOT A MIGRATION. pagemap.md's row: "Rebuild to the
+       sibling standard: directions, named roads, own FAQ; owner supplies
+       the local facts, never invented." The live page carried no
+       directions, no FAQ and no local fact, so no sentence of it survives;
+       every sentence here is a pair in 3.62, awaiting the owner.
+
+       WHERE EACH FACT COMES FROM. The shop's name, address, phone and hours
+       are the constants in scripts/audit.py. The roads, route numbers,
+       distance and drive time are an OSRM routing from OpenStreetMap's
+       Jamison village point (40.2548297, -75.0893372, where York Road meets
+       Almshouse Road) to the shop's verified pin, recorded in 3.62; the
+       drive time is free-flow and flagged there for the owner. That Jamison
+       is in Warwick Township, Bucks County is OpenStreetMap's. The
+       neighbors named are only those the shop's own hub already serves.
+       Nothing about Jamison that a map cannot check is on this page, by
+       design: that is the owner's to supply, and absent until then.
+
+       NOT IN JAMISON, SAID FIRST. The shop is in Southampton, and the page
+       says so in its lead, its opening section and its first question.
+
+       THE HUB IS PENDING. It is not built yet, so the crumb's middle item
+       and the nearby links are spans with data-pending-href; the pending-
+       link test turns each into a link the day its page exists. The schema
+       keeps the hub's absolute production URL, because the schema
+       describes the production site and the tier ships together.
+
+       STAGING, DELIBERATE, AND NOT A DEFECT: noindex below, docs/robots.txt
+       disallows everything, and the canonical is absolute to the
+       production domain. All three come off together at cutover.
+
+       NO PRICE, OFFER, REVIEW OR RATING MARKUP.
+       ============================================================ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Ink. The palette lives in assets/site.css; a meta tag cannot read a
+       custom property, which is why this one hex is duplicated. -->
+  <meta name="theme-color" content="#121B27">
+
+  <title>Collision Repair for Jamison, PA | Tri-County Collision</title>
+  <meta name="description" content="Tri-County Collision in Southampton repairs cars for Jamison, PA drivers, about 15 minutes away. Directions from Jamison, free estimates, (215) 322-5350.">
+
+  <link rel="canonical" href="https://tricountycollision.com/areas-served-collision-repair-jamison-pa/">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- A TOWN PAGE, declared, and exempt from nothing: Greg's ruling of
+       2026-09-28, proposed-changes.md 3.62. It carries a real FAQ and has
+       to earn its words. The tier's gate is the variance check in
+       scripts/audit.py, which compares every town page with its siblings
+       and the hub. -->
+  <meta name="tri-county-page" content="town">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Collision Repair for Jamison, PA | Tri-County Collision">
+  <meta property="og:description" content="Tri-County Collision in Southampton repairs cars for Jamison, PA drivers, about 15 minutes away. Directions from Jamison, free estimates, (215) 322-5350.">
+  <meta property="og:url" content="https://tricountycollision.com/areas-served-collision-repair-jamison-pa/">
+  <!-- NO IMAGE ON THIS PAGE, SO ITS SHARE CARD FOLLOWS HOME'S, byte for
+       byte, as /contact-us/'s does. It moves to a real shop photograph
+       after the shoot. -->
+  <meta property="og:image" content="https://tricountycollision.com/assets/img/hero-wrecked-sedan-in-shop.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="800">
+  <meta property="og:image:alt" content="A red sedan with its front end crushed and the bumper torn loose, in the shop before repair.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- No analytics tag yet. GA4 goes in the CLIENT'S OWN Google account at
+       cutover, and the CallRail snippet goes in beside it. Neither is here,
+       because a measurement ID nobody has given us is a fact nobody has
+       confirmed. docs/privacy/ ships in the same commit as the first tag. -->
+
+  <!-- Both faces are self-hosted and both are needed above the fold, so they
+       are preloaded rather than discovered inside the stylesheet. They are
+       SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
+  <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/site.css?v=46eadd5b">
+  <script src="../assets/site.js?v=e67e271c" defer></script>
+
+  <!-- One @graph. The AutoBodyShop node repeats in full on every page under
+       the SAME @id, so the whole site resolves to one business entity.
+       geo IS THE SHOP'S VERIFIED PIN, GEO_LAT and GEO_LON in scripts/audit.py,
+       and there is no per-town geo: Jamison is where the reader is, not
+       where the shop is. The town is named once, as the areaServed of this
+       page's own Service node. sameAs IS DELIBERATELY ABSENT until the
+       client's verified list lands. The FAQPage node is generated from the
+       same strings as the visible questions, so the two cannot differ. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AutoBodyShop",
+        "@id": "https://tricountycollision.com/#business",
+        "name": "Tri-County Collision",
+        "url": "https://tricountycollision.com/",
+        "telephone": "+12153225350",
+        "email": "contact@tricountycollision.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "995 Jaymor Rd",
+          "addressLocality": "Southampton",
+          "addressRegion": "PA",
+          "postalCode": "18966",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 40.1660232,
+          "longitude": -75.0512847
+        },
+        "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "08:00",
+            "closes": "18:00"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-bucks-county",
+            "name": "Bucks County, Pennsylvania"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-montgomery-county",
+            "name": "Montgomery County, Pennsylvania"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-philadelphia",
+            "name": "Philadelphia, Pennsylvania"
+          },
+          {
+            "@type": "City",
+            "name": "Southampton, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Feasterville-Trevose, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Richboro, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Warminster, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Langhorne, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Bensalem, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Huntingdon Valley, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Hatboro, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Willow Grove, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Horsham, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Jenkintown, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "Place",
+            "name": "Northeast Philadelphia, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-philadelphia"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://tricountycollision.com/areas-served-collision-repair-jamison-pa/#webpage",
+        "url": "https://tricountycollision.com/areas-served-collision-repair-jamison-pa/",
+        "name": "Collision Repair for Jamison, PA | Tri-County Collision",
+        "description": "Tri-County Collision in Southampton repairs cars for Jamison, PA drivers, about 15 minutes away. Directions from Jamison, free estimates, (215) 322-5350.",
+        "inLanguage": "en-US",
+        "dateModified": "2026-09-28",
+        "isPartOf": {
+          "@id": "https://tricountycollision.com/#business"
+        },
+        "about": {
+          "@id": "https://tricountycollision.com/areas-served-collision-repair-jamison-pa/#service"
+        },
+        "breadcrumb": {
+          "@id": "https://tricountycollision.com/areas-served-collision-repair-jamison-pa/#breadcrumb"
+        }
+      },
+      {
+        "@type": "Service",
+        "@id": "https://tricountycollision.com/areas-served-collision-repair-jamison-pa/#service",
+        "name": "Collision Repair for Jamison, PA",
+        "serviceType": "Collision Repair",
+        "url": "https://tricountycollision.com/areas-served-collision-repair-jamison-pa/",
+        "provider": {
+          "@id": "https://tricountycollision.com/#business"
+        },
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Jamison, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://tricountycollision.com/areas-served-collision-repair-jamison-pa/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://tricountycollision.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Areas We Serve",
+            "item": "https://tricountycollision.com/areas-served/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Jamison",
+            "item": "https://tricountycollision.com/areas-served-collision-repair-jamison-pa/"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://tricountycollision.com/areas-served-collision-repair-jamison-pa/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is Tri-County Collision actually in Jamison?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Tri-County Collision is not in Jamison: the shop is at 995 Jaymor Rd, Southampton, PA 18966, about 8 miles and 15 minutes from Jamison without traffic. Pennsylvania law protects your right to choose your own collision shop for repairs. Your insurance company cannot require you to use their preferred facility or steer you elsewhere. Our post on your right to choose a body shop explains the law."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I get to Tri-County Collision from Jamison?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The drive from Jamison to Tri-County Collision is about 8.4 miles and takes about 15 minutes without traffic: south on York Road (PA 263), left on West Bristol Road, right on Second Street Pike (PA 232), and right on Jaymor Rd to the shop."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does Tri-County Collision work with my insurance company if I live in Jamison?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Tri-County Collision works with all major insurance companies, and a Jamison address makes no difference to that."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "When is Tri-County Collision open for Jamison drivers?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Tri-County Collision is open Monday to Friday, 8 a.m. to 6 p.m., and Saturday by appointment only."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Removed at cutover, with the noindex tag and the robots.txt disallow.
+       A human who opens this page should not have to guess why it is not
+       indexed. -->
+  <p class="staging">Staging build. Not the live site. The shop's live site is at tricountycollision.com</p>
+
+  <header class="nav">
+    <div class="wrap inner">
+      <a class="nav-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+      <nav class="nav-main" aria-label="Main"><ul>
+        <li><a href="../collision-repair/">Collision Repair</a></li>
+      </ul></nav>
+      <a class="btn btn-sm" href="tel:+12153225350">Call (215) 322-5350</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- 1. THE COMPACT OX HEADER, the page-header identity, extended to the
+         areas tier by Greg's ruling of 2026-09-28 (3.61, amended in 3.62).
+         It carries the call, like /contact-us/'s. -->
+    <section class="hero dark field-ox" id="town-head">
+      <div class="wrap">
+        <!-- Mirrors the BreadcrumbList, same labels and same order. The hub
+             is not built yet, so its item waits as a span. -->
+        <nav class="crumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="../">Home</a></li>
+            <li><span data-pending-href="../areas-served/">Areas We Serve</span></li>
+            <li>Jamison</li>
+          </ol>
+        </nav>
+        <div>
+          <p class="eyebrow">Bucks County, PA</p>
+          <h1>Collision Repair for Jamison, PA</h1>
+          <p class="lead">Tri-County Collision is a family-owned body shop in Southampton, about 15 minutes from Jamison.</p>
+          <div class="cta-row">
+            <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. THE ONE WHITE BAND UNDER THE HEADER: the service pages' stat band,
+         byte for byte. Its figures are the constants the audit holds. -->
+    <section class="statband" id="proof" aria-label="Warranty, reviews and certifications">
+      <div class="wrap">
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-n">Lifetime</span>
+            <span class="stat-l">Warranty on all repair work</span>
+            <span class="stat-s">If anything isn't right, we'll make it right.</span>
+          </div>
+          <div class="stat">
+            <span class="stat-n">274</span>
+            <span class="stat-l">Google reviews</span>
+            <span class="stat-s">4.9 stars on Google, counted on September 10, 2026.</span>
+          </div>
+          <div class="stat">
+            <span class="stat-n">12</span>
+            <span class="stat-l">Vehicle brands, factory-certified</span>
+            <span class="stat-s">INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. WHO THE PAGE IS FOR, and the neighbors named in the first hundred
+         words: only places the shop's own hub already serves. -->
+    <section id="for-jamison">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">For drivers from Jamison</h2>
+        </div>
+        <div class="prose">
+          <p>This page is for anyone who lives or works in Jamison and needs a car fixed after an accident. We are not in Jamison, and we won't pretend to be: Tri-County Collision is a family-owned shop in Southampton, and we repair cars for drivers from Jamison and from its neighbors Warminster, Richboro and Ivyland.</p>
+          <p>Jamison is in Warwick Township, Bucks County, where York Road (PA 263) crosses Almshouse Road. From there the shop is about 8 miles away by road, and about 15 minutes without traffic.</p>
+          <p>If your car has been in an accident, call before you decide where it goes. Estimates are free and there is no obligation.</p>
+        </div>
+        <!-- THE SECTION-BOTTOM ASK, the service pages' #intro grammar (3.45):
+             without it the page ran 3,016px at 390 from the header's call
+             to the promise band's, longer than any service page. -->
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. GETTING HERE, every road and number from the recorded routing.
+         The street is always "Jaymor Rd" with no period and the number only
+         ever in the full canonical address: scripts/audit.py fails any
+         other spelling. -->
+    <section id="getting-here" class="band-panel">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Getting to the shop from Jamison</h2>
+        </div>
+        <div class="prose">
+          <p>From the crossroads of York Road and Almshouse Road, the drive is about 8.4 miles and takes about 15 minutes without traffic.</p>
+          <ol class="numbered">
+            <li><strong>Head south on York Road (PA 263)</strong> for about 2 miles.</li>
+            <li><strong>Turn left onto West Bristol Road</strong> and follow it for about 4 miles.</li>
+            <li><strong>Turn right onto Second Street Pike (PA 232)</strong> and go south for about 2 miles.</li>
+            <li><strong>Turn right onto Jaymor Rd</strong>, and the shop is about a quarter mile along, at 995 Jaymor Rd, Southampton, PA 18966.</li>
+          </ol>
+          <p>Staying on York Road to County Line Road, then following County Line Road east to James Way and Jaymor Rd, takes about the same time. There is a map on our <a href="../contact-us/#find-us">contact page</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. WHAT WE FIX. Each card restates only what its own page's meta
+         description already says. No demand claim: nothing here says which
+         repair Jamison drivers ask for most, because nobody knows. -->
+    <section id="fix">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">What we fix for Jamison drivers</h2>
+          <p>Pick the one that fits what happened. Each page explains how the repair works.</p>
+        </div>
+        <div class="grid2">
+          <a class="svc-card" href="../collision-repair/">
+            <div class="svc-card-body">
+              <h3>Collision Repair</h3>
+              <p>Minor and major collision damage, with a lifetime warranty on the work.</p>
+            </div>
+          </a>
+          <a class="svc-card" href="../commercial-collision-repair/">
+            <div class="svc-card-body">
+              <h3>Commercial Collision Repair</h3>
+              <p>Work vehicles and fleets, with help on the insurance side.</p>
+            </div>
+          </a>
+          <a class="svc-card" href="../auto-glass-repair-replacement/">
+            <div class="svc-card-body">
+              <h3>Auto Glass Repair</h3>
+              <p>Windshields, side windows and rear windows.</p>
+            </div>
+          </a>
+          <a class="svc-card" href="../paintless-dent-repair/">
+            <div class="svc-card-body">
+              <h3>Paintless Dent Repair</h3>
+              <p>Door dings and hail dents, fixed without repainting.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. THE PROMISE BAND, home's #start byte for byte, by Greg's ruling
+         of 2026-09-28: the approved promise, not a new one. It carries the
+         call, so the band test is met. -->
+    <section class="dark field-ox" id="start">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">We will get you back on the road with your vehicle restored to its pre-accident condition.</h2>
+          <p class="sec-sub">Estimates are free and there is no obligation</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. THE FAQ, unique to the town, and the geographic objection first,
+         answered in its opening sentence. -->
+    <section id="faq">
+      <div class="wrap" style="max-width:880px">
+        <div class="sec-head">
+          <h2 class="sec-title">Questions from Jamison drivers</h2>
+        </div>
+        <details>
+          <summary>Is Tri-County Collision actually in Jamison?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Tri-County Collision is not in Jamison: the shop is at 995 Jaymor Rd, Southampton, PA 18966, about 8 miles and 15 minutes from Jamison without traffic. Pennsylvania law protects your right to choose your own collision shop for repairs. Your insurance company cannot require you to use their preferred facility or steer you elsewhere. Our post on <a href="../your-right-to-choose-a-body-shop/">your right to choose a body shop</a> explains the law.</p>
+        </details>
+        <details>
+          <summary>How do I get to Tri-County Collision from Jamison?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>The drive from Jamison to Tri-County Collision is about 8.4 miles and takes about 15 minutes without traffic: south on York Road (PA 263), left on West Bristol Road, right on Second Street Pike (PA 232), and right on Jaymor Rd to the shop.</p>
+        </details>
+        <details>
+          <summary>Does Tri-County Collision work with my insurance company if I live in Jamison?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Tri-County Collision works with all major insurance companies, and a Jamison address makes no difference to that.</p>
+        </details>
+        <details>
+          <summary>When is Tri-County Collision open for Jamison drivers?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Tri-County Collision is open Monday to Friday, 8 a.m. to 6 p.m., and Saturday by appointment only.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- 8. NEARBY TOWNS: the four sibling pages nearest Jamison by straight
+         line (3.62 records the distances), and the hub. None is built yet,
+         so each waits as a span. -->
+    <section id="nearby" class="band-panel">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Nearby towns we serve</h2>
+        </div>
+        <div class="grid2">
+          <div class="svc-card" data-pending-href="../areas-served-collision-repair-warminster-pa/">
+            <div class="svc-card-body">
+              <h3>Warminster, PA</h3>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../areas-served-collision-repair-richboro-pa/">
+            <div class="svc-card-body">
+              <h3>Richboro, PA</h3>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../areas-served-collision-repair-horsham-pa/">
+            <div class="svc-card-body">
+              <h3>Horsham, PA</h3>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../areas-served-collision-repair-hatboro-pa/">
+            <div class="svc-card-body">
+              <h3>Hatboro, PA</h3>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../areas-served/">
+            <div class="svc-card-body">
+              <h3>Every town we serve</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <a class="foot-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+          <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
+          <p class="foot-nap">
+            Tri-County Collision<br>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd<br>
+            Southampton, PA 18966</a><br>
+            <a href="tel:+12153225350">(215) 322-5350</a><br>
+            <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>
+          </p>
+        </div>
+        <div>
+          <h2 class="foot-head">Hours</h2>
+          <p>Monday to Friday, 8&nbsp;a.m. to 6&nbsp;p.m.<br>
+          Saturday by appointment only</p>
+        </div>
+        <div>
+          <!-- These columns list only pages that exist. They grow as pages
+               land, and never before. -->
+          <h2 class="foot-head">Services</h2>
+          <ul class="foot-links">
+            <li><a href="../collision-repair/">Collision Repair</a></li>
+            <li><a href="../auto-glass-repair-replacement/">Auto Glass Repair</a></li>
+            <li><a href="../paintless-dent-repair/">Paintless Dent Repair</a></li>
+            <li><a href="../commercial-collision-repair/">Commercial Collision&nbsp;Repair</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="foot-head">Get Started</h2>
+          <ul class="foot-links">
+            <li><a href="tel:+12153225350">Call (215) 322-5350</a></li>
+            <li><a href="mailto:contact@tricountycollision.com">Email the shop</a></li>
+            <li><a href="../contact-us/">Send us your details online</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <!-- The year is written into the markup so it is right with
+             JavaScript off, and assets/site.js updates it so it is right
+             next January. A hard-coded year is a stale-clock claim. -->
+        <p>&copy; <span data-year>2026</span> Tri-County Collision &middot; <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> &middot; <a href="tel:+12153225350">(215) 322-5350</a> &middot; <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- The one element the whole design turns on. Fixed to the bottom of
+       every phone viewport, hidden above 900px where the header's own call
+       button is always visible. -->
+  <a class="callbar" href="tel:+12153225350">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h3l1.5 3.8-2 1.4a12.5 12.5 0 0 0 6.2 6.2l1.4-2 3.8 1.5v3a1.8 1.8 0 0 1-2 1.8A16.5 16.5 0 0 1 4.8 5.5a1.8 1.8 0 0 1 1.8-2z"/></svg>
+    Call (215) 322-5350
+  </a>
+
+</body>
+</html>

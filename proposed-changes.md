@@ -8371,6 +8371,9 @@ that instance, not the boundary of the rule.
 **Scope:** this ruling covers `/contact-us/`, `/blog/` and the sixteen posts.
 **It is not a standing ruling for future tiers**: areas, towns and privacy are
 decided when they are built.
+**AMENDED 2026-09-28, 3.62, on Greg's ruling: the compact ox header extends to
+the areas tier, the hub and all twelve town pages.** Privacy is still decided
+when it is built.
 
 **Asked and ruled while building:** the index's own head comment, written by
 `migrate-blog.py`, read "THE TOP IS COMPACT AND WHITE, not ox: this band
@@ -8582,6 +8585,399 @@ at 1440 and 390, before and after, and inspected:
   sanctioned extensions without this one. Neither was in the brief, and
   neither was edited. The ruling lives here, and in the two appended
   comments.
+
+### 3.62 The town-page template, proven on Jamison. BUILT 2026-09-28
+
+**This record is the template's home.** Part A defines the template for
+the whole areas tier: the hub and the twelve town pages. Part B builds one
+page with it, `/areas-served-collision-repair-jamison-pa/`, and its two
+redirect stubs. **The hub and the eleven migrating towns follow in a later
+run, only after Greg approves this page.** Nothing beyond Jamison and its
+shared machinery ships here.
+
+#### Greg's rulings, 2026-09-28
+
+1. **The compact ox header extends to the areas tier:** the hub and all twelve
+   town pages. It is appended to the 3.61 ruling's record.
+2. **Jamison is the pilot.** Nothing beyond Jamison and its shared machinery
+   ships in this run.
+
+**Asked and ruled while building,** each on the recommended option:
+
+3. **The neighbors are the served ones only.** The brief named Warwick and
+   Warrington. **Neither appears anywhere on the live hub**, and Jamison is
+   itself a village inside Warwick Township (OpenStreetMap). The page names
+   Warminster, Richboro and Ivyland, which the hub already serves, and states
+   as a map fact that Jamison is in Warwick Township. Whether the shop serves
+   Warrington is owner question 30.
+4. **The drive time is printed from the routing and flagged for the owner.**
+   It is an OSRM routing with no traffic, not a promise. Owner question 29.
+5. **Build now; the Search Console gate is read before cutover.** Doctrine
+   rule 7 gates new town pages on Search Console evidence, and the page map
+   gives Jamison "the same gate as the other towns". **No Search Console
+   reading for Jamison exists anywhere in this repo.** Staging is noindexed,
+   and the pilot proves the template. If the gate fails, Jamison folds into
+   the hub and its URL 301s there, as the map says.
+6. **The promise band carries home's promise, byte for byte**: "We will get
+   you back on the road with your vehicle restored to its pre-accident
+   condition." It is approved, so no new promise copy is invented.
+
+**One premise corrected.** The brief allowed for stopping "if the crumb/schema
+mirror check cannot pass against a pending span". **There is no such check**
+(3.60, ruling 3: recorded, not added). The mirror was therefore proved by
+probe: the visible crumb reads Home, Areas We Serve, Jamison, and the
+BreadcrumbList names read the same, in the same order. The pending span is
+not a check failure, because the pending-link inventory scores site-level
+notes, not page warnings.
+
+---
+
+#### PART A: THE TEMPLATE
+
+**Section order, top to bottom.** The ids are part of the template: the
+variance check reads three of them.
+
+```
+ #   id              ground        what it carries
+ 1   #town-head      ox (.hero.dark.field-ox)
+                                   crumb Home / Areas We Serve / [Town]; kicker naming the county;
+                                   H1 "Collision Repair for [Town], PA"; a one-sentence lead; the Call button
+ 2   #proof          white         the service pages' stat band, BYTE FOR BYTE (the audit's constants)
+ 3   #for-[town]     silver        who the page is for; the served neighbors inside the first 100 words;
+                                   the town's township and county as map fact; ends on the section-bottom
+                                   ask (Call + Email), the service pages' #intro grammar
+ 4   #getting-here   panel         the route: one sentence of distance and time, a .numbered list of
+                                   named roads and route numbers, the alternative, a link to the map
+ 5   #fix            silver        the four service pages as a.svc-card; an intro line inside .sec-head
+ 6   #start          ox            home's promise band, byte for byte (Call + Email)
+ 7   #faq            silver        the town's own FAQ; the geographic objection FIRST
+ 8   #nearby         panel         the four nearest sibling pages and the hub, .svc-card, pending until built
+```
+
+**The H1 says "for [Town]", never "in [Town]".** The shop is in Southampton,
+and "Collision Repair in Jamison" would be the first false sentence on the
+page. The live H1 was "Collision Repair Jamison PA".
+
+**H2s.** Every substantive H2 carries the town's name: sections 3, 4, 5 and
+7. The pattern H2s are the promise and "Nearby towns we serve", which the
+variance check leaves out by section id.
+
+**The fact discipline, for this section and the whole page:**
+
+- **Allowed, because a map can check it:** road names and route numbers;
+  the town's township and county; the distance; the drive time from an
+  actual routing, recorded with its start point, its engine and its date.
+- **Owner-supplied, or ABSENT:** anything a map cannot check, such as
+  landmarks' character, local events, or what a town is "known for". None of
+  it is invented, and today none of it is on the page.
+- **Only the shop's own approved sentences carry claims.** The insurance
+  line and the Pennsylvania-law line are the home page's existing text, word
+  for word. The service cards restate only their own pages' meta
+  descriptions. **No demand claims:** nothing says which repair a town's
+  drivers ask for most.
+- **The NAP's street rule governs the directions.** The street is "Jaymor
+  Rd", never "Jaymor Road" and never "Jaymor Rd." at a sentence's end, both of
+  which `audit.py` fails. The number appears only in the full canonical
+  form, "995 Jaymor Rd, Southampton, PA 18966".
+
+**The routing method, for every town:**
+
+- **Start** at the town's OpenStreetMap place point (node or boundary), and
+  record its id and coordinates.
+- **End** at the shop's verified pin, `GEO_LAT` and `GEO_LON`.
+- **Engine:** OSRM driving, alternatives on. Print the primary route's
+  roads, route numbers and distances from its steps, and its bearings for
+  every compass word.
+- **Print** "about N miles and about M minutes without traffic". The time is
+  free-flow and is flagged for the owner.
+
+**The nearby rule, for every town:** the four sibling town pages nearest by
+straight line from the town's place point, and the hub. It is computed, not
+chosen, and the distances are recorded.
+
+**The FAQ rule, for every town:**
+
+- The town's name is in every question.
+- **The first question is always "Is Tri-County Collision actually in
+  [Town]?"** Its first sentence is the whole truth: not in [Town], in
+  Southampton, the true distance and time.
+- Then comes the Pennsylvania right-to-choose sentence, word for word, with
+  a link to the post.
+- Every opener passes the standalone test, and the visible text and the
+  FAQPage node are generated from the same strings, so the mirror law holds
+  by construction.
+
+**Schema, for every town page:**
+
+- the full AutoBodyShop node under the shared `@id`, byte-identical to every
+  other page's;
+- a WebPage;
+- a Service whose `areaServed` is one `City` naming the town, contained in its
+  county's `@id` node;
+- a BreadcrumbList mirroring the crumb, with the hub's absolute production
+  URL even while the hub is pending;
+- the FAQPage.
+
+**No per-town geo:** the town is where the reader is, not where the shop is.
+**No review or rating markup.**
+
+**Mechanics:**
+
+- **The kind `town`, declared in the head, exempt from nothing:**
+  `RUBRIC_EXEMPTIONS["town"] = ()`, written out. Section 19 now pins four
+  ruled kinds and asserts that town's tuple is empty.
+- **The variance gate, `check_town_variance_local`,** is a site-level
+  critical, compared pairwise across every declared town page and the hub
+  (`docs/areas-served/index.html`) when it exists. It is defined below.
+- **Old URLs are redirect stubs**: kind `redirect-stub`, an absolute
+  canonical, a meta refresh and a visible link, all at the same target, and
+  `noindex` while staging. If the production host can answer with a real
+  301, that replaces the stub at cutover.
+- **Each page is listed in `llms.txt` and `sitemap.xml`,** and each stub is
+  absent from both, as `audit.py` requires.
+- **Titles to 60 and metas to 160,** machine-counted.
+
+#### The variance measure, proposed and calibrated
+
+The doctrine, rule 7: a town page exists only with "verified variance
+against its hub and every sibling (<30% shared vocabulary, no shared
+substantive H2s)". Both halves are now a check.
+
+**The H2 half:** no substantive H2 may appear on two town pages, or on a town
+page and the hub. The comparison is literal, ignoring case and spacing, with
+no masking, because the template puts the town's name in every substantive
+H2 on purpose. Empty H2s are skipped, since they are the empty-heading
+check's critical.
+
+**The vocabulary half, the exact measure:**
+
+1. Take each page's **substantive text**: everything inside `<main>`
+   except pattern text.
+2. **Pattern text is defined in `audit.py`, never in markup.** It is any
+   `<nav>` (the crumb), the sections `#proof`, `#start` and `#nearby`, and
+   `.svc-card` elements. A page cannot mark its own shared prose as pattern,
+   because the list is not the page's to write.
+3. Lowercase it, and **mask every place name** (`TOWN_PLACE_NAMES`, plus the
+   page's own town from its slug) to one token, so a renamed copy reads as
+   the copy it is.
+4. Cut it into **three-word shingles**, every run of three consecutive words.
+5. For a pair, **shared = |A and B| / min(|A|, |B|)**: containment against
+   the smaller page, so a short page inside a long one cannot be diluted
+   away.
+6. **Fail at 30% or more.** The doctrine's line is "under 30".
+
+**Why this measure, measured with the shipped functions, min / median / max:**
+
+```
+                             single words (n=1)       three-word phrases (n=3), SHIPPED
+our 4 service pages, 6 pairs   46% / 53% / 65%          7% / 8% / 10%
+4 migrated posts, 6 pairs      28% / 36% / 42%          1% / 2% / 3%
+11 live town pages, 55 pairs   76% / 79% / 87%         56% / 61% / 65%
+Jamison vs each service page                            3% to 11%
+```
+
+- **Single words cannot carry a 30% line.** Two honest pages about one shop
+  share *collision*, *insurance* and *estimate* by necessity, so our own
+  genuinely different service pages would fail.
+- **Three-word phrases separate the two cases** by a factor of six.
+
+**What this finds, and it matters for run two: the eleven live town pages
+are lookalikes by this measure, 56% to 65%.** The page map says to migrate
+them faithfully, and this gate will stop that. The H2 half agrees: their
+substantive H2s are unique, and they share only pattern headings
+("Testimonials", "Get Your Free Estimate Today", "Frequently Asked
+Questions"). But their prose is the same pages with the name changed. The
+conflict between the map's "migrate faithfully" and rule 7 is **Greg's to
+rule on before run two**: open item 1.
+
+**Tests, `test-audit-checks.py` section 25,** 12 checks:
+
+- **The ceiling:** pinned as the doctrine's, `TOWN_SHARED_MAX == 0.30` and
+  `TOWN_SHINGLE == 3`.
+- **Passes:** two genuinely different pages.
+- **Caught:**
+  - a copy with only the town's name swapped, written dense in place names,
+    so only masking catches it;
+  - a short page wholly inside a long one, which only containment catches;
+  - a shared substantive H2 over different prose;
+  - a town page that copies its hub;
+  - a sibling reusing another's H2 (both as criticals through the real check
+    on a temp tree).
+- **Left alone:**
+  - identical pattern text and pattern H2s;
+  - an empty H2 on both pages;
+  - one town with no hub, which compares nothing and reports a note.
+- **On the shipped site:** no variance critical.
+
+**Mutation-tested, in place,** and restored from a copy with the checksum
+confirmed (`507e1f0619a6` before and after), run against the final code:
+
+```
+mutant                                   red
+place-name masking switched off          1: the renamed copy
+ceiling raised to 90%                    2: the pin, and the hub copy (which measures 83%)
+ceiling raised to 35%                    1: the pin
+three-word shingles made single words    3: the pin, and both "genuinely different" and "pattern" cases
+pattern sections not excluded            5: pattern H2s count as shared, pattern text as shared phrasing
+Jaccard in place of containment          1: the contained page
+the H2 half switched off                 2: both shared-H2 cases
+```
+
+**The pin was added because of the mutation run.** The first 90% mutant
+turned only the hub case red. Its fixture measures 83%, so it caught a 90%
+ceiling legitimately, but a ceiling loosened to 80% would have passed every
+fixture. The pin closes that.
+
+---
+
+#### PART B: JAMISON
+
+**The route**, OSRM driving, 2026-09-28, from OpenStreetMap node 158375416
+(Jamison, `place=village`, 40.2548297, -75.0893372, within about 15m of where
+York Road meets Almshouse Road) to the shop's verified pin:
+
+```
+PRIMARY   8.42 mi, 14.8 min free-flow
+  York Road (PA 263)          south (194 deg)       1.92 mi
+  West Bristol Road           southeast (126 deg)   4.09 mi
+  Second Street Pike (PA 232) south (177/189 deg)   2.10 mi
+  Jaymor Road                 west (281 deg)        0.28 mi
+ALTERNATIVE 8.05 mi, 14.9 min free-flow
+  York Road (PA 263) 4.61 mi, East County Line Road 2.96 mi, James Way 0.40 mi, Jaymor Road
+```
+
+**Other map facts:**
+
+- Jamison is in Warwick Township, Bucks County (OSM).
+- **Sibling pages by straight line from the Jamison point:** Warminster
+  3.36 mi, Richboro 5.05, Horsham 5.54, Hatboro 5.62. Next are Willow Grove
+  7.33 and Feasterville 7.74.
+- **Rule 7's three checkable local facts:** the township and county; the
+  crossroads the town sits on; the route with its distance and time. All
+  three are map facts. No owner-supplied fact exists yet.
+
+**The pairs.** The live page is the source being rebuilt. It carried no
+directions, no FAQ and no local fact, so **no sentence of it survives**:
+
+| Where | Before (live, 2026-09-28) | After | Why |
+|---|---|---|---|
+| title | Collision Repair Jamison PA \| Tri County Collision | Collision Repair for Jamison, PA \| Tri-County Collision | 55; the NAP's name; "for", not "in" |
+| meta | Looking for expert collision repair services at an affordable rate in Jamison, PA? Our skilled ASE/I-CAR® Gold technicians utilize cutting-edge equipment to meticulously restore your vehicle to its pristine pre-accident state. | Tri-County Collision in Southampton repairs cars for Jamison, PA drivers, about 15 minutes away. Directions from Jamison, free estimates, (215) 322-5350. | 153; the old one ran past 160 and implied the shop is in Jamison |
+| H1 | Collision Repair Jamison PA | Collision Repair for Jamison, PA | the shop is not in Jamison |
+| kicker | (none) | Bucks County, PA | the county, a map fact |
+| lead | (none) | Tri-County Collision is a family-owned body shop in Southampton, about 15 minutes from Jamison. | "family owned" is the footer's existing claim |
+| body | "your premier destination for top-notch collision repair services in Jamison, PA" and five paragraphs of generic claims: ASE/I-CAR Gold technicians, state-of-the-art equipment, a Trustindex widget reading 231 reviews | Sections 3 to 8 as built | held, not lost: the certification claims live on the service pages under the owner's review, and the widget's count is the one 4.4 retired |
+| §3 | (none) | "This page is for anyone who lives or works in Jamison... we repair cars for drivers from Jamison and from its neighbors Warminster, Richboro and Ivyland." / "Jamison is in Warwick Township, Bucks County, where York Road (PA 263) crosses Almshouse Road..." / "...Estimates are free and there is no obligation." | served neighbors only (ruling 3); map facts; the promise band's sub-line, word for word |
+| §4 | (none) | the route, as above | routing |
+| §5 | (none) | four cards, each line from its page's meta | no new claim |
+| FAQ 1 | (none) | Is Tri-County Collision actually in Jamison? / "Tri-County Collision is not in Jamison: the shop is at 995 Jaymor Rd, Southampton, PA 18966, about 8 miles and 15 minutes from Jamison without traffic." + the home page's right-to-choose sentences, word for word | the objection, whole truth first |
+| FAQ 2 | (none) | How do I get to Tri-County Collision from Jamison? / the route in one sentence | routing |
+| FAQ 3 | (none) | Does Tri-County Collision work with my insurance company if I live in Jamison? / "...works with all major insurance companies..." | the home page's claim |
+| FAQ 4 | (none) | When is Tri-County Collision open for Jamison drivers? / the hours constants | constants |
+
+**The redirects**, per the page map's Jamison row:
+
+```
+docs/body-shop-jamison/index.html              stub -> ../areas-served-collision-repair-jamison-pa/   100/100
+docs/paintless-dent-repair-jamison/index.html  stub -> ../areas-served-collision-repair-jamison-pa/   100/100
+```
+
+The live site already sends both there. Neither is in the sitemap or
+`llms.txt`.
+
+**CSS: one rule, restamped** (`site.css ?v=46eadd5b`):
+`.numbered + p { margin-top: 1.1em; }`. `.numbered` zeroes its own margin,
+which is right when a CTA row follows, as on `/collision-repair/`, and wrong
+when prose carries on beneath the list. The Jamison directions were the
+only such case, found on the render with the second route flush against
+step 4. Grepped first: it reaches that one list.
+
+**Two changes made on the render, both recorded:**
+
+- **The "What we fix" intro line moved into `.sec-head`**, `/contact-us/`'s
+  precedent. In the prose column it began at x=404 while the cards began at
+  x=160.
+- **The opening section ends on a section-bottom ask**, the service pages'
+  `#intro` grammar. As first built, the page ran **3,016px at 390** from the
+  header's call to the promise band's, longer than any service page.
+  Moving the promise band before "What we fix" was measured too: its
+  longest run is 2,510, and it only moves the hole to after the band. The
+  section-bottom ask keeps the brief's order exactly:
+
+```
+ask at 390          top    gap
+header call          401
+#for-jamison        1677   1214
+#start              3643   1904    <- longest run: 1904 (service pages 1634 to 2684)
+footer              5428   1723
+```
+
+#### Measured
+
+**The fold, iframe equal to the viewport.** The call bar starts at 604 on
+390x664 and at 580 on 360x640:
+
+```
+390x664 cutover  innerHeight 664  nav 0-68  ox header 68-511  H1 181-262 (2 lines)  lead 280-375 (3 lines)
+                 CALL 401-463, clears the call bar by 141; trust band from 511, first figure 567-611 in full
+390x664 banner   innerHeight 664  ox header 125-568  CALL 458-520, clears by 84
+360x640 cutover  innerHeight 640  CALL 401-463, clears by 117
+360x640 banner   innerHeight 640  CALL 458-520, clears by 60
+1440x900         innerHeight 900  ox header 96-576, H1 on one line, CALL 426-488
+```
+
+**The first screen at 390x664, cutover.** The ink nav takes 0 to 68. **The ox
+header fits whole, 68 to 511, 443px**: crumb, kicker, a two-line H1, a
+three-line lead, and the Call button 141px above the call bar. The white
+trust band starts at 511, and its first figure, "Lifetime", is fully on
+screen. A reader sees whose page it is, where the shop really is, and how
+to call, before scrolling.
+
+**Nothing else moved.** Layout hash of every element: all 23 existing pages
+at 1440, 390 and 360 are **identical to 3.61, 69 of 69 page-widths**. The new
+CSS rule reaches only the new page.
+
+**Every visible tone is an existing pair on an existing ground**: the ox
+header is the blog's and contact's, measured in 3.61; the trust band, the
+panels and the promise band are the service pages'. No new colour pair was
+introduced.
+
+**Rendered and inspected at 1440 and 390**, top to bottom, whole page.
+
+**The suite:**
+
+- Both test scripts pass, 177 checks, with sections 19, 20, 22 and 24
+  touched and section 25 new.
+- **The shipped-page sweeps now leave out declared special kinds.** Sections
+  20, 22 and 24 glob every `index.html`, and the first stubs made them count
+  26. A stub has no hours, geo or headings by design, and `audit.py` already
+  scores it on its own rubric. Only a declared special kind is excluded, so
+  a real page that forgot its markup is still swept.
+- `stamp-assets.py --check` exits 0 (27 files), and `build-sitemap.py
+  --check` exits 0 (24 pages; Jamison `lastmod` 2026-09-28 from its own
+  `dateModified`).
+- `STAGING=1 audit.py --strict`: **24 pages at 95, sameAs the only warning
+  on each; 2 redirect stubs at 100; zero criticals; 483 passing.** The town
+  variance gate reports one town and no hub, so nothing to compare. It exits
+  1 on the sameAs bar, as every run has.
+- No em dash was added to any file.
+
+#### Open, for Greg, ranked
+
+1. **Run two's conflict: the live town pages fail the variance gate.** They
+   share 56% to 65% of their phrasing with each other against a line under
+   30%. "Migrate faithfully" and rule 7 cannot both hold for them. The
+   choices are to rewrite each to the template, to migrate and fold the
+   weakest into the hub, or to rule that the gate applies only to rebuilt
+   pages. The gate as built applies to all of them.
+2. **The Search Console gate for Jamison**, and for every town: read before
+   cutover.
+3. **The business node's `areaServed` does not list Jamison.** It is the
+   same 15 places on all 24 pages, and adding Jamison changes all 24. That
+   belongs with the hub, which the page map already says gains Jamison in
+   its county lists.
+4. **CLAUDE.md's line that "area served" is still tokenized** is out of
+   date: every page's business node carries it. It was not edited here.
 
 ---
 
@@ -9202,3 +9598,9 @@ Ordered by how much else depends on it.
     tow and rental-car services, I-95 as a nearby landmark, ADAS calibration
     "many on site", and PA legal statements. Each is live on the old site
     today; each needs the owner's yes before this site is the one serving it.
+29. **The drive time from Jamison: "about 15 minutes".** It is an OSRM routing
+    with no traffic, from the village's crossroads at York Road and Almshouse
+    Road to the shop (3.62). Is it what a Jamison customer would say it takes?
+30. **Does the shop serve Warrington, and Warwick Township beyond Jamison?**
+    Neither is named on the live hub, so neither is named on the Jamison page
+    as a neighbor (3.62, ruling 3). A yes adds them.

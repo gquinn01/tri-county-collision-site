@@ -714,8 +714,14 @@ def main():
     check("     no blanket kind exists, utility above all: exactly the ruled kinds",
           audit.RUBRIC_EXEMPTIONS == {"contact": ("faq-schema", "thin-content"),
                                       "post": ("faq-schema",),
-                                      "blog-index": ("faq-schema",)},
+                                      "blog-index": ("faq-schema",),
+                                      "town": ()},
           audit.RUBRIC_EXEMPTIONS)
+    # 3.62: a town page is a ruled kind exempt from NOTHING. It has to carry
+    # a real FAQ and earn its words, so both checks stay live on it.
+    check("     the town kind is declared, and exempts nothing",
+          "town" in audit.RUBRIC_EXEMPTIONS and audit.RUBRIC_EXEMPTIONS["town"] == (),
+          audit.RUBRIC_EXEMPTIONS.get("town"))
 
     def run_kind(meta: str, body: str):
         html = PAGE.replace("</head>", meta + "</head>").format(body=body)
@@ -799,8 +805,18 @@ def main():
     _load = audit.load
     audit.load = lambda src: open(src, encoding="utf-8").read()
     try:
-        shipped = sorted(glob.glob(os.path.join(root, "docs", "*.html")) +
-                         glob.glob(os.path.join(root, "docs", "*", "index.html")))
+        # EVERY SHIPPED PAGE means pages. A redirect stub or the 404 page
+        # declares a SPECIAL_KINDS kind and is scored on its own short
+        # rubric, with no hours, geo or headings by design; the first stubs
+        # landed in 3.62. Only a declared special kind is left out, so a
+        # real page that forgot its markup is still swept.
+        def _special(path):
+            m = re.search(r'<meta name="tri-county-page" content="([^"]*)"',
+                          open(path, encoding="utf-8").read())
+            return bool(m) and m.group(1).strip().lower() in audit.SPECIAL_KINDS
+        shipped = sorted(x for x in glob.glob(os.path.join(root, "docs", "*.html")) +
+                         glob.glob(os.path.join(root, "docs", "*", "index.html"))
+                         if not _special(x))
         bad = []
         for pg in shipped:
             sp, sw, sf, sn, sk = audit.audit(pg)
@@ -950,6 +966,113 @@ def main():
     finally:
         audit.load = _load
     check(f"     every shipped page ({len(shipped)}) has no empty heading", not bad, bad)
+
+    # Town-page variance, 3.62: rule 7's gate for the areas tier. Built with
+    # the first town page, so it compares nothing on the shipped site yet;
+    # these fixtures are what prove it will stop the second from shipping as
+    # a copy of the first. Each one is shaped so that one specific way of
+    # breaking the measure turns it red (3.62 records the mutations).
+    print("25. Town variance: no shared substantive H2, under 30% shared phrasing")
+    # The ceiling is the doctrine's own number, pinned directly: the
+    # fixtures below sit far over it (a copy measures 80 percent and more),
+    # so without this line a ceiling loosened to 0.8 would pass them all.
+    check("     the ceiling is the doctrine's: under 30 percent shared phrasing",
+          audit.TOWN_SHARED_MAX == 0.30 and audit.TOWN_SHINGLE == 3,
+          (audit.TOWN_SHARED_MAX, audit.TOWN_SHINGLE))
+
+    def town(name, h2s, prose, pattern=""):
+        secs = "".join(f"<section><h2>{h}</h2><p>{p}</p></section>" for h, p in zip(h2s, prose))
+        return (f'<html><head><meta name="tri-county-page" content="town"></head><body>'
+                f'<nav class="crumb"><ol><li>Home</li><li>{pattern}</li></ol></nav><main>'
+                f'<section id="proof"><p>{pattern}</p></section>{secs}'
+                f'<section id="start"><h2>We will get you back on the road.</h2><p>{pattern}</p></section>'
+                f'<a class="svc-card" href="#"><p>{pattern}</p></a>'
+                f'<section id="nearby"><h2>Nearby towns we serve</h2><p>{pattern}</p></section>'
+                f'</main></body></html>')
+
+    def vary(pages):
+        return audit.town_variance_findings({k: (h, (k,)) for k, h in pages.items()})
+
+    # Two genuinely different pages about the same shop.
+    a_text = ("The quickest way in from here is the state road south past the reservoir, then "
+              "east at the light where the old mill stood before the fire of the nineties.")
+    b_text = ("Most people coming from this side of the county take the pike through the "
+              "village center and turn at the diner, which saves the backup on the main road.")
+    f = vary({"jamison": town("Jamison", ["Getting here from Jamison"], [a_text]),
+              "warminster": town("Warminster", ["Getting here from Warminster"], [b_text])})
+    check("     two genuinely different town pages pass both halves",
+          not f["shared_h2"] and all(r < audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
+
+    # A copy with only the name swapped, and dense enough in place names
+    # that it reads as different UNLESS the names are masked.
+    def dense(n):
+        return " ".join(f"{n} drivers call first. {n} cars come in. We fix {n} dents. "
+                        f"{n} estimates are free. {n} roads lead here." for _ in range(3))
+    f = vary({"jamison": town("Jamison", ["For drivers from Jamison"], [dense("Jamison")]),
+              "warminster": town("Warminster", ["For drivers from Warminster"], [dense("Warminster")])})
+    over = [r for _a, _b, r in f["pairs"] if r >= audit.TOWN_SHARED_MAX]
+    check("     caught: a copy with the town's name swapped, names masked", bool(over), f)
+    check("     and its H2s, which differ only by name, are not the H2 half's to catch",
+          not f["shared_h2"], f["shared_h2"])
+
+    # A short page wholly inside a long one: containment catches it, and
+    # Jaccard would let the long page's extra text dilute it away.
+    long_extra = " ".join(f"Paragraph {i} is about something else entirely, word {i} of many."
+                          for i in range(60))
+    f = vary({"jamison": town("Jamison", ["From Jamison"], [a_text]),
+              "hatboro": town("Hatboro", ["From Hatboro"], [a_text + " " + long_extra])})
+    check("     caught: a short page contained in a long one",
+          any(r >= audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
+
+    # The same substantive H2 on two pages, with different prose under it.
+    f = vary({"jamison": town("Jamison", ["Getting to the shop"], [a_text]),
+              "warminster": town("Warminster", ["Getting to the shop"], [b_text])})
+    check("     caught: a shared substantive H2, even with different prose",
+          [h for _a, _b, h in f["shared_h2"]] == ["getting to the shop"], f["shared_h2"])
+
+    # Everything shared lives in pattern text: the crumb, the trust band,
+    # the promise band, the service cards, the nearby links.
+    shared = " ".join(["Lifetime warranty on all repair work, reviews on Google, twelve brands."] * 12)
+    f = vary({"jamison": town("Jamison", ["Getting here from Jamison"], [a_text], shared),
+              "warminster": town("Warminster", ["Getting here from Warminster"], [b_text], shared)})
+    check("     left alone: identical pattern text, and the pattern H2s it carries",
+          not f["shared_h2"] and all(r < audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
+
+    # An empty H2 on both pages is the empty-heading check's critical.
+    f = vary({"jamison": town("Jamison", ["", "From Jamison"], ["", a_text]),
+              "warminster": town("Warminster", ["", "From Warminster"], ["", b_text])})
+    check("     left alone: an empty H2 on both is not a shared heading", not f["shared_h2"], f)
+
+    # The gate reads the tree: one town and no hub compares nothing, and the
+    # hub, when it lands, is compared like a sibling.
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        def put(rel, htm):
+            os.makedirs(os.path.join(tmp, os.path.dirname(rel)), exist_ok=True)
+            open(os.path.join(tmp, rel), "w", encoding="utf-8").write(htm)
+        put("areas-served-collision-repair-jamison-pa/index.html",
+            town("Jamison", ["For drivers from Jamison"], [dense("Jamison")]))
+        tp, tw, tf, tn = [], [], [], []
+        audit.check_town_variance_local(tp, tw, tf, tn, root=tmp)
+        check("     one town and no hub: nothing to compare, and a note that says so",
+              not tf and not tp and any("nothing to compare" in n for n in tn), (tf, tn))
+        put("areas-served/index.html",
+            town("Hub", ["Every town we serve"], [dense("Jamison")]).replace(
+                '<meta name="tri-county-page" content="town">', ""))
+        tp, tw, tf, tn = [], [], [], []
+        audit.check_town_variance_local(tp, tw, tf, tn, root=tmp)
+        check("     caught: a town page that copies its hub, as a critical",
+              any("read as copies" in x and "areas-served" in x for x in tf), tf)
+        put("areas-served-collision-repair-warminster-pa/index.html",
+            town("Warminster", ["For drivers from Jamison"], [b_text]))
+        tp, tw, tf, tn = [], [], [], []
+        audit.check_town_variance_local(tp, tw, tf, tn, root=tmp)
+        check("     caught: a sibling reusing another town's substantive H2, as a critical",
+              any("share a substantive H2" in x for x in tf), tf)
+
+    tp, tw, tf, tn = [], [], [], []
+    audit.check_town_variance_local(tp, tw, tf, tn)
+    check("     the shipped site raises no variance critical", not tf, tf)
 
     print()
     if FAILURES:
