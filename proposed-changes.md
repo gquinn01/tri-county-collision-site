@@ -9770,6 +9770,116 @@ card with the embed painted. Both read top to bottom as ruled.
 2. **Owner question 29a:** fixing the Business Profile's name and phone
    removes the embed's problem at its source.
 
+### 3.66 The argument moves up and takes ox. TEMPLATE AMENDMENT. BUILT 2026-09-28
+
+**Run two inherits all three changes:** the argument above the opening, on
+ox, centred. One commit. **The copy changes by zero bytes.** Only order,
+ground and alignment move. No stylesheet or script changed, so there was no
+restamp.
+
+#### Greg's rulings, 2026-09-28, after seeing 3.64 shipped
+
+1. **ORDER:** "Why drivers pass closer shops" moves ABOVE "For drivers from
+   Jamison", directly after the trust band, as the first body section on the
+   page. The stat band's numbers flow straight into the argument they
+   support, and the opening follows with the who-and-where.
+2. **GROUND: the band takes OX. This SUPERSEDES 3.64's silver ruling.** Greg
+   saw two silver bands back to back and overruled it; 3.64's text stands,
+   struck by nothing, and this is the supersession. **The palette law is
+   satisfied on its own terms:** the band ASKS, closing on the Call/Email
+   row, so ox is its lawful ground, by the same band test the promise bands
+   pass. The page's grounds now run ox header, white trust band, ox
+   argument, silver opening, white directions card. **No ground repeats
+   adjacently,** which was Greg's complaint.
+3. **TEXT:** the band's copy centres, per the 3.52 centred-intro pattern, and
+   the existing `.dark .cta-row` rule centres the ask with it.
+
+#### The pairs
+
+| Where | Before (3.64/3.65) | After |
+|---|---|---|
+| order | trust band, opening, band, directions | trust band, **band**, opening, directions |
+| #why-the-trip | `<section id="why-the-trip">` on silver | `<section class="dark field-ox" id="why-the-trip">` |
+| its prose | `<div class="prose">`, left | `<div class="prose" style="text-align:center">` |
+| the copy | Greg's, verbatim | **unchanged**: the band's visible text hashes identically before and after (`3b73fb0b9c9b`, 597 characters), and its markup differs by the centring attribute only |
+
+**The existing grammar only; no class was invented.** `.dark` and `.field-ox`
+are the in-flow act bands' own. `.dark .prose p` gives the paragraphs
+`--silver-2`, `.dark a` gives the link `--silver`, and the act-button rule
+fills the Call ink with the silver hairline.
+
+#### Every tone on ox, measured
+
+This band is the first to put body PARAGRAPHS and an inline LINK on the ox
+gradient; until now the promise bands carried only a headline and a CTA.
+Measured on the render, each text node in its own computed colour, against
+the ground rendered with the band's text and buttons made transparent. The
+figure is **the worst pixel of the gradient**, at 1440 and 390:
+
+```
+                          tone        1440     390
+H2                        --silver    10.50    10.50
+paragraphs                --silver-2   7.34     7.34    (7:1 body target; 7.34 is --silver-2 on --ox exactly)
+inline link               --silver    10.50    10.65    underlined
+Call button label         --silver    10.50    10.50    against the band; on its own ink fill, 15.42
+Call button edge          --silver    10.50    10.50    as a shape against the band, 3:1 floor
+Email ghost label         --silver    11.01    10.79
+Email ghost edge          --silver    10.93    10.58
+```
+
+**The link is told apart from its paragraph by its UNDERLINE, not its
+colour:** silver against silver-2 is only 1.43, so the underline carries it,
+as the non-colour cue requires. Its focus ring is 3.59's `.dark
+a:focus-visible` silver, 10.50 on this ground.
+
+#### Variance: unchanged, and position-independent
+
+The band stays pattern text by its id, and nothing about the exclusion
+changes with position or ground. **Section 25's fixtures pass without
+edits.** Checked beyond them, and not committed: the identical-band fixture
+placed FIRST in `<main>` and LAST, carrying `class="dark field-ox"`,
+measures the same 0.06 either way and is left alone, while shared prose
+outside it is still caught. **Position in the fixture markup does not
+matter,** so there was no finding to record.
+
+#### The ask runs at 390, every one, by 3.65's two rules
+
+```
+header Call (furniture)   -> band's Call/Email row (section ask)   1,431   the floor does not govern furniture
+band's row                -> card's Call (furniture)               2,174
+card's Call               -> promise band (section ask)            1,120   furniture
+promise band              -> pairs' row (section ask)              1,979
+pairs' row                -> footer (furniture)                    1,722
+footer's own links                                            426, 171   furniture
+CEILING, the longest run between ANY two calls:   2,174   (under 2,684)
+FLOOR, the nearest two SECTION asks:              promise band -> pairs' row 1,979, band's row -> promise band 3,356   (over 1,634)
+```
+
+**Both rules hold, as 3.65's ruling predicted.**
+
+**The fold, 390x664, innerHeight 664:** CALL 401 to 463, clearing the call
+bar by 141, unchanged, because the band sits below the first screen.
+360x640 clears by 117.
+
+**Rendered and inspected at 1440 and 390:** the trust band flowing into the
+ox argument, with the copy and the ask centred together, then the silver
+opening and the white card. On a phone the silver chip strip sits between
+the header and the trust band, as 3.63 placed it.
+
+**Nothing else moved:** the Jamison page is the only file this commit
+changes besides this record. With no stylesheet or script changed, the
+other pages are identical by construction.
+
+#### The suite
+
+- Both test scripts pass, **205 checks**.
+- `stamp-assets.py --check` exits 0 (no CSS changed), and
+  `build-sitemap.py --check` exits 0 (24 pages).
+- `STAGING=1 audit.py --strict`: **23 pages at 95, Jamison at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 485 passing.** It exits 1
+  on the sameAs bar, as every run has.
+- No em dash was added.
+
 ---
 
 ## 4. The claims list
