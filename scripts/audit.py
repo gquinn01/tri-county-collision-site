@@ -33,6 +33,7 @@ import json
 import os
 import re
 import sys
+import urllib.parse
 import urllib.request
 from datetime import date
 from html import unescape
@@ -1448,6 +1449,228 @@ def check_brand_count_local(passes: list, warns: list, fails: list,
 # with no masking: the template puts the town's name in every substantive
 # H2 on purpose (Greg's brief, 3.62), and the phrase measure above is what
 # catches a page that only swapped the name.
+# --- One routing per town, every rendering derived (3.65) ---------------
+# Greg's accuracy mandate, 2026-09-28: ACCURACY IS A GATE, NOT A GOAL. A
+# town page's drive time, distance and directions are the RECORDED ROUTING
+# below and derivations of it, and nothing else. Two values that must agree
+# are one value plus a derivation. town_route_findings, run on every town
+# page by audit(), fails any rendering that disagrees, and
+# prepare-map-image.py refuses to draw from a routing file that disagrees
+# with these figures, or to label a road the drive does not use.
+#
+# THE SHAPE. Keyed by the page's slug after "areas-served-collision-repair-".
+#   miles, minutes   the whole primary route, as OSRM measured it, free-flow
+#   steps            (road, ref, modifier, bearing, miles), one per NUMBERED
+#                    STEP on the page, in driving order. The depart step is
+#                    left out when it is 0.00 mi (the page starts at the
+#                    town's corner), the unnamed final metres into the lot
+#                    are left out, and a "new name" maneuver is not a turn:
+#                    its miles fold into the step before it.
+#   roads_driven     every OSM road name the route's ways carry, which is a
+#                    superset of the step names (3.65, Greg's ruling: West
+#                    Bristol Road is "East Bristol Road" in OSM for half its
+#                    length, a driver mid-leg sees that name, and the map may
+#                    label it). The map's labels must be a subset of this.
+#
+# THE DERIVATIONS, and the only renderings the check accepts:
+#   minutes          round(minutes): "about 15 minutes", "~15 min"
+#   route miles      round(miles) or round(miles, 1): "about 8", "about 8.4"
+#   step miles       under half a mile, to the nearest quarter ("a quarter
+#                    mile"); otherwise round(miles): "about 2 miles"
+#   turn words       "left" and "right" against the step's maneuver modifier
+#   compass words    against the maneuver's bearing, on eight points; OSRM
+#                    has no compass modifier, and step 1 begins at the
+#                    corner facing the way (Greg, 3.65: approved as read)
+TOWN_ROUTE_PREFIX = "areas-served-collision-repair-"
+TOWN_ROUTES = {
+    # OSRM driving, router.project-osrm.org, fetched 2026-09-28, from
+    # OpenStreetMap node 158375416 (Jamison, place=village, at York Road and
+    # Almshouse Road) to GEO_LAT, GEO_LON. proposed-changes.md 3.62 and 3.65.
+    "jamison-pa": {
+        "recorded": "2026-09-28",
+        "miles": 8.42,
+        "minutes": 14.8,
+        "steps": (
+            ("York Road", "PA 263", "right", 194, 1.92),
+            ("West Bristol Road", "", "left", 126, 4.09),
+            ("Second Street Pike", "PA 232", "right", 177, 2.10),   # 1.37 + 0.73 as "2nd Street Pike"
+            ("Jaymor Road", "", "right", 281, 0.28),
+        ),
+        "roads_driven": ("York Road", "West Bristol Road", "East Bristol Road",
+                         "Second Street Pike", "2nd Street Pike", "Jaymor Road"),
+    },
+}
+COMPASS_8 = ("north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest")
+
+
+def compass_of(bearing: float) -> str:
+    return COMPASS_8[int(((bearing + 22.5) % 360) // 45)]
+
+
+def step_miles_phrase(mi: float) -> str:
+    """The one way a step's distance is written, derived."""
+    if mi < 0.5:
+        q = round(mi * 4) / 4
+        return {0.25: "a quarter mile", 0.5: "half a mile"}.get(q, f"{q} miles")
+    n = round(mi)
+    return f"{n} mile" if n == 1 else f"{n} miles"
+
+
+ROUTE_QTY_RE = re.compile(
+    r"(?:~\s*|about\s+|roughly\s+|around\s+)?(\d+(?:\.\d+)?)\s*(miles?|minutes?|mins?)\b"
+    r"|\b(a quarter mile|half a mile)\b", re.I)
+_USPS = {"road": "rd", "avenue": "ave", "street": "st", "drive": "dr", "lane": "ln",
+         "boulevard": "blvd", "pike": "pike", "turnpike": "tpke", "highway": "hwy"}
+
+
+def road_key(name: str) -> str:
+    """A road name compared by its words, suffix and direction abbreviated
+    the USPS way, so "Jaymor Road" and "Jaymor Rd" are one road."""
+    w = re.findall(r"[a-z0-9]+", name.lower())
+    w = [{"west": "w", "east": "e", "north": "n", "south": "s"}.get(x, x) if i == 0 and len(w) > 2 else x
+         for i, x in enumerate(w)]
+    if w and w[-1] in _USPS:
+        w[-1] = _USPS[w[-1]]
+    return " ".join(w)
+
+
+def route_quantities(text: str) -> list:
+    """Every drive-time and distance rendering in a text, as (kind, value, snippet)."""
+    out = []
+    for m in ROUTE_QTY_RE.finditer(text):
+        snip = text[max(0, m.start() - 30):m.end() + 10].strip()
+        if m.group(3):
+            out.append(("step", m.group(3).lower(), snip))
+        elif m.group(2).lower().startswith("mi") and not m.group(2).lower().startswith("min"):
+            out.append(("miles", float(m.group(1)), snip))
+        else:
+            out.append(("minutes", float(m.group(1)), snip))
+    return out
+
+
+class _StepParser(HTMLParser):
+    """The numbered steps inside #getting-here: each li's <strong> text and
+    its whole text, in order."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.depth = 0          # inside #getting-here
+        self.ol = 0
+        self.items = []
+        self._strong = False
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag == "section" and a.get("id") == "getting-here":
+            self.depth = 1
+        elif self.depth and tag == "section":
+            self.depth += 1
+        if self.depth and tag == "ol" and "numbered" in (a.get("class") or ""):
+            self.ol += 1
+        if self.ol and tag == "li":
+            self.items.append({"strong": "", "text": ""})
+        if self.ol and tag == "strong":
+            self._strong = True
+
+    def handle_endtag(self, tag):
+        if tag == "section" and self.depth:
+            self.depth -= 1
+        if tag == "ol" and self.ol:
+            self.ol -= 1
+        if tag == "strong":
+            self._strong = False
+
+    def handle_data(self, data):
+        if self.ol and self.items:
+            self.items[-1]["text"] += data
+            if self._strong:
+                self.items[-1]["strong"] += data
+
+
+def town_route_findings(html_text: str, route: dict, llms_entry: str = "") -> list:
+    """Every disagreement between a town page and its recorded routing, as
+    human-readable strings. Empty means the page derives from the routing."""
+    bad = []
+    minutes = round(route["minutes"])
+    miles_ok = {round(route["miles"]), round(route["miles"], 1)}
+    steps = route["steps"]
+    step_phrases = {step_miles_phrase(s[4]) for s in steps}
+    miles_ok |= {float(round(s[4])) for s in steps if s[4] >= 0.5}
+    # 1. Every rendering: the visible page, the meta description, the
+    # JSON-LD (the FAQ's schema twin), every aria-label (the map's alt text)
+    # and the page's llms.txt entry.
+    p = PageParser()
+    p.feed(html_text)
+    texts = [("the page", visible_text(html_text)),
+             ("the meta description", p.meta.get("description", "")),
+             ("the JSON-LD", " ".join(p.jsonld_blocks)),
+             ("an aria-label", " ".join(unescape(x) for x in re.findall(r'aria-label="([^"]*)"', html_text))),
+             ("llms.txt", llms_entry)]
+    for where, t in texts:
+        for kind, val, snip in route_quantities(t or ""):
+            if kind == "minutes" and val != minutes:
+                bad.append(f"{where} says {val:g} minutes (“{snip}”); the recorded routing derives {minutes}")
+            elif kind == "miles" and val not in miles_ok:
+                bad.append(f"{where} says {val:g} miles (“{snip}”); the recorded routing derives "
+                           f"{' or '.join(f'{m:g}' for m in sorted(miles_ok))}")
+            elif kind == "step" and val not in step_phrases:
+                bad.append(f"{where} says “{val}” (“{snip}”); no recorded step derives it")
+    # 2. The numbered steps: one per recorded step, in order, each with the
+    # routing's road, route number, turn word, compass word and distance.
+    sp = _StepParser()
+    sp.feed(html_text)
+    items = sp.items
+    if len(items) != len(steps):
+        bad.append(f"the page has {len(items)} numbered steps; the recorded routing has {len(steps)}")
+    for i, (it, (road, ref, mod, bearing, mi)) in enumerate(zip(items, steps), 1):
+        strong, text = " ".join(it["strong"].split()), " ".join(it["text"].split())
+        m = re.search(r"\b(?:onto|on)\s+(.+?)(?:\s*\(|$)", strong)
+        page_road = m.group(1) if m else ""
+        if road_key(page_road) != road_key(road):
+            bad.append(f"step {i} names “{page_road or strong}”; the routing's step {i} is {road}")
+        r = re.search(r"\(([^)]*)\)", strong)
+        if r and r.group(1) != ref:
+            bad.append(f"step {i} gives route number {r.group(1)}; the routing's is {ref or 'none'}")
+        # A direction that is part of a road's NAME ("West Bristol Road") is
+        # not a direction: every road name in the routing is taken out of the
+        # step's text before its turn and compass words are read.
+        bare = text
+        for nm in sorted(set(route["roads_driven"]) | {s[0] for s in steps} | {page_road}, key=len, reverse=True):
+            if nm:
+                bare = re.sub(re.escape(nm), " ", bare, flags=re.I)
+        bare = re.sub(r"\b\d+\s+Jaymor\s+Rd\b|\b[A-Z][a-z]+ Rd\b", " ", bare)
+        for t in re.findall(r"\b(left|right)\b", bare, re.I):
+            if t.lower() not in mod:
+                bad.append(f"step {i} says turn {t.lower()}; the routing's maneuver is {mod}")
+        for c in re.findall(r"\b(north|south|east|west|northeast|northwest|southeast|southwest)\b", bare, re.I):
+            if c.lower() != compass_of(bearing):
+                bad.append(f"step {i} says {c.lower()}; the routing's bearing {bearing} is {compass_of(bearing)}")
+        for kind, val, snip in route_quantities(text):
+            if kind == "minutes":
+                continue
+            said = val if kind == "step" else (f"{val:g} mile" if val == 1 else f"{val:g} miles")
+            if said != step_miles_phrase(mi):
+                bad.append(f"step {i} says “{snip}”; its recorded {mi} miles derives "
+                           f"“{step_miles_phrase(mi)}”")
+    return bad
+
+
+def llms_entry_for(url: str, root: str = None) -> str:
+    """The llms.txt entry for one URL: its line and the indented lines under it."""
+    try:
+        with open(os.path.join(root or SITE_DIR, "llms.txt"), encoding="utf-8") as f:
+            lines = f.read().splitlines()
+    except OSError:
+        return ""
+    out, on = [], False
+    for ln in lines:
+        if ln.startswith("- "):
+            on = url in ln
+        if on:
+            out.append(ln)
+    return " ".join(out)
+
+
 TOWN_KIND = "town"
 TOWN_HUB_PATH = os.path.join("areas-served", "index.html")
 TOWN_PATTERN_SECTIONS = ("proof", "start", "nearby", "real-repairs", "why-the-trip")
@@ -1860,6 +2083,7 @@ def audit(source: str, coverage: dict = None):
                        f"it does not answer. Exempt by Greg's ruling of 2026-09-25, "
                        f"proposed-changes.md 3.57."),
     }.get(kind, "")
+    declared_kind = kind
     kind = "page"
 
     passes, warns, fails, notes = [], [], [], []
@@ -1900,6 +2124,56 @@ def audit(source: str, coverage: dict = None):
                      f"Delete the element; do not fill it with filler.")
     else:
         passes.append(f"No empty headings: all {len(p.headings)} h1 to h6 carry words.")
+
+    # --- A Google Maps embed is the verified pin, by coordinates (3.65) ---
+    # Greg's ruling of 2026-09-28: /contact-us/ embeds Google's map CENTRED
+    # ON GEO_LAT, GEO_LON, never on the business's name. A name query renders
+    # the Business Profile's card, today carrying a second name and an
+    # unconfirmed phone number, onto the page from Google's side, where no
+    # other check of ours can see it. So any Google Maps iframe must query
+    # exactly the pin, carry a title, and load lazily.
+    for tag in re.findall(r"<iframe\b[^>]*>", html, re.I):
+        src = unescape((re.search(r'\bsrc="([^"]*)"', tag) or [None, ""])[1])
+        if "google." not in src or "/maps" not in src:
+            continue
+        q = urllib.parse.parse_qs(urllib.parse.urlsplit(src).query).get("q", [""])[0]
+        want = f"{GEO_LAT},{GEO_LON}"
+        problems = []
+        if q != want:
+            problems.append(f"it queries “{q}”, not the verified pin {want}"
+                            + (" (a NAME query brings the Business Profile's card with it)"
+                               if re.search(r"[A-Za-z]", q) else ""))
+        if not re.search(r'\btitle="[^"]+"', tag):
+            problems.append("it has no title, so a screen reader announces an unnamed frame")
+        if 'loading="lazy"' not in tag:
+            problems.append("it does not load lazily, so its weight lands on every visit")
+        if problems:
+            fails.append("**The Google Maps embed is wrong:** " + "; ".join(problems) + ".")
+        else:
+            passes.append(f"The Google Maps embed is centred on the verified pin, {want}, "
+                          f"by coordinates, titled, and lazy-loaded.")
+
+    # --- One routing, every rendering derived (3.65), town pages only ---
+    if declared_kind == TOWN_KIND:
+        slug = os.path.basename(os.path.dirname(os.path.abspath(source)))
+        key = slug[len(TOWN_ROUTE_PREFIX):] if slug.startswith(TOWN_ROUTE_PREFIX) else slug
+        route = TOWN_ROUTES.get(key)
+        own = page_url(source) if not is_url(source) else source
+        if route is None:
+            if route_quantities(visible_text(html)):
+                fails.append(f"**This town page prints drive times or distances with no recorded "
+                             f"routing behind them.** Add `{key}` to TOWN_ROUTES in scripts/audit.py "
+                             f"from an actual routing, or take the figures off the page.")
+        else:
+            found = town_route_findings(html, route, llms_entry_for(own) if not is_url(source) else "")
+            if found:
+                fails.append("**The page's directions disagree with its recorded routing** "
+                             f"(TOWN_ROUTES[{key!r}], {route['recorded']}): " + "; ".join(found)
+                             + ". A wrong turn word or a stale minute is a build failure, not a proofread.")
+            else:
+                passes.append(f"Directions derive from the recorded routing ({route['recorded']}): "
+                              f"{len(route['steps'])} steps in order with their turns, roads and "
+                              f"distances, and every drive time and distance rendering agrees.")
 
     # --- Structured data (JSON-LD) ---
     types = []

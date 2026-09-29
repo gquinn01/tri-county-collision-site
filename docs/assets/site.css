@@ -779,6 +779,36 @@ section { padding: var(--pad) 0; }
 }
 .badges svg { width: 17px; height: 17px; fill: none; stroke: var(--ox); stroke-width: 2.1; }
 
+/* ---------- The directions card, 3.65 ----------
+   Greg's ruling of 2026-09-28: the directions become a CARD on the town
+   pages and on /contact-us/, the Ambler page's assembly, ours. Map on top,
+   a visible "Open in Google Maps" button, the drive-time chip, the address,
+   the steps, and Call closing it. One column at every width, so the map
+   sits over what it shows. The town pages draw their route; contact embeds
+   Google's map. Each rule names what it serves. */
+/* The card: white, the site's hairline and radius, clipped so the map's
+   corners follow the card's. Narrow enough that a portrait route map is
+   not a wall at 1440. */
+.dir-card { max-width: 520px; margin: 0 auto; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+/* The map fills the card's top edge to edge, so its own frame comes off. */
+.dir-card .map-box > a { border: 0; border-radius: 0; }
+.dir-card .map-credit { margin: 8px 22px 0; }
+.dir-embed { display: block; width: 100%; aspect-ratio: 4 / 3; border: 0; }
+.dir-body { padding: 18px 22px 24px; }
+/* The button and the chip share one row under the map, and wrap on a phone. */
+.dir-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 16px; }
+/* The chip is the vetted chip's pill, so it is named beside .badges li
+   rather than restyled; it is not in .badges because it is per-town text,
+   not the pattern row the variance gate leaves out. */
+.dir-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--rule); border-radius: 999px; padding: 8px 15px; font-size: .95rem; font-weight: 700; color: var(--ink); }
+.dir-chip svg { width: 17px; height: 17px; fill: none; stroke: var(--ox); stroke-width: 2.1; stroke-linecap: round; }
+/* The address, prominent, with the pin mark: the one line a driver types
+   into their own phone. */
+.dir-address { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 1.15rem; font-weight: 700; line-height: 1.4; }
+.dir-address svg { flex: 0 0 auto; width: 22px; height: 22px; fill: none; stroke: var(--ox); stroke-width: 2; }
+.dir-address a { color: var(--ink); }
+.dir-card .prose { max-width: none; }
+
 /* ===========================================================================
    THE LIFT. ADOPTED 2026-09-10, FROM CANDIDATE C OF drafts/motion/.
    A MOLD BEHAVIOUR: every .card, .step and .svc on every page gets it,
@@ -2138,12 +2168,13 @@ footer.site a:focus-visible,
    own, so the list reads as one more block in the run of prose. Grepped:
    the town page's directions are the only list followed by a paragraph. */
 .numbered + p { margin-top: 1.1em; }
-/* STEPS BESIDE A MAP STAY ONE COLUMN, added 2026-09-28, proposed-changes.md
-   3.63. .numbered goes two across at 900px, which suits a full-width list;
-   in half of a .split, beside the town page's map, two columns of steps
-   would be about 250px each and read out of order. Grepped: the town
-   page's directions are the only .numbered inside a .split. */
-@media (min-width: 900px) { .split .numbered { grid-template-columns: 1fr; } }
+/* STEPS IN THE DIRECTIONS CARD STAY ONE COLUMN. Added 2026-09-28 for the
+   town page's steps beside its map in a .split (3.63), and moved with them
+   into the card in 3.65, which left the .split form with no user: it was
+   3.63's own rule, so it goes rather than standing. .numbered goes two
+   across at 900px, which suits a full-width list; in a card this narrow
+   two columns of steps would read out of order. */
+@media (min-width: 900px) { .dir-card .numbered { grid-template-columns: 1fr; } }
 .dark .ticks li::before { border-color: var(--silver); }
 
 /* ---------- Figures ---------- */

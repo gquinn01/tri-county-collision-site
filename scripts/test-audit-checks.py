@@ -1121,6 +1121,78 @@ def main():
     audit.check_town_variance_local(tp, tw, tf, tn)
     check("     the shipped site raises no variance critical", not tf, tf)
 
+    # One routing, every rendering derived, 3.65: Greg's accuracy mandate.
+    # Every fixture is the SHIPPED Jamison page with exactly one thing made
+    # wrong, so what passes is the real page and what fails differs from it
+    # by one fact.
+    print("26. One routing: the directions and every drive figure derive from it")
+    jam_path = os.path.join(root, "docs", "areas-served-collision-repair-jamison-pa", "index.html")
+    jam = open(jam_path, encoding="utf-8").read()
+    route = audit.TOWN_ROUTES["jamison-pa"]
+    llms = audit.llms_entry_for("https://tricountycollision.com/areas-served-collision-repair-jamison-pa/",
+                                os.path.join(root, "docs"))
+    got = audit.town_route_findings(jam, route, llms)
+    check("     the shipped Jamison page derives from its recorded routing", not got, got)
+    check("     and its llms.txt entry was found and read", "15 minutes" in llms, llms)
+
+    def one(old, new, count=1):
+        assert jam.count(old) == count, (old, jam.count(old))
+        return jam.replace(old, new)
+
+    steps = re.findall(r"(?s)<li><strong>.*?</li>", jam)
+    for label, page, llms_x in (
+            ("a wrong turn word, step 2 left made right",
+             one("<strong>Turn left onto West Bristol Road</strong>", "<strong>Turn right onto West Bristol Road</strong>"), llms),
+            ("a wrong compass word, step 1 south made north",
+             one("<strong>Head south on York Road (PA 263)</strong>", "<strong>Head north on York Road (PA 263)</strong>"), llms),
+            ("two steps in the wrong order", jam.replace(steps[1], "@@").replace(steps[2], steps[1]).replace("@@", steps[2]), llms),
+            ("a step dropped", jam.replace(steps[3], ""), llms),
+            ("a wrong route number", one("(PA 263)</strong>", "(PA 611)</strong>"), llms),
+            ("a stale step distance, 4 miles made 5", one("follow it for about 4 miles", "follow it for about 5 miles"), llms),
+            ("a stale quarter mile made half a mile", one("about a quarter mile along", "about half a mile along"), llms),
+            # These two isolate their checks: nothing else about the step is
+            # wrong, and the figure is valid ELSEWHERE on this route.
+            ("the wrong road on a step, turn and distance untouched",
+             one("<strong>Turn left onto West Bristol Road</strong>", "<strong>Turn left onto Street Road</strong>"), llms),
+            ("another step's distance on step 2, 4 miles made 2",
+             one("follow it for about 4 miles", "follow it for about 2 miles"), llms),
+            ("a stale minute count in the lead",
+             one("about 15 minutes from Jamison.</p>", "about 20 minutes from Jamison.</p>"), llms),
+            ("a stale minute count in the chip", one("~15 min from Jamison", "~18 min from Jamison"), llms),
+            ("a stale total distance, 8.4 made 9.1",
+             jam.replace("about 8.4 miles", "about 9.1 miles"), llms),
+            ("a stale meta description",
+             re.sub(r'(<meta name="description" content="[^"]*?)about 15 minutes', r"\1about 12 minutes", jam), llms),
+            ("a stale figure in the map's alt text",
+             jam.replace('aria-label="Map of the drive from Jamison,', 'aria-label="A 25 minutes drive map from Jamison,'), llms),
+            ("a stale llms.txt entry", jam, llms.replace("15 minutes", "25 minutes"))):
+        f = audit.town_route_findings(page, route, llms_x)
+        check(f"     caught: {label}", bool(f) and page != jam or llms_x != llms and bool(f), f)
+    p, w, f, n, kind = run_kind('<meta name="tri-county-page" content="town">',
+                                "<p>We are about 15 minutes away.</p>")
+    check("     caught: a town page printing a drive time with no recorded routing behind it",
+          "no recorded routing behind them" in f, f)
+    p, w, f, n, kind = run_kind('<meta name="tri-county-page" content="post">',
+                                "<p>We are about 15 minutes away.</p>")
+    check("     left alone: a page that is not a town page is not held to a routing",
+          "recorded routing" not in f, f)
+
+    # The contact embed, 3.65: the verified pin, by coordinates, never a
+    # name (a name query brings the Business Profile's card with it).
+    good = (f'<iframe src="https://www.google.com/maps?q={audit.GEO_LAT},{audit.GEO_LON}&amp;z=15&amp;output=embed"'
+            ' title="Map" loading="lazy"></iframe>')
+    p, w, f = run(good)
+    check("     the embed centred on the verified pin passes", "centred on the verified pin" in p and
+          "embed is wrong" not in f, (p, f))
+    for label, frag in (
+            ("an embed queried by the business's NAME",
+             good.replace(f"q={audit.GEO_LAT},{audit.GEO_LON}", "q=Tri-County+Collision,+995+Jaymor+Rd")),
+            ("an embed one digit off the pin", good.replace(str(audit.GEO_LON), "-75.0512848")),
+            ("an embed with no title", good.replace(' title="Map"', "")),
+            ("an embed that loads eagerly", good.replace(' loading="lazy"', ""))):
+        p, w, f = run(frag)
+        check(f"     caught: {label}", "embed is wrong" in f, f)
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} check(s) failed:")

@@ -169,7 +169,12 @@ MAIN_CLASSES = ("motorway", "trunk", "primary", "secondary", "tertiary",
                 "motorway_link", "trunk_link", "primary_link", "secondary_link",
                 "tertiary_link")
 FRAMES = {
-    "contact": {},
+    # THE CONTACT FRAME NO LONGER PATCHES A PAGE, from 3.65: /contact-us/
+    # carries a Google Maps embed on Greg's ruling. Its drawing is kept as
+    # scripts/fixtures/contact-map-reference.svg, and redrawing it with
+    # --check-against that file is the proof the town frames never disturb
+    # it. It draws to --out-dir only.
+    "contact": {"PAGE": None},
     # 3.63. The corner is where the 3.62 routing starts: OSM node 158375416,
     # Jamison, place=village, 40.2548297 -75.0893372, which sits at York Road
     # and Almshouse Road. The frame is portrait because the two points lie
@@ -197,6 +202,10 @@ FRAMES = {
         # County Line Road could not be named at this scale, and a road
         # drawn as the way through but unnamed fails the diagram's standard.
         "PRIMARY_ONLY": True,
+        # The recorded routing this frame must agree with: TOWN_ROUTES in
+        # scripts/audit.py (3.65). The routing file's figures must match it,
+        # and every label drawn must be a road it drives.
+        "ROUTE_KEY": "jamison-pa",
         # Minor roads are fetched only near the two ends, where the first
         # and last turns are: the shop's corner is the same for every town.
         "MINOR_NEAR_M": 450,
@@ -219,6 +228,7 @@ ROUTE_ROADS = None          # set in draw() from the route, never typed
 SHIELD_REFS = None
 ROUTE_REQUIRED = False
 PRIMARY_ONLY = False
+ROUTE_KEY = None
 ROUTE_STEPS = []            # the drawn route's roads in driving order, set in draw()
 MINOR_NEAR_M = 0
 WIDTH_SCALE = 1.0
@@ -556,6 +566,17 @@ def draw(data: dict, route: dict = None):
             return math.hypot((a[0] - b[0]) * 110574.0, (a[1] - b[1]) * 111320.0 * k)
         lines = []
         drawn_routes = route["routes"][:1] if PRIMARY_ONLY else route["routes"]
+        # 3.65: ONE ROUTING. The file drawn from must BE the recorded routing,
+        # to the figures the pages print from, or nothing is drawn.
+        rec = _audit.TOWN_ROUTES[ROUTE_KEY] if ROUTE_KEY else None
+        if rec:
+            got_mi = round(drawn_routes[0]["distance"] / 1609.344, 2)
+            got_min = round(drawn_routes[0]["duration"] / 60, 1)
+            if (got_mi, got_min) != (rec["miles"], rec["minutes"]):
+                raise SystemExit(f"FAILED: this routing file measures {got_mi} mi, {got_min} min; the "
+                                 f"recorded routing (TOWN_ROUTES[{ROUTE_KEY!r}]) is {rec['miles']} mi, "
+                                 f"{rec['minutes']} min. Re-record it or use the recorded file. Nothing was drawn.")
+            print(f"route    agrees with TOWN_ROUTES[{ROUTE_KEY!r}]: {got_mi} mi, {got_min} min")
         # The alt text reads the primary route as a driver drives it: each
         # road once, in order, with its route number; a road that only
         # changes its name under the same number is not a new turn.
@@ -625,6 +646,11 @@ def draw(data: dict, route: dict = None):
         refs_on = sorted({e["tags"].get("ref") for e in els if e["id"] in on_route and e["tags"].get("ref")})
         LABEL_ONLY, SHIELD_REFS = tuple(names_on), tuple(refs_on)
         print(f"route    {len(on_route)} OSM ways lie on it; named {names_on}; numbered {refs_on}")
+        if rec:
+            stray = sorted(set(names_on) - set(rec["roads_driven"]))
+            if stray:
+                raise SystemExit(f"FAILED: the route's OSM ways carry {stray}, which the recorded "
+                                 f"routing's roads_driven does not. Re-record the routing. Nothing was drawn.")
 
     # 2. Roads, clipped to the frame, by class.
     roads = []
@@ -869,6 +895,16 @@ def draw(data: dict, route: dict = None):
           f"frame {VB_W * M_PER_UNIT:.0f}m x {VB_H * M_PER_UNIT:.0f}m at {M_PER_UNIT} m/unit")
 
     drawn = [n for n, _ in order if any(r.startswith(f"  label  {n!r}") for r in report)]
+    # 3.65: NOTHING LABELLED THAT THE DRIVE DOES NOT USE. Judged against the
+    # roads driven, not the step names alone (Greg's ruling): West Bristol
+    # Road is "East Bristol Road" in OSM for half its length.
+    if ROUTE_KEY:
+        allowed = set(_audit.TOWN_ROUTES[ROUTE_KEY]["roads_driven"])
+        off = [n for n in drawn if n not in allowed]
+        if off:
+            raise SystemExit(f"FAILED: the map would label {off}, which the recorded routing does "
+                             f"not drive. Nothing was drawn.")
+        print(f"labels   all {len(drawn)} named roads are roads the recorded routing drives: {drawn}")
     return out, defs, labels, shields, pin, drawn, stamp
 
 
@@ -926,6 +962,8 @@ def main() -> int:
     src.add_argument("--data", help="a cached Overpass response to draw from")
     src.add_argument("--fetch", help="make the one query and cache it here (outside the repo)")
     ap.add_argument("--out-dir", help="write map.svg here and leave docs/ alone")
+    ap.add_argument("--check-against", help="compare the drawing to this reference SVG, byte for "
+                    "byte, and exit 1 if it differs (the contact frame's non-regression proof)")
     ap.add_argument("--route", help="a town frame's cached OSRM routing to draw")
     ap.add_argument("--fetch-route", help="make the one OSRM request and cache it here (outside the repo)")
     ap.add_argument("--frame", default="contact", choices=sorted(FRAMES),
@@ -933,7 +971,8 @@ def main() -> int:
     a = ap.parse_args()
     use_frame(a.frame)
     print(f"frame    {a.frame}: {VB_W}x{VB_H} at {M_PER_UNIT} m/unit, centre "
-          f"{FRAME_CX_LAT}, {FRAME_CX_LON}, page {os.path.relpath(PAGE, ROOT)}")
+          f"{FRAME_CX_LAT}, {FRAME_CX_LON}, page "
+          f"{os.path.relpath(PAGE, ROOT) if PAGE else 'none (out-dir only)'}")
 
     if a.fetch:
         if os.path.abspath(a.fetch).startswith(ROOT + os.sep):
@@ -955,6 +994,15 @@ def main() -> int:
     print(f"alt      {alt}")
     print(f"size     {len(svg.encode())} bytes of inline SVG")
 
+    if a.check_against:
+        with open(a.check_against, encoding="utf-8") as f:
+            ref = f.read()
+        if svg != ref:
+            print(f"DIFFERS  from {a.check_against}: {len(svg.encode())} bytes against {len(ref.encode())}")
+            return 1
+        print(f"matches  {a.check_against}, byte for byte ({len(svg.encode())} bytes)")
+    if PAGE is None and not a.out_dir:
+        raise SystemExit("FAILED: this frame patches no page; give --out-dir (and --check-against).")
     if a.out_dir:
         os.makedirs(a.out_dir, exist_ok=True)
         with open(os.path.join(a.out_dir, "map.svg"), "w", encoding="utf-8") as f:

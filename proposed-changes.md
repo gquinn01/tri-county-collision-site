@@ -9443,6 +9443,333 @@ other 23 pages are identical by construction.
   sameAs bar, as every run has.
 - No em dash was added.
 
+### 3.65 The directions card, and directions that cannot drift. TEMPLATE AMENDMENT, and one contact-page change. BUILT 2026-09-28
+
+**The directions section becomes a card, on the town pages and on
+`/contact-us/`, and every route fact on a town page becomes a derivation of
+one recorded routing, machine-checked.** Run two's eleven town pages inherit
+the card with their own routed facts, and their own recorded routing in
+`TOWN_ROUTES`. One commit, one restamp.
+
+#### Greg's rulings, 2026-09-28
+
+1. **The card:** map on top with a visible "Open in Google Maps" button, a
+   routed drive-time chip, the address prominent, the numbered steps
+   beneath, and the Call button closing it. The Ambler page's assembly,
+   ours.
+2. **The split:** contact carries Google's interactive embed inside its card;
+   the twelve town pages carry the drawn route maps inside theirs.
+3. **Accuracy is a gate, not a goal.** Every route fact on a page derives
+   from one recorded routing and is machine-checked against it.
+
+**Asked and ruled while building:**
+
+4. **The label gate is judged against the roads DRIVEN, not the step names
+   alone.** The drive genuinely runs along what OpenStreetMap calls East
+   Bristol Road for half its length. A driver mid-leg is looking at E
+   Bristol Rd signs, and a map that hid the name to satisfy a strictly read
+   gate would be less accurate, not more. 3.64's labels-both premise stands,
+   and the gate still refuses any label off the route, which is all it was
+   ever for.
+5. **The embed is centred on the verified pin by coordinates, from `GEO_LAT`
+   and `GEO_LON`, never by the business's name.** A name-based embed would
+   have rendered the Business Profile's card, carrying its unresolved name
+   "Tri County Collision Center" and the unconfirmed (215) 999-3497, onto
+   the contact page itself, from Google's side, where no check of ours can
+   reach. That is the exact conflict rule 6 exists to prevent, injected by
+   the embed rather than by our source. **Measured before the choice:** the
+   name-query embed's response carries "Tri County Collision Center" twice
+   and "999-3497" once; the coordinate embed carries neither. Owner question
+   29a records the cost.
+6. **Three readings, approved as read:**
+   - compass words ("south") are checked against the maneuver's bearing,
+     and turn words against its modifier, since OSRM has no compass
+     modifier and step 1 begins at the corner facing the way;
+   - step distances are route facts under the mandate;
+   - contact's card keeps its address, phone, email and the 3.55 hours box
+     inside it, with the embed on top and Call closing it.
+7. **THE RANGE IS TWO RULES, NOT ONE.** The card's Call landed 1,120px
+   before the promise band, below the floor, and 3.66's order adds a 1,431
+   run. Greg named the distinction precisely so it cannot stretch:
+   - **THE CEILING, 2,684, counts every call to action of any kind.** No
+     reader scrolls that far without a way to act, and any call satisfies it.
+   - **THE FLOOR, 1,634, governs REPEATED SECTION ASKS ONLY:** the things
+     that read as the page asking again.
+     - **Section asks, which the floor governs:** identical Call/Email rows
+       (the opening's in 3.62, the band's, home's pairs' ask) and the
+       promise band's ask.
+     - **Furniture, which the floor does NOT govern:** a call embedded in a
+       content unit as part of its function. That is the directions card's
+       Call, the header's Call, the phone call bar, and the footer's contact
+       links. The footer's links have sat 426 and 171px apart on every page
+       since the footer shipped, and nobody ever read them as nagging,
+       because they are furniture.
+     - **This is 3.64's floor reasoning, restated.** Identical rows 668px
+       apart read as nagging. **Furniture is never an excuse for stacking
+       section asks:** a Call/Email row is a section ask wherever it sits,
+       and a promise band is always one.
+8. **The embed ships; Greg checks it in his real browser the moment it
+   lands,** for a marker at the shop and any Business Profile label near
+   the pin. **The fallback is pre-ruled:** if a real browser shows no
+   marker, the builder proposes the keyless embed forms that DO draw a
+   marker without bringing the Profile's card, renders what it can, and
+   Greg picks by eye. **A map on the contact page must mark the shop,** so a
+   confirmed markerless embed is a defect to fix, not a trade to accept.
+9. **The ritual's expected line becomes "23 pages at 95, Jamison at 96, 2
+   stubs at 100"** until sameAs closes the gap. Jamison reads 96 because
+   the routing check adds a passing check to its denominator: it is 22 of
+   23 with sameAs its one warning, and exactly as clean.
+
+#### Item 1: the card, on Jamison
+
+`#getting-here`, on the white panel. It holds a `.dir-card` (white, the
+site's hairline and radius, 520px at most, one column at every width), with
+these parts in order:
+
+- **The drawn route map**, unchanged, with its ODbL credit.
+- **The button, "Open in Google Maps".** It uses the site's canonical maps
+  link, character for character. The drawing was already a link, and
+  nothing said so; the button says so.
+- **The chip, "~15 min from Jamison",** with a clock mark. **The qualifier
+  reading, recorded so no future sitting strips the chip:** the tilde hedges
+  the number, and the card's own prose two lines below carries the full
+  "about 15 minutes without traffic". Together they satisfy the qualifier
+  rule.
+- **The address**, full canonical form, with the pin mark.
+- **The prose, the four numbered steps, and the alternative route**,
+  unchanged.
+- **Call (215) 322-5350**, closing the card.
+
+**Tones:** all existing pairs. Ink on white is 17.33 (chip text, address);
+`--ox` on white is 11.80 (the ghost button, and the chip's and address's
+marks as graphics).
+
+| Where | Before (3.64) | After |
+|---|---|---|
+| #getting-here | a .split, steps left, map right | the card, stacked: map, button and chip, address, prose and steps, Call |
+| (new) | nothing named the map a link | "Open in Google Maps" button |
+| (new) | (none) | "~15 min from Jamison" chip |
+| (new) | (none) | the address line with the pin mark |
+| (new) | (none) | the card's closing Call |
+
+#### Item 2: contact's `#find-us`
+
+The same card shape, holding these parts in order:
+
+- **The embed:** Google's keyless share embed (no API key, no account),
+  `https://www.google.com/maps?q=40.1660232,-75.0512847&z=15&output=embed`
+  from the constants, `loading="lazy"`, a `title` for accessibility, and a
+  4:3 frame sized by the card.
+- **The same "Open in Google Maps" button.**
+- **The address, phone and email lines, and the hours box,** all unchanged.
+- **Call, closing it.**
+
+| Where | Before (3.54 to 3.64) | After |
+|---|---|---|
+| #find-us | a .split: details and hours left, the drawn map right | the card: embed, button, details, hours, Call |
+| map | the drawn OSM map, inline SVG | Google's embed, by coordinates |
+| credit | the ODbL figcaption | none needed: the embed carries Google's own attribution |
+
+**The drawn contact map is kept** as `scripts/fixtures/contact-map-reference.svg`,
+with a README carrying its ODbL credit, outside `docs/` and never served.
+`prepare-map-image.py`'s contact frame no longer patches a page: it draws
+only to `--out-dir`, and **`--check-against` compares the drawing with the
+kept reference byte for byte and exits 1 on any difference.** Run from its
+own 2026-09-24 cache, it matches, at 22,210 bytes. The proof that town
+frames never disturb the contact frame survives the page no longer
+shipping it.
+
+**THE COSTS, as decided, not discovered:**
+
+- **The weight** lands, lazily, on one page only.
+- **Google's cookies** arrive with it at cutover, and the privacy page's
+  planned disclosures gain the line. It is added to pagemap.md's Privacy
+  row, the one place the privacy page's reasons are written.
+- **Google decides which nearby businesses its tiles show,** seen and
+  accepted for the one page where panning around the shop is the point.
+
+**What a headless render shows, recorded because it changes an
+instruction.** A full-page headless render DID paint the embed's tiles. Jaymor
+Rd, James Way, Second Street Pike and I-276 sit where the drawn map put them,
+with nearby businesses (Robin Hood Restaurant, GIANT, Bucks Lumber) and **no
+Business Profile label.** **It also showed no marker at the shop.** Whether a
+real browser adds one is Greg's check. If it does not, ruling 8's fallback
+applies. **CLAUDE.md's line that headless Chrome "cannot run" the embed was
+wrong and is corrected;** the real-browser check stays in the cutover list,
+because painted tiles are not what a customer's browser shows.
+
+**A new check makes the embed's centring a mechanism:** any Google Maps
+iframe on any page must query exactly `GEO_LAT,GEO_LON`, carry a `title`,
+and load lazily. A name query is called out as bringing the Profile's card.
+
+#### Item 3: one routing, every rendering derived
+
+**`TOWN_ROUTES` in `scripts/audit.py`**, beside the NAP, hours and geo
+constants. It holds one entry per town, keyed by slug:
+
+- **the whole route:** 8.42 mi, 14.8 min, free-flow;
+- **the steps, one per numbered step, in driving order**, each as (road,
+  ref, modifier, bearing, miles):
+  - York Road, PA 263, right, 194 degrees, 1.92;
+  - West Bristol Road, left, 126, 4.09;
+  - Second Street Pike, PA 232, right, 177, 2.10;
+  - Jaymor Road, right, 281, 0.28;
+- **`roads_driven`:** every OSM name the route's ways carry, including
+  East Bristol Road and 2nd Street Pike (ruling 4).
+
+The steps drop the 0.00-mile depart, since the page starts at the corner,
+and the unnamed final metres into the lot. A "new name" maneuver is not a
+turn: 2nd Street Pike's 0.73 folds into Second Street Pike's 1.37.
+
+**The derivations are the only renderings accepted:**
+
+```
+minutes         round(14.8) = 15          "about 15 minutes", "~15 min"
+route miles     round(8.42) = 8, round(8.42, 1) = 8.4
+step miles      under half a mile, to the nearest quarter ("a quarter mile"); otherwise round: "about 2 miles"
+turn words      left/right against the maneuver's modifier
+compass words   against the maneuver's bearing, eight points (ruling 6)
+```
+
+**The check, a critical, on every declared town page:**
+
+- every drive-time and distance figure in the visible page, the meta
+  description, the JSON-LD (the FAQ's schema twin), every `aria-label` (the
+  map's alt text) and the page's `llms.txt` entry must be a derivation;
+- the numbered steps must match the recorded steps in count and order, each
+  step's road, route number, turn word, compass word and distance.
+
+**A town page printing drive figures with no recorded routing behind it
+fails too.**
+
+**One bug in the first draft, caught by the check's own first run:** it read
+the "West" in "West Bristol Road" as a compass word. A direction inside a
+road's name is not a direction, so every routing road name is taken out of a
+step's text before its turn and compass words are read.
+
+**Tests, section 26, 26 checks, all against the SHIPPED page with exactly one
+fact made wrong:**
+
+- **The shipped page passes,** and its `llms.txt` entry is found and read.
+- **Caught, in the steps:**
+  - a wrong turn word;
+  - a wrong compass word;
+  - two steps swapped;
+  - a step dropped;
+  - a wrong route number;
+  - a stale step distance;
+  - a stale quarter mile;
+  - **the wrong road on a step with its turn and distance untouched;**
+  - **another step's distance on step 2**, a figure valid elsewhere on the
+    route.
+- **Caught, in the renderings:**
+  - a stale minute count in the lead;
+  - a stale minute count in the chip;
+  - a stale total distance;
+  - a stale meta description;
+  - a stale figure in the map's alt text;
+  - a stale `llms.txt` entry;
+  - a town page with figures and no routing.
+- **Left alone:** a post printing a drive time.
+- **The embed:** the pin by coordinates passes. Caught: a name query, a pin
+  one digit off, no title, eager loading.
+
+**Mutation-tested, fifteen mutants, every one red**, restored from a copy
+with the checksum confirmed (`314becf4d085` before and after):
+
+```
+turn words 1    compass words 1    road names 1    step count 1    route numbers 1
+step distances 1    minute renderings 5    mile renderings 1    llms.txt read 1
+aria-labels read 1    road names stripped before compass 1    no-routing pages 1
+embed query 2    embed title 1    embed lazy 1
+```
+
+**Two mutants survived the first run: road names and step distances.** Every
+fixture that should have caught them was also caught by another check. So the
+two isolating fixtures (in bold in the list above) were added, and both
+mutants now go red. **A check that no fixture can kill on its own is a check
+nothing proves.**
+
+#### Item 4: the drawing's own gates
+
+`prepare-map-image.py`'s town frame names its recorded routing (`ROUTE_KEY`).
+The existing refusals stay: the pin in its building, the corner a real
+junction within 60 m, and the route's ends at the corner and the pin. The
+new ones:
+
+- **The routing file must BE the recorded routing:** its distance and time,
+  to the recorded figures, or nothing is drawn.
+- **Every road the route's OSM ways carry must be in `roads_driven`.**
+- **Every label drawn must be a road the recorded routing drives.** It is
+  judged against `roads_driven`, per ruling 4.
+
+**Each proven to refuse, by hand** (its data lives outside the repo):
+
+```
+(a) the routing file doctored by one minute    "FAILED: this routing file measures 8.42 mi, 15.8 min; the recorded routing ... is 8.42 mi, 14.8 min"
+(b) East Bristol Road taken out of roads_driven "FAILED: the route's OSM ways carry ['East Bristol Road'], which ... roads_driven does not"
+(c) (b) with the stray-road gate off            "FAILED: the map would label ['East Bristol Road'], which the recorded routing does not drive"
+restored, both files to their checksums; the clean run: "all 3 named roads are roads the recorded routing drives"
+```
+
+**The cutover checklist gains the re-verification**, in CLAUDE.md: re-fetch
+OSM and re-run every town's routing within a week of cutover, update
+`TOWN_ROUTES` first, re-derive every rendering, re-draw every map, and view
+the contact embed in a real browser.
+
+**Label legibility at phone size, measured.** The Jamison map's labels are
+11 units in a 360-unit viewBox. At 390 the card draws the map about 350px
+wide, so labels render at about 10.7px, against the contact map's former
+11.7px. No label collides, and the 390 render was read by eye: York Rd, W
+Bristol Rd, E Bristol Rd, PA 263 and PA 232 are all legible. **It is at the
+small edge.** Run two should treat about 10.5px as the floor, and stop
+rather than ship below it.
+
+#### Measured
+
+**The ask runs at 390, every one, by category (ruling 7):**
+
+```
+header Call (furniture)   -> band's Call/Email row (section ask)    1,951
+band's row                -> card's Call (furniture)                1,636
+card's Call               -> promise band (section ask)             1,120   furniture: the floor does not govern it
+promise band              -> pairs' row (section ask)               1,979
+pairs' row                -> footer (furniture)                     1,722
+footer's own links                                             426, 171   furniture
+section ask to section ask: band row -> promise band 2,818, promise band -> pairs' row 1,979
+CEILING: longest run between ANY two calls 1,979     FLOOR: nearest two section asks 1,979
+```
+
+**The fold, 390x664, innerHeight 664:** CALL 401 to 463, clearing the call
+bar by 141, unchanged. At 360x640 it clears by 117.
+
+**Nothing else moved:** the 22 other pages are **identical to 3.63, 66 of 66
+page-widths**. Only Jamison and contact changed; 3.64 touched only Jamison.
+The stylesheet's new rules are the `.dir-card` family. The 3.63 `.split
+.numbered` rule lost its only user when the steps moved into the card; it
+was 3.63's own, so it is repurposed as `.dir-card .numbered` rather than
+left standing.
+
+**Rendered and inspected at 1440 and 390:** the Jamison card, and contact's
+card with the embed painted. Both read top to bottom as ruled.
+
+#### The suite
+
+- Both test scripts pass, **205 checks**.
+- `stamp-assets.py --check` exits 0, and `build-sitemap.py --check` exits 0
+  (24 pages).
+- `STAGING=1 audit.py --strict`: **23 pages at 95, Jamison at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 485 passing.**
+- No em dash was added.
+
+#### Open, for Greg
+
+1. **VIEW THE CONTACT EMBED IN YOUR REAL BROWSER, NOW:** is there a marker at
+   the shop, and is there any Business Profile label near the pin? No
+   marker triggers ruling 8's fallback.
+2. **Owner question 29a:** fixing the Business Profile's name and phone
+   removes the embed's problem at its source.
+
 ---
 
 ## 4. The claims list
@@ -10065,6 +10392,14 @@ Ordered by how much else depends on it.
 29. **The drive time from Jamison: "about 15 minutes".** It is an OSRM routing
     with no traffic, from the village's crossroads at York Road and Almshouse
     Road to the shop (3.62). Is it what a Jamison customer would say it takes?
+29a. **The Google Business Profile's name and phone now have a concrete cost
+    on this site (3.65).** A Google Maps embed queried by the business's name
+    renders the Profile's own card: today "Tri County Collision Center" and
+    (215) 999-3497, the unconfirmed fourth number (questions 23 and 24). The
+    contact page's embed is centred on the pin by coordinates to keep that
+    card off it, but Google's tiles may still label the pin with the
+    Profile's name. **Fixing the Profile before cutover** removes the problem
+    at its source, for every map and every search result, not just this page.
 30. **Does the shop serve Warrington, and Warwick Township beyond Jamison?**
     Neither is named on the live hub, so neither is named on the Jamison page
     as a neighbor (3.62, ruling 3). A yes adds them.

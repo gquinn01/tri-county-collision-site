@@ -834,6 +834,28 @@ happens.
 The pages also carry a visible staging banner. A human who opens one should
 not have to read the head to find out why it is not indexed.
 
+## Re-verify every route within a week of cutover, 2026-09-28
+
+**A map checked in September is not a map checked at launch.** Roads close
+and drive times change. Within one week before cutover:
+
+- **Re-fetch** OpenStreetMap for every town frame and **re-run** every
+  town's routing, with `scripts/prepare-map-image.py --frame [town]
+  --fetch ... --fetch-route ...` (both caches outside the repo).
+- If a routing moved, **update `TOWN_ROUTES` in `scripts/audit.py` first**:
+  the figures, the steps, `roads_driven`. The map script refuses to draw
+  from a routing file that disagrees with them, and the audit's routing check (`town_route_findings`)
+  fails every page rendering that disagrees. Then re-derive each page's
+  steps, chip, lead, opening, FAQ, meta and `llms.txt` entry from the new
+  figures, and re-draw each map.
+- **View `/contact-us/`'s Google Maps embed in a real browser.** Headless
+  Chrome does paint its tiles (the 3.65 render showed them), but a headless
+  render is not what a customer's browser shows. Check two things: that the
+  embed MARKS THE SHOP, which is its one job, and that Google's tiles draw
+  no Business Profile label beside the pin (3.65).
+
+Recorded in `proposed-changes.md` 3.65. When it is done, write the date here.
+
 ## Never touch MX records
 
 At cutover, change **web DNS records only**. Never MX.
