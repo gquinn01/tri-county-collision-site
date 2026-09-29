@@ -798,9 +798,12 @@ section { padding: var(--pad) 0; }
 .dir-card .map-box > a { border: 0; border-radius: 0; }
 .dir-card .map-credit { margin: 8px 22px 0; }
 .dir-embed { display: block; width: 100%; aspect-ratio: 4 / 3; border: 0; }
-.dir-body { padding: 18px 22px 24px; }
+/* THE BODY BREATHES, 3.73 (Greg's ruling of 2026-09-29). Stacked, it
+   takes the site's own card interior, .card's 26px by 24px, so the
+   directions read as a card like every other on the page. */
+.dir-body { padding: 26px 24px; }
 /* The button and the chip share one row under the map, and wrap on a phone. */
-.dir-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 16px; }
+.dir-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 20px; }
 /* The chip is the vetted chip's pill, so it is named beside .badges li
    rather than restyled; it is not in .badges because it is per-town text,
    not the pattern row the variance gate leaves out. */
@@ -808,15 +811,25 @@ section { padding: var(--pad) 0; }
 .dir-chip svg { width: 17px; height: 17px; fill: none; stroke: var(--ox); stroke-width: 2.1; stroke-linecap: round; }
 /* The address, prominent, with the pin mark: the one line a driver types
    into their own phone. */
-.dir-address { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 1.15rem; font-weight: 700; line-height: 1.4; }
+/* ONE STEP BETWEEN THE BODY'S TEXT BLOCKS, 3.73: 20px after the top row,
+   the address and contact's lines alike, a pixel over the prose's own
+   1.1em paragraph gap, so the blocks above the steps keep the rhythm of
+   the paragraphs under them. The Call keeps the ask's 26px of air. */
+.dir-address { display: flex; align-items: center; gap: 10px; margin: 0 0 20px; font-size: 1.15rem; font-weight: 700; line-height: 1.4; }
 .dir-address svg { flex: 0 0 auto; width: 22px; height: 22px; fill: none; stroke: var(--ox); stroke-width: 2; }
 .dir-address a { color: var(--ink); }
 .dir-card .prose { max-width: none; }
+.dir-card .contact-lines { margin-top: 20px; }
 /* THE SPLIT. Two equal columns, the map first. 1010px IS THE RENDER'S
    NUMBER, not a round one: at equal columns it is the narrowest card at
    which Jamison's steps rewrap short enough that the body ends no lower
    than the portrait map and its credit (map 16px the longer; at 1005 the
    body runs 15px past it). Measured in proposed-changes.md 3.70.
+   SUPERSEDED BY 3.73: THE CARD SPANS THE WRAP. The respace's 36px inset
+   narrows the text, and at 1010 the body then runs 52px past the map. By
+   the same balance test the card takes the wrap's full column, 1080 at
+   1440, where the body ends 3px short of the map and its credit. The map
+   stops growing there, because the column does.
    Contact's landscape embed FILLS ITS COLUMN'S HEIGHT rather than keeping
    4:3: its details, hours and Call stand 475px tall at every card width,
    and a 4:3 embed never reaches that, so it would leave a white gap
@@ -826,7 +839,11 @@ section { padding: var(--pad) 0; }
    AFTER THE CARD'S BASE RULES ON PURPOSE: it overrides .dir-embed's
    4:3 at equal specificity, so it has to come later in the file. */
 @media (min-width: 900px) {
-  .dir-card { max-width: 1010px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .dir-card { max-width: none; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  /* At the split the body is a column beside a picture, so it takes a
+     wider inset than the stacked card: 36px, from the render, the most
+     the text can take while the body still ends level with the map. */
+  .dir-body { padding: 36px; }
   .dir-embed { aspect-ratio: auto; height: 100%; }
 }
 

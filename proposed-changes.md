@@ -10749,6 +10749,175 @@ It is still Greg's to rule on.
   is identical to 3.71's.
 - No em dash was added.
 
+### 3.73 The directions card breathes. TEMPLATE AMENDMENT, with two items withdrawn. BUILT 2026-09-29
+
+**Run two inherits it.** The brief ruled on both directions cards, the
+town pages' and `/contact-us/`'s, as one component. It carried three
+items; Greg's ruling on the stop reduced it to one.
+
+#### ITEMS 1 AND 3 WITHDRAWN: the section-bottom ask was considered and declined
+
+**The brief asked** for the Call to leave the card (item 1) and for the
+ask to move to the directions section's bottom, by the section-bottom-ask
+grammar (item 3). **The brief's own stop condition fired, and Greg ruled
+Option 1 on 2026-09-29: the Call stays in the card.** This is recorded so
+that **run two does not re-attempt it.**
+
+**The measurement that forced it.** The move was prototyped on both pages
+without committing: Call plus Email at the section's bottom, following
+the proof cards, Real Repairs and the promise band. It was measured at
+390, then reverted.
+
+```
+Jamison, prototype                                     run
+header Call (furniture)   -> proof cards' row          1,516
+proof cards' row          -> pairs' row                1,998
+pairs' row                -> DIRECTIONS SECTION ASK    2,153
+DIRECTIONS SECTION ASK    -> PROMISE BAND              1,170   <- UNDER THE 1,634 FLOOR
+promise band              -> footer                    1,723
+```
+
+**Why it fails:**
+- In the card, the Call is furniture, and the floor ignores it. At the
+  section's bottom it becomes a section ask, and its neighbour is the
+  promise band, which is also a section ask.
+- The move only lowers the Call by about 50px. The respace cannot close a
+  gap of 464px.
+
+**The alternatives measured, and why each was declined:**
+
+```
+promise band keeps its band, loses its row      2,813 run    breaks the 2,684 ceiling
+Call leaves the card, no section ask at all     3,221 run    breaks the ceiling
+section ask, promise band removed               2,153 / 2,511, inside both rules, BUT
+                                                it reverses 3.62's promise-band ruling
+                                                and puts What we fix and the FAQ, two
+                                                silver sections, side by side
+```
+
+**Contact had no floor problem.** Its directions ask would have been its
+only section ask. That does not change the ruling: the card is one
+component, and it keeps its Call on both pages.
+
+#### ITEM 2: THE RESPACE, both cards, around the button
+
+**Every value came from the site's own scale or from a render.** Each
+rule names what it serves in `site.css`.
+
+| Rule | Before (3.72) | After (3.73) | What it serves |
+|---|---|---|---|
+| `.dir-body` padding, stacked | 18px 22px 24px | **26px 24px** | exactly `.card`'s interior, so the directions read as a card like every other on the page |
+| `.dir-body` padding, split (900px and up) | the same 18 22 24 | **36px** | the body is a column beside a picture, so it takes a wider inset; 36 is from the render, below |
+| `.dir-top` bottom margin | 16px | **20px** | one step between the body's text blocks |
+| `.dir-address` bottom margin | 14px | **20px** | the same step |
+| `.dir-card .contact-lines` top margin | 18px (the base rule's) | **20px** | the same step on contact; scoped to the card, though the class has no other user |
+| prose paragraph gaps, and the Call's 26px | unchanged | unchanged | the prose's own 1.1em rhythm, about 19px, and the ask's air |
+
+**The body's gaps, measured.** They ran 16, 14, 19, 19, then 26 before
+the Call. They now run **20, 20, 19, 19, then 26**: one step, a pixel
+over the prose's own. Padding went from 18 on top and 22 at the sides to
+**26/24** stacked and **36** on every side at the split.
+
+#### THE 1010px WIDTH DOES NOT STAND: the respace argues for the full column
+
+3.70 took 1010 from a balance test: the narrowest card at which the body
+ends no lower than the map and its credit. **The respace moves that
+balance.** A wider inset narrows the text, the steps rewrap, and at 1010
+the body runs past the map. Measured at 1440 as body content against
+map plus credit:
+
+```
+split inset   card 1010   1040   1060   1080 (the full column)
+    32px        +44       +24     +3     -11
+    36px        +52       +32    +39      -3    <- chosen
+    40px        +88       +40    +47      +5
+```
+
+**The card now spans the wrap** (`max-width: none` at 900px and up), and
+at 1440 that is 1080: the content width inside the page wrapper, 1120
+less its 20px gutters. The map stops growing there because the column
+does, so 1080 is the widest balance available. **At 36px the body ends
+3px short of the map and its credit** (745 against 748; the body's
+box reads 747 because the grid stretches the shorter column to the row). 32px balances at
+1060 but gives the text less room; 40px runs 5px long even at the full
+column. `site.css` carries this measurement beside the superseded 1010.
+
+**The narrow-desktop cost, recorded.** The split starts at 900 by 3.70's
+ruling, and below 1080 the body runs past the map. It already did at
+900 and 1024; the respace deepens both. Measured as body content (the
+Call plus the bottom inset) against the map and its credit:
+
+```
+          body content   map + credit   body runs past by
+ 900       855        622            233   (was 193)
+1024       801        704             97   (was 29)
+1440       745        748             -3   (was -16, at 1010)
+```
+
+**Contact at the split:** the embed fills its column at 539x507 at 1440,
+still wider than tall. Its body is 507 tall where it was 475.
+
+**Before and after crops were rendered** at 1440 and 390 for both cards.
+The "before" renders are from an export of HEAD's `docs/`, so both
+columns use real stylesheets. They were inspected; they are working
+files, not committed.
+
+#### Measured, confirmed rather than assumed
+
+**Jamison, the ask runs at 390:**
+
+```
+header Call (furniture)   -> proof cards' row (section ask)       1,516   unchanged
+proof cards' row          -> pairs' row (section ask)             1,998   unchanged
+pairs' row                -> card's Call (furniture)              2,146   was 2,128
+card's Call               -> promise band (section ask)           1,121   was 1,119
+promise band              -> footer (furniture)                   1,723   unchanged
+CEILING 2,146 (under 2,684); FLOOR 1,998 (over 1,634)
+```
+
+**Contact, its own rhythm at 390.** One section ask, the card's Call, so
+the floor has no pair; every run is far under the ceiling:
+
+```
+header Call               -> options' Call card        285   unchanged
+options                   -> card's phone line       1,253   was 1,243
+card's phone line         -> card's Call               212   unchanged
+card's Call               -> footer                    445   was 443
+footer runs                                       426, 171   unchanged
+```
+
+**The fold, 390x664, is unchanged on both pages:**
+
+| Page | Call | Clears the bar by | At 360x640 |
+|---|---|---|---|
+| Jamison | 464 to 526 | 78 | 54 |
+| Contact | 361 to 423 | 181 | 157 |
+
+**Nothing else moved:** 264 of 278 probe entries are identical to 3.72.
+The fourteen that differ are Jamison and contact at 1440, 390 and 360.
+Every other page's diff is its stamp line, as is the template's.
+
+**Observed in the renders, not ruled on and not changed:**
+- **Two wraps split a figure from its unit** at the narrower measure. At
+  1440, step 2 now breaks "about 4 / miles". At 390, step 1 breaks
+  "(PA / 263)". Both are copy-level fixes (a non-breaking space), and a
+  non-breaking space is a character the routing check reads through, so
+  they would need their own brief.
+- **Jamison's Call is centred in the card, and contact's sits left.** It
+  predates this commit: `.prose + .cta-row` centres a row that follows a
+  `.prose`, and only Jamison's body has one. It is one component with
+  two alignments, recorded here for a ruling.
+
+#### The suite
+
+- Both test scripts pass.
+- `stamp-assets.py --check` exits 0 after the restamp, and
+  `build-sitemap.py --check` exits 0.
+- `STAGING=1 audit.py --strict`: **23 pages at 95, Jamison at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 485 passing.** The report
+  is identical to 3.72's except the stamp lines.
+- No em dash was added.
+
 ---
 
 ## 4. The claims list
