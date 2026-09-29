@@ -12770,6 +12770,527 @@ Jamison, and adds the five new pages.
 - No em dash in any shipped source. `llms.txt` gains the five entries,
   derived.
 
+### 3.82 Batches 2 and 3: Hatboro, Horsham, Huntingdon Valley, Jenkintown, Willow Grove and Northeast Philadelphia. CRUMBS NEVER WRAP. BUILT 2026-09-29
+
+**Six town pages, released together, built by `scripts/build-town.py`
+under the standing rulings of 3.80 and 3.81.** Every figure derives from
+the routing table the strategy chat verified in 3.78. **One commit**
+holds:
+- the six pages;
+- the hub's six links;
+- the link conversions on the pages already built;
+- the origin support in the town script;
+- the site-wide crumb rule and its test.
+
+**The strategy chat now re-routes all six corners (protocol e),
+completes the independent municipality check if a route has opened, runs
+the full ritual, and sends Greg seven previews: the six towns and the
+hub.**
+
+#### Greg's rulings, on this batch's first report
+
+1. **THE CRUMB: OPTION A. Crumbs never wrap, site-wide.** Below.
+2. **THE COPY: ALL APPROVED.** Approved as quoted:
+   - the thirty new Q&As;
+   - Northeast Philadelphia's shortened lead. The H1 names the place, so
+     the lead does not repeat it.
+
+   **My four recorded calls are ratified:**
+   - **", PA" on Northeast Philadelphia everywhere** except the hub's
+     bare-name convention and the crumb.
+   - **Every rendering measured from Somerton:** the lead, card intro,
+     chip, meta and `llms.txt` entry.
+   - **The kicker "Philadelphia, PA"**: the city and the county are the
+     same place, so the Montgomery and Bucks pattern's "County" has no
+     second name to carry.
+   - **The third meta fallback**, in code with its reason.
+3. **THE MUNICIPALITY FACTS stand on this build's OSM `is_in` query as
+   the machine check of record.** The strategy chat's independent
+   second-source fetch was BLOCKED by its own tooling:
+   - its fetch cache served one stale body for every Census query, caught
+     because six different corners cannot share a township;
+   - the Overpass route sits behind an unanswered approval.
+
+   **The independent check is PENDING.** It runs after the push, when a
+   route opens, and **if it ever disagrees, the records correct
+   forward.** The facts ship on this check plus the strategy chat's
+   concurrence.
+4. **Huntingdon Valley / Richboro at 29.2% ships.** Under the ceiling is
+   under the ceiling. The gate re-runs on any future edit to either page,
+   which is the machinery's answer to a thin margin.
+
+**Verified by the strategy chat from its clone before these rulings:**
+- all thirty Q&A figures derive from the recorded steps. That covers both
+  feet renderings, both half-up minute cases and every leg split;
+- the three comparative claims hold against the table.
+
+#### Northeast Philadelphia is Somerton-primary, as ruled
+
+**The slug is `areas-served-collision-repair-northeast-philadelphia`,
+with no "-pa".** `CONTENT` carries an `origin` that every derived
+rendering reads:
+- **lead:** "about 9 minutes from Somerton";
+- **card intro:** "From Somerton, at the crossroads of Bustleton Avenue
+  and Byberry Road";
+- **chip:** "~9 min from Somerton";
+- **meta and `llms.txt`:** "minutes from Somerton";
+- **map corner label:** "Somerton".
+
+**The far side of the Northeast stays numberless**, in the opening and in
+its own question. **The title keeps ", PA"** and falls back to "|
+Tri-County" at exactly 60. **Nearby cards read "Northeast Philadelphia,
+PA"** like every other town; the special case the script carried is
+gone.
+
+**THE THIRD META FALLBACK.** "Northeast Philadelphia, PA drivers, about 9
+minutes from Somerton" overflows 160 even under 3.81's fallback. The next
+step drops "Directions," and keeps the free estimates and the phone
+(151). The reason is a comment in `meta_for`. It is an extension of the
+ruled rule and changes no other town's meta.
+
+#### THE CRUMB RULE (ruling 1), and the catch that raised it
+
+**THE CATCH.** At 360x640, Northeast Philadelphia's Call sat **52px under
+the call bar**. Two causes stacked:
+- **The lead wrapped to six lines.** The approved shortening took one
+  line back.
+- **The crumb wrapped to two.** "Home / Areas We Serve / Northeast
+  Philadelphia" needs 159px on its line where about 156 are left.
+
+**Why 3.60's ellipsis never fired.** Under `flex-wrap: wrap` the last
+crumb moves to a line of its own before it can shrink, so the ellipsis
+only ever clipped that second line. It never saved the first.
+
+**THE RULE, in `site.css`:**
+- `.crumb ol` is `flex-wrap: nowrap`;
+- every crumb holds its width (`flex-shrink: 0`);
+- the last one alone shrinks (`flex-shrink: 1`) and clips with an
+  ellipsis.
+
+The comment beside it names this record.
+
+**IT TOUCHES THE SIXTEEN POSTS, OUTSIDE THE BATCH BRIEF,** and that is
+said here plainly. Greg's ruling said fifteen, following my first report,
+which miscounted: `/adas-calibrations-after-a-crash/` is a post. **The
+measured list of what moved**, as layout hashes of every box on every
+page before and after the rule:
+
+```
+changed at 390 and 360    the 16 posts
+changed at 360 only       Northeast Philadelphia
+unchanged                 21 pages at every width, and every page at 1440
+```
+
+**Each post's crumb drops from 58px to 25px** at 360 and 390, with its
+title clipped at 224px and 254px. **On every post, the first line of the
+body moves 33px up.** Its margin to the call bar, before and after:
+
+```
+                                  390 banner   390 cutover   360 banner   360 cutover
+adas-calibrations-after-a-crash     68 -> 101    125 -> 158    10 ->  43    67 -> 100
+after-the-unthinkable-...          -33 ->   0     25 ->  58   -90 -> -57   -33 ->   0
+assessing-collision-damage          34 ->  67     91 -> 124   -23 ->  10    34 ->  67
+collision-repair-near-me-...        34 ->  67     91 -> 124   -51 -> -18     6 ->  39
+critical-questions-to-ask-...        1 ->  34     58 ->  91   -23 ->  10    34 ->  67
+deer-season-in-bucks-county-...     40 ->  73     97 -> 130   -18 ->  15    39 ->  72
+is-my-car-totaled-...               34 ->  67     91 -> 124   -23 ->  10    34 ->  67
+misconceptions-about-...           -33 ->   0     25 ->  58   -57 -> -24     1 ->  34
+preserving-value-...                 1 ->  34     58 ->  91   -51 -> -18     6 ->  39
+the-art-of-paintless-dent-repair    68 -> 101    125 -> 158    10 ->  43    67 -> 100
+the-importance-of-oem-parts-...      1 ->  34     58 ->  91   -23 ->  10    34 ->  67
+the-risks-of-driving-...            34 ->  67     91 -> 124   -23 ->  10    34 ->  67
+the-ultimate-guide-...               0 ->  33     57 ->  90   -24 ->   9    33 ->  66
+unveiling-the-hidden-benefits-...   68 -> 101    125 -> 158    10 ->  43    67 -> 100
+what-do-all-those-lights-...        34 ->  67     91 -> 124    10 ->  43    67 -> 100
+your-right-to-choose-a-body-shop    68 -> 101    125 -> 158    44 ->  77   101 -> 134
+```
+
+**At cutover, with the staging banner gone, every post's first line of
+body is now on screen at 360 and at 390**, `after-the-unthinkable` at 360
+with exactly 0px to spare. Before the rule, that one was cut by 33px.
+The banner-state negatives that remain are the staging banner's own
+height, as they always were.
+
+**ON FILE AS PICTURES, as ruled.** Four renders at 360x640, cutover
+state, are in the session scratchpad:
+- `c382_before_post.png` and `c382_after_post.png`,
+  `/your-right-to-choose-a-body-shop/`. Before, its crumb reads "Home /
+  Blog" on one line and "/ PA Law: Your Right to Choose a Body Shop
+  (An..." on a second. After, it is one line: "Home / Blog / PA Law: Your
+  Right to Choose a...".
+- `c382_before_nep.png` and `c382_after_nep.png`, Northeast
+  Philadelphia. Before, Call is cut by the call bar. After, the crumb
+  reads "Home / Areas We Serve / Northeast Philadelp..." and the whole
+  call row is on screen.
+
+**They are not committed:** a staging render is not a repo asset (3.44's
+precedent, `askrhythm.png`).
+
+**MEASURED IN A REAL RENDER, not projected:** **Northeast Philadelphia
+now clears the call bar by 13px at 360**, the same margin as the
+tightest pages in the tier. The projection was also 13.
+
+**MECHANISM.** `test-audit-checks.py` **section 32**, four checks, reads
+`site.css` with its comments stripped:
+- `.crumb ol` declares `nowrap`;
+- no rule anywhere lets `.crumb ol` wrap;
+- every crumb holds its width;
+- the last crumb alone shrinks and clips.
+
+**Mutation-proven twice:** restoring `wrap` fails two checks, and
+dropping the last crumb's `flex-shrink: 1` fails the fourth. `site.css`
+was restored byte for byte after each.
+
+#### THE THREE CHECKABLE LOCAL FACTS, per 3.62's rule 7
+
+1. **The municipality and county containing each corner,** by OSM
+   `is_in` (cache `isin_b23.json`, outside the repo):
+   - Hatboro borough;
+   - Horsham Township;
+   - Lower Moreland Township (Huntingdon Valley);
+   - Jenkintown borough;
+   - Upper Moreland Township (Willow Grove).
+
+   All five are in Montgomery County. **Somerton's corner is in the City
+   of Philadelphia, Philadelphia County,** inside OSM's admin_level 10
+   boundary named "Northeast Philadelphia".
+
+   **THE INDEPENDENT SECOND SOURCE IS PENDING** (ruling 3).
+2. **The crossroads**, as ruled in 3.78 and 3.79's corner rulings.
+3. **The route**, with its distance and time.
+
+**THREE COMPARATIVES, derived from `TOWN_ROUTES` and verified by the
+strategy chat:**
+- Jenkintown (7.8 mi) is the longest drive of the Montgomery County towns
+  served.
+- Hatboro (3.6 mi) is closer by road than Horsham (5.4).
+- Feasterville-Trevose (2.9 mi) is closer by road than Huntingdon Valley
+  (3.4).
+
+**No new owner question:** every service, warranty, insurer and
+ownership sentence renders a claim already vetted, in 3.62's wording or
+3.80's normalised warranty.
+
+#### The pages, every per-town sentence
+
+The steps, card intro and chip are derived. The openings and FAQs are
+new; all were approved by Greg's ruling 2, and each is a claim for the
+owner.
+
+##### Hatboro
+
+- **Title** (55): Collision Repair for Hatboro, PA | Tri-County Collision
+- **Meta** (152): Tri-County Collision in Southampton repairs cars for Hatboro, PA drivers, about 8 minutes away. Directions from Hatboro, free estimates, (215) 322-5350.
+- **Eyebrow:** Montgomery County, PA. **H1:** Collision Repair for Hatboro, PA
+- **Lead, first sentence (template, routed minutes):** Tri-County Collision is a family-owned body shop in Southampton, about 8 minutes from Hatboro.
+- **Card intro (derived, not counted by the gate):** From the crossroads of South York Road and Byberry Road, the drive is about 3.6 miles and takes about 8 minutes without traffic.
+  1. Head east on Byberry Road for about 1 mile.
+  2. Turn left onto Davisville Road and follow it for about 1 mile.
+  3. Turn right onto East County Line Road and follow it for about 1 mile.
+  4. Turn left onto James Way and follow it for about half a mile.
+  5. Turn right onto Jaymor Rd, and the shop is about 300 feet along, at 995 Jaymor Rd, Southampton, PA 18966.
+- **Chip:** ~8 min from Hatboro
+- **Nearby, derived:** Horsham, Willow Grove, Warminster, Huntingdon Valley, and the hub
+- **Opening, NEW (per-town):**
+  > Tri-County Collision isn't in Hatboro. The borough belongs to Montgomery County, while the shop sits in Upper Southampton Township, Bucks County, roughly 3.6 miles from York Road. Drivers from Horsham, Willow Grove, Warminster and Huntingdon Valley come to us too.
+
+  > York Road meets Byberry Road at the heart of Hatboro borough, and from that corner the shop is about 8 minutes away with the roads clear. Right after the crash, before anyone else touches the car, phone us.
+
+- **FAQ, NEW (per-town):**
+
+  - **Is Tri-County Collision in Hatboro?** Not in Hatboro itself. Tri-County Collision is at 995 Jaymor Rd, Southampton, PA 18966, in Bucks County, about 3.6 miles and 8 minutes from York Road and Byberry Road without traffic.
+  - **What is the drive from Hatboro like?** Five short legs: Byberry Road for about 1 mile, Davisville Road for about 1 mile, East County Line Road for about 1 mile, James Way for about half a mile, and Jaymor Rd for the last 300 feet or so.
+  - **Does it matter that Hatboro is in Montgomery County?** No. Crossing from Montgomery County into Bucks County changes nothing about the repair: the same certified technicians, and the same lifetime warranty on all repair work.
+  - **Can I pick Tri-County Collision if my insurer prefers another shop?** Yes. Under Pennsylvania law the decision about where your car is repaired is yours, whatever your insurer would prefer; the PA Law: Your Right to Choose a Body Shop post lays out the details.
+  - **Will Tri-County Collision talk to my insurance company for me?** Yes. Dealing with your insurer, paperwork and all, is part of the job at Tri-County Collision, and the shop works with all major insurance companies.
+
+##### Horsham
+
+- **Title** (55): Collision Repair for Horsham, PA | Tri-County Collision
+- **Meta** (153): Tri-County Collision in Southampton repairs cars for Horsham, PA drivers, about 11 minutes away. Directions from Horsham, free estimates, (215) 322-5350.
+- **Eyebrow:** Montgomery County, PA. **H1:** Collision Repair for Horsham, PA
+- **Lead, first sentence (template, routed minutes):** Tri-County Collision is a family-owned body shop in Southampton, about 11 minutes from Horsham.
+- **Card intro (derived, not counted by the gate):** From the crossroads of Easton Road and Horsham Road, the drive is about 5.4 miles and takes about 11 minutes without traffic.
+  1. Head east on Horsham Road for about a quarter mile.
+  2. Turn left onto Blair Mill Road and follow it for about 1 mile.
+  3. Turn right onto West County Line Road and follow it for about 3 miles.
+  4. Turn left onto James Way and follow it for about half a mile.
+  5. Turn right onto Jaymor Rd, and the shop is about 300 feet along, at 995 Jaymor Rd, Southampton, PA 18966.
+- **Chip:** ~11 min from Horsham
+- **Nearby, derived:** Hatboro, Willow Grove, Warminster, Huntingdon Valley, and the hub
+- **Opening, NEW (per-town):**
+  > From Horsham, Tri-County Collision is a Bucks County shop across the county boundary in Southampton, about 5.4 miles from Easton Road. It is not in Horsham, and this page won't suggest otherwise. Hatboro, Willow Grove, Warminster and Huntingdon Valley are on our list of towns, too.
+
+  > Easton Road meets Horsham Road in Horsham Township, Montgomery County, about 11 minutes from our shop on open roads. So when a crash leaves you with a damaged car, ring us before you commit it anywhere.
+
+- **FAQ, NEW (per-town):**
+
+  - **Is there a Tri-County Collision shop in Horsham?** Horsham has none. The shop is at 995 Jaymor Rd, Southampton, PA 18966, about 5.4 miles and 11 minutes from Easton Road and Horsham Road without traffic.
+  - **How do I drive from Horsham to the shop?** Most of the trip is West County Line Road, about 3 miles of it. You reach it by Horsham Road and Blair Mill Road, and you leave it for James Way and then Jaymor Rd, where the shop is.
+  - **Can Tri-County Collision repair a work truck from Horsham?** It can. Alongside cars, Tri-County Collision takes on work vehicles and fleets; its commercial collision repair page explains how.
+  - **What if something isn't right after the repair?** Tri-County Collision stands behind the work with a lifetime warranty on all repair work: if anything isn't right, the shop will make it right.
+  - **Is Horsham farther from the shop than Hatboro?** A little. Hatboro is the closer of the two by road; from Horsham's crossroads the drive is about 5.4 miles and 11 minutes without traffic.
+
+##### Huntingdon Valley
+
+- **Title** (55): Collision Repair for Huntingdon Valley, PA | Tri-County
+- **Meta** (149): Tri-County Collision in Southampton repairs cars for Huntingdon Valley, PA drivers, about 8 minutes away. Directions, free estimates, (215) 322-5350.
+- **Eyebrow:** Montgomery County, PA. **H1:** Collision Repair for Huntingdon Valley, PA
+- **Lead, first sentence (template, routed minutes):** Tri-County Collision is a family-owned body shop in Southampton, about 8 minutes from Huntingdon Valley.
+- **Card intro (derived, not counted by the gate):** From the crossroads of Huntingdon Pike and Wynkoop Avenue, the drive is about 3.4 miles and takes about 8 minutes without traffic.
+  1. Head northeast on Huntingdon Pike (PA 232) for about 3 miles.
+  2. Turn left onto Jaymor Rd, and the shop is about a quarter mile along, at 995 Jaymor Rd, Southampton, PA 18966.
+- **Chip:** ~8 min from Huntingdon Valley
+- **Nearby, derived:** Northeast Philadelphia, Willow Grove, Feasterville-Trevose, Jenkintown, and the hub
+- **Opening, NEW (per-town):**
+  > Huntingdon Valley is a short trip to Tri-County Collision, but it's still a trip: the shop is in Southampton, over the Bucks County line, not in Huntingdon Valley. From Wynkoop Avenue it is about 3.4 miles away. We repair cars for drivers from Northeast Philadelphia, Willow Grove, Feasterville-Trevose and Jenkintown too.
+
+  > Huntingdon Pike (PA 232) crosses Wynkoop Avenue in Lower Moreland Township, Montgomery County, and that crossroads is about 8 minutes from us on empty roads. If you've had an accident, give us a call first and keep your options open.
+
+- **FAQ, NEW (per-town):**
+
+  - **Is Tri-County Collision located in Huntingdon Valley?** It is not. Tri-County Collision's address is 995 Jaymor Rd, Southampton, PA 18966, about 3.4 miles and 8 minutes from Huntingdon Pike and Wynkoop Avenue without traffic.
+  - **What road do I take from Huntingdon Valley?** Huntingdon Pike (PA 232) carries you about 3 miles toward Southampton, changing its name to 2nd Street Pike on the way, and a left onto Jaymor Rd leaves about a quarter mile to the shop.
+  - **Does Tri-County Collision fix dents without repainting?** Yes. Paintless dent repair fixes door dings and hail dents without repainting, and the paintless dent repair page explains when it works.
+  - **Is Huntingdon Valley the closest town to the shop?** Not quite. By road, Feasterville-Trevose is closer. From Huntingdon Pike and Wynkoop Avenue the drive is still one of the shortest of any town on the shop's Areas We Serve page.
+  - **Do I pay for an estimate?** You don't: Tri-County Collision's estimates cost nothing and come with no obligation.
+
+##### Jenkintown
+
+- **Title** (58): Collision Repair for Jenkintown, PA | Tri-County Collision
+- **Meta** (159): Tri-County Collision in Southampton repairs cars for Jenkintown, PA drivers, about 17 minutes away. Directions from Jenkintown, free estimates, (215) 322-5350.
+- **Eyebrow:** Montgomery County, PA. **H1:** Collision Repair for Jenkintown, PA
+- **Lead, first sentence (template, routed minutes):** Tri-County Collision is a family-owned body shop in Southampton, about 17 minutes from Jenkintown.
+- **Card intro (derived, not counted by the gate):** From the crossroads of Old York Road and West Avenue, the drive is about 7.8 miles and takes about 17 minutes without traffic.
+  1. Head east on West Avenue for about a quarter mile.
+  2. Turn right onto Newbold Road and follow it for about 200 feet.
+  3. Turn left onto Washington Lane and follow it for about 1 mile.
+  4. Turn left onto Susquehanna Road and follow it for about 400 feet.
+  5. Turn right onto Valley Road and follow it for about 2 miles.
+  6. Turn right onto Welsh Road (PA 63) and follow it for about 1 mile.
+  7. Turn left onto Huntingdon Pike (PA 232) and follow it for about 3 miles.
+  8. Turn left onto Jaymor Rd, and the shop is about a quarter mile along, at 995 Jaymor Rd, Southampton, PA 18966.
+- **Chip:** ~17 min from Jenkintown
+- **Nearby, derived:** Willow Grove, Huntingdon Valley, Hatboro, Horsham, and the hub
+- **Opening, NEW (per-town):**
+  > Jenkintown is the longest drive of any Montgomery County town we serve, and we'd rather you hear it from us. Tri-County Collision is in Southampton, Bucks County, not Jenkintown, about 7.8 miles from Old York Road. Willow Grove, Huntingdon Valley, Hatboro and Horsham drivers make the trip as well.
+
+  > Old York Road meets West Avenue in Jenkintown borough, Montgomery County. With no traffic, that corner is about 17 minutes from the shop. Whatever happened to the car, a call to us before anything else is the right start.
+
+- **FAQ, NEW (per-town):**
+
+  - **Why would a Jenkintown driver go to Southampton?** Tri-County Collision is not in Jenkintown; it is about 7.8 miles and 17 minutes away, without traffic, at 995 Jaymor Rd, Southampton, PA 18966. The drive is longer than a trip to a closer shop, and the proof section on this page sets out what it buys.
+  - **Is there a straight road from Jenkintown?** No single road runs straight through. The route winds out of Jenkintown on West Avenue, Newbold Road, Washington Lane and Susquehanna Road, then takes Valley Road for about 2 miles, Welsh Road (PA 63) for about 1 mile and Huntingdon Pike (PA 232) for about 3 miles, and ends on Jaymor Rd at the shop.
+  - **Does Tri-County Collision fix auto glass?** It does: windshields, side windows and rear windows. The auto glass repair page has the details.
+  - **Is the drive shorter from other parts of Jenkintown?** It can be longer or shorter. The time on this page, about 17 minutes without traffic, starts at Old York Road and West Avenue in the borough.
+  - **Will I have to deal with the insurance company myself?** No. Tri-County Collision takes on the paperwork and the conversations with your insurer, and it works with all major insurance companies.
+
+##### Willow Grove
+
+- **Title** (60): Collision Repair for Willow Grove, PA | Tri-County Collision
+- **Meta** (145): Tri-County Collision in Southampton repairs cars for Willow Grove, PA drivers, about 11 minutes away. Directions, free estimates, (215) 322-5350.
+- **Eyebrow:** Montgomery County, PA. **H1:** Collision Repair for Willow Grove, PA
+- **Lead, first sentence (template, routed minutes):** Tri-County Collision is a family-owned body shop in Southampton, about 11 minutes from Willow Grove.
+- **Card intro (derived, not counted by the gate):** From the crossroads of Easton Road and York Road, the drive is about 4.6 miles and takes about 11 minutes without traffic.
+  1. Head southeast on York Road (PA 611) for about 400 feet.
+  2. Turn left onto Davisville Road and follow it for about 3 miles.
+  3. Turn right onto East County Line Road and follow it for about 1 mile.
+  4. Turn left onto James Way and follow it for about half a mile.
+  5. Turn right onto Jaymor Rd, and the shop is about 300 feet along, at 995 Jaymor Rd, Southampton, PA 18966.
+- **Chip:** ~11 min from Willow Grove
+- **Nearby, derived:** Hatboro, Horsham, Huntingdon Valley, Jenkintown, and the hub
+- **Opening, NEW (per-town):**
+  > Willow Grove is in Montgomery County; Tri-County Collision is a short hop into the next county, in Southampton, about 4.6 miles from the Easton Road junction. The shop isn't in Willow Grove, and it has customers in Hatboro, Horsham, Huntingdon Valley and Jenkintown too.
+
+  > Easton Road and York Road come together in Upper Moreland Township, and from that junction the shop is about 11 minutes away on quiet roads. Before a body shop is chosen for you, choose to call us.
+
+- **FAQ, NEW (per-town):**
+
+  - **Does Tri-County Collision have a Willow Grove location?** No. Its shop is at 995 Jaymor Rd, Southampton, PA 18966, about 4.6 miles and 11 minutes from Easton Road and York Road without traffic.
+  - **Which road does most of the work from Willow Grove?** Davisville Road. You spend only about 400 feet on York Road (PA 611) before turning onto it, and it then carries you about 3 miles, most of the trip. East County Line Road, James Way and Jaymor Rd finish it off.
+  - **Does Tri-County Collision repair major collision damage?** Yes: minor and major damage alike, backed by a lifetime warranty on all repair work. See the collision repair page for how a repair goes, from the first look to the finished car.
+  - **How long is the drive in traffic?** Longer than the figure on this page. That figure, about 11 minutes, is a routing on empty roads from Easton Road and York Road, so rush hour around the junction will stretch it.
+  - **Who owns Tri-County Collision?** A family. Tri-County Collision is family owned and operated, and the business runs from its shop on Jaymor Rd in Southampton, Bucks County.
+
+##### Northeast Philadelphia
+
+- **Title** (60): Collision Repair for Northeast Philadelphia, PA | Tri-County
+- **Meta** (151): Tri-County Collision in Southampton repairs cars for Northeast Philadelphia, PA drivers, about 9 minutes from Somerton. Free estimates, (215) 322-5350.
+- **Eyebrow:** Philadelphia, PA. **H1:** Collision Repair for Northeast Philadelphia, PA
+- **Lead, first sentence (template, routed minutes):** Tri-County Collision is a family-owned body shop in Southampton, about 9 minutes from Somerton.
+- **Card intro (derived, not counted by the gate):** From Somerton, at the crossroads of Bustleton Avenue and Byberry Road, the drive is about 4.4 miles and takes about 9 minutes without traffic.
+  1. Head northwest on Byberry Road for about 3 miles.
+  2. Turn right onto Huntingdon Pike (PA 232) and follow it for about 1 mile.
+  3. Turn left onto Jaymor Rd, and the shop is about a quarter mile along, at 995 Jaymor Rd, Southampton, PA 18966.
+- **Chip:** ~9 min from Somerton
+- **Nearby, derived:** Feasterville-Trevose, Huntingdon Valley, Bensalem, Willow Grove, and the hub
+- **Opening, NEW (per-town):**
+  > Tri-County Collision is in Southampton, Bucks County, not in Northeast Philadelphia, and the Somerton end of the Northeast is close: about 4.4 miles away. The far side of the Northeast runs longer. We also repair cars for drivers from Feasterville-Trevose, Huntingdon Valley, Bensalem and Willow Grove.
+
+  > In Somerton, Bustleton Avenue meets Byberry Road inside the City of Philadelphia, and from that corner we're about 9 minutes away without traffic. Crashed in the city? Call us, then decide where the car goes.
+
+- **FAQ, NEW (per-town):**
+
+  - **Is Tri-County Collision in Northeast Philadelphia?** No. The shop is in Southampton, Bucks County, at 995 Jaymor Rd, Southampton, PA 18966: about 4.4 miles and 9 minutes from Bustleton Avenue and Byberry Road in Somerton, without traffic.
+  - **How do I get from Somerton to the shop?** From Bustleton Avenue, follow Byberry Road for about 3 miles, turn right onto Huntingdon Pike (PA 232) for about 1 mile, where it becomes 2nd Street Pike, then turn left onto Jaymor Rd; the shop is about a quarter mile along.
+  - **What about the rest of the Northeast?** This page times the drive from Somerton. The far side of the Northeast runs longer, so allow extra time if you're starting deeper in the city.
+  - **Can a Philadelphia driver choose a shop outside the city?** Yes. Pennsylvania law lets you choose your collision shop, wherever it is, and your insurer cannot require its own preferred one. Our PA Law: Your Right to Choose a Body Shop post explains it.
+  - **Will my car be cleaned before I pick it up?** Every repaired vehicle at Tri-County Collision is detailed inside and out before it goes back to its owner.
+
+#### The variance gate, 78 pairs across 13 pages
+
+**No shared substantive H2.** Worst ten:
+
+```
+29.2%  Huntingdon Valley / Richboro          27.7%  Hatboro / Warminster
+28.2%  Feasterville-Trevose / Huntingdon V.  27.7%  Feasterville-Trevose / Warminster
+28.0%  Horsham / Willow Grove                27.5%  Bensalem / Jamison
+28.0%  Bensalem / Horsham                    27.3%  Horsham / Warminster
+27.9%  Hatboro / Richboro                    27.2%  Feasterville-Trevose / Richboro
+```
+
+**Each page's maximum:**
+
+```
+Bensalem 28.0   Feasterville-Trevose 28.2   Hatboro 27.9   Horsham 28.0
+Huntingdon Valley 29.2   Jamison 27.5   Jenkintown 26.5   Langhorne 24.5
+Northeast Philadelphia 26.3   Richboro 29.2   Warminster 27.7
+Willow Grove 28.0   hub 16.9
+```
+
+**How the pages got there.** Two pairs were over the ceiling as first
+written, and both were caught by the gate before anything shipped:
+- Horsham / Willow Grove at 34.1%;
+- Hatboro / Richboro at 31.4%.
+
+**The cause was my own phrasing, reused across towns:**
+- "bring us their cars as well";
+- "over the line";
+- Richboro's "damage is done / your first call";
+- "choice of collision shop";
+- a repeated "ASE and I-CAR" sentence.
+
+**The fix was to reword, and to enrich Willow Grove, the smallest
+page.** Nothing new was asserted. Northeast Philadelphia's shortened
+lead moved its maximum from 26.5 to 26.3.
+
+#### The maps
+
+**Frames are derived, as in 3.81.** Every map was drawn under the node
+gate, and every label is a road the recorded routing drives.
+
+```
+Hatboro                  360x240 at 16.5 m/unit   44 ways on route   none (below)
+Horsham                  360x240 at 23.0 m/unit   52 ways on route   none: every run under the 150-unit minimum
+Huntingdon Valley        360x480 at 12.5 m/unit   21 ways on route   Huntingdon Pike, PA 232
+Jenkintown               360x420 at 23.5 m/unit   56 ways on route   Huntingdon Pike, Valley Rd, PA 232
+Willow Grove             360x240 at 19.5 m/unit   51 ways on route   Davisville Rd
+Northeast Philadelphia   360x460 at 13.0 m/unit   17 ways on route   Byberry Rd, PA 232; corner label "Somerton"
+```
+
+**Hatboro ships label-free, and not only for length.** Its three short
+roads fall under the minimum. Its two longer runs, Byberry Road and
+Davisville Road, collide at every place with the pin's and the corner's
+names, which the placement search ranks above road names.
+
+**The 3.81 rule covers both cases:** where labels do not fit, the
+numbered steps carry every name. **The minimum did not change.**
+
+**Jenkintown, pre-answered by the Langhorne ruling, did label:** two of
+its roads have runs over the minimum.
+
+**AN OBSERVATION FOR GREG, not a regression and not fixed here.** The pin
+and corner names are placed right or left, clear of other labels, but
+the search never tests them against the route line itself. So on four
+maps the route runs behind a name:
+- behind "Tri-County Collision" on Hatboro, Horsham and Willow Grove;
+- behind "Jenkintown" at its start.
+
+The names carry the map's halo and read cleanly. **Langhorne's shipped
+map already shows the same thing at its corner.** A route-aware place
+for the two names is a change to the map script, and it is Greg's call.
+
+**Northeast Philadelphia's map redrew byte-identical** after the lead
+change. Its drawing log matches the first build line for line.
+
+#### Everything else, measured
+
+**The fold, where Call clears the call bar**, every town page, after the
+crumb rule:
+
+```
+                          390x664   360x640
+Hatboro                      78        54
+Horsham                      78        54
+Huntingdon Valley            37        13
+Jenkintown                   37        13
+Willow Grove                 37        13
+Northeast Philadelphia       37        13     (was -52 as first built)
+Bensalem                     78        13
+Feasterville-Trevose         37        13
+Langhorne                    78        13
+Richboro                     78        54
+Warminster                   37        13
+Jamison                      78        54
+```
+
+Every other page's layout hash is unchanged at 360, 390 and 1440, so its
+3.81 fold stands. The posts are above.
+- **Horizontal scroll:** none at 360, 390 or 1440 on any town page.
+- **The ask rhythm at 390:** eight asks on every town page. The longest
+  run is **2,170** (Jenkintown, where the directions card's eight steps
+  sit), under the 2,684 ceiling. Every other page is at 1,998 or under.
+- **Rendered and inspected at 1440 and 390:** all six directions cards,
+  with maps, steps, kit and chip. Northeast Philadelphia's H2 wraps to two
+  lines at 1440; nothing else is new.
+- **The hub rebuilt by `migrate-hub.py`:** its six remaining pending
+  names became links, and that is its only change. **No live pending
+  link remains anywhere on the site;** the phrase survives only in
+  comments.
+- **The layout sweep against 3.81's baseline** changes only:
+  - the hub;
+  - the nearby-card links on Bensalem, Feasterville-Trevose, Langhorne,
+    Warminster and Jamison;
+  - the six new pages;
+  - then, under ruling 1, the sixteen posts and Northeast Philadelphia.
+
+  **Richboro is unchanged:** every town its cards name already had a
+  page.
+
+#### Tests
+
+**Section 31's check that the pending inventory was populated** stopped
+being true the day every page existed. It was replaced by two checks,
+both mutation-proven:
+- **A fixture proves `find_pending_links` still finds a pending link.**
+  It fails when the function is made to return nothing.
+- **Every `TOWN_ROUTES` key must be linked from the hub.** It fails when
+  one hub link is reverted to a span.
+
+**Section 32 is the crumb rule**, above.
+
+#### Catches, not corrections: the checks did their job before anything shipped
+
+- **Jenkintown's route answer ended "...on Jaymor Rd."** The NAP check
+  read it as the street spelled with a period and failed the page. It now
+  ends "at the shop."
+- **The two variance pairs over the ceiling**, above.
+- **Northeast Philadelphia's fold at 360**, above, which raised ruling 1.
+- **My own miscount:** the posts the crumb rule touches are sixteen, not
+  fifteen.
+
+#### The suite, and THE NEW EXPECTED LINE
+
+- Both test scripts pass: **309 checks**, where there were 304. That is
+  section 31's replacement (one check became two) and section 32's four.
+- `stamp-assets.py --check`, `build-sitemap.py --check` (36 pages) and
+  `sync-area-served.py --check` all exit 0.
+- `STAGING=1 audit.py --strict`: **15 pages at 95, 21 at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 833 passing.** The six new
+  towns score 96.
+- No em dash and no banned digits in `docs/` or the templates, and none
+  added anywhere. `llms.txt` gains the six entries, derived.
+
 ---
 
 ## 4. The claims list

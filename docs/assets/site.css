@@ -1973,7 +1973,8 @@ section > .wrap > .cta-row:last-child { justify-content: center; }
 
 /* ---------- Breadcrumb ---------- */
 .crumb { margin: 0 0 22px; font-size: .95rem; }
-.crumb ol { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; color: var(--ink-2); }
+.crumb ol { display: flex; flex-wrap: nowrap; gap: 8px; list-style: none; margin: 0; padding: 0; color: var(--ink-2); }
+.crumb li { flex-shrink: 0; }
 .crumb li + li::before { content: "/"; margin-right: 8px; color: var(--rule); }
 /* THE LAST CRUMB IS ONE LINE, added 2026-09-28, proposed-changes.md 3.60,
    on Greg's ruling that the first screen of a post is paid for in the
@@ -1988,8 +1989,17 @@ section > .wrap > .cta-row:last-child { justify-content: center; }
 
    ONE RULE AT EVERY WIDTH. At 1440 no crumb on the site is long enough to
    trigger it, measured, and on a phone it fires only on the posts whose
-   title wrapped: 25px back on each. */
-.crumb li:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+   title wrapped: 25px back on each.
+
+   CRUMBS NEVER WRAP, added 2026-09-29, proposed-changes.md 3.82, on
+   Greg's ruling. Under flex-wrap the last crumb moved to a line of its own
+   before it could shrink, so the ellipsis above only ever clipped a second
+   line and never saved the first. With nowrap, every crumb but the last
+   holds its width and the last one alone shrinks into what is left: one
+   line, always. It took Northeast Philadelphia's call row back above the
+   call bar at 360, and it gives each of the sixteen posts a line back at
+   360 and 390. Measured: nothing else on the site moved. */
+.crumb li:last-child { flex-shrink: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ---------- Sections ---------- */
 .sec-head { max-width: 840px; margin: 0 auto var(--sec-gap); text-align: center; }

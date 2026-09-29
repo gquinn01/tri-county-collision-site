@@ -68,6 +68,11 @@ PHONE = '<a href="tel:+12153225350">(215) 322-5350</a>'
 RIGHT_TO_CHOOSE = '<a href="../your-right-to-choose-a-body-shop/">your right to choose a body shop</a>'
 # The same post by its other name: its title is "PA Law: Your Right to Choose
 # a Body Shop (Anti-Steering)", so this anchor text is the post's own words.
+RIGHT_TO_CHOOSE_TITLE = '<a href="../your-right-to-choose-a-body-shop/">PA Law: Your Right to Choose a Body Shop</a>'
+COLLISION_LINK = '<a href="../collision-repair/">collision repair</a>'
+COMMERCIAL_LINK = '<a href="../commercial-collision-repair/">commercial collision repair</a>'
+PDR_LINK = '<a href="../paintless-dent-repair/">paintless dent repair</a>'
+GLASS_LINK = '<a href="../auto-glass-repair-replacement/">auto glass repair</a>'
 RIGHT_TO_CHOOSE_STEERING = '<a href="../your-right-to-choose-a-body-shop/">Pennsylvania\'s anti-steering rules</a>'
 TITLE_MAX, META_MAX = 60, 160
 
@@ -281,6 +286,187 @@ CONTENT = {
              "and James Way and Jaymor Rd after it are shorter still."),
         ],
     },
+    "hatboro-pa": {
+        "name": "Hatboro", "county": "montgomery", "modified": "2026-09-29",
+        "opening": [
+            "Tri-County Collision isn't in Hatboro. The borough belongs to Montgomery County, while the "
+            "shop sits in Upper Southampton Township, Bucks County, roughly {mi1} miles from York Road. "
+            "Drivers from Horsham, Willow Grove, Warminster and Huntingdon Valley come to us too.",
+            "York Road meets Byberry Road at the heart of Hatboro borough, and from that corner the shop "
+            "is about {min} minutes away with the roads clear. Right after the crash, before anyone else "
+            "touches the car, phone us.",
+        ],
+        "faq": [
+            ("Is Tri-County Collision in Hatboro?",
+             "Not in Hatboro itself. Tri-County Collision is at 995 Jaymor Rd, Southampton, PA 18966, in "
+             "Bucks County, about {mi1} miles and {min} minutes from York Road and Byberry Road without "
+             "traffic."),
+            ("What is the drive from Hatboro like?",
+             "Five short legs: Byberry Road for about {d1}, Davisville Road for about {d2}, East County "
+             "Line Road for about {d3}, James Way for about {d4}, and Jaymor Rd for the last {d5} or "
+             "so."),
+            ("Does it matter that Hatboro is in Montgomery County?",
+             "No. Crossing from Montgomery County into Bucks County changes nothing about the repair: the "
+             "same certified technicians, and the same lifetime warranty on all repair work."),
+            ("Can I pick Tri-County Collision if my insurer prefers another shop?",
+             "Yes. Under Pennsylvania law the decision about where your car is repaired is yours, "
+             "whatever your insurer would prefer; the {rtc_title} post lays out the details."),
+            ("Will Tri-County Collision talk to my insurance company for me?",
+             "Yes. Dealing with your insurer, paperwork and all, is part of the job at Tri-County "
+             "Collision, and the shop works with all major insurance companies."),
+        ],
+    },
+    "horsham-pa": {
+        "name": "Horsham", "county": "montgomery", "modified": "2026-09-29",
+        "opening": [
+            "From Horsham, Tri-County Collision is a Bucks County shop across the county boundary in "
+            "Southampton, about {mi1} miles from Easton Road. It is not in Horsham, and this page won't "
+            "suggest otherwise. Hatboro, Willow Grove, Warminster and Huntingdon Valley are on our list "
+            "of towns, too.",
+            "Easton Road meets Horsham Road in Horsham Township, Montgomery County, about {min} minutes "
+            "from our shop on open roads. So when a crash leaves you with a damaged car, ring us before "
+            "you commit it anywhere.",
+        ],
+        "faq": [
+            ("Is there a Tri-County Collision shop in Horsham?",
+             "Horsham has none. The shop is at 995 Jaymor Rd, Southampton, PA 18966, about {mi1} miles and "
+             "{min} minutes from Easton Road and Horsham Road without traffic."),
+            ("How do I drive from Horsham to the shop?",
+             "Most of the trip is West County Line Road, about {d3} of it. You reach it by Horsham Road "
+             "and Blair Mill Road, and you leave it for James Way and then Jaymor Rd, where the shop is."),
+            ("Can Tri-County Collision repair a work truck from Horsham?",
+             "It can. Alongside cars, Tri-County Collision takes on work vehicles and fleets; its "
+             "{commercial} page explains how."),
+            ("What if something isn't right after the repair?",
+             "Tri-County Collision stands behind the work with a lifetime warranty on all repair work: if "
+             "anything isn't right, the shop will make it right."),
+            ("Is Horsham farther from the shop than Hatboro?",
+             "A little. Hatboro is the closer of the two by road; from Horsham's crossroads the drive is "
+             "about {mi1} miles and {min} minutes without traffic."),
+        ],
+    },
+    "huntingdon-valley-pa": {
+        "name": "Huntingdon Valley", "county": "montgomery", "modified": "2026-09-29",
+        "opening": [
+            "Huntingdon Valley is a short trip to Tri-County Collision, but it's still a trip: the shop is "
+            "in Southampton, over the Bucks County line, not in Huntingdon Valley. From Wynkoop Avenue it "
+            "is about {mi1} miles away. We repair cars for drivers from Northeast Philadelphia, Willow "
+            "Grove, Feasterville-Trevose and Jenkintown too.",
+            "Huntingdon Pike (PA 232) crosses Wynkoop Avenue in Lower Moreland Township, Montgomery "
+            "County, and that crossroads is about {min} minutes from us on empty roads. If you've had an "
+            "accident, give us a call first and keep your options open.",
+        ],
+        "faq": [
+            ("Is Tri-County Collision located in Huntingdon Valley?",
+             "It is not. Tri-County Collision's address is 995 Jaymor Rd, Southampton, PA 18966, about "
+             "{mi1} miles and {min} minutes from Huntingdon Pike and Wynkoop Avenue without traffic."),
+            ("What road do I take from Huntingdon Valley?",
+             "Huntingdon Pike (PA 232) carries you about {d1} toward Southampton, changing its name to "
+             "2nd Street Pike on the way, and a left onto Jaymor Rd leaves about {d2} to the shop."),
+            ("Does Tri-County Collision fix dents without repainting?",
+             "Yes. Paintless dent repair fixes door dings and hail dents without repainting, and the "
+             "{pdr} page explains when it works."),
+            ("Is Huntingdon Valley the closest town to the shop?",
+             "Not quite. By road, Feasterville-Trevose is closer. From Huntingdon Pike and Wynkoop Avenue "
+             "the drive is still one of the shortest of any town on the shop's Areas We Serve page."),
+            ("Do I pay for an estimate?",
+             "You don't: Tri-County Collision's estimates cost nothing and come with no obligation."),
+        ],
+    },
+    "jenkintown-pa": {
+        "name": "Jenkintown", "county": "montgomery", "modified": "2026-09-29",
+        "opening": [
+            "Jenkintown is the longest drive of any Montgomery County town we serve, and we'd rather you "
+            "hear it from us. Tri-County Collision is in Southampton, Bucks County, not Jenkintown, about "
+            "{mi1} miles from Old York Road. Willow Grove, Huntingdon Valley, Hatboro and Horsham drivers "
+            "make the trip as well.",
+            "Old York Road meets West Avenue in Jenkintown borough, Montgomery County. With no traffic, "
+            "that corner is about {min} minutes from the shop. Whatever happened to the car, a call to us "
+            "before anything else is the right start.",
+        ],
+        "faq": [
+            ("Why would a Jenkintown driver go to Southampton?",
+             "Tri-County Collision is not in Jenkintown; it is about {mi1} miles and {min} minutes away, "
+             "without traffic, at 995 Jaymor Rd, Southampton, PA 18966. The drive is longer than a trip "
+             "to a closer shop, and the proof section on this page sets out what it buys."),
+            ("Is there a straight road from Jenkintown?",
+             "No single road runs straight through. The route winds out of Jenkintown on West Avenue, "
+             "Newbold Road, Washington Lane and Susquehanna Road, then takes Valley Road for about {d5}, "
+             "Welsh Road (PA 63) for about {d6} and Huntingdon Pike (PA 232) for about {d7}, and ends on "
+             "Jaymor Rd at the shop."),
+            ("Does Tri-County Collision fix auto glass?",
+             "It does: windshields, side windows and rear windows. The {glass} page has the details."),
+            ("Is the drive shorter from other parts of Jenkintown?",
+             "It can be longer or shorter. The time on this page, about {min} minutes without traffic, "
+             "starts at Old York Road and West Avenue in the borough."),
+            ("Will I have to deal with the insurance company myself?",
+             "No. Tri-County Collision takes on the paperwork and the conversations with your insurer, and "
+             "it works with all major insurance companies."),
+        ],
+    },
+    "willow-grove-pa": {
+        "name": "Willow Grove", "county": "montgomery", "modified": "2026-09-29",
+        "opening": [
+            "Willow Grove is in Montgomery County; Tri-County Collision is a short hop into the next "
+            "county, in Southampton, about {mi1} miles from the Easton Road junction. The shop isn't in "
+            "Willow Grove, and it has customers in Hatboro, Horsham, Huntingdon Valley and Jenkintown "
+            "too.",
+            "Easton Road and York Road come together in Upper Moreland Township, and from that junction "
+            "the shop is about {min} minutes away on quiet roads. Before a body shop is chosen for you, "
+            "choose to call us.",
+        ],
+        "faq": [
+            ("Does Tri-County Collision have a Willow Grove location?",
+             "No. Its shop is at 995 Jaymor Rd, Southampton, PA 18966, about {mi1} miles and {min} minutes "
+             "from Easton Road and York Road without traffic."),
+            ("Which road does most of the work from Willow Grove?",
+             "Davisville Road. You spend only about {d1} on York Road (PA 611) before turning onto it, "
+             "and it then carries you about {d2}, most of the trip. East County Line Road, James Way and "
+             "Jaymor Rd finish it off."),
+            ("Does Tri-County Collision repair major collision damage?",
+             "Yes: minor and major damage alike, backed by a lifetime warranty on all repair work. See "
+             "the {collision} page for how a repair goes, from the first look to the finished car."),
+            ("How long is the drive in traffic?",
+             "Longer than the figure on this page. That figure, about {min} minutes, is a routing on "
+             "empty roads from Easton Road and York Road, so rush hour around the junction will stretch "
+             "it."),
+            ("Who owns Tri-County Collision?",
+             "A family. Tri-County Collision is family owned and operated, and the business runs from "
+             "its shop on Jaymor Rd in Southampton, Bucks County."),
+        ],
+    },
+    "northeast-philadelphia": {
+        "name": "Northeast Philadelphia", "origin": "Somerton", "county": "philadelphia",
+        "modified": "2026-09-29",
+        "opening": [
+            "Tri-County Collision is in Southampton, Bucks County, not in Northeast Philadelphia, and the "
+            "Somerton end of the Northeast is close: about {mi1} miles away. The far side of the "
+            "Northeast runs longer. We also repair cars for drivers from Feasterville-Trevose, Huntingdon "
+            "Valley, Bensalem and Willow Grove.",
+            "In Somerton, Bustleton Avenue meets Byberry Road inside the City of Philadelphia, and from "
+            "that corner we're about {min} minutes away without traffic. Crashed in the city? Call us, "
+            "then decide where the car goes.",
+        ],
+        "faq": [
+            ("Is Tri-County Collision in Northeast Philadelphia?",
+             "No. The shop is in Southampton, Bucks County, at 995 Jaymor Rd, Southampton, PA 18966: about "
+             "{mi1} miles and {min} minutes from Bustleton Avenue and Byberry Road in Somerton, without "
+             "traffic."),
+            ("How do I get from Somerton to the shop?",
+             "From Bustleton Avenue, follow Byberry Road for about {d1}, turn right onto Huntingdon Pike "
+             "(PA 232) for about {d2}, where it becomes 2nd Street Pike, then turn left onto Jaymor Rd; the "
+             "shop is about {d3} along."),
+            ("What about the rest of the Northeast?",
+             "This page times the drive from Somerton. The far side of the Northeast runs longer, so allow "
+             "extra time if you're starting deeper in the city."),
+            ("Can a Philadelphia driver choose a shop outside the city?",
+             "Yes. Pennsylvania law lets you choose your collision shop, wherever it is, and your insurer "
+             "cannot require its own preferred one. Our {rtc_title} post explains it."),
+            ("Will my car be cleaned before I pick it up?",
+             "Every repaired vehicle at Tri-County Collision is detailed inside and out before it goes back "
+             "to its owner."),
+        ],
+    },
 }
 COUNTY = {"bucks": ("Bucks County, PA", "#area-bucks-county"),
           "montgomery": ("Montgomery County, PA", "#area-montgomery-county"),
@@ -316,12 +502,19 @@ def title_for(name: str) -> str:
     return t
 
 
-def meta_for(name: str, r) -> str:
+def meta_for(name: str, r, origin: str = None) -> str:
+    away = f"minutes from {origin}" if origin else "minutes away"
     m = (f"Tri-County Collision in Southampton repairs cars for {name}, PA drivers, about {mins(r)} "
-         f"minutes away. Directions from {name}, free estimates, (215) 322-5350.")
+         f"{away}. Directions from {name}, free estimates, (215) 322-5350.")
     if len(m) > META_MAX:
         m = (f"Tri-County Collision in Southampton repairs cars for {name}, PA drivers, about {mins(r)} "
-             f"minutes away. Directions, free estimates, (215) 322-5350.")
+             f"{away}. Directions, free estimates, (215) 322-5350.")
+    if len(m) > META_MAX:
+        # 3.82: a long name with an origin (Northeast Philadelphia, from
+        # Somerton) overflows even that; the next step drops "Directions,"
+        # and keeps the estimates line and the phone.
+        m = (f"Tri-County Collision in Southampton repairs cars for {name}, PA drivers, about {mins(r)} "
+             f"{away}. Free estimates, (215) 322-5350.")
     if len(m) > META_MAX:
         raise SystemExit(f"FAILED: no meta pattern fits 160 for {name}")
     return m
@@ -395,7 +588,9 @@ def default_styles(steps):
 
 def fmt_ctx(r):
     ctx = {"min": mins(r), "mi": miles_whole(r), "mi1": f"{round(r['miles'], 1):g}",
-           "phone": PHONE, "rtc": RIGHT_TO_CHOOSE, "rtc_steer": RIGHT_TO_CHOOSE_STEERING}
+           "phone": PHONE, "rtc": RIGHT_TO_CHOOSE, "rtc_steer": RIGHT_TO_CHOOSE_STEERING,
+           "rtc_title": RIGHT_TO_CHOOSE_TITLE, "collision": COLLISION_LINK, "commercial": COMMERCIAL_LINK,
+           "pdr": PDR_LINK, "glass": GLASS_LINK}
     for i, s in enumerate(r["steps"], 1):
         ctx[f"d{i}"] = audit.step_miles_phrase(s[4])
     return ctx
@@ -410,10 +605,11 @@ def details(q, a):
             f'          <p>{a}</p>\n        </details>')
 
 
-def llms_entry(key, name, r, n_faq):
+def llms_entry(key, name, r, n_faq, origin=None):
     words = {3: "three", 4: "four", 5: "five", 6: "six"}
+    away = f"from {origin}" if origin else "away"
     body = (f"Collision repair for drivers from {name}, PA. The shop is not in {name}; it is in "
-            f"Southampton, about {miles_whole(r)} miles and {mins(r)} minutes away without traffic. "
+            f"Southampton, about {miles_whole(r)} miles and {mins(r)} minutes {away} without traffic. "
             f"Driving directions from {name} by road and route number, the four services, and "
             f"{words[n_faq]} questions {name} drivers ask.")
     lines = textwrap.wrap(body, width=74)   # 76 with the two-space indent, as the file wraps
@@ -444,7 +640,7 @@ def build(key: str) -> tuple:
     slug = audit.TOWN_ROUTE_PREFIX + key
     out = os.path.join(ROOT, "docs", slug, "index.html")
     url = BASE + slug + "/"
-    title, meta = title_for(name), meta_for(name, r)
+    title, meta = title_for(name), meta_for(name, r, c.get("origin"))
     ctx = fmt_ctx(r)
     eyebrow, area_ref = COUNTY[c["county"]]
     area_place = next(x for x in audit.AREA_SERVED if x[1].startswith(name + ","))
@@ -483,10 +679,15 @@ def build(key: str) -> tuple:
 
     faq = [(q, a.format(**ctx)) for q, a in c["faq"]]
     opening = [p.format(**ctx) for p in c["opening"]]
+    origin = c.get("origin", name)
+    # An origin page names only the origin here: the H1 directly above names
+    # the place, and ", in {name}" wrapped the lead to six lines at 360 and
+    # pushed Call under the call bar (proposed-changes.md 3.82).
     lead = (f"Tri-County Collision is a family-owned body shop in Southampton, about {mins(r)} minutes from "
-            f"{name}. Factory-certified for 12 brands, with a lifetime warranty on all repair work.")
+            f"{origin}. Factory-certified for 12 brands, with a lifetime warranty on all repair work.")
     corner = c.get("corner_names", tuple(r["corner"][:2]))
-    intro = (f"From the crossroads of {corner[0]} and {corner[1]}, the drive is about "
+    intro = ((f"From {origin}, at the crossroads of " if origin != name else "From the crossroads of ")
+             + f"{corner[0]} and {corner[1]}, the drive is about "
              f"{round(r['miles'], 1):g} miles and takes about {mins(r)} minutes without traffic.")
     styles = c.get("steps", default_styles(r["steps"]))
     nb = c.get("nbsp", tuple({"ref", "dist"} for _ in r["steps"]))
@@ -517,7 +718,8 @@ def build(key: str) -> tuple:
     ]
     jsonld = "\n".join("  " + l for l in json.dumps({"@context": "https://schema.org", "@graph": nodes},
                                                      indent=2, ensure_ascii=False).splitlines())
-    frame = "--frame jamison" if key == "jamison-pa" else f'--frame town --town {key} --name "{name}"'
+    frame = ("--frame jamison" if key == "jamison-pa"
+             else f'--frame town --town {key} --name "{c.get("origin", name)}"')
     head_comment = c.get("head") or f"""<!-- ============================================================
        {name.upper()}, A TOWN PAGE OF THE AREAS TIER, built by
        scripts/build-town.py from the Jamison template (3.62 to 3.76) in run
@@ -561,8 +763,7 @@ def build(key: str) -> tuple:
     crumb_hub = ('<a href="../areas-served/">Areas We Serve</a>' if built("../areas-served/")
                  else '<span data-pending-href="../areas-served/">Areas We Serve</span>')
     nearby_cards = "\n".join(card(f"../{audit.TOWN_ROUTE_PREFIX}{k}/",
-                                  "Northeast Philadelphia" if k == "northeast-philadelphia"
-                                  else f"{TOWN_NAMES[k]}, PA") for k in near)
+                                  f"{TOWN_NAMES[k]}, PA") for k in near)
 
     page = f'''<!DOCTYPE html>
 <html lang="en">
@@ -781,7 +982,7 @@ def build(key: str) -> tuple:
             <div class="dir-utils">
               <div class="dir-top">
                 <a class="btn btn-ghost btn-sm" href="{MAPS_HREF}" target="_blank" rel="noopener">Open in Google Maps</a>
-                <span class="dir-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>~{mins(r)} min from {html.escape(name)}</span>
+                <span class="dir-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>~{mins(r)} min from {html.escape(origin)}</span>
               </div>
               <p class="dir-address"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><a href="{MAPS_HREF}" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a></p>
             </div>
@@ -845,7 +1046,7 @@ def build(key: str) -> tuple:
         f.write(page)
     print(f"wrote {os.path.relpath(out, ROOT)} {len(page)} bytes; title {len(title)} ({title!r}), "
           f"meta {len(meta)}")
-    return llms_entry(key, name, r, len(faq))
+    return llms_entry(key, name, r, len(faq), c.get("origin"))
 
 
 def main() -> int:

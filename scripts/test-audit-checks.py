@@ -226,12 +226,26 @@ def main():
           not live, [f"{os.path.relpath(pth, root)}:{ln} {href}"
                      for pth, ln, href, _t, _r in live])
 
-    # The inventory is not empty, and that is the point: if it ever is,
-    # either every referenced page exists or somebody deleted the
-    # attributes instead of converting them.
-    pend = audit.find_pending_links(os.path.join(root, "docs"))
-    check("    and the pending inventory is populated, not quietly emptied",
-          len(pend) > 0, len(pend))
+    # The inventory used to be asserted non-empty: if it ever emptied,
+    # either every referenced page existed or somebody had deleted the
+    # attributes instead of converting them. 3.82 built the whole areas
+    # tier, so it is legitimately empty now, and the check is split into
+    # the two things it was protecting (3.82):
+    #   the reader still finds a pending link when one exists (a fixture);
+    #   every town page is a REAL link from the hub, so an empty inventory
+    #   means done, not deleted.
+    with _tempfile.TemporaryDirectory() as _ptmp:
+        os.makedirs(os.path.join(_ptmp, "a"))
+        with open(os.path.join(_ptmp, "a", "index.html"), "w", encoding="utf-8") as fh:
+            fh.write('<span data-pending-href="../later/">waiting</span>')
+        _found = audit.find_pending_links(_ptmp)
+    check("    the pending inventory reader still finds a pending link when one exists",
+          len(_found) == 1 and _found[0][2] == "../later/" and not _found[0][4], _found)
+    _hub = open(os.path.join(root, "docs", "areas-served", "index.html"), encoding="utf-8").read()
+    _unlinked = [k for k in audit.TOWN_ROUTES
+                 if f'<a href="../{audit.TOWN_ROUTE_PREFIX}{k}/">' not in _hub]
+    check("    and every town page is a real link from the hub: an empty inventory means done, not deleted",
+          not _unlinked, _unlinked)
 
     # --- fixtures, so both directions are proved on inputs we control ---
     with _tempfile.TemporaryDirectory() as tmp:
@@ -1496,6 +1510,28 @@ def main():
           bt.nearest("jamison-pa") == ["warminster-pa", "richboro-pa", "hatboro-pa", "horsham-pa"], bt.nearest("jamison-pa"))
     check("     build-town.py carries no Jamison nearby exception",
           "nearby" not in bt.CONTENT["jamison-pa"], None)
+
+    # BATCHES 2 AND 3, 3.82: crumbs never wrap, site-wide, on Greg's
+    # ruling. Under flex-wrap the last crumb took a line of its own before
+    # it could shrink, and on Northeast Philadelphia that line pushed Call
+    # under the call bar at 360. The fold is only ever measured by a
+    # render, so the rule that protects it is held here, in the stylesheet.
+    print("32. Crumbs never wrap: every crumb but the last holds, the last one shrinks")
+    css = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                            "docs", "assets", "site.css"), encoding="utf-8").read()
+    css = re.sub(r"(?s)/\*.*?\*/", "", css)
+    rules = re.findall(r"([^{}]+)\{([^{}]*)\}", css)
+
+    def decl(selector):
+        return " ".join(body for sel, body in rules if selector in [s.strip() for s in sel.split(",")])
+    check("     .crumb ol declares flex-wrap: nowrap", re.search(r"flex-wrap:\s*nowrap", decl(".crumb ol")) is not None, decl(".crumb ol"))
+    check("     no rule anywhere lets .crumb ol wrap again",
+          not any(re.search(r"flex-wrap:\s*wrap", body) for sel, body in rules if ".crumb ol" in sel), None)
+    check("     every crumb holds its width", re.search(r"flex-shrink:\s*0", decl(".crumb li")) is not None, decl(".crumb li"))
+    last = decl(".crumb li:last-child")
+    check("     the last crumb alone shrinks, and clips with an ellipsis",
+          all(re.search(p, last) for p in (r"flex-shrink:\s*1", r"min-width:\s*0", r"text-overflow:\s*ellipsis",
+                                           r"white-space:\s*nowrap", r"overflow:\s*hidden")), last)
 
     print()
     if FAILURES:
