@@ -2386,7 +2386,8 @@ footer.site a { color: var(--silver); }
   .stat { padding: 8px 22px; }
   .stat + .stat { border-left: 1px solid var(--rule); }
 }
-.stat-n {
+/* .fig-n, 3.68: the same look for a figure the odometer must NOT find. */
+.stat-n, .fig-n {
   display: block; font-family: var(--display); font-weight: 400;
   font-size: clamp(3.1rem, 6.4vw, 4.7rem); line-height: .88;
   letter-spacing: -.025em; color: var(--ox);
@@ -2401,7 +2402,7 @@ footer.site a { color: var(--silver); }
    1440, so a card sets its own; the line-height stays the band's .88em,
    which is the step site.js's odometer rolls on. */
 .card-figure { text-align: center; }
-.card-figure .stat-n { font-size: clamp(2.6rem, 4.4vw, 3.6rem); }
+.card-figure .stat-n, .card-figure .fig-n { font-size: clamp(2.6rem, 4.4vw, 3.6rem); }
 
 /* ---------- The six-step process rail ---------- */
 .steps { display: grid; gap: 22px; counter-reset: step; }

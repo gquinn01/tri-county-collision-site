@@ -10058,6 +10058,120 @@ stacked, the figures centred and fitting, and the closing ask.
   100; sameAs the only warning; zero criticals; 485 passing.**
 - No em dash was added.
 
+### 3.68 The proof section's second row matches the first. TEMPLATE AMENDMENT. BUILT 2026-09-29
+
+**Run two inherits it.** Row two of "Why drivers pass closer shops" now
+wears row one's figure-card grammar and carries the three chip claims:
+Free estimates, Insurance paperwork handled, Detailed after every repair.
+One commit, one restamp.
+
+#### Greg's rulings, 2026-09-29, after seeing 3.67 shipped
+
+1. **Row two becomes, in this order:** Free estimates, Insurance paperwork
+   handled, Detailed after every repair. The fourth chip's claim returns to
+   the town template as a card.
+2. **Row two takes row one's treatment:** a big ox word, a bold label, and a
+   support line where one exists. Greg's complaint was that the second row
+   read all black against the first row's ox figures. **Wording may be
+   adjusted to fit the grammar, by Greg's permission, recorded here, but only
+   by SPLITTING vetted claims, never by writing new ones.**
+3. **The "Your right to choose" card is DROPPED from this section.** It was
+   Greg's explicit call, with the alternative offered and declined. **It is a
+   move, not a loss:** the claim and its link survive in the page's own FAQ.
+   The answer to "Is Tri-County Collision actually in Jamison?" carries
+   "Pennsylvania law protects your right to choose your own collision shop
+   for repairs." and links "your right to choose a body shop" to
+   `/your-right-to-choose-a-body-shop/`. Both were confirmed present at this
+   commit.
+4. **The OEM-procedures phrase stays dropped,** Greg's explicit call,
+   recorded the same way: the claim lives on in the service pages' copy.
+   **Precisely: on `/collision-repair/`**, as "direct access to manufacturer
+   repair procedures, tooling, and specifications". That is the claim, not
+   3.64's exact words, and no other service page carries it.
+
+**Supersession, striking nothing:** 3.67's row-two composition. 3.67's record
+stands.
+
+#### The pairs
+
+| Card | Before (3.67) | After (3.68) | Source |
+|---|---|---|---|
+| 4 | **Your right to choose** / "Pennsylvania law says the choice of shop is yours..." | **Free** / Estimates / "Call first: the estimate is free, and you'll know where you stand before the car goes anywhere." | the chip "Free estimates", split; the line is 3.64's close, already in this section |
+| 5 | **Insurance paperwork handled** (headline, no line) | **Handled** / Insurance paperwork / "We handle the paperwork and communication so you don't have to." | the chip, split; the line quoted byte for byte from `/collision-repair/` |
+| 6 | **Free estimates** / "Call first: ..." | **Detailed** / After every repair / "Vehicles detailed inside and out after every repair." | the fourth chip, split; the line quoted byte for byte from `/collision-repair/` |
+
+**The support lines for cards 5 and 6: the render decided,** as the brief
+allowed. Both variants were built and rendered at 1440 and 390:
+
+- **Without the lines,** cards 5 and 6 stand half-empty beside row one's full
+  cards, which is the same imbalance, of a different kind, that Greg ruled
+  against.
+- **With them,** all six cards carry figure, label and line.
+
+Both sentences ship today in `/collision-repair/`'s visible text, verified
+byte for byte at this commit. **Nothing was written.**
+
+**The standing scope question rides with the claim, unchanged.** "Detailed
+after every repair" re-enters the town template carrying 4.2's question:
+does "every" hold for glass-only jobs? It carries it exactly as it does on
+the service pages. **Card 6's support line, "after every repair", carries
+the same question,** and one answer settles both.
+
+#### Mechanics
+
+- **`.card-figure` is reused for all three,** and "Handled" and "Detailed"
+  fit at the card's figure size with no new size step.
+- **ROW TWO DOES NOT ROLL, a default rather than a ruling, flagged here.**
+  `site.js`'s odometer rolls every `.stat-n` in the section, so the brief as
+  written would have doubled the section's arrival motion from three
+  figures to six. The motion law scopes the roll to the stat figures, and
+  presumes more motion is a new ruling, "expected to be no". So row two's
+  big words are `.fig-n`, which shares `.stat-n`'s look through one selector
+  list in `site.css` (`.stat-n, .fig-n`), and not `.stat-n`, which the
+  odometer finds. Lifetime, the review count and 12 still roll; Free,
+  Handled and Detailed stand still. **Changing `fig-n` to `stat-n` on the
+  three would make them roll, if Greg wants it.**
+- **Variance: no list change, and the fixtures pass UNEDITED.** The section
+  is still pattern text by its id, and the test file has no diff at this
+  commit.
+
+#### Measured, confirmed rather than assumed
+
+**The ask runs at 390, by 3.65's two rules:**
+
+```
+header Call (furniture)   -> the section's Call/Email row (section ask)   1,541   was 1,399
+section's row             -> card's Call (furniture)                      2,175   was 2,176
+card's Call               -> promise band (section ask)                   1,120   was 1,119
+promise band              -> pairs' row (section ask)                     1,979   unchanged
+pairs' row                -> footer (furniture)                           1,722   was 1,723
+CEILING 2,175 (under 2,684); FLOOR, the nearest two SECTION asks, 1,979 (over 1,634)
+```
+
+**One run moved,** because the support lines make the section 142px taller
+on a phone. That run starts at the header's Call, which is furniture the
+floor does not govern. Every other run moved by at most a pixel.
+
+**The fold, 390x664, innerHeight 664:** CALL 401 to 463, clearing the call
+bar by 141, unchanged, and the proof section still starts at 511. 360x640
+clears by 117.
+
+**Nothing else moved:** every other page is **identical to 3.67, 69 of 69
+page-widths.** That matters because the `.stat-n` rule the service pages and
+home use gained a selector here. The stubs are byte-unchanged.
+
+**Rendered and inspected at 1440 and 390:** two rows of three ox figures,
+each with its label and line.
+
+#### The suite
+
+- Both test scripts pass, **208 checks**.
+- `stamp-assets.py --check` exits 0, and `build-sitemap.py --check` exits 0.
+- `STAGING=1 audit.py --strict`: **23 pages at 95, Jamison at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 485 passing.** The review
+  count and the brand count still agree everywhere.
+- No em dash was added.
+
 ---
 
 ## 4. The claims list
