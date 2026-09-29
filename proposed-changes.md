@@ -12256,6 +12256,94 @@ run.
 - No em dash was added. The live page's own em dash is quoted in the
   script as an escape, and the page has none.
 
+### 3.80 The hub settles: three rulings, and one rendering of the warranty. BUILT 2026-09-29
+
+**Greg saw the hub preview and approved it.** The strategy chat verified
+`602af26` independently:
+- the same audit line;
+- one 16-place served list, byte-identical on all 25 pages;
+- every hub minute figure re-derived from `TOWN_ROUTES` with half-up
+  rounding;
+- the held claims absent;
+- no placeholder hrefs.
+
+This commit settles the hub before any batch page exists.
+
+#### Greg's rulings on the three calls 3.79 raised
+
+1. **THE HELD CLOSING PARAGRAPH STAYS HELD: ruled and held, not
+   deferred.** The hub closes on the promise band, like every other page.
+   "Get Your Free Estimate Today" does not return:
+   - its "Jaymor Road" spelling fails the audit;
+   - whether an estimate can start by phone is still an open owner
+     question (3.69).
+
+   If the owner's answer changes the estimate story, a clean closing gets
+   written then.
+2. **BOTH CALL ROWS STAY, as built, and these numbers are the record so
+   run two never re-litigates them:**
+   - **Without the asks,** the hub ran 4,820px at 390 with no way to
+     call, against the 2,684 ceiling.
+   - **One ask closing Bucks** passed at 390 (2,608) and failed at 360
+     (2,742).
+   - **Asks closing Bucks and Philadelphia pass at every phone width**
+     (the longest run is 2,450 at 360), and sit 2,214px apart at 390, over
+     the 1,634 floor.
+3. **BOTH UNSCOPED WARRANTY MENTIONS TAKE THE VETTED SCOPE,** per the Q3
+   precedent already applied on this page.
+
+#### The pairs
+
+| Where | Before (3.79) | After (3.80) |
+|---|---|---|
+| intro, second paragraph | "And every repair is backed by a lifetime warranty." | "And there's a lifetime warranty on all repair work." |
+| FAQ, "There are closer body shops. Why drive past them?" | "...factory-approved repair procedures, a lifetime warranty, and a shop that will push back..." | "...factory-approved repair procedures, a lifetime warranty on all repair work, and a shop that will push back..." |
+
+**Fitted to each sentence's grammar, with the scope attached.**
+- **The intro:** keeping "every repair" and adding the scope would say
+  "repair" twice. The sentence takes the vetted phrase whole instead.
+- **The FAQ:** the item takes the scope in place.
+
+**The FAQ renders twice, and both changed together.** The visible answer
+and its FAQPage node are generated from the one string in
+`scripts/migrate-hub.py`, and the mirror check confirms them
+byte-identical.
+
+**Every lifetime-warranty mention in the hub's visible copy now carries
+"on all repair work":** the intro, "What Doesn't Change" (3.79) and the
+FAQ.
+
+**One unscoped rendering remains, flagged and not changed:** the meta
+description's "ASE/I-CAR Gold certified, lifetime warranty.", rendered
+three times (meta, og and the CollectionPage node). The ruling named the
+two visible mentions. **That meta form is the site-wide pattern:** home,
+`/collision-repair/`, `/commercial-collision-repair/` and Jamison carry
+it too. Adding the scope would take this meta from 156 characters to 175,
+past the 160 limit. **Greg's to rule on, site-wide, if he wants it.**
+
+#### Ruled now for batch 1: the long-town titles (ruling 4)
+
+**The eight towns that fit keep the Jamison pattern exactly:**
+"Collision Repair for {Town}, PA | Tri-County Collision". **The three
+that overflow 60 end in "| Tri-County" instead:**
+- Feasterville-Trevose, 58;
+- Huntingdon Valley, 55;
+- Northeast Philadelphia, 60.
+
+Northeast Philadelphia's ", PA" is left to this build within the
+pattern. **The town script is the mechanism,** not memory; 3.81 records
+how.
+
+#### The suite
+
+- Both test scripts pass: 281 checks.
+- `stamp-assets.py --check`, `build-sitemap.py --check` and
+  `sync-area-served.py --check` all exit 0.
+- `STAGING=1 audit.py --strict`: **15 pages at 95, 10 at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 557 passing.** The report
+  is identical to 3.79's except the hub's word count, ~1,221 to ~1,225.
+- No em dash was added.
+
 ---
 
 ## 4. The claims list
@@ -12810,8 +12898,9 @@ years in one location" (4.5).
   - "every repair is backed by a lifetime warranty" (the intro);
   - "a lifetime warranty" (the FAQ).
 
-  **Greg: say if they should take the vetted words too.** They add no
-  scope, which is why they were not changed.
+  **RULED 3.80: both now carry "on all repair work".** The meta
+  description's "lifetime warranty" is the one unscoped rendering left,
+  and it is the site-wide meta pattern (3.80).
 - **Local colour:**
   - "Bucks County's largest township" (Bensalem, true by population);
   - Willow Grove "straddles Abington and Upper Moreland";

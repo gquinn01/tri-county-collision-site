@@ -79,11 +79,12 @@ INTRO = [
      "Tri-County Collision has been answering that question from Southampton for years, family owned and "
      "operated. Our ASE/I-CAR® Gold technicians work on foreign and domestic vehicles alike. We're a "
      "factory-certified collision center for a dozen major brands. We accept all major forms of insurance. "
-     "And every repair is backed by a lifetime warranty. We'll handle your insurer, keep you informed, and "
+     "And there's a lifetime warranty on all repair work. We'll handle your insurer, keep you informed, and "
      "push back when they want a shortcut that isn't right for your car. That last part is why a lot of "
      "people end up here.",
      "the NAP name; \"since 1974\" and \"now in its second generation\" HELD pending 4.5 (Q3), and "
-     "\"for years\" is the rendering /collision-repair/ migrated for the same claim (4.5)"),
+     "\"for years\" is the rendering /collision-repair/ migrated for the same claim (4.5); the warranty "
+     "takes its one vetted rendering with its scope attached (Greg's ruling 3 on the hub, 3.80)"),
     ("intro-3",
      "And under Pennsylvania law, the shop is your call, not your insurance company's. Wherever you're "
      "driving from, that choice belongs to you. The communities below are the ones that keep making it. "
@@ -268,9 +269,11 @@ FAQ = [
      "a lifetime warranty, and a shop that will push back on your insurer rather than quietly trimming the "
      "repair to fit their estimate. You'll make that drive once or twice. You'll drive the car for years.",
      "A few extra minutes buy you ASE/I-CAR® Gold technicians, factory-approved repair procedures, a "
-     "lifetime warranty, and a shop that will push back on your insurer rather than quietly trimming the "
-     "repair to fit their estimate. You'll make that drive once or twice. You'll drive the car for years.",
-     "the opener passes the standalone test"),
+     "lifetime warranty on all repair work, and a shop that will push back on your insurer rather than "
+     "quietly trimming the repair to fit their estimate. You'll make that drive once or twice. You'll drive "
+     "the car for years.",
+     "the opener passes the standalone test; the warranty takes its vetted scope (3.80), in the visible "
+     "answer and the FAQPage node together, both generated from this one string"),
     ("My vehicle isn't drivable. What now?",
      "Call us at (215) 322-5350 before you make other arrangements. We offer towing assistance and will "
      "coordinate with your insurance company.",
