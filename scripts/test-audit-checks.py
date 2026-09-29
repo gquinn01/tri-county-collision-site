@@ -36,6 +36,7 @@ import glob
 import json
 import os
 import re
+import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -716,7 +717,8 @@ def main():
           audit.RUBRIC_EXEMPTIONS == {"contact": ("faq-schema", "thin-content"),
                                       "post": ("faq-schema",),
                                       "blog-index": ("faq-schema",),
-                                      "town": ()},
+                                      "town": (),
+                                      "hub": ()},
           audit.RUBRIC_EXEMPTIONS)
     # 3.62: a town page is a ruled kind exempt from NOTHING. It has to carry
     # a real FAQ and earn its words, so both checks stay live on it.
@@ -1348,6 +1350,84 @@ def main():
                        ("an entry with no place recorded", {k: v for k, v in base.items() if k != "place"})):
         got = audit.town_route_config_findings({"x-pa": mut})
         check(f"     caught: {label}", bool(got), got)
+
+    # THE SERVED LIST, 3.79: one list, AREA_SERVED, written into every
+    # business node by scripts/sync-area-served.py and checked on every page.
+    print("29. The served list: every business node carries AREA_SERVED")
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("sync_area_served", os.path.join(os.path.dirname(os.path.abspath(__file__)), "sync-area-served.py"))
+    sync = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(sync)
+
+    def biz_page(area, extra_nodes=()):
+        g = {"@context": "https://schema.org", "@graph": [
+            {"@type": "AutoBodyShop", "@id": "https://tricountycollision.com/#business",
+             "name": "Tri-County Collision", "areaServed": area}] + list(extra_nodes)}
+        return ('<script type="application/ld+json">\n' + "\n".join("  " + x for x in json.dumps(g, indent=2, ensure_ascii=False).splitlines())
+                + "\n  </script>")
+    want = audit.area_served_nodes()
+    check("     AREA_SERVED names Jamison, closing the 3.62 open item",
+          any(x[1] == "Jamison, Pennsylvania" for x in audit.AREA_SERVED), None)
+    p, w, f, n, kind = run_kind("", biz_page(want))
+    check("     a business node carrying the list passes", "one served list" in p and "served list" not in f, (p, f))
+    no_jamison = [x for x in want if x["name"] != "Jamison, Pennsylvania"]
+    for label, area in (("the list without Jamison, the 3.62 defect", no_jamison),
+                        ("the list in another order", list(reversed(want))),
+                        ("a place the hub does not serve", want + [{"@type": "City", "name": "Newtown, Pennsylvania"}]),
+                        ("a place with its county dropped", [dict(x, containedInPlace=None) if x["name"].startswith("Hatboro") else x for x in want])):
+        p, w, f, n, kind = run_kind("", biz_page(area))
+        check(f"     caught as a critical: {label}", "is not the served list" in f, f)
+    town_service = {"@type": "Service", "name": "Collision Repair for Jamison, PA",
+                    "areaServed": [{"@type": "City", "name": "Jamison, Pennsylvania"}]}
+    out = sync.synced(biz_page(no_jamison, [town_service]))
+    got = json.loads(re.search(r'(?s)<script type="application/ld\+json">(.*?)</script>', out).group(1))["@graph"]
+    check("     the sync writes the list into the business node", got[0]["areaServed"] == want, got[0]["areaServed"])
+    check("     and leaves a Service node's own areaServed alone", got[1]["areaServed"] == town_service["areaServed"], got[1])
+    check("     a synced page is a fixed point: syncing again changes nothing", sync.synced(out) == out, None)
+    r = subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "sync-area-served.py"), "--check"],
+                       capture_output=True, text=True)
+    check("     every shipped page is in sync (sync-area-served.py --check exits 0)", r.returncode == 0, r.stdout[-300:])
+
+    # THE HUB IS HELD TO THE ROUTINGS, 3.79 (protocol f).
+    print("30. The hub: every town figure and road derives from its routing")
+
+    def hub(*blocks, outside=""):
+        return ("<main>" + "".join(f'<article data-town="{k}"><h3>Town</h3><p>{t}</p></article>' for k, t in blocks)
+                + f"<p>{outside}</p></main>")
+    good = hub(("richboro-pa", "About 8 minutes from 2nd Street Pike and Almshouse Road, straight down Second Street Pike (PA 232)."),
+               ("hatboro-pa", "About 8 minutes from York Road and Byberry Road, by Byberry Road, Davisville Road and County Line Road."),
+               ("bensalem-pa", "About 15 minutes from Knights Road and Street Road, then Second Street Pike (PA 232)."))
+    got = audit.hub_route_findings(good)
+    check("     derived figures, corner roads, County Line Road and Second-for-2nd all pass", not got, got)
+    for label, page in (
+            ("a stale minute count", good.replace("About 8 minutes from 2nd", "About 10 minutes from 2nd")),
+            ("a stale figure written in words", good.replace("About 8 minutes from 2nd", "About ten minutes from 2nd")),
+            ("the live page's range, in words", good.replace("About 8 minutes from 2nd", "Ten to fifteen minutes from 2nd")),
+            ("a range whose upper end is derived", good.replace("About 8 minutes from 2nd", "About 6 to 8 minutes from 2nd")),
+            ("a mileage the routing does not derive", good.replace("About 8 minutes from 2nd", "About 6 miles and 8 minutes from 2nd")),
+            ("a bearing", good.replace("straight down", "northeast down")),
+            ("a hyphenated bearing", good.replace("straight down", "west-southwest, down")),
+            ("a road the route does not drive", good.replace("Almshouse Road", "Buck Road")),
+            ("a route number the steps do not drive", good.replace("(PA 232).</p></article><article data-town=\"hatboro", "(PA 263).</p></article><article data-town=\"hatboro")),
+            ("a step phrase on the hub", good.replace("straight down", "a quarter mile, then down")),
+            ("a drive figure outside every town block", hub(("richboro-pa", "About 8 minutes."), outside="Most towns are about 10 minutes out.")),
+            ("a figure for a town with no routing", hub(("nowhere-pa", "About 8 minutes out.")))):
+        got = audit.hub_route_findings(page)
+        check(f"     caught: {label}", bool(got), got)
+    check("     four miles in words is read as Richboro's road-derived 4, and passes",
+          not audit.hub_route_findings(good.replace("About 8 minutes from 2nd", "About four miles and 8 minutes from 2nd")), None)
+    check("     \u201chalf a mile\u201d and \u201ca quarter mile\u201d stay step phrases, never \u201c1 mile\u201d",
+          [k for k, _v, _s in audit.route_quantities("half a mile, then a quarter mile")] == ["step", "step"], None)
+    check("     a capitalised compass word is a name, not a bearing",
+          not audit.hub_route_findings(hub(("northeast-philadelphia", "The Northeast is closer than most people assume."))), None)
+    shipped = open(os.path.join(root, "docs", "areas-served", "index.html"), encoding="utf-8").read()
+    got = audit.hub_route_findings(shipped)
+    check("     the shipped hub derives every figure and road from its routings", not got, got)
+    check("     and carries a block for every routed town", all(f'data-town="{k}"' in shipped for k in audit.TOWN_ROUTES), None)
+    p, w, f, n, kind = run_kind('<meta name="tri-county-page" content="hub">', hub(("richboro-pa", "About 12 minutes.")))
+    check("     a page declared as the hub is checked, and fails on a stale figure", "does not derive" in f, f)
+    p, w, f, n, kind = run_kind("", hub(("richboro-pa", "About 12 minutes.")))
+    check("     an undeclared page is not read as the hub", "does not derive" not in f, f)
 
     print()
     if FAILURES:

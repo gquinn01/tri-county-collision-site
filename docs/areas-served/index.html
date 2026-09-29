@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       /areas-served/, THE AREAS HUB. Migrated 2026-09-29 by
+       scripts/migrate-hub.py from the cached live page, proposed-changes.md
+       3.79, which holds every pair. Rebuild it with that script, never by
+       hand: its town names become links as their pages land, and the
+       pending-link test forces the rebuild.
+
+       EVERY TOWN FIGURE IS DERIVED. Each blurb is marked data-town with its
+       TOWN_ROUTES key, and scripts/audit.py's hub check fails the page if a
+       figure disagrees with that town's routing, if a bearing appears, if a
+       road is named that the route does not drive, or if a drive figure
+       stands outside every blurb (Greg's Q1 and Q2 rulings, 3.77).
+
+       STAGING, DELIBERATE, AND NOT A DEFECT: noindex below, docs/robots.txt
+       disallows everything, and the canonical is absolute to the
+       production domain. All three come off together at cutover.
+
+       NO PRICE, OFFER, REVIEW OR RATING MARKUP.
+       ============================================================ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Ink. The palette lives in assets/site.css; a meta tag cannot read a
+       custom property, which is why this one hex is duplicated. -->
+  <meta name="theme-color" content="#121B27">
+
+  <title>Areas We Serve: Bucks &amp; Montgomery | Tri-County Collision</title>
+  <meta name="description" content="Tri-County Collision serves Bensalem, Warminster, Willow Grove, Northeast Philly and more from Southampton, PA. ASE/I-CAR Gold certified, lifetime warranty.">
+
+  <link rel="canonical" href="https://tricountycollision.com/areas-served/">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- THE AREAS HUB, declared, and exempt from nothing: it carries FAQs and
+       its own long copy (3.79). The declaration is what makes the hub
+       routing check read it. -->
+  <meta name="tri-county-page" content="hub">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Areas We Serve: Bucks &amp; Montgomery | Tri-County Collision">
+  <meta property="og:description" content="Tri-County Collision serves Bensalem, Warminster, Willow Grove, Northeast Philly and more from Southampton, PA. ASE/I-CAR Gold certified, lifetime warranty.">
+  <meta property="og:url" content="https://tricountycollision.com/areas-served/">
+  <!-- NO IMAGE ON THIS PAGE, SO ITS SHARE CARD FOLLOWS HOME'S, byte for
+       byte, as the town pages' do. -->
+  <meta property="og:image" content="https://tricountycollision.com/assets/img/hero-wrecked-sedan-in-shop.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="800">
+  <meta property="og:image:alt" content="A red sedan with its front end crushed and the bumper torn loose, in the shop before repair.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- No analytics tag yet. GA4 goes in the CLIENT'S OWN Google account at
+       cutover, and the CallRail snippet goes in beside it. Neither is here,
+       because a measurement ID nobody has given us is a fact nobody has
+       confirmed. docs/privacy/ ships in the same commit as the first tag. -->
+
+  <!-- Both faces are self-hosted and both are needed above the fold, so they
+       are preloaded rather than discovered inside the stylesheet. They are
+       SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
+  <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/site.css?v=2c3895cf">
+  <script src="../assets/site.js?v=e67e271c" defer></script>
+
+  <!-- One @graph. The AutoBodyShop node repeats in full on every page under
+       the SAME @id, and its areaServed is AREA_SERVED, written by
+       scripts/sync-area-served.py. The FAQPage node is generated from the
+       same strings as the visible questions, so the two cannot differ. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AutoBodyShop",
+        "@id": "https://tricountycollision.com/#business",
+        "name": "Tri-County Collision",
+        "url": "https://tricountycollision.com/",
+        "telephone": "+12153225350",
+        "email": "contact@tricountycollision.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "995 Jaymor Rd",
+          "addressLocality": "Southampton",
+          "addressRegion": "PA",
+          "postalCode": "18966",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 40.1660232,
+          "longitude": -75.0512847
+        },
+        "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "08:00",
+            "closes": "18:00"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-bucks-county",
+            "name": "Bucks County, Pennsylvania"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-montgomery-county",
+            "name": "Montgomery County, Pennsylvania"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-philadelphia",
+            "name": "Philadelphia, Pennsylvania"
+          },
+          {
+            "@type": "City",
+            "name": "Southampton, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Feasterville-Trevose, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Richboro, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Warminster, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Langhorne, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Bensalem, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Jamison, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Huntingdon Valley, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Hatboro, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Willow Grove, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Horsham, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Jenkintown, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "Place",
+            "name": "Northeast Philadelphia, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-philadelphia"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "CollectionPage",
+        "@id": "https://tricountycollision.com/areas-served/#webpage",
+        "url": "https://tricountycollision.com/areas-served/",
+        "name": "Areas We Serve: Bucks & Montgomery | Tri-County Collision",
+        "description": "Tri-County Collision serves Bensalem, Warminster, Willow Grove, Northeast Philly and more from Southampton, PA. ASE/I-CAR Gold certified, lifetime warranty.",
+        "inLanguage": "en-US",
+        "dateModified": "2026-09-29",
+        "isPartOf": {
+          "@id": "https://tricountycollision.com/#business"
+        },
+        "breadcrumb": {
+          "@id": "https://tricountycollision.com/areas-served/#breadcrumb"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://tricountycollision.com/areas-served/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://tricountycollision.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Areas We Serve",
+            "item": "https://tricountycollision.com/areas-served/"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://tricountycollision.com/areas-served/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Do I have to live in one of these towns to bring you my car?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No, you don't have to live in one of these towns. These are the areas we hear from most, so we know their roads well, but we repair vehicles for anyone who can reach us. Where you live has no bearing on the estimate, the warranty, or the work."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which county are you actually in?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Tri-County Collision is in Bucks County, at 995 Jaymor Rd, Southampton, PA 18966, close to the Montgomery County line, which is why Hatboro and Huntingdon Valley are among our shortest drives."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "There are closer body shops. Why drive past them?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A few extra minutes buy you ASE/I-CAR® Gold technicians, factory-approved repair procedures, a lifetime warranty, and a shop that will push back on your insurer rather than quietly trimming the repair to fit their estimate. You'll make that drive once or twice. You'll drive the car for years."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "My vehicle isn't drivable. What now?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "If your vehicle isn't drivable, call Tri-County Collision at (215) 322-5350 before you make other arrangements. We offer towing assistance and will coordinate with your insurance company."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Removed at cutover, with the noindex tag and the robots.txt disallow.
+       A human who opens this page should not have to guess why it is not
+       indexed. -->
+  <p class="staging">Staging build. Not the live site. The shop's live site is at tricountycollision.com</p>
+
+  <header class="nav">
+    <div class="wrap inner">
+      <a class="nav-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+      <nav class="nav-main" aria-label="Main"><ul>
+        <li><a href="../collision-repair/">Collision Repair</a></li>
+      </ul></nav>
+      <a class="btn btn-sm" href="tel:+12153225350">Call (215) 322-5350</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- 1. THE COMPACT OX HEADER, the page-header identity, extended to the
+         areas tier by Greg's ruling (3.61, 3.62). It carries the call. -->
+    <section class="hero dark field-ox" id="hub-head">
+      <div class="wrap">
+        <!-- Mirrors the BreadcrumbList, same labels and same order. -->
+        <nav class="crumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="../">Home</a></li>
+            <li>Areas We Serve</li>
+          </ol>
+        </nav>
+        <div>
+          <h1>Areas We Serve</h1>
+          <p class="lead">When your car is damaged, the question isn't which shop is closest. It's who you trust with the repair and whether that repair will hold up years from now.</p>
+          <div class="cta-row">
+            <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. THE CASE, the live page's own opening, migrated. -->
+    <section id="intro">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Collision Repair Across Bucks County, Montgomery County &amp; Northeast Philadelphia</h2>
+        </div>
+        <div class="prose">
+          <p>Tri-County Collision has been answering that question from Southampton for years, family owned and operated. Our ASE/I-CAR® Gold technicians work on foreign and domestic vehicles alike. We're a factory-certified collision center for a dozen major brands. We accept all major forms of insurance. And every repair is backed by a lifetime warranty. We'll handle your insurer, keep you informed, and push back when they want a shortcut that isn't right for your car. That last part is why a lot of people end up here.</p>
+          <p>And under Pennsylvania law, the shop is your call, not your insurance company's. Wherever you're driving from, that choice belongs to you. The communities below are the ones that keep making it. Here's how far out they are by road, and what to expect when you arrive.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 to 5. THE TOWNS, by county, as the live page groups them. Each blurb
+         is a data-town block the hub routing check reads; every figure in it
+         is its town's recorded routing, from its named corner.
+         TWO SECTION ASKS, BY THE RHYTHM (3.79). Stacked on a phone the town
+         lists ran 4,820px between the header's Call and the next call, past
+         the 2,684 ceiling. One ask closing Bucks cleared it at 390 (2,608)
+         and not at 360 (2,742); asks closing Bucks and Philadelphia clear it
+         at every width measured, 360 to 1440, with the two 2,214 apart at
+         390, over the 1,634 floor. The grammar is the siblings': Call and
+         Email, centred at the section's foot. -->
+    <section id="bucks" class="band-panel">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Bucks County Communities We Serve</h2>
+        </div>
+        <div class="grid3">
+          <article class="card" data-town="feasterville-trevose-pa">
+            <h3><span data-pending-href="../areas-served-collision-repair-feasterville-trevose-pa/">Feasterville-Trevose</span></h3>
+            <p>Our nearest neighbor by road: about 6 minutes from Buck Road and Street Road, most of it along the Street Road corridor. Close enough that a drop-off costs you a coffee break rather than a morning.</p>
+          </article>
+          <article class="card" data-town="richboro-pa">
+            <h3><span data-pending-href="../areas-served-collision-repair-richboro-pa/">Richboro</span></h3>
+            <p>About 8 minutes from 2nd Street Pike and Almshouse Road, straight down Second Street Pike (PA 232). One of the few genuinely direct shots on this list.</p>
+          </article>
+          <article class="card" data-town="warminster-pa">
+            <h3><span data-pending-href="../areas-served-collision-repair-warminster-pa/">Warminster</span></h3>
+            <p>About 9 minutes from York Road and Street Road, by York Road (PA 263) and County Line Road.</p>
+          </article>
+          <article class="card" data-town="langhorne-pa">
+            <h3><span data-pending-href="../areas-served-collision-repair-langhorne-pa/">Langhorne</span></h3>
+            <p>About 16 minutes from Maple Avenue and Bellevue Avenue, by Bridgetown Pike and then Street Road (PA 132). Langhorne absorbs a lot of through-traffic, including everyone headed to Sesame Place, which means Langhorne drivers see more than their share of collisions they didn't cause.</p>
+          </article>
+          <article class="card" data-town="bensalem-pa">
+            <h3><span data-pending-href="../areas-served-collision-repair-bensalem-pa/">Bensalem</span></h3>
+            <p>Bucks County's largest township. About 15 minutes from Knights Road and Street Road, nearly all of it on Street Road (PA 132), depending on where in the township you're starting and how Street Road is behaving that day.</p>
+          </article>
+          <article class="card" data-town="jamison-pa">
+            <h3><a href="../areas-served-collision-repair-jamison-pa/">Jamison</a></h3>
+            <p>About 15 minutes from York Road and Almshouse Road, by York Road (PA 263), Bristol Road and Second Street Pike (PA 232).</p>
+          </article>
+        </div>
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="montgomery">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Montgomery County Communities We Serve</h2>
+        </div>
+        <div class="grid3">
+          <article class="card" data-town="huntingdon-valley-pa">
+            <h3><span data-pending-href="../areas-served-collision-repair-huntingdon-valley-pa/">Huntingdon Valley</span></h3>
+            <p>About 8 minutes from Huntingdon Pike and Wynkoop Avenue, straight along Huntingdon Pike (PA 232). You cross the county line into Bucks and you're essentially here. Closer than a lot of Huntingdon Valley residents realize.</p>
+          </article>
+          <article class="card" data-town="hatboro-pa">
+            <h3><span data-pending-href="../areas-served-collision-repair-hatboro-pa/">Hatboro</span></h3>
+            <p>About 8 minutes from York Road and Byberry Road, by Byberry Road, Davisville Road and County Line Road. Between York Road and County Line Road, Hatboro fits a remarkable number of intersections into a small footprint.</p>
+          </article>
+          <article class="card" data-town="willow-grove-pa">
+            <h3><span data-pending-href="../areas-served-collision-repair-willow-grove-pa/">Willow Grove</span></h3>
+            <p>About 11 minutes from Easton Road and York Road, most of it along Davisville Road. Willow Grove straddles Abington and Upper Moreland and functions as a real transportation hub, with several busy roads converging in a tight space. We repair a lot of what that produces.</p>
+          </article>
+          <article class="card" data-town="horsham-pa">
+            <h3><span data-pending-href="../areas-served-collision-repair-horsham-pa/">Horsham</span></h3>
+            <p>About 11 minutes from Easton Road and Horsham Road, by Blair Mill Road and County Line Road. Horsham's mix of commuter traffic, commercial corridors, and everything from compacts to work trucks is a good match for a shop that handles both retail and commercial collision repair.</p>
+          </article>
+          <article class="card" data-town="jenkintown-pa">
+            <h3><span data-pending-href="../areas-served-collision-repair-jenkintown-pa/">Jenkintown</span></h3>
+            <p>About 17 minutes from Old York Road and West Avenue, and the longest drive of our Montgomery County communities, since there's no single straight road between us. Jenkintown is a walkable borough where people notice whether work was done properly. That suits us.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="philadelphia" class="band-panel">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Philadelphia Neighborhoods We Serve</h2>
+        </div>
+        <div class="grid3">
+          <article class="card" data-town="northeast-philadelphia">
+            <h3><span data-pending-href="../areas-served-collision-repair-northeast-philadelphia/">Northeast Philadelphia</span></h3>
+            <p>The Northeast is closer than most people assume. Somerton is about 9 minutes from Bustleton Avenue and Byberry Road, by Byberry Road and Huntingdon Pike. Torresdale, Byberry, and the neighborhoods around Pennypack Park run a bit farther. Plenty of Northeast Philly residents already cross into Bucks to shop; crossing it for collision repair gets you out of the queue at an overloaded city shop.</p>
+          </article>
+        </div>
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. THE PLACES WITHOUT PAGES, named without distances (Q2). OPTION
+         FOR LATER, recorded not built: their own routings, so this could
+         state derived times for them. -->
+    <section id="elsewhere">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Don't See Your Town Listed?</h2>
+        </div>
+        <div class="prose">
+          <p>These are the communities we hear from most, not the limits of who we'll help. Some of our neighbors don't have a page of their own: Bryn Athyn, Ivyland, Churchville, Holland and Newtown. We also repair vehicles for people who were simply passing through when it happened, and we handle vehicles registered and insured out of state. If you can get here, or if your vehicle can, call <a href="tel:+12153225350">(215) 322-5350</a> and we'll sort it out.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. WHAT DOESN'T CHANGE. Every claim here is in the claims list for the
+         owner. "Towing assistance" is flagged and is an owner question. -->
+    <section id="constant" class="band-panel">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">What Doesn't Change, No Matter Where You Drive In From</h2>
+        </div>
+        <div class="prose">
+          <p>The town on your registration doesn't change how we work. Every vehicle gets our ASE/I-CAR® Gold technicians and a free, no-obligation estimate that explains what's wrong and why it matters. We're a factory-certified collision center for INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru, and Jeep. We accept all major forms of insurance and coordinate directly with your adjuster (including arguing your case when an insurer's estimate doesn't cover what your vehicle actually needs).</p>
+          <p>Beyond collision work, we handle commercial and fleet repair, auto glass repair and replacement, paintless dent repair, towing assistance, rental coordination, and more. Every repair carries our lifetime warranty on all repair work. Every vehicle leaves detailed. And we use environmentally responsible products throughout the shop.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. THE FAQ, the live page's four, openers made to stand alone. -->
+    <section id="faq">
+      <div class="wrap" style="max-width:880px">
+        <div class="sec-head">
+          <h2 class="sec-title">Frequently Asked Questions</h2>
+        </div>
+        <details>
+          <summary>Do I have to live in one of these towns to bring you my car?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>No, you don't have to live in one of these towns. These are the areas we hear from most, so we know their roads well, but we repair vehicles for anyone who can reach us. Where you live has no bearing on the estimate, the warranty, or the work.</p>
+        </details>
+        <details>
+          <summary>Which county are you actually in?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Tri-County Collision is in Bucks County, at 995 Jaymor Rd, Southampton, PA 18966, close to the Montgomery County line, which is why Hatboro and Huntingdon Valley are among our shortest drives.</p>
+        </details>
+        <details>
+          <summary>There are closer body shops. Why drive past them?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>A few extra minutes buy you ASE/I-CAR® Gold technicians, factory-approved repair procedures, a lifetime warranty, and a shop that will push back on your insurer rather than quietly trimming the repair to fit their estimate. You'll make that drive once or twice. You'll drive the car for years.</p>
+        </details>
+        <details>
+          <summary>My vehicle isn't drivable. What now?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>If your vehicle isn't drivable, call Tri-County Collision at <a href="tel:+12153225350">(215) 322-5350</a> before you make other arrangements. We offer towing assistance and will coordinate with your insurance company.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- 9. THE PROMISE BAND, home's #start byte for byte, as the town pages
+         close: the approved promise, not a new one. -->
+    <section class="dark field-ox" id="start">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">We will get you back on the road with your vehicle restored to its pre-accident condition.</h2>
+          <p class="sec-sub">Estimates are free and there is no obligation</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <a class="foot-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+          <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
+          <p class="foot-nap">
+            Tri-County Collision<br>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd<br>
+            Southampton, PA 18966</a><br>
+            <a href="tel:+12153225350">(215) 322-5350</a><br>
+            <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>
+          </p>
+        </div>
+        <div>
+          <h2 class="foot-head">Hours</h2>
+          <p>Monday to Friday, 8&nbsp;a.m. to 6&nbsp;p.m.<br>
+          Saturday by appointment only</p>
+        </div>
+        <div>
+          <!-- These columns list only pages that exist. They grow as pages
+               land, and never before. -->
+          <h2 class="foot-head">Services</h2>
+          <ul class="foot-links">
+            <li><a href="../collision-repair/">Collision Repair</a></li>
+            <li><a href="../auto-glass-repair-replacement/">Auto Glass Repair</a></li>
+            <li><a href="../paintless-dent-repair/">Paintless Dent Repair</a></li>
+            <li><a href="../commercial-collision-repair/">Commercial Collision&nbsp;Repair</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="foot-head">Get Started</h2>
+          <ul class="foot-links">
+            <li><a href="tel:+12153225350">Call (215) 322-5350</a></li>
+            <li><a href="mailto:contact@tricountycollision.com">Email the shop</a></li>
+            <li><a href="../contact-us/">Send us your details online</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <!-- The year is written into the markup so it is right with
+             JavaScript off, and assets/site.js updates it so it is right
+             next January. A hard-coded year is a stale-clock claim. -->
+        <p>&copy; <span data-year>2026</span> Tri-County Collision &middot; <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> &middot; <a href="tel:+12153225350">(215) 322-5350</a> &middot; <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- The one element the whole design turns on. Fixed to the bottom of
+       every phone viewport, hidden above 900px where the header's own call
+       button is always visible. -->
+  <a class="callbar" href="tel:+12153225350">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h3l1.5 3.8-2 1.4a12.5 12.5 0 0 0 6.2 6.2l1.4-2 3.8 1.5v3a1.8 1.8 0 0 1-2 1.8A16.5 16.5 0 0 1 4.8 5.5a1.8 1.8 0 0 1 1.8-2z"/></svg>
+    Call (215) 322-5350
+  </a>
+
+</body>
+</html>

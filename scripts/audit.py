@@ -686,6 +686,9 @@ RUBRIC_EXEMPTIONS = {
     "post": ("faq-schema",),
     "blog-index": ("faq-schema",),
     "town": (),
+    # 3.79: the areas hub. It carries FAQs and its own long copy, so it
+    # earns no exemption; declared so the hub routing check reads it.
+    "hub": (),
 }
 
 REFRESH_RE = re.compile(
@@ -1754,6 +1757,49 @@ TOWN_ROUTES = {
         "roads_driven": ("Byberry Road", "Huntingdon Pike", "2nd Street Pike", "Jaymor Road"),
     },
 }
+# THE SERVED LIST, 3.79: ONE LIST, NOT TYPED PER PAGE. The shared business
+# node's areaServed on every page is written from this by
+# scripts/sync-area-served.py, and the audit fails any page whose node
+# says otherwise. It closes 3.62's open item: Jamison had a page and was
+# missing from the list every page carried. Order is the hub's: the three
+# areas, the shop's own town, then Bucks, Montgomery and Philadelphia as
+# the hub lists them, Jamison closing the Bucks group. Only places the hub
+# serves by name; the five it names without pages are not here.
+AREA_SERVED_BASE = "https://tricountycollision.com/"
+AREA_SERVED = (
+    ("AdministrativeArea", "Bucks County, Pennsylvania", "#area-bucks-county"),
+    ("AdministrativeArea", "Montgomery County, Pennsylvania", "#area-montgomery-county"),
+    ("AdministrativeArea", "Philadelphia, Pennsylvania", "#area-philadelphia"),
+    ("City", "Southampton, Pennsylvania", "#area-bucks-county"),
+    ("City", "Feasterville-Trevose, Pennsylvania", "#area-bucks-county"),
+    ("City", "Richboro, Pennsylvania", "#area-bucks-county"),
+    ("City", "Warminster, Pennsylvania", "#area-bucks-county"),
+    ("City", "Langhorne, Pennsylvania", "#area-bucks-county"),
+    ("City", "Bensalem, Pennsylvania", "#area-bucks-county"),
+    ("City", "Jamison, Pennsylvania", "#area-bucks-county"),
+    ("City", "Huntingdon Valley, Pennsylvania", "#area-montgomery-county"),
+    ("City", "Hatboro, Pennsylvania", "#area-montgomery-county"),
+    ("City", "Willow Grove, Pennsylvania", "#area-montgomery-county"),
+    ("City", "Horsham, Pennsylvania", "#area-montgomery-county"),
+    ("City", "Jenkintown, Pennsylvania", "#area-montgomery-county"),
+    ("Place", "Northeast Philadelphia, Pennsylvania", "#area-philadelphia"),
+)
+
+
+def area_served_nodes() -> list:
+    """The areaServed array every business node carries, in the exact shape
+    the pages have used since 3.47: the three areas carry their @id, every
+    place names the area it sits in."""
+    out = []
+    for kind, name, ref in AREA_SERVED:
+        if kind == "AdministrativeArea":
+            out.append({"@type": kind, "@id": AREA_SERVED_BASE + ref, "name": name})
+        else:
+            out.append({"@type": kind, "name": name,
+                        "containedInPlace": {"@id": AREA_SERVED_BASE + ref}})
+    return out
+
+
 COMPASS_8 = ("north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest")
 
 
@@ -1802,9 +1848,52 @@ def road_key(name: str) -> str:
     return " ".join(w)
 
 
+_NUM_WORDS = {w: i for i, w in enumerate(
+    "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen "
+    "fifteen sixteen seventeen eighteen nineteen twenty".split())}
+_NUM_WORDS.update({"thirty": 30, "forty": 40, "fifty": 50, "sixty": 60, "a": 1, "an": 1})
+_NUM_WORD_RE = re.compile(
+    r"(?<!half )(?<!half\u00a0)\b(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|"
+    r"fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|an?)"
+    r"(?:-(one|two|three|four|five|six|seven|eight|nine))?(\s+and\s+a\s+half)?"
+    r"(\s+(?:miles?|minutes?|mins?)\b)", re.I)
+
+
+def _digits_for_words(text: str) -> str:
+    """Number words before a unit become digits, so "about four miles" and
+    "ten to fifteen minutes" are read like "about 4 miles" (3.79: the live
+    hub wrote every figure in words, and a check that reads only digits is
+    blind to them). "A quarter mile" and "half a mile" are left alone: they
+    are step phrases, read as such."""
+    def one(m):
+        n = _NUM_WORDS[m.group(1).lower()] + (_NUM_WORDS[m.group(2).lower()] if m.group(2) else 0)
+        v = n + 0.5 if m.group(3) else n
+        return (f"{v:g}") + m.group(4)
+    text = _NUM_WORD_RE.sub(one, text)
+    # Then every remaining number word, unit or not, so the low end of a
+    # spelled-out range ("Ten to 15 minutes") is a number the range reader
+    # sees. "A" and "an" are not in this pass: "a quarter mile" stays a
+    # step phrase. A number word with no unit near it is read as nothing.
+    text = _BARE_NUM_RE.sub(lambda m: str(_NUM_WORDS[m.group(1).lower()]
+                                         + (_NUM_WORDS[m.group(2).lower()] if m.group(2) else 0)), text)
+    # A RANGE STATES BOTH ENDS, and both are read: "10 to 15 minutes" becomes
+    # "10 minutes to 15 minutes". Before this only the upper end was seen, so
+    # a range whose upper end happened to be derived passed with any lower.
+    return _RANGE_RE.sub(lambda m: m.group(1) + m.group(4) + m.group(2) + m.group(3) + m.group(4), text)
+
+
+_BARE_NUM_RE = re.compile(
+    r"(?<!half )\b(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|"
+    r"fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty)"
+    r"(?:-(one|two|three|four|five|six|seven|eight|nine))?\b", re.I)
+_RANGE_RE = re.compile(r"\b(\d+(?:\.\d+)?)(\s*(?:to|or|-|\u2013)\s*)(\d+(?:\.\d+)?)(\s+(?:miles?|minutes?|mins?)\b)",
+                       re.I)
+
+
 def route_quantities(text: str) -> list:
     """Every drive-time and distance rendering in a text, as (kind, value, snippet)."""
     out = []
+    text = _digits_for_words(text)
     for m in ROUTE_QTY_RE.finditer(text):
         snip = text[max(0, m.start() - 30):m.end() + 10].strip()
         if m.group(3):
@@ -1949,6 +2038,127 @@ def town_route_config_findings(routes: dict = None) -> list:
             bad.append(f"{key}: the corner is {d:.1f}m from the place point, over its {max_m}m")
         if max_m > 60 and not str(r.get("max_m_why", "")).strip():
             bad.append(f"{key}: max_m is widened to {max_m}m with no max_m_why recorded")
+    return bad
+
+
+# THE HUB IS HELD TO THE ROUTINGS TOO, 3.79 (protocol f, Greg's Q2 ruling).
+# Each town's blurb on /areas-served/ is an element carrying
+# data-town="<TOWN_ROUTES key>". Inside it every drive figure must derive
+# from that town's routing, no compass word may appear (bearings came off
+# the hub), and every road it names must be one the route drives or one of
+# its corner's two roads; every route number must be one of its steps'.
+# A drive figure OUTSIDE every town block is refused: nothing on the hub may
+# state a distance or a time that no routing attributes. COMPASS WORDS ARE
+# READ LOWERCASE ONLY, so "Northeast Philadelphia" and "East County Line
+# Road" are names, not bearings; a sentence that opens with a bare compass
+# word is the known gap, recorded in 3.79.
+HUB_KIND = "hub"
+HUB_ROAD_RE = re.compile(
+    r"\b(?:[A-Z0-9][\w'-]*\s+){1,4}(?:Road|Rd|Pike|Avenue|Ave|Street|St|Lane|Ln|Way|"
+    r"Boulevard|Blvd|Drive|Dr|Highway|Hwy|Turnpike)\b")
+HUB_REF_RE = re.compile(r"\b(PA|US|I|Route)[- \u00a0]?(\d{1,3})\b")
+HUB_COMPASS_RE = re.compile(r"\b(?:north|south|east|west)(?:east|west)?\b")
+
+
+def hub_road_key(name: str) -> str:
+    """road_key with any leading direction dropped and "second" read as
+    "2nd", so "County Line Road" is East County Line Road's road and
+    "Second Street Pike" is 2nd Street Pike's."""
+    k = road_key(name).split()
+    k = ["2nd" if w == "second" else w for w in k]
+    if len(k) > 2 and k[0] in ("n", "s", "e", "w", "north", "south", "east", "west"):
+        k = k[1:]
+    return " ".join(k)
+
+
+class _HubParser(HTMLParser):
+    """The text of every data-town element inside <main>, by key, and the
+    text of <main> outside all of them."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.main = 0
+        self.stack = []        # open tags, with the data-town key they opened, if any
+        self.blocks = {}
+        self.outside = []
+        self._skip = 0
+
+    def _key(self):
+        for _tag, key in reversed(self.stack):
+            if key:
+                return key
+        return None
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag == "main":
+            self.main += 1
+        if tag in ("script", "style"):
+            self._skip += 1
+        if tag in _VOID:
+            return
+        self.stack.append((tag, a.get("data-town")))
+
+    def handle_endtag(self, tag):
+        if tag == "main" and self.main:
+            self.main -= 1
+        if tag in ("script", "style") and self._skip:
+            self._skip -= 1
+        for i in range(len(self.stack) - 1, -1, -1):
+            if self.stack[i][0] == tag:
+                del self.stack[i:]
+                break
+
+    def handle_data(self, data):
+        if not self.main or self._skip:
+            return
+        k = self._key()
+        if k:
+            self.blocks[k] = self.blocks.get(k, "") + " " + data
+        else:
+            self.outside.append(data)
+
+
+def hub_route_findings(html_text: str, routes: dict = None) -> list:
+    """Every disagreement between the hub and the recorded routings."""
+    routes = TOWN_ROUTES if routes is None else routes
+    p = _HubParser()
+    p.feed(html_text)
+    bad = []
+    for key, raw in p.blocks.items():
+        text = " ".join(raw.split())
+        r = routes.get(key)
+        if r is None:
+            if route_quantities(text):
+                bad.append(f"{key}: states a drive figure, and {key} has no recorded routing")
+            if HUB_ROAD_RE.search(text) or HUB_REF_RE.search(text):
+                bad.append(f"{key}: names a road, and {key} has no recorded routing to check it against")
+            continue
+        minutes = int(r["minutes"] + 0.5)
+        miles_ok = {float(int(r["miles"] + 0.5)), round(r["miles"], 1)}
+        for kind, val, snip in route_quantities(text):
+            if kind == "minutes" and val != minutes:
+                bad.append(f"{key}: says {val:g} minutes (\u201c{snip}\u201d); its routing derives {minutes}")
+            elif kind == "miles" and val not in miles_ok:
+                bad.append(f"{key}: says {val:g} miles (\u201c{snip}\u201d); its routing derives "
+                           f"{' or '.join(f'{m:g}' for m in sorted(miles_ok))}")
+            elif kind == "step":
+                bad.append(f"{key}: says \u201c{val}\u201d; the hub states whole-route figures only")
+        for c in HUB_COMPASS_RE.findall(text):
+            bad.append(f"{key}: says \u201c{c}\u201d; bearings came off the hub (Q2)")
+        allowed = {hub_road_key(n) for n in r["roads_driven"]} | {hub_road_key(n) for n in r["corner"][:2]}
+        for m in HUB_ROAD_RE.finditer(text):
+            words = m.group(0).split()
+            tails = {hub_road_key(" ".join(words[i:])) for i in range(len(words) - 1)}
+            if not tails & allowed:
+                bad.append(f"{key}: names \u201c{m.group(0)}\u201d, a road its routing does not drive")
+        refs = {" ".join(x[1].split()) for x in r["steps"] if x[1]}
+        for m in HUB_REF_RE.finditer(text):
+            ref = f"{m.group(1)} {m.group(2)}"
+            if ref not in refs:
+                bad.append(f"{key}: names {m.group(0)}, a route number its steps do not drive")
+    for kind, val, snip in route_quantities(" ".join(" ".join(p.outside).split())):
+        bad.append(f"a drive figure outside every town block (\u201c{snip}\u201d): nothing attributes it to a town")
     return bad
 
 
@@ -2476,11 +2686,23 @@ def audit(source: str, coverage: dict = None):
                               f"{len(route['steps'])} steps in order with their turns, roads and "
                               f"distances, and every drive time and distance rendering agrees.")
 
+    # --- The hub is held to the routings too (3.79, protocol f) ---
+    if declared_kind == HUB_KIND:
+        found = hub_route_findings(html)
+        n_blocks = len(re.findall(r'\bdata-town="', html))
+        if found:
+            fails.append("**The hub states something about a town that its recorded routing does "
+                         "not derive:** " + "; ".join(found) + ".")
+        else:
+            passes.append(f"Every drive figure and road on the hub derives from its town's recorded "
+                          f"routing: {n_blocks} town blocks read, no bearing, no figure outside a block.")
+
     # --- Structured data (JSON-LD) ---
     types = []
     faq_nodes = []            # every FAQPage node found, for the mirror check
     crumb_nodes = []          # every BreadcrumbList node, for the crumb mirror
     business_same_as = False  # sameAs found ON the business node, not just anywhere
+    business_nodes = []       # the business node(s), for the served-list check
     for block in p.jsonld_blocks:
         try:
             data = json.loads(block)
@@ -2514,6 +2736,8 @@ def audit(source: str, coverage: dict = None):
                     # false pass this exists to prevent.
                     if LOCAL_BUSINESS_TYPES.intersection(names) and item.get("sameAs"):
                         business_same_as = True
+                    if LOCAL_BUSINESS_TYPES.intersection(names):
+                        business_nodes.append(item)
         except (json.JSONDecodeError, AttributeError):
             warns.append("**A JSON-LD block failed to parse** — broken structured data is invisible to Google. Validate at validator.schema.org.")
     if types:
@@ -2668,6 +2892,28 @@ def audit(source: str, coverage: dict = None):
         notes.append(f"A BreadcrumbList of {len(schema_crumb)} items, but no visible breadcrumb this "
                      f"check can read to compare it against: either the page shows none, or it is "
                      f"built with markup this check does not read.")
+
+    # --- The served list: every business node carries AREA_SERVED (3.79) ---
+    # One list, written by scripts/sync-area-served.py. A page whose node
+    # names a different set, order or shape is a critical: two pages that
+    # serve different towns describe two businesses. Local files only: the
+    # live WordPress site's schema is not ours until cutover, and scoring
+    # it against this list would fill every Monday report with criticals
+    # that describe the old site, not this one.
+    if business_nodes and not is_url(source):
+        want = area_served_nodes()
+        if all(n.get("areaServed") == want for n in business_nodes):
+            passes.append(f"The business node's areaServed is the one served list, AREA_SERVED "
+                          f"({len(want)} places).")
+        else:
+            got = [a.get("name") for a in (business_nodes[0].get("areaServed") or []) if isinstance(a, dict)]
+            missing = [x[1] for x in AREA_SERVED if x[1] not in got]
+            extra = [x for x in got if x not in [y[1] for y in AREA_SERVED]]
+            fails.append("**The business node's areaServed is not the served list.** "
+                         + (f"Missing: {', '.join(missing)}. " if missing else "")
+                         + (f"Not in AREA_SERVED: {', '.join(extra)}. " if extra else "")
+                         + "Every page carries one list, AREA_SERVED in scripts/audit.py; run "
+                           "scripts/sync-area-served.py rather than editing a page's schema.")
 
     # Entity clarity: sameAs links tie the business to its profiles
     # (Google Business Profile, Yelp, Instagram...), which is how AI

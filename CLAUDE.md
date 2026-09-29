@@ -896,6 +896,8 @@ dark. That archive is the last copy of it that will ever exist.
 | `scripts/prepare-damage-icons.py` | Turns the licensed "Car Accident" icon set into the eight marks the We Fix It All band ships. Reads the source's provenance through the audit's own reader and refuses to process a flagged file, parses the `.ai` as PDF with nothing but the standard library, splits the page on its own occupancy gaps into a 6x6 grid, and emits every mark at ONE derived scale so the set's single stroke weight survives. **The marks are filled outlines and not strokes**, which is why the band's CSS changed. It patches `docs/index.html` item by item and proves the item count and all eight headings before it writes, because an earlier patcher spanned items and ate seven of the eight. Prints every number it used. |
 | `scripts/prepare-map-image.py` | Draws `/contact-us/`'s directions map from OpenStreetMap data and writes it into the page as inline SVG, between two markers. **Drawn, not stitched from tiles**: the OSMF tile policy prohibits prefetching tiles for static use, and Greg ruled 2026-09-24 that the no-third-drawing rule does not reach cartography. One Overpass query, cached outside the repo; the pin must fall inside an OSM building footprint or nothing is drawn; labels take USPS abbreviations so the pin's street matches the NAP; placement is an exhaustive search. The ODbL notice in the figcaption is the licence. `--out-dir` draws without touching `docs/`. Prints every number it used. |
 | `scripts/migrate-blog.py` | Migrates the 16 blog posts and builds `/blog/` from the live WordPress pages, cached outside the repo. Applies every rule mechanically (the NAP name, links relative or pending, no image, the prose markup, a live FAQ into the site's FAQ grammar, the live post's own dates), holds per-post titles, metas and edits, refuses to write a title over 60, a meta over 160 or an edit that does not match exactly once, and prints every change as a before/after pair for the record. |
+| `scripts/migrate-hub.py` | Migrates `/areas-served/`, the areas hub, from the live page cached outside the repo, the blog's discipline: every migrated paragraph is quoted from the cache and must be found there exactly once, every edit is a pair with its reason, what an edit removes is HELD and printed. Each town blurb is a `data-town` block the audit's hub check holds to that town's `TOWN_ROUTES` routing; a town name links only once its page exists, so re-run it after each town lands. |
+| `scripts/sync-area-served.py` | Writes `AREA_SERVED`, the one served list in `scripts/audit.py`, into every page's business node, and `--check` exits 1 if any page is out of date. The audit fails a page whose node says otherwise. It touches only the business node's `areaServed`: a town page's Service node keeps its own. |
 | `scripts/stamp-assets.py` | Cache-busting stamps for `docs/assets/site.css` and `site.js`. |
 | `scripts/fetch_seo_news.py` | Pulls the headline sweep the Google Watcher reads. |
 | `scripts/cascade-analyzer.html` | CSS cascade analyzer. |
@@ -944,12 +946,14 @@ python3 scripts/test-sitemap-expansion.py     # exits 1 if anything fails
 python3 scripts/test-audit-checks.py          # exits 1 if anything fails
 python3 scripts/stamp-assets.py               # after touching site.css or site.js
 python3 scripts/build-sitemap.py              # after adding or removing a page
+python3 scripts/sync-area-served.py           # after changing AREA_SERVED or adding a page
 python3 scripts/audit.py --strict             # every page at 100/100
 ```
 
-The two middle commands take `--check`, which exits 1 instead of rewriting.
-Neither is a thing to remember: the audit fails a page whose asset stamp is
-stale or whose `<url>` block is missing.
+The three middle commands take `--check`, which exits 1 instead of rewriting.
+None is a thing to remember: the audit fails a page whose asset stamp is
+stale, whose `<url>` block is missing, or whose business node's served list
+is not `AREA_SERVED` (3.79).
 
 ## GitHub Pages
 

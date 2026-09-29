@@ -37,9 +37,10 @@
        NOT IN JAMISON, SAID FIRST. The shop is in Southampton, and the page
        says so in its lead, its opening section and its first question.
 
-       THE HUB IS PENDING. It is not built yet, so the crumb's middle item
-       and the nearby links are spans with data-pending-href; the pending-
-       link test turns each into a link the day its page exists. The schema
+       LINKS FOLLOW THE PAGES. A crumb or nearby link whose page is not
+       built yet waits as a span with data-pending-href; the builder writes
+       a real link the day the page exists, and the pending-link test forces
+       that rebuild. The hub landed in 3.79. The schema
        keeps the hub's absolute production URL, because the schema
        describes the production site and the tier ships together.
 
@@ -194,6 +195,13 @@
           {
             "@type": "City",
             "name": "Bensalem, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Jamison, Pennsylvania",
             "containedInPlace": {
               "@id": "https://tricountycollision.com/#area-bucks-county"
             }
@@ -378,12 +386,11 @@
          measure, and 3.71 records what it adds to every pair. -->
     <section class="hero dark field-ox" id="town-head">
       <div class="wrap">
-        <!-- Mirrors the BreadcrumbList, same labels and same order. The hub
-             is not built yet, so its item waits as a span. -->
+        <!-- Mirrors the BreadcrumbList, same labels and same order. -->
         <nav class="crumb" aria-label="Breadcrumb">
           <ol>
             <li><a href="../">Home</a></li>
-            <li><span data-pending-href="../areas-served/">Areas We Serve</span></li>
+            <li><a href="../areas-served/">Areas We Serve</a></li>
             <li>Jamison</li>
           </ol>
         </nav>
@@ -724,8 +731,8 @@
     </section>
 
     <!-- 9. NEARBY TOWNS: the four sibling pages nearest Jamison by straight
-         line (3.62 records the distances), and the hub. None is built yet,
-         so each waits as a span. -->
+         line (3.62 records the distances), and the hub. Each is a link once
+         its page is built and a pending span until then. -->
     <section id="nearby" class="band-panel">
       <div class="wrap">
         <div class="sec-head">
@@ -752,11 +759,11 @@
               <h3>Hatboro, PA</h3>
             </div>
           </div>
-          <div class="svc-card" data-pending-href="../areas-served/">
+          <a class="svc-card" href="../areas-served/">
             <div class="svc-card-body">
               <h3>Every town we serve</h3>
             </div>
-          </div>
+          </a>
         </div>
       </div>
     </section>

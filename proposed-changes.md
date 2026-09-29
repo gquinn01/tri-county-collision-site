@@ -11838,6 +11838,424 @@ failures above. `audit.py` was restored byte for byte after every run.
   is identical to 3.77's.
 - No page changed, and no em dash was added.
 
+### 3.79 The areas hub lands, held to the routings. BUILT 2026-09-29
+
+**`/areas-served/`, migrated by `scripts/migrate-hub.py`** from the live
+page cached outside the repo. Every town figure derives from the routing
+table the strategy chat verified in 3.78, eleven for eleven. **The hub
+ships once, with every figure derived.** No town's corner stopped, so
+every blurb carries its figure. The commit also delivers:
+- the one served list on every page;
+- the three pending links to the hub, now converted;
+- routing check (f), extended to the hub;
+- a number-word reader the extension turned out to need.
+
+#### What is migrated, and what is not
+
+**The hub's own copy is about 1,200 words** (the audit counts ~1,209):
+- the intro;
+- twelve town blurbs;
+- "Don't See Your Town Listed?";
+- "What Doesn't Change";
+- four FAQs.
+
+The pagemap's "~2,500" counted everything below them, and each of those
+blocks was measured against the eleven live town pages: the "Get Your
+Free Estimate Today" heading, the Minor and Major Collision Repair
+boilerplate, the testimonials, the contact block and the form all appear
+on every one. **That is the site-wide boilerplate the rulings exclude:**
+- the 231-review widget;
+- the testimonials and boilerplate;
+- the form;
+- the tracking number and `info@`.
+
+**One call made here, for Greg to reverse if he wants:** the closing
+"Get Your Free Estimate Today" paragraph is HELD. Its heading is
+boilerplate by that measure. Its paragraph also:
+- restates the NAP and hours, which the header and footer carry;
+- spells the street "Jaymor Road", which the audit fails;
+- would add an estimate-channel line while 3.69's question is open.
+
+**The page closes on the template's promise band, as the town pages
+do.**
+
+#### The pairs, as `migrate-hub.py` prints them
+
+**Every quotation below is anchored to the cache:** the build refuses to
+run unless each is found there exactly once. The Q1 to Q3 rulings are
+3.77's.
+
+**title** (changed)
+
+- Before: Areas We Serve | Collision Repair Bucks & Montgomery County | Tri County
+- After: Areas We Serve: Bucks & Montgomery | Tri-County Collision
+- Why: to 60 (57), the NAP name
+
+**meta** (changed)
+
+- Before: Tri County Collision Center serves Bensalem, Warminster, Willow Grove, Northeast Philly, and more from Southampton, PA. ASE/I-CAR Gold certified; lifetime warranty. Call (215) 322-5350.
+- After: Tri-County Collision serves Bensalem, Warminster, Willow Grove, Northeast Philly and more from Southampton, PA. ASE/I-CAR Gold certified, lifetime warranty.
+- Why: to 160 (156), the NAP name; the phone is in the page
+
+**lead** (unchanged)
+
+> When your car is damaged, the question isn't which shop is closest. It's who you trust with the repair and whether that repair will hold up years from now.
+
+- Why: unchanged; it is the header's lead
+
+**intro-2** (changed)
+
+- Before: Tri County Collision Center has been answering that question from Southampton since 1974, family owned and operated, now in its second generation. Our ASE/I-CAR® Gold technicians work on foreign and domestic vehicles alike. We're a factory-certified collision center for a dozen major brands. We accept all major forms of insurance. And every repair is backed by a lifetime warranty. We'll handle your insurer, keep you informed, and push back when they want a shortcut that isn't right for your car. That last part is why a lot of people end up here.
+- After: Tri-County Collision has been answering that question from Southampton for years, family owned and operated. Our ASE/I-CAR® Gold technicians work on foreign and domestic vehicles alike. We're a factory-certified collision center for a dozen major brands. We accept all major forms of insurance. And every repair is backed by a lifetime warranty. We'll handle your insurer, keep you informed, and push back when they want a shortcut that isn't right for your car. That last part is why a lot of people end up here.
+- Why: the NAP name; "since 1974" and "now in its second generation" HELD pending 4.5 (Q3), and "for years" is the rendering /collision-repair/ migrated for the same claim (4.5)
+
+**intro-3** (changed)
+
+- Before: And under Pennsylvania law, the shop is your call, not your insurance company's. Wherever you're driving from, that choice belongs to you. The communities below are the ones that keep making it. Here's where they are, how far out they are, and what to expect when you arrive.
+- After: And under Pennsylvania law, the shop is your call, not your insurance company's. Wherever you're driving from, that choice belongs to you. The communities below are the ones that keep making it. Here's how far out they are by road, and what to expect when you arrive.
+- Why: "where they are" promised the bearings Q2 took off; the distances are now road-derived
+
+**town Feasterville-Trevose** (changed)
+
+- Before: Our nearest neighbor at roughly three miles east of the shop, and a short run back west along the Street Road corridor. Most Feasterville and Trevose customers are here in under ten minutes. Close enough that a drop-off costs you a coffee break rather than a morning.
+- After: Our nearest neighbor by road: about 6 minutes from Buck Road and Street Road, most of it along the Street Road corridor. Close enough that a drop-off costs you a coffee break rather than a morning.
+- Why: bearing and straight-line distance off (Q2); "under ten minutes" is true from Buck and Street and false from the Trevose side (11.0 min, 3.77), so the figure is the routing's own; "nearest neighbor" holds by road, the table's shortest in miles and minutes; Street Road is 1.90 of the 2.92 miles
+
+**town Richboro** (changed)
+
+- Before: About four miles northeast of us, straight down Second Street Pike (PA-232). One of the few genuinely direct shots on this list. Ten to fifteen minutes from most of Northampton Township, whether you're near Council Rock, off Buck Road, or out toward Almshouse Road.
+- After: About 8 minutes from 2nd Street Pike and Almshouse Road, straight down Second Street Pike (PA 232). One of the few genuinely direct shots on this list.
+- Why: bearing and straight-line distance off (Q2); the range becomes the routing's 8 minutes; Buck Road is not driven and comes off with its sentence (Q2); the route is PA 232 to the last turn
+
+**town Warminster** (changed)
+
+- Before: Roughly four miles northwest, which puts most of Warminster Township ten to fifteen minutes out heading southeast toward us. County Line Road, Jacksonville Road, and York Road (PA-263) all feed this direction depending on where in the township you start.
+- After: About 9 minutes from York Road and Street Road, by York Road (PA 263) and County Line Road.
+- Why: bearings and straight-line distance off (Q2); the range becomes the routing's 9 minutes; Jacksonville Road is not driven (Q2)
+
+**town Langhorne** (changed)
+
+- Before: About seven miles due east, with Street Road (PA-132) running west from the borough more or less to our door. Figure fifteen to twenty minutes. Langhorne absorbs a lot of through-traffic between the Route 1 corridor, the I-95 interchanges, and everyone headed to Sesame Place, which means Langhorne drivers see more than their share of collisions they didn't cause.
+- After: About 16 minutes from Maple Avenue and Bellevue Avenue, by Bridgetown Pike and then Street Road (PA 132). Langhorne absorbs a lot of through-traffic, including everyone headed to Sesame Place, which means Langhorne drivers see more than their share of collisions they didn't cause.
+- Why: bearing and straight-line distance off (Q2); "Street Road running from the borough more or less to our door" is wrong by the routing (2.73 of 8.78 miles); Route 1 and I-95 are not driven (Q2)
+
+**town Bensalem** (changed)
+
+- Before: Bucks County's largest township, about eight miles southeast of us. Street Road (PA-132) runs northwest from Bensalem toward Southampton and handles most of that traffic. Typically fifteen to twenty minutes depending on where in the township you're starting and how Street Road is behaving that day.
+- After: Bucks County's largest township. About 15 minutes from Knights Road and Street Road, nearly all of it on Street Road (PA 132), depending on where in the township you're starting and how Street Road is behaving that day.
+- Why: bearing and straight-line distance off (Q2); the old Bensalem contradiction (the live Bensalem page says both 10 to 15 and 15 to 20) dies by derivation: 15; Street Road is 7.12 of the 8.14 miles
+
+**town Jamison** (changed)
+
+- Before: (none: Jamison had no blurb)
+- After: About 15 minutes from York Road and Almshouse Road, by York Road (PA 263), Bristol Road and Second Street Pike (PA 232).
+- Why: NEW, the pagemap's "add Jamison to the county lists"; every figure and road from its routing
+
+**town Huntingdon Valley** (changed)
+
+- Before: The shortest drive on this entire page. Barely two miles southwest of us, meaning most of Lower Moreland Township is heading northeast for about ten minutes. You cross the county line into Bucks and you're essentially here. Closer than a lot of Huntingdon Valley residents realize.
+- After: About 8 minutes from Huntingdon Pike and Wynkoop Avenue, straight along Huntingdon Pike (PA 232). You cross the county line into Bucks and you're essentially here. Closer than a lot of Huntingdon Valley residents realize.
+- Why: "the shortest drive on this entire page" is false by the routings (Feasterville-Trevose, 6.0 min against 7.8); bearings and straight-line distance off (Q2); the figure is the routing's 8
+
+**town Hatboro** (changed)
+
+- Before: Three miles due west, so Hatboro drivers head east along the County Line Road corridor to reach us. About ten minutes from the middle of the borough. Between York Road and County Line Road, Hatboro fits a remarkable number of intersections into a small footprint.
+- After: About 8 minutes from York Road and Byberry Road, by Byberry Road, Davisville Road and County Line Road. Between York Road and County Line Road, Hatboro fits a remarkable number of intersections into a small footprint.
+- Why: bearings and straight-line distance off (Q2); "about ten minutes" becomes the routing's 8
+
+**town Willow Grove** (changed)
+
+- Before: Under four miles west-southwest, roughly ten to fifteen minutes heading east-northeast. Willow Grove straddles Abington and Upper Moreland and functions as a real transportation hub, with PA-611, Old Welsh Road, and Moreland Road all converging in a tight space. We repair a lot of what that produces.
+- After: About 11 minutes from Easton Road and York Road, most of it along Davisville Road. Willow Grove straddles Abington and Upper Moreland and functions as a real transportation hub, with several busy roads converging in a tight space. We repair a lot of what that produces.
+- Why: bearings and straight-line distance off (Q2); the range becomes the routing's 11 (10.5, half-up, 3.78); Old Welsh Road and Moreland Road are not driven (Q2), so the roads go unnamed; Davisville Road is 3.08 of the 4.59 miles
+
+**town Horsham** (changed)
+
+- Before: About four miles west-northwest of the shop. Most of Horsham Township is ten to fifteen minutes east-southeast of here. Horsham's mix of commuter traffic, commercial corridors, and everything from compacts to work trucks is a good match for a shop that handles both retail and commercial collision repair.
+- After: About 11 minutes from Easton Road and Horsham Road, by Blair Mill Road and County Line Road. Horsham's mix of commuter traffic, commercial corridors, and everything from compacts to work trucks is a good match for a shop that handles both retail and commercial collision repair.
+- Why: bearings and straight-line distance off (Q2); the range becomes the routing's 11
+
+**town Jenkintown** (changed)
+
+- Before: About six miles southwest, and the longest drive of our Montgomery County communities. Plan on twenty minutes or so heading northeast, since there's no single straight road between us. Jenkintown is a walkable borough where people notice whether work was done properly. That suits us.
+- After: About 17 minutes from Old York Road and West Avenue, and the longest drive of our Montgomery County communities, since there's no single straight road between us. Jenkintown is a walkable borough where people notice whether work was done properly. That suits us.
+- Why: bearings and straight-line distance off (Q2); "twenty minutes or so" becomes the routing's 17; "the longest drive of our Montgomery County communities" holds by the routings (17.1 against Horsham's 11.3)
+
+**town Northeast Philadelphia** (changed)
+
+- Before: We're straight north of the Northeast, and closer than most people assume. Somerton is about three and a half miles out. Bustleton is under five. Torresdale, Byberry, and the neighborhoods around Pennypack Park run a bit farther. Bustleton Avenue and Red Lion Road carry most of that traffic north across the county line. Plenty of Northeast Philly residents already cross into Bucks to shop; crossing it for collision repair gets you out of the queue at an overloaded city shop.
+- After: The Northeast is closer than most people assume. Somerton is about 9 minutes from Bustleton Avenue and Byberry Road, by Byberry Road and Huntingdon Pike. Torresdale, Byberry, and the neighborhoods around Pennypack Park run a bit farther. Plenty of Northeast Philly residents already cross into Bucks to shop; crossing it for collision repair gets you out of the queue at an overloaded city shop.
+- Why: "straight north" is a bearing (Q2); Somerton's straight-line figure becomes its routing's 9 (8.5, half-up, 3.78), from the corner Greg ruled (3.78); Bustleton's straight-line figure off; the far side stays numberless, as ruled; Red Lion Road is not driven, and its sentence was also a bearing
+
+**elsewhere** (changed)
+
+- Before: These are the communities we hear from most, not the limits of who we'll help. Some of our closest neighbors don't have a page of their own: Bryn Athyn is about two and a half miles out, Ivyland roughly three, Churchville under four, Holland about five, Newtown around eight. We also repair vehicles for people who were simply passing through when it happened, and we handle vehicles registered and insured out of state. If you can get here [em dash] or if your vehicle can. Call (215) 322-5350 and we'll sort it out.
+- After: These are the communities we hear from most, not the limits of who we'll help. Some of our neighbors don't have a page of their own: Bryn Athyn, Ivyland, Churchville, Holland and Newtown. We also repair vehicles for people who were simply passing through when it happened, and we handle vehicles registered and insured out of state. If you can get here, or if your vehicle can, call (215) 322-5350 and we'll sort it out.
+- Why: the five places keep their names and lose their distances (Q2), and without distances "closest" is a claim nothing checks, so it goes; the em dash goes (house rule); the phone is a link
+
+**beyond** (changed)
+
+- Before: Beyond collision work, we handle commercial and fleet repair, auto glass repair and replacement, paintless dent repair, towing assistance, rental coordination, and more. Every repair carries our lifetime warranty on parts and labor. Every vehicle leaves detailed. And we use environmentally responsible products throughout the shop.
+- After: Beyond collision work, we handle commercial and fleet repair, auto glass repair and replacement, paintless dent repair, towing assistance, rental coordination, and more. Every repair carries our lifetime warranty on all repair work. Every vehicle leaves detailed. And we use environmentally responsible products throughout the shop.
+- Why: the warranty takes its one vetted rendering, "lifetime warranty on all repair work" (Q3's amendment); "towing assistance" migrates flagged and joins the owner questions (Q3)
+
+**pitch** (changed)
+
+- Before: Fifty-two years in one location, second generation, still family run. That's the whole pitch.
+- After: HELD
+- Why: HELD pending 4.5 (Q3): the 52 years and the second generation are the unconfirmed 1974 claim; without them the paragraph has nothing left to say
+
+**faq Do I have to live in one of these towns to bring you my car?** (changed)
+
+- Before: No. These are the areas we hear from most, so we know their roads well, but we repair vehicles for anyone who can reach us. Where you live has no bearing on the estimate, the warranty, or the work.
+- After: No, you don't have to live in one of these towns. These are the areas we hear from most, so we know their roads well, but we repair vehicles for anyone who can reach us. Where you live has no bearing on the estimate, the warranty, or the work.
+- Why: the opener passes the standalone test
+
+**faq Which county are you actually in?** (changed)
+
+- Before: Bucks. We're at 995 Jaymor Road, Southampton, PA 18966, close to the Montgomery County line, which is why customers from Hatboro and Huntingdon Valley get here about as fast as customers from Feasterville.
+- After: Tri-County Collision is in Bucks County, at 995 Jaymor Rd, Southampton, PA 18966, close to the Montgomery County line, which is why Hatboro and Huntingdon Valley are among our shortest drives.
+- Why: the opener passes the standalone test; the address takes the NAP's one spelling; "about as fast as Feasterville" is 8 minutes against 6 by the routings, so it becomes what they show: Huntingdon Valley and Hatboro are the second and third shortest
+
+**faq There are closer body shops. Why drive past them?** (changed)
+
+- Before: Because a few extra minutes buy you ASE/I-CAR® Gold technicians, factory-approved repair procedures, a lifetime warranty, and a shop that will push back on your insurer rather than quietly trimming the repair to fit their estimate. You'll make that drive once or twice. You'll drive the car for years.
+- After: A few extra minutes buy you ASE/I-CAR® Gold technicians, factory-approved repair procedures, a lifetime warranty, and a shop that will push back on your insurer rather than quietly trimming the repair to fit their estimate. You'll make that drive once or twice. You'll drive the car for years.
+- Why: the opener passes the standalone test
+
+**faq My vehicle isn't drivable. What now?** (changed)
+
+- Before: Call us at (215) 322-5350 before you make other arrangements. We offer towing assistance and will coordinate with your insurance company.
+- After: If your vehicle isn't drivable, call Tri-County Collision at (215) 322-5350 before you make other arrangements. We offer towing assistance and will coordinate with your insurance company.
+- Why: the opener passes the standalone test; the phone is a link; "towing assistance" is flagged and joins the owner questions (Q3)
+
+**closing** (changed)
+
+- Before: Get Your Free Estimate Today / Wherever you're coming from, Tri County Collision Center is ready to help. Call us at (215) 322-5350 or visit us at 995 Jaymor Road, Southampton, PA 18966. We're open Monday through Friday from 8am to 6pm, and by appointment on Saturdays.
+- After: HELD
+- Why: HELD: its heading is on all eleven live town pages (site boilerplate, excluded by ruling); its paragraph restates the NAP and hours the header and footer carry, spells the street a way the audit fails, and would add an estimate-channel line while 3.69's question is open. The page closes on the template's promise band instead
+
+#### The shape of the page, and its grounds
+
+| Section | Ground |
+|---|---|
+| The ox header: crumb Home / Areas We Serve, H1 "Areas We Serve", the live opening line as its lead, Call | ox |
+| `#intro`: the live H2 and two paragraphs | silver |
+| `#bucks`: six cards and a Call/Email row | white |
+| `#montgomery`: five cards | silver |
+| `#philadelphia`: one card and a Call/Email row | white |
+| `#elsewhere` | silver |
+| `#constant`, What Doesn't Change | white |
+| `#faq` | silver |
+| `#start`, home's promise band, byte for byte | ox |
+| the footer | ink |
+
+**No two adjacent sections share a ground,** printed from the rendered
+page.
+
+**The kind is `hub`, declared in its head, and exempt from nothing:**
+- **the FAQPage check stays live,** because the page carries four FAQs;
+- **thin content stays live,** at ~1,209 words;
+- **the mirror law holds**, with all four FAQs byte-identical to their
+  schema.
+
+The schema is:
+- the shared business node;
+- a CollectionPage;
+- the BreadcrumbList (Home / Areas We Serve), which the crumb mirror
+  check confirms;
+- the FAQPage.
+
+**Title:** "Areas We Serve: Bucks & Montgomery | Tri-County Collision",
+57 characters. **Meta:** 156 characters.
+
+#### Protocol (f): the hub is held to the routings, by a check
+
+**Each town blurb is an element carrying `data-town="<TOWN_ROUTES
+key>"`, and `hub_route_findings()` reads every one.** Inside a block:
+- every minute figure must be the routing's, rounded half-up;
+- every mile figure must be the routing's, whole or to one decimal;
+- no step phrase appears;
+- **no lowercase compass word appears,** because bearings came off;
+- every road named must be one the route drives, or one of its corner's
+  two roads;
+- every route number must be one of its steps'.
+
+**Two rules apply to the whole page:**
+- **A drive figure outside every block is refused,** because nothing
+  attributes it to a town.
+- **A figure in a block for a town with no routing is refused.**
+
+The check runs on any page declared `hub`, and the shipped hub passes it:
+12 town blocks read.
+
+**Road names are matched generously in exactly two ways, and no others:**
+- **"County Line Road" is East County Line Road's road:** a leading
+  direction is dropped.
+- **"Second Street Pike" is 2nd Street Pike's:** "Second" reads as
+  "2nd".
+
+**The known gap, recorded:** compass words are read lowercase only, so
+"Northeast Philadelphia" and "East County Line Road" read as names. A
+sentence that opens with a bare "North" would slip through.
+
+**THE CHECK WAS BLIND TO WORDS, and is not now.** The live hub wrote
+every figure in words: "about four miles", "ten to fifteen minutes",
+"three and a half". `route_quantities` read only digits, so it would have
+passed the very copy protocol (f) exists to stop. **It now reads number
+words** (one to sixty, "twenty-five", "and a half", "a mile"), and on the
+cached live hub it reads 28 figures. **"A quarter mile" and "half a
+mile" stay step phrases:** a first version turned "half a mile" into
+"half 1 mile", and a test now holds it.
+
+**Ranges now read both ends:** "10 to 15 minutes" is 10 and 15. Before,
+only the upper end was seen, so a range whose upper end happened to be
+derived passed with any lower. **This is shared with the town pages,**
+which are safer for it. Jamison's page reads exactly as before, with no
+findings.
+
+#### One served list, on every page
+
+**`AREA_SERVED` in `scripts/audit.py` is the list**, in the hub's order,
+with Jamison closing the Bucks group. **`scripts/sync-area-served.py`
+writes it into every page's business node.**
+- **It re-serialises each JSON-LD block only after proving the block
+  round-trips byte for byte,** as all 24 do, so the only bytes that
+  change are the list's: exactly 7 lines on each of 24 pages, the
+  Jamison entry.
+- **A town page's Service node keeps its own areaServed.**
+- **The audit fails any page whose business node differs,** checking
+  set, order and shape. **It runs on local files only:** the Monday scan
+  still reads the live WordPress site, whose schema is not ours until
+  cutover. **This closes 3.62's open item**, Jamison missing from the
+  list every page carried.
+
+**The pages' `dateModified` was not bumped** for a schema-only change.
+The visible content of 22 of the 24 pages is unchanged.
+
+#### The pending links, fired
+
+**The hub's arrival converted three pending links:**
+- Jamison's crumb;
+- Jamison's "Every town we serve" card;
+- home's "Bucks and Montgomery County".
+
+**The Jamison builder now decides pending-ness by existence,** as the hub
+builder does. A link is written the day its page exists, so the batches
+will convert Jamison's nearby cards on their next rebuild without anyone
+remembering. The pending-link test now finds no pending link to
+`/areas-served/`.
+
+#### The rhythm, and the two asks it required
+
+**Stacked on a phone, the three town lists ran 4,820px** between the
+header's Call and the next call, against the 2,684 ceiling. The grammar's
+own answer, section-bottom asks with Call and Email like every sibling's,
+was measured two ways:
+
+```
+                          360     375     390     414   longest run
+Bucks ask only           2,742   2,662   2,608   2,448   breaks the ceiling at 360
+Bucks and Philadelphia   2,450   2,369   2,314   2,314   inside at every width
+```
+
+**Shipped: asks closing Bucks and Philadelphia,** the minimum that holds
+at every phone width.
+- **At 390:** runs of 2,314 and 2,214. The two section asks are 2,214
+  apart, over the 1,634 floor. The Philadelphia ask sits 2,169 from the
+  promise band.
+- **At 1440:** the longest run is 1,834.
+
+**The ceiling has always been measured at 390, where one ask would pass,
+so Greg may prefer one.** The numbers are here for that.
+
+**The fold, 390x664:** Call at 359 to 421, clearing the call bar by 183
+(159 at 360x640). **No horizontal scroll** at 390 or 1440.
+
+**Rendered and inspected at 1440 and 390.** Jamison's name is the one
+link among the town cards; the rest are pending spans until their pages
+land.
+
+#### Variance, for the first time between real siblings
+
+**The hub and Jamison share 8% of their three-word phrases** (ceiling
+under 30%), and no substantive H2.
+
+#### Mechanics and records
+
+- **New scripts:** `scripts/migrate-hub.py` and
+  `scripts/sync-area-served.py`. CLAUDE.md lists both, and adds the sync
+  to "Before you commit".
+- **`docs/sitemap.xml`** gains the hub (25 pages, `lastmod` from its
+  schema, 2026-09-29).
+- **`docs/llms.txt`** gains its entry. It carries no figures, so nothing
+  there can drift from the routings.
+- **The claims list gains 4.12,** the hub's claims. **The owner
+  questions gain three:**
+  - 31, does the shop tow?;
+  - 32, the hub's claims;
+  - 33, the drive times as free-flow figures, as 29 was for Jamison.
+- **For the batches:** the Jamison builder still lives in the build
+  machine's scratch space. It has to become a repo script before batch
+  one builds eleven pages from it.
+
+#### Tests and mutation proof
+
+- **Section 29, ten checks, the served list:**
+  - Jamison is named;
+  - the list passes;
+  - four criticals: without Jamison, reordered, an unserved place, a
+    dropped county;
+  - the sync writes the business node and leaves a Service node alone;
+  - the sync is a fixed point;
+  - every shipped page is in sync.
+- **Section 30, 20 checks, the hub:**
+  - derived figures, corner roads, County Line Road and Second-for-2nd
+    pass;
+  - twelve refusals: a stale minute; a stale figure in words; the live
+    range in words; a range with a derived upper end; an underived
+    mileage; a bearing; a hyphenated bearing; an undriven road; an
+    undriven route number; a step phrase; a figure outside every block;
+    an unrouted town;
+  - four miles in words passing as Richboro's derived 4;
+  - "half a mile" staying a step phrase;
+  - a capitalised compass word read as a name;
+  - the shipped hub passing, with a block for every routed town;
+  - a declared hub checked, and an undeclared page not.
+- **The kinds test now names `hub`,** having refused it until told.
+
+**Nineteen mutants, all killed by named failures:**
+- **the served list:** always passes; compared ignoring order; loses
+  Jamison;
+- **the sync:** skips the business node; writes every node;
+- **the hub check:** ignores minutes; ignores miles; allows step phrases;
+  ignores bearings; ignores roads; ignores route numbers; ignores figures
+  outside blocks; trusts an unrouted town; strips no direction from road
+  names; never reads Second as 2nd; the `hub` kind never checked;
+- **the readers:** number words not read; ranges read upper end only;
+  "half a mile" read as 1 mile.
+
+`audit.py` and the sync script were restored byte for byte after each
+run.
+
+#### The suite, and THE NEW EXPECTED LINE
+
+- Both test scripts pass: **281 checks**, where there were 251.
+- `stamp-assets.py --check` exits 0; `build-sitemap.py --check` exits 0;
+  `sync-area-served.py --check` exits 0.
+- `STAGING=1 audit.py --strict`: **15 pages at 95, 10 at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 557 passing.**
+  - **The hub is new at 96,** with sameAs its only warning.
+  - **Home and contact move from 95 to 96,** by the denominator: the
+    served-list pass tips their rounding. They are exactly as clean.
+  - **Every other page keeps its score.**
+- **The layout sweep:** 22 pages are layout-identical. Home's only change
+  is the span becoming a link, the same box. Jamison's are the crumb and
+  the card. The two stubs show the directory-listing date column again
+  (3.72), and they are byte-unchanged.
+- No em dash was added. The live page's own em dash is quoted in the
+  script as an escape, and the page has none.
+
 ---
 
 ## 4. The claims list
@@ -12362,6 +12780,46 @@ Greg as well as the owner.
   ASE/I-CAR Gold.
 - **Post 13: "Our certified technicians."**
 
+### 4.12 Claims the hub adds (3.79)
+
+The areas hub migrated from the live page. Every claim below is on the
+live page today and ships only after the owner confirms it. **Held, not
+shipped:** "since 1974", "now in its second generation", and "Fifty-two
+years in one location" (4.5).
+
+- **"push back when they want a shortcut"** and **"a shop that will push
+  back on your insurer rather than quietly trimming the repair"**: the
+  shop argues with insurers on the customer's behalf.
+- **"coordinate directly with your adjuster (including arguing your case
+  when an insurer's estimate doesn't cover what your vehicle actually
+  needs)"**.
+- **"factory-approved repair procedures"** (the FAQ). The site elsewhere
+  says "direct access to manufacturer repair procedures" (4.10).
+- **"towing assistance"**, twice: in "What Doesn't Change" and in the FAQ
+  for an undrivable vehicle. **It is also an owner question (31):** does
+  the shop tow?
+- **"rental coordination"**, **"Every vehicle leaves detailed"** (4.2's
+  question about glass-only jobs applies), and **"environmentally
+  responsible products throughout the shop"**.
+- **"We also repair vehicles for people who were simply passing through
+  ... and we handle vehicles registered and insured out of state."**
+- **The warranty, in three renderings.** "Every repair carries our
+  lifetime warranty on all repair work" is normalised to the vetted words
+  by Greg's Q3 amendment. **Two scope-free renderings migrate as
+  written:**
+  - "every repair is backed by a lifetime warranty" (the intro);
+  - "a lifetime warranty" (the FAQ).
+
+  **Greg: say if they should take the vetted words too.** They add no
+  scope, which is why they were not changed.
+- **Local colour:**
+  - "Bucks County's largest township" (Bensalem, true by population);
+  - Willow Grove "straddles Abington and Upper Moreland";
+  - Langhorne's through-traffic and Sesame Place;
+  - "an overloaded city shop" (Northeast Philadelphia).
+
+  None is a routing fact; each is the live page's, for the owner.
+
 ## 5. What the owner needs to answer first
 
 Ordered by how much else depends on it.
@@ -12471,3 +12929,20 @@ Ordered by how much else depends on it.
 30. **Does the shop serve Warrington, and Warwick Township beyond Jamison?**
     Neither is named on the live hub, so neither is named on the Jamison page
     as a neighbor (3.62, ruling 3). A yes adds them.
+31. **Does the shop tow?** The live hub says "towing assistance" twice (3.79,
+    4.12), and one blog post mentions towing. No page has answered whether the
+    shop tows, arranges a tow, or neither, and it is a scope question: the
+    site may only sell what the shop does.
+32. **The hub's claims, 4.12:**
+    - the insurer push-back;
+    - factory-approved procedures;
+    - out-of-state vehicles;
+    - the environmentally responsible products;
+    - the local colour.
+
+    Each is the live page's, and none is confirmed.
+33. **The drive times on the hub, from each town's named corner.** Every
+    figure is an OSRM routing with no traffic, like Jamison's (29), and was
+    verified independently by the strategy chat (3.78). Is "about 6 minutes"
+    from Buck Road and Street Road what a Feasterville customer would say it
+    takes? The same question stands for all eleven.
