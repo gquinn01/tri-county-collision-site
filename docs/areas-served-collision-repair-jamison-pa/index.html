@@ -90,7 +90,7 @@
        SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
   <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/site.css?v=f7498578">
+  <link rel="stylesheet" href="../assets/site.css?v=900192ff">
   <script src="../assets/site.js?v=e67e271c" defer></script>
 
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
@@ -576,13 +576,17 @@
     </section>
 
     <!-- 5. THE DIRECTIONS CARD, a template amendment (3.65, Greg's ruling):
-         map on top with a visible "Open in Google Maps" button, the routed
-         drive-time chip, the address, the steps, and Call closing the card.
+         the map, then the body in the order 3.74 ruled (Greg, 2026-09-29):
+         the routed drive-time chip alone, which is persuasion; the steps,
+         which are the content; the Call, the primary ask; and last the
+         getaway kit, "Open in Google Maps" and the address. Open in Google
+         Maps is an EXIT action, so it may not outrank the conversion
+         action: content, then the ask, then the utilities.
          EVERY ROUTE FACT HERE IS THE RECORDED ROUTING, TOWN_ROUTES in
          scripts/audit.py, and its town_route_findings fails the page if a turn
          word, a road, a step's distance or a minute count disagrees with it.
          THE CHIP'S TILDE IS THE QUALIFIER'S FIRST HALF: "~15 min" hedges
-         the number, and the prose two lines below carries the full "about
+         the number, and the prose directly below it carries the full "about
          15 minutes without traffic". Together they satisfy the qualifier
          rule, so a future sitting must not strip the chip for lacking it.
          The street is always "Jaymor Rd", no period, and the number only in
@@ -607,10 +611,8 @@
           </figure>
           <div class="dir-body">
             <div class="dir-top">
-              <a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">Open in Google Maps</a>
               <span class="dir-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>~15 min from Jamison</span>
             </div>
-            <p class="dir-address"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a></p>
             <div class="prose">
               <p>From the crossroads of York Road and Almshouse Road, the drive is about 8.4 miles and takes about 15 minutes without traffic.</p>
               <ol class="numbered">
@@ -623,6 +625,10 @@
             </div>
             <div class="cta-row">
               <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+            </div>
+            <div class="dir-utils">
+              <a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">Open in Google Maps</a>
+              <p class="dir-address"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a></p>
             </div>
           </div>
         </div>

@@ -802,7 +802,8 @@ section { padding: var(--pad) 0; }
    takes the site's own card interior, .card's 26px by 24px, so the
    directions read as a card like every other on the page. */
 .dir-body { padding: 26px 24px; }
-/* The button and the chip share one row under the map, and wrap on a phone. */
+/* The top row. Since 3.74 it holds the chip ALONE, opening the body:
+   the drive time is persuasion and belongs before the steps. */
 .dir-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 20px; }
 /* The chip is the vetted chip's pill, so it is named beside .badges li
    rather than restyled; it is not in .badges because it is per-town text,
@@ -819,7 +820,20 @@ section { padding: var(--pad) 0; }
 .dir-address svg { flex: 0 0 auto; width: 22px; height: 22px; fill: none; stroke: var(--ox); stroke-width: 2; }
 .dir-address a { color: var(--ink); }
 .dir-card .prose { max-width: none; }
-.dir-card .contact-lines { margin-top: 20px; }
+.dir-card .contact-lines { margin-top: 0; }
+/* THE GETAWAY KIT, 3.74 (Greg's ruling of 2026-09-29). "Open in Google
+   Maps" and, on the town card, the address close the card as its
+   utilities, below the Call: Open in Google Maps is an EXIT action and
+   may not outrank the conversion action. Content, then the ask, then the
+   kit. Contact's lines lose their top margin because they now open that
+   body, where the button used to.
+   36px BELOW THE CALL, from the render: the split's body inset, so the
+   kit starts as far from the ask as the body starts from the card's edge
+   and reads as the card's closing tier. 26, the ask's own air above,
+   paired the ghost button with the Call as if it were a second ask; 44
+   began to detach the kit from the card. One value at every width. */
+.dir-utils { margin-top: 36px; }
+.dir-utils .dir-address { margin: 20px 0 0; }
 /* THE SPLIT. Two equal columns, the map first. 1010px IS THE RENDER'S
    NUMBER, not a round one: at equal columns it is the narrowest card at
    which Jamison's steps rewrap short enough that the body ends no lower
@@ -828,8 +842,12 @@ section { padding: var(--pad) 0; }
    SUPERSEDED BY 3.73: THE CARD SPANS THE WRAP. The respace's 36px inset
    narrows the text, and at 1010 the body then runs 52px past the map. By
    the same balance test the card takes the wrap's full column, 1080 at
-   1440, where the body ends 3px short of the map and its credit. The map
+   1440, where the body ended 3px short of the map and its credit. The map
    stops growing there, because the column does.
+   NO LONGER BALANCED SINCE 3.74: the reorder gave the getaway kit its own
+   tier below the Call, and the town body now runs 76px past the map at
+   1440. The card is already at the full column, so width cannot restore
+   it; recorded in proposed-changes.md 3.74 for a ruling, not re-tuned.
    Contact's landscape embed FILLS ITS COLUMN'S HEIGHT rather than keeping
    4:3: its details, hours and Call stand 475px tall at every card width,
    and a 4:3 embed never reaches that, so it would leave a white gap

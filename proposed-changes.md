@@ -10918,6 +10918,167 @@ Every other page's diff is its stamp line, as is the template's.
   is identical to 3.72's except the stamp lines.
 - No em dash was added.
 
+### 3.74 The card ends on the getaway kit. TEMPLATE AMENDMENT. BUILT 2026-09-29
+
+**Run two inherits it.** Greg's ruling on both directions cards, dated
+2026-09-29 by the Mac's local clock (the brief carried 2026-09-30, with an
+instruction to use the local date). One commit, one restamp.
+
+#### The reasoning, for the record
+
+**Open in Google Maps is an EXIT action.** It sat above the steps and the
+Call, so the exit outranked the conversion action, which is what the
+button grammar exists to prevent. **The rule: content, then the ask,
+then the getaway kit.**
+
+#### The pairs
+
+| Card | Before (3.73) | After (3.74) |
+|---|---|---|
+| Town (Jamison) | [Open in Google Maps + chip] / address / intro, steps, alternative route / Call | **chip alone** / intro, steps, alternative route / **Call** / **Open in Google Maps**, then the address |
+| Contact | Open in Google Maps / address, phone, email / hours / Call | address, phone, email / hours / **Call** / **Open in Google Maps** |
+
+**Every block moved whole, with no copy changed.** The town card's
+buttons, chip and address are byte-identical strings, and so is contact's
+button.
+- **The utilities are in the order the brief lists them:** the button,
+  then the address.
+- **The alternative-route paragraph stays with the steps,** above the
+  Call. The brief's list names "the intro line and the numbered steps".
+  The alternative route is route content, and by the ruling's own rule
+  (content, then the ask) it sits with them.
+- **Contact's details and hours stay exactly as they were,** as ruled.
+  Only the button moved.
+
+**The builder's section comment and contact's section comment** now state
+the order and the reason. The chip's qualifier comment now says the prose
+carrying "about 15 minutes" sits "directly below it". It was "two lines
+below", which was false once the address moved.
+
+#### Mechanics, and the value from the render
+
+| Rule | Before | After | What it serves |
+|---|---|---|---|
+| `.dir-utils` (new) margin-top | n/a | **36px** | the air below the ask; see below |
+| `.dir-utils .dir-address` | n/a | margin 20px 0 0 | the 3.73 step between blocks, inside the kit |
+| `.dir-card .contact-lines` margin-top | 20px | **0** | contact's lines now open the body, where the button did |
+| `.dir-top` | button and chip on one row | the chip alone | comment updated; the rule is unchanged |
+
+**36px below the Call, chosen from rendered candidates.** 26, 36 and 44
+were rendered side by side at 1440 and 390 on both cards:
+- **26,** the ask's own air above, paired the ghost button with the Call,
+  so it read as a second ask.
+- **44** began to detach the kit from the card.
+- **36** is the split's body inset, so the kit starts as far from the ask
+  as the body starts from the card's edge. It reads as the card's
+  closing tier.
+
+It is one value at every width. The ask keeps its 26px above.
+
+**Measured gaps, town card at 1440:** the chip, then 20, the intro, then
+18, the steps, then 19, the alternative route, then 26, the **Call**,
+then **36**, the kit (with 20 inside it), then the 36 inset. On contact:
+the lines, 26, the hours, 26, the **Call**, **36**, the button.
+
+#### A cost this brief did not name: the town card no longer balances
+
+**The kit's own tier makes the town body taller,** and 3.73's balance
+does not survive it. Measured as body content (the last block plus the
+inset) against the map and its credit:
+
+```
+          before (3.73)    after (3.74)
+ 900         +233             +259
+1024          +97             +176
+1440           -3              +76    <- the body now runs past the map
+```
+
+**The card is already at the full column, so width cannot restore it.**
+Nothing was re-tuned for it; it is for Greg. `site.css`'s comment that
+claimed the 3px balance was corrected in this commit to say it no longer
+holds, so it does not mislead the next reader. Contact's embed fills its
+taller column, at 539x523 at 1440.
+
+#### The Call alignment, 3.73's open item, for Greg to rule on the previews
+
+**After the move, the two cards still align their Call differently, and
+the difference now shows more.** Jamison's Call is centred, because
+`.prose + .cta-row` centres a row that follows a `.prose`. The kit under
+it sits left, so the card now reads left, centre, left. Contact's Call
+sits left over a left kit.
+
+Three previews were rendered at 1440 and 390, on both cards (working
+files, not committed):
+- **A:** as shipped.
+- **B:** both Calls left.
+- **C:** both centred.
+
+**Nothing was changed.** Both B and C are one scoped `.dir-card .cta-row`
+rule.
+
+#### Measured, confirmed rather than assumed
+
+**Jamison, the ask runs at 390.** The Call is still in-card furniture, so
+the classification is unchanged:
+
+```
+header Call (furniture)   -> proof cards' row (section ask)       1,516   unchanged
+proof cards' row          -> pairs' row (section ask)             1,998   unchanged
+pairs' row                -> card's Call (furniture)              2,014   was 2,146
+card's Call               -> promise band (section ask)           1,279   was 1,121
+promise band              -> footer (furniture)                   1,723   unchanged
+CEILING 2,014 (under 2,684); FLOOR 1,998 (over 1,634)
+```
+
+**The card's Call rose,** because the chip no longer shares a row with a
+button and the address left the top. The kit now fills the space below
+the Call.
+
+**Contact, its own rhythm at 390.** One section ask, so the floor has no
+pair:
+
+```
+header Call               -> options' Call card        285   unchanged
+options                   -> card's phone line       1,182   was 1,253
+card's phone line         -> card's Call               213   was 212
+card's Call               -> footer                    532   was 445
+footer runs                                       426, 171   unchanged
+```
+
+**The fold, 390x664, is unchanged on both pages:**
+
+| Page | Call | Clears the bar by | At 360x640 |
+|---|---|---|---|
+| Jamison | 464 to 526 | 78 | 54 |
+| Contact | 361 to 423 | 181 | 157 |
+
+**Variance: confirmed, not assumed.** No ids changed, so no list
+changed. `scripts/audit.py` and `scripts/test-audit-checks.py` have **no
+diff**; the fixtures pass as they stand, and the variance check passes on
+Jamison. The routing check still reads the chip, the prose and the steps.
+
+**Nothing else moved.** Every other page's diff is its stamp line, as is
+the template's. The sweep's differing entries are:
+- **Jamison and contact** at 1440, 390 and 360.
+- **The two redirect stubs.** They are byte-unchanged in git. The entries
+  that moved are only the date column of the directory listing Chrome
+  shows for them over `file://`, as recorded in 3.72.
+
+**Before and after crops of both cards at 1440 and 390 were rendered and
+inspected.** The "before" renders come from an export of HEAD's `docs/`.
+
+#### The suite
+
+- Both test scripts pass.
+- `stamp-assets.py --check` exits 0 after the restamp, and
+  `build-sitemap.py --check` exits 0.
+- `STAGING=1 audit.py --strict`: **23 pages at 95, Jamison at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 485 passing.**
+- The report differs from 3.73's only in the stamps and in the review
+  count's age: 18 days became 19 because the date changed. It is still
+  under the 35-day warning.
+- No em dash was added.
+
 ---
 
 ## 4. The claims list
