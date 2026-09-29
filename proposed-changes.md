@@ -9880,6 +9880,184 @@ other pages are identical by construction.
   on the sameAs bar, as every run has.
 - No em dash was added.
 
+### 3.67 One proof section: "Why drivers pass closer shops", as cards. TEMPLATE AMENDMENT. BUILT 2026-09-29
+
+**The town page's three stacked proof moments become one section.** Those
+were the header's chip row, the stat band and the ox argument band. Run
+two inherits it: the section, the chipless header, and the lists that
+follow them. One commit, one restamp.
+
+#### Greg's rulings, 2026-09-29, after seeing 3.66 shipped
+
+1. The header chip row, the stat band and the argument band become ONE
+   section, headed "Why drivers pass closer shops", built as cards. **The
+   argument band AS CONSTRUCTED is gone;** its heading and its vetted claims
+   survive inside the new section.
+2. **The chip row leaves the TOWN header,** and the phone strip goes with it.
+   Town headers return to crumb, kicker, H1, lead and Call. **A town-template
+   call only:** the service pages' heroes and strips are untouched.
+
+**Supersessions, striking nothing.** Each earlier record stands; this is the
+supersession:
+
+- **3.63's chips-in-the-town-header**, and its `.hero.field-ox` CSS;
+- **the stat band as the town page's white band**, from 3.62;
+- **3.64's and 3.66's argument band** as built.
+
+#### The section, `#why-the-trip`
+
+White, directly after the header: the one white band under the ox header.
+
+- **H2:** "Why drivers pass closer shops".
+- **Lead**, inside `.sec-head` (contact's `#options` grammar): "A collision
+  repair is two drives: one to drop the car off, one to pick it up.
+  Everything between them is on us." It is 3.64's approved first paragraph
+  cut at "on us."; **Greg approved the new sentence boundary in the 3.67
+  brief.**
+- **Six cards, in `.grid3`** (one column on a phone, two from 700px, 3x2
+  from 1000px). **Every line was already vetted, and nothing is newly
+  written:**
+  - **1 to 3, the figure cards, are the stat band's three stats, lifted from
+    `/collision-repair/`'s band by the builder, byte for byte:** Lifetime /
+    Warranty on all repair work / "If anything isn't right, we'll make it
+    right."; the `REVIEW_COUNT` figure / Google reviews / the rating and
+    counted date; 12 / Vehicle brands, factory-certified / the brand list.
+  - **4, Your right to choose:** 3.64's two sentences, with the link still
+    on "the choice of shop is yours".
+  - **5, Insurance paperwork handled:** a headline card, with no support
+    line, by ruling.
+  - **6, Free estimates:** 3.64's close, "Call first: the estimate is free,
+    and you'll know where you stand before the car goes anywhere."
+- **Closing ask:** the Call/Email row, replacing the argument band's,
+  centred by the existing section-bottom rule.
+
+**One vetted phrase does not survive, named so it is not lost unnoticed:**
+3.64's "a repair done to your manufacturer's own procedures". Greg's six
+cards were listed exactly, "nothing newly written", and none carries it. The
+factory certification it leaned on survives in card 3.
+
+**THE ODOMETER IS KEPT, a default rather than a ruling.** The section keeps
+the `.statband` class, so `site.js` still finds the three figures and they
+count on arrival, as they did in the band. That also gives the section its
+white ground. The brief was silent on motion; removing one class reverses
+this.
+
+#### The pairs
+
+| Where | Before (3.66) | After |
+|---|---|---|
+| town header | crumb, kicker, H1, lead, Call, **chip row** | crumb, kicker, H1, lead, Call |
+| after the header (phone) | `.proofstrip` with the four chips | (gone) |
+| white band | `#proof`, the stat band (three stats) | `#why-the-trip`: H2, lead, six cards, Call/Email |
+| ox band | `#why-the-trip`: H2, three paragraphs, Call/Email | (merged into the section above) |
+| para 1 | "...Everything between them is on us: the estimate, the insurance paperwork, and a repair done to your manufacturer's own procedures by a shop factory-certified for 12 brands." | the lead, cut at "on us."; the list lives as the cards |
+| para 2 | "Pennsylvania law says the choice of shop is yours..." | card 4, word for word |
+| para 3 | "And you don't have to make the drive to find out. Call first: ..." | card 6 carries "Call first: ..."; its opening sentence is not in Greg's composition |
+
+**The grounds:** ox header, **white proof section**, silver opening, white
+directions card, silver "What we fix", ox promise band, silver pairs,
+**silver FAQ**, white nearby. **No adjacent repeat in the part this brief
+changed.** The silver pairs beside the silver FAQ date from 3.63's
+placement, and are recorded here, not changed.
+
+#### CSS: one rule pair added, one set removed
+
+- **Added, `.card-figure`:** it centres the figure cards and sets their
+  numeral to `clamp(2.6rem, 4.4vw, 3.6rem)`. At the band's own size,
+  "Lifetime" runs about 320px wide into a card about 297px wide inside at
+  1440. The line-height stays the band's .88em, which is the step the
+  odometer rolls on.
+- **Removed, the dead CSS:** 3.63's `.hero.field-ox .badges` extensions,
+  from the four chip rules, served only the town header, and nothing wears
+  them now. The service heroes' `.heroB .badges` rules are untouched.
+  **3.66's `.dark` band tones stay:** contact and the blog still wear the ox
+  header, and the promise bands still use the grammar.
+
+#### The variance lists follow the template truthfully
+
+- **`TOWN_PATTERN_SECTIONS` is now `("start", "nearby", "real-repairs",
+  "why-the-trip")`:** `"proof"` died with the town stat band, and
+  `why-the-trip` now carries the whole merged section.
+- **`TOWN_PATTERN_CLASSES` is now `("svc-card",)`:** `"badges"` died with the
+  town chip row.
+
+**What ships is listed; what died, died.** A list naming what no town page
+carries would excuse text the template no longer ships.
+
+**Section 25, both directions, 19 checks:**
+
+- the base fixture's pattern section is now `why-the-trip`;
+- the pairs fixture stands alone ("left alone: identical pairs"), with shared
+  prose outside it still caught;
+- **new, the dead entries prove they left:** an identical chip row on two
+  town pages is COUNTED, and so is an identical `#proof` band;
+- **new, `svc-card` finally isolated.**
+
+**Mutation-tested, seven list mutants, every one red**, restored from a
+copy (`8b960593ad30` before and after):
+
+```
+"proof" re-added        1 red: the #proof band is counted       "badges" re-added     1 red: the chip row is counted
+"why-the-trip" dropped  2 red                                   "real-repairs" dropped 1 red
+"start" dropped         7 red                                   "nearby" dropped       7 red
+"svc-card" dropped      1 red, ONLY after the new fixture
+```
+
+**Found by the mutation run, and fixed:** dropping `svc-card` turned nothing
+red. The gap dates from 3.62, where the cards' shared text sat beside
+several other pattern sections and no fixture isolated the class. The new
+fixture, identical service cards alone, closes it.
+
+#### The numbers still find their checks
+
+- **Review count:** agrees everywhere, 274 and 4.9, counted 2026-09-10; the
+  staleness warning clock reads it (18 days).
+- **Brand count:** agrees everywhere at 12, with 3 strips, **13** text
+  mentions (14 before: the band's "12 brands" merged into card 3's "12
+  Vehicle brands") and 1 in the schema.
+- **Routing:** Jamison's directions still derive from the recorded routing.
+
+#### Measured
+
+**The ask runs at 390, by 3.65's two rules:**
+
+```
+header Call (furniture)     -> the section's Call/Email row (section ask)   1,399
+section's row               -> card's Call (furniture)                      2,176
+card's Call                 -> promise band (section ask)                   1,119
+promise band                -> pairs' row (section ask)                     1,979
+pairs' row                  -> footer (furniture)                           1,723
+footer's own links                                                     426, 170
+CEILING, the longest run between ANY two calls:  2,176   (under 2,684)
+FLOOR, the nearest two SECTION asks:             promise band -> pairs' row 1,979, section row -> promise band 3,357   (over 1,634)
+```
+
+**Both rules hold.**
+
+**The fold, 390x664, innerHeight 664.** The header is unchanged on a phone,
+because the chips were already hidden below 600px: crumb, kicker, a two-line
+H1, a three-line lead, and CALL at 401 to 463, clearing the call bar by
+141. **What now lands above the bar:** the whole ox header, then, from 511,
+the white proof section's heading, "Why drivers pass closer" whole, with
+"shops" cut by the bar at 604. Before, the silver chip strip sat there.
+360x640 clears by 117.
+
+**Nothing else moved:** every other page is **identical to 3.65, 69 of 69
+page-widths**, and that includes **all four service pages, whose chips and
+stat bands this brief does not touch.** The stubs are byte-unchanged.
+
+**Rendered and inspected at 1440 and 390:** the six cards three across and
+stacked, the figures centred and fitting, and the closing ask.
+
+#### The suite
+
+- Both test scripts pass, **208 checks**.
+- `stamp-assets.py --check` exits 0, and `build-sitemap.py --check` exits 0
+  (24 pages).
+- `STAGING=1 audit.py --strict`: **23 pages at 95, Jamison at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 485 passing.**
+- No em dash was added.
+
 ---
 
 ## 4. The claims list

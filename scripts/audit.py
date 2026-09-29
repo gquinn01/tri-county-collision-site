@@ -1436,12 +1436,11 @@ def check_brand_count_local(passes: list, warns: list, fails: list,
 # PATTERN TEXT IS DEFINED HERE, NEVER IN MARKUP. What the template repeats
 # on every town page by design is left out of both measures: anything in
 # a <nav> (the crumb), the sections whose ids are in TOWN_PATTERN_SECTIONS
-# (the trust band, the promise band, the nearby-towns links, from 3.63
-# the Real Repairs pairs, and from 3.64 the "Why drivers pass closer
-# shops" band, whose reasons do not change by town, so a per-town
-# paraphrase of it would be fake variance), the .svc-card links to the four service pages,
-# and from 3.63 the .badges chip row, which covers both the header's list
-# and the phone strip's, byte-identical on every town page by design. A page cannot mark its own
+# (the promise band, the nearby-towns links, the Real Repairs pairs from
+# 3.63, and "Why drivers pass closer shops", which from 3.67 carries the
+# figures and the chips' claims as cards, byte-identical on every town page
+# because the reasons do not change by town), and the .svc-card links to
+# the four service pages. A page cannot mark its own
 # shared prose as pattern to escape the measure, because the list is not
 # the page's to write. Everything else, the FAQ included, is compared.
 #
@@ -1673,8 +1672,12 @@ def llms_entry_for(url: str, root: str = None) -> str:
 
 TOWN_KIND = "town"
 TOWN_HUB_PATH = os.path.join("areas-served", "index.html")
-TOWN_PATTERN_SECTIONS = ("proof", "start", "nearby", "real-repairs", "why-the-trip")
-TOWN_PATTERN_CLASSES = ("svc-card", "badges")
+# 3.67: THE LISTS FOLLOW THE TEMPLATE. The town page's stat band ("proof")
+# and its header chip row (".badges") merged into #why-the-trip, so both
+# entries left: a list naming what no town page carries would excuse text
+# the template no longer ships. What ships is listed; what died, died.
+TOWN_PATTERN_SECTIONS = ("start", "nearby", "real-repairs", "why-the-trip")
+TOWN_PATTERN_CLASSES = ("svc-card",)
 TOWN_SHINGLE = 3
 TOWN_SHARED_MAX = 0.30
 TOWN_PLACE_NAMES = (

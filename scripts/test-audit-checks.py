@@ -984,7 +984,7 @@ def main():
         secs = "".join(f"<section><h2>{h}</h2><p>{p}</p></section>" for h, p in zip(h2s, prose))
         return (f'<html><head><meta name="tri-county-page" content="town"></head><body>'
                 f'<nav class="crumb"><ol><li>Home</li><li>{pattern}</li></ol></nav><main>'
-                f'<section id="proof"><p>{pattern}</p></section>{secs}'
+                f'<section id="why-the-trip"><p>{pattern}</p></section>{secs}'
                 f'<section id="start"><h2>We will get you back on the road.</h2><p>{pattern}</p></section>'
                 f'<a class="svc-card" href="#"><p>{pattern}</p></a>'
                 f'<section id="nearby"><h2>Nearby towns we serve</h2><p>{pattern}</p></section>'
@@ -1038,11 +1038,12 @@ def main():
     check("     left alone: identical pattern text, and the pattern H2s it carries",
           not f["shared_h2"] and all(r < audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
 
-    # The chip row and the Real Repairs pairs, 3.63: byte-identical on every
-    # town page by design, so pattern text, by the .badges class and the
-    # #real-repairs id. The chip row sits INSIDE the header, a substantive
-    # section, so only its class keeps it out; the pairs carry their own
+    # The Real Repairs pairs, 3.63: byte-identical on every town page by
+    # design, pattern text by the #real-repairs id. They carry their own
     # "Real Repairs" H2, so only their id keeps it from the H2 half.
+    # 3.67: THE CHIP ROW AND THE STAT BAND LEFT THE TOWN TEMPLATE, and their
+    # entries left the lists with them, so a chip row or a #proof band on
+    # two town pages is now COUNTED, like any other shared text.
     chips = ('<ul class="badges"><li>Free estimates</li><li>Insurance paperwork handled</li>'
              '<li>ASE and I-CAR Gold Class certified</li><li>Detailed after every repair</li></ul>')
     pairs = ('<section id="real-repairs"><h2>Real Repairs</h2><p>Restored to pre-accident condition</p>'
@@ -1051,18 +1052,40 @@ def main():
                                         ("Mercedes CLE 300", "Rear-end collision"),
                                         ("Nissan Murano", "Door dents"))) * 6 + '</section>')
 
-    def town_363(name, h2, prose):
+    def town_363(name, h2, prose, extra=""):
         return town(name, [h2], [prose]).replace(
-            "<main>", f'<main><section id="town-head"><h1>For {name}</h1>{chips * 4}</section>').replace(
+            "<main>", f'<main><section id="town-head"><h1>For {name}</h1>{extra}</section>').replace(
             '<section id="nearby">', pairs + '<section id="nearby">')
 
     f = vary({"jamison": town_363("Jamison", "Getting here from Jamison", a_text),
               "warminster": town_363("Warminster", "Getting here from Warminster", b_text)})
-    check("     left alone: identical chip rows and identical pairs on two town pages",
+    check("     left alone: identical pairs on two town pages",
           not f["shared_h2"] and all(r < audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
     f = vary({"jamison": town_363("Jamison", "Getting here from Jamison", a_text),
               "warminster": town_363("Warminster", "Getting here from Warminster", a_text)})
-    check("     caught: shared prose OUTSIDE the chips and pairs still reads as a copy",
+    check("     caught: shared prose OUTSIDE the pairs still reads as a copy",
+          any(r >= audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
+    f = vary({"jamison": town_363("Jamison", "Getting here from Jamison", a_text, chips * 4),
+              "warminster": town_363("Warminster", "Getting here from Warminster", b_text, chips * 4)})
+    check("     3.67: an identical chip row on two town pages is COUNTED, no longer pattern",
+          any(r >= audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
+    # The service cards, pattern by class since 3.62, isolated only in 3.67:
+    # until then a mutant dropping "svc-card" from the list turned nothing
+    # red, because no fixture shared text in the cards alone.
+    cards = "".join(f'<a class="svc-card" href="#"><h3>{t}</h3><p>{d}</p></a>' for t, d in (
+        ("Collision Repair", "Minor and major collision damage, with a lifetime warranty on the work."),
+        ("Commercial Collision Repair", "Work vehicles and fleets, with help on the insurance side."),
+        ("Auto Glass Repair", "Windshields, side windows and rear windows."),
+        ("Paintless Dent Repair", "Door dings and hail dents, fixed without repainting."))) * 3
+    f = vary({"jamison": town_363("Jamison", "Getting here from Jamison", a_text).replace("</main>", cards + "</main>"),
+              "warminster": town_363("Warminster", "Getting here from Warminster", b_text).replace("</main>", cards + "</main>")})
+    check("     left alone: identical service cards on two town pages",
+          all(r < audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
+    proof = ('<section id="proof"><p>' + " ".join(["Lifetime warranty on all repair work, 274 Google "
+             "reviews, twelve vehicle brands factory-certified."] * 6) + '</p></section>')
+    f = vary({"jamison": town_363("Jamison", "Getting here from Jamison", a_text, proof),
+              "warminster": town_363("Warminster", "Getting here from Warminster", b_text, proof)})
+    check("     3.67: an identical #proof band on two town pages is COUNTED, no longer pattern",
           any(r >= audit.TOWN_SHARED_MAX for _a, _b, r in f["pairs"]), f)
 
     # The case for the trip, 3.64: byte-identical on every town page by

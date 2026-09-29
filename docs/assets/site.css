@@ -1245,20 +1245,18 @@ section { padding: var(--pad) 0; }
    there too. Without these two, .crumb ol and .lead print --ink-2 on ox,
    which is dark on dark. */
 .heroB .crumb li + li::before { color: rgb(var(--silver-rgb) / .5); }
-/* THE TOWN HEADER WEARS THE SAME CHIPS, added 2026-09-28, proposed-changes.md
-   3.63: the service heroes' chip row is the town template's, so these
-   rules name .hero.field-ox beside .heroB rather than being copied. On the
-   ox header there is no photograph under a chip, so the flat band's
-   measured tones hold; the scrim cap further down is not needed and does
-   not apply. Contact's and the blog's ox headers carry no chips. */
-.heroB .badges, .hero.field-ox .badges { margin-top: 22px; }
-.heroB .badges li, .hero.field-ox .badges li { background: transparent; border-color: rgb(var(--silver-rgb) / .55); color: var(--silver); }
-.heroB .badges svg, .hero.field-ox .badges svg { stroke: var(--silver); }
+/* THE TOWN HEADER'S CHIPS ARE GONE, 3.67: the extensions 3.63 added here
+   (.hero.field-ox beside .heroB) served only the town header, and Greg's
+   ruling of 2026-09-29 took the chip row out of it. The service heroes'
+   rules below are untouched. */
+.heroB .badges { margin-top: 22px; }
+.heroB .badges li { background: transparent; border-color: rgb(var(--silver-rgb) / .55); color: var(--silver); }
+.heroB .badges svg { stroke: var(--silver); }
 /* CHIPS IN THE HERO ARE A DESKTOP ARRANGEMENT ONLY. Four rows of them
    over a phone photograph costs about 210px, which fails the fold and
    buries the picture. Below 600px the strip below the hero carries them
    instead. See .proofstrip. */
-@media (max-width: 599px) { .heroB .badges, .hero.field-ox .badges { display: none; } }
+@media (max-width: 599px) { .heroB .badges { display: none; } }
 
 /* THE PHONE COPY BLOCK IS TIGHTENED, because on a phone the block's own
    height is what decides whether the CTA clears the fold, not the hero's
@@ -2395,6 +2393,15 @@ footer.site a { color: var(--silver); }
 }
 .stat-l { display: block; margin-top: 15px; font-size: 1.06rem; font-weight: 700; }
 .stat-s { display: block; margin-top: 7px; font-size: .95rem; color: var(--ink-2); }
+/* THE FIGURES AS CARDS, added 2026-09-29, proposed-changes.md 3.67: the
+   town page's proof section carries the stat band's three figures in
+   cards, beside three claim cards, so Lifetime, the review count and 12
+   still land at a glance. Centred, as .stat is. The band's size would run
+   "Lifetime" about 320px wide into a card with about 297px inside it at
+   1440, so a card sets its own; the line-height stays the band's .88em,
+   which is the step site.js's odometer rolls on. */
+.card-figure { text-align: center; }
+.card-figure .stat-n { font-size: clamp(2.6rem, 4.4vw, 3.6rem); }
 
 /* ---------- The six-step process rail ---------- */
 .steps { display: grid; gap: 22px; counter-reset: step; }
