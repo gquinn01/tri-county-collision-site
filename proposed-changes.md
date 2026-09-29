@@ -10530,6 +10530,148 @@ real-browser check of the embed from 3.65 still stands.
   is identical to 3.69's except the stamp lines.
 - No em dash was added.
 
+### 3.71 The header sells the trip, and the opening widens the map. TEMPLATE AMENDMENT. BUILT 2026-09-28
+
+**Run two inherits both.** Greg's rulings of 2026-09-29. Two sentences
+changed on Jamison, and nothing else visible. No CSS changed, so there
+was no restamp.
+
+#### The pairs
+
+| Where | Before (3.70) | After (3.71) | Source |
+|---|---|---|---|
+| `#town-head`, lead | "Tri-County Collision is a family-owned body shop in Southampton, about 15 minutes from Jamison." | "Tri-County Collision is a family-owned body shop in Southampton, about 15 minutes from Jamison. Factory-certified for 12 brands, with a lifetime warranty on all repair work." | the brief, verbatim. "12" is BRAND_COUNT's digit form. The warranty words are the Lifetime card's label, recombined and approved by Greg as fact-checker via this brief |
+| `#for-jamison`, first paragraph | "...we fix cars for drivers from Jamison, Warminster, Richboro and Ivyland. We are not in Jamison, and we won't pretend to be. We are about 8 miles down the road." | "...we fix cars for drivers from Jamison, Warminster, Richboro, Ivyland and the surrounding area. We are not in Jamison, and we won't pretend to be. We are about 8 miles down the road." | the brief, verbatim, and without a serial comma, as the page already writes its lists |
+
+#### TEMPLATE RULE: the lead is two sentences
+
+- **The FIRST sentence is per-town:** name, place and routed minutes.
+- **The SECOND sentence is the same two claims on every town page, BY
+  DESIGN.** True claims do not vary by town, and a paraphrase per town
+  would be fake variance.
+- **Recorded in the page too,** in the header's own comment, so the
+  builder of run two reads it where they work.
+
+**Both checks still read the lead, confirmed:**
+- **The brand-count check** finds the new "12": Jamison's visible
+  mentions go from one to two, the site from 13 to 14, and all of them
+  say 12.
+- **The routing check** reads "about 15 minutes" in the lead exactly as
+  before.
+
+**One test's anchor moved, and nothing about what it tests.** In
+`scripts/test-audit-checks.py`, section 26 mutates the lead's minute
+count, and its anchor was the old sentence end,
+`about 15 minutes from Jamison.</p>`, which no longer exists. The anchor
+is now `about 15 minutes from Jamison. Factory-certified`. The anchor
+still occurs exactly once, the mutant still changes the lead's minutes
+and nothing else, and the check still catches it:
+"the page says 20 minutes ...; the recorded routing derives 15".
+
+#### What the shared sentence adds to every pair, the baseline for run two
+
+**The header is not a pattern section,** so the sentence counts in the
+town-to-town measure. That measure uses 3-word shingles, place names
+masked, and the pattern sections left out. Measured on Jamison with the
+gate's own functions (`town_shingles`):
+
+```
+page shingles, 3.70                      403
+page shingles, 3.71                      418
+added by the lead's second sentence       15
+  inside the sentence                     11
+  bridging in  ("from zzplace factory", "zzplace factory certified")    2
+  bridging out ("repair work call", "work call 215")                    2
+already elsewhere on the page              0
+share of the page                        15 / 418 = 3.59%
+```
+
+**For run two, this is the baseline it adds to every pair.**
+- **Each of the 15 is shared by any two town pages** whose first sentence
+  ends "from [town]." as Jamison's does, since place names mask to one
+  token and the Call button follows on every page.
+- **The pair figure is shared shingles over the smaller page's total,**
+  so on pages Jamison's size the sentence alone contributes about
+  **3.6 points** toward the 30% ceiling (`TOWN_SHARED_MAX`). A shorter
+  page pays proportionally more.
+- **The bridging-in two are not guaranteed.** A first sentence that ends
+  differently, for example "...about 12 minutes from Churchville
+  village.", shares only 13.
+
+**The opening's change adds 5 shingles** ("zzplace and the", "and the
+surrounding", "the surrounding area", "surrounding area we", "area we
+are"). The opening is per-town prose, so they count only if a second
+town's opening reuses the phrase. **3.62's rule stands:** each opening is
+written anew, and reusing "and the surrounding area" would add these 5 to
+that pair. No list or check changed.
+
+#### Item 2: the wider area, and the line that stays
+
+- **"And the surrounding area" names no town,** so it needs no
+  hub-membership check.
+- **The four towns it does name are unchanged:** Jamison, Warminster,
+  Richboro and Ivyland, all hub-served, as 3.62 ruled.
+- **"We are not in Jamison, and we won't pretend to be." WAS CONSIDERED
+  AND KEPT, by Greg's ruling of 2026-09-29.** The question of cutting it
+  was raised and answered. It is the page's protected-voice line, and its
+  honesty is what makes the rest credible. **No future sweep flattens
+  it.** This is recorded here and in the opening's own comment on the
+  page.
+
+#### Measured, confirmed rather than assumed
+
+**The fold, 390x664, innerHeight 664.** The lead grows from 3 lines to
+5, 158px tall where it was 95:
+
+```
+                 3.70           3.71
+lead             280 to 375     280 to 438
+CALL             401 to 463     464 to 526
+call bar top     604            604
+CLEARANCE        141            78
+proof starts     511            574
+```
+
+**The header still fits:** Call sits whole above the bar with 78px to
+spare. At **360x640** it clears by **54**, where it was 117. **At 1440**
+the lead takes 3 lines and the header grows 32px; Call sits at 458 to 520
+in a 900px viewport.
+
+**The ask runs at 390, by 3.65's two rules:**
+
+```
+header Call (furniture)   -> proof cards' row (section ask)         1,516   unchanged
+proof cards' row          -> pairs' row (section ask)               1,998   unchanged
+pairs' row                -> directions card's Call (furniture)     2,175   was 2,146
+card's Call               -> promise band (section ask)             1,119   unchanged
+promise band              -> footer (furniture)                     1,723   unchanged
+CEILING 2,175 (under 2,684); FLOOR 1,998 (over 1,634)
+```
+
+**The one run that moved** grew 29px, because the opening gained a line
+at 390 (510 to 538).
+
+**Nothing else moved:** 271 of 278 probe entries are identical to 3.70.
+The seven that differ are all Jamison. Every other page is
+byte-unchanged; there is no restamp.
+
+**Rendered and inspected at 1440 and 390,** the header and the opening.
+One observation, not ruled on and not changed: **at 1440 the opening's
+first paragraph now ends on a one-word line, "road."** Before, it closed
+in three lines. Nothing in the brief covers it, and fixing it would mean
+either copy or a wrapping rule every page shares, so it is reported
+here.
+
+#### The suite
+
+- Both test scripts pass.
+- `stamp-assets.py --check` exits 0, and `build-sitemap.py --check` exits 0.
+- `STAGING=1 audit.py --strict`: **23 pages at 95, Jamison at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 485 passing.**
+- The report differs from 3.70's in two lines only: the brand mentions,
+  13 to 14, all 12; and Jamison's word count, ~832 to ~847.
+- No em dash was added.
+
 ---
 
 ## 4. The claims list

@@ -1180,7 +1180,7 @@ def main():
             ("another step's distance on step 2, 4 miles made 2",
              one("follow it for about 4 miles", "follow it for about 2 miles"), llms),
             ("a stale minute count in the lead",
-             one("about 15 minutes from Jamison.</p>", "about 20 minutes from Jamison.</p>"), llms),
+             one("about 15 minutes from Jamison. Factory-certified", "about 20 minutes from Jamison. Factory-certified"), llms),
             ("a stale minute count in the chip", one("~15 min from Jamison", "~18 min from Jamison"), llms),
             ("a stale total distance, 8.4 made 9.1",
              jam.replace("about 8.4 miles", "about 9.1 miles"), llms),
