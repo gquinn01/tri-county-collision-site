@@ -785,11 +785,15 @@ section { padding: var(--pad) 0; }
    a visible "Open in Google Maps" button, the drive-time chip, the address,
    the steps, and Call closing it. One column at every width, so the map
    sits over what it shows. The town pages draw their route; contact embeds
-   Google's map. Each rule names what it serves. */
+   Google's map. Each rule names what it serves.
+   SIDE BY SIDE FROM 900px, 3.70, Greg's ruling of 2026-09-29, which
+   supersedes the one-column reading above from that width and strikes
+   nothing: below 900px the card stacks exactly as 3.65 built it. */
 /* The card: white, the site's hairline and radius, clipped so the map's
    corners follow the card's. Narrow enough that a portrait route map is
    not a wall at 1440. */
 .dir-card { max-width: 520px; margin: 0 auto; background: var(--panel); border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+
 /* The map fills the card's top edge to edge, so its own frame comes off. */
 .dir-card .map-box > a { border: 0; border-radius: 0; }
 .dir-card .map-credit { margin: 8px 22px 0; }
@@ -808,6 +812,23 @@ section { padding: var(--pad) 0; }
 .dir-address svg { flex: 0 0 auto; width: 22px; height: 22px; fill: none; stroke: var(--ox); stroke-width: 2; }
 .dir-address a { color: var(--ink); }
 .dir-card .prose { max-width: none; }
+/* THE SPLIT. Two equal columns, the map first. 1010px IS THE RENDER'S
+   NUMBER, not a round one: at equal columns it is the narrowest card at
+   which Jamison's steps rewrap short enough that the body ends no lower
+   than the portrait map and its credit (map 16px the longer; at 1005 the
+   body runs 15px past it). Measured in proposed-changes.md 3.70.
+   Contact's landscape embed FILLS ITS COLUMN'S HEIGHT rather than keeping
+   4:3: its details, hours and Call stand 475px tall at every card width,
+   and a 4:3 embed never reaches that, so it would leave a white gap
+   beside them. It is 504 by 475 at the full card, still wider than tall.
+   The column stretches, so the town's figure does too, and its map keeps
+   its own ratio at the top, which is where it was.
+   AFTER THE CARD'S BASE RULES ON PURPOSE: it overrides .dir-embed's
+   4:3 at equal specificity, so it has to come later in the file. */
+@media (min-width: 900px) {
+  .dir-card { max-width: 1010px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .dir-embed { aspect-ratio: auto; height: 100%; }
+}
 
 /* ===========================================================================
    THE LIFT. ADOPTED 2026-09-10, FROM CANDIDATE C OF drafts/motion/.

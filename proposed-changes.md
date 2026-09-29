@@ -10325,6 +10325,211 @@ level at 1440; and the opening ends on the ask.
   went from ~849 to ~832.
 - No em dash was added.
 
+### 3.70 The directions card goes side by side, and the proof photos join the proof section, on ink. TEMPLATE AMENDMENT. BUILT 2026-09-28
+
+**Run two inherits all three.** Greg's three rulings of 2026-09-29. One
+commit, one restamp. No copy changed: every sentence on both pages is
+byte-identical to 3.69.
+
+#### Greg's rulings
+
+1. **The card spreads at desktop.** From 900px the map and the body sit
+   side by side inside the directions card, on the town pages and on
+   `/contact-us/`. Below 900px it stacks exactly as it did. The card's
+   max-width is the render's number. **Supersedes 3.65's one-column
+   reading of the card; strikes nothing.**
+2. **Real Repairs moves up,** directly under "Why drivers pass closer
+   shops": the claims first, then the photographs that prove them.
+3. **Real Repairs takes the ink ground,** `/collision-repair/`'s own
+   treatment of the section, reused and not reinvented. The opening keeps
+   its silver.
+
+#### The pairs
+
+| What | Before (3.69) | After (3.70) |
+|---|---|---|
+| Jamison section order | ox header, proof cards, opening, directions, What we fix, promise band, **Real Repairs**, FAQ, nearby | ox header, proof cards, **Real Repairs**, opening, directions, What we fix, promise band, FAQ, nearby |
+| `#real-repairs` | `<section id="real-repairs">`, silver | `<section id="real-repairs" class="dark field-ink">`, ink |
+| `.dir-card`, 900px and up | one column, max-width 520px, map over body | two equal columns, map first, max-width **1010px** |
+| `/contact-us/` embed, 900px and up | 4:3 over the details | fills its column's height beside the details, 504x475 at the full card |
+| Below 900px, both pages | stacked | **unchanged**, same CSS path |
+
+**The section moved byte for byte.** Every Jamison section was compared
+with 3.69's, comments stripped. Eight are identical, and `#real-repairs`
+differs only by its class. Everything outside `<main>` is identical too.
+The builder's section comments are renumbered, and two of them that
+described the old order now describe the new one.
+
+#### Item 3: the ink treatment, and its tones
+
+**Nothing was written for it.** The class pair `dark field-ink` puts the
+section under rules that already exist for `/collision-repair/`:
+- the ink ground;
+- `.dark .ba img`, the dark-ground print shadow;
+- `.dark .ba figcaption` and its `strong`;
+- `#real-repairs.dark .repairs-note`;
+- `.dark .cta-row`;
+- `.field-ink .btn` and `.dark .btn-ghost`.
+
+**Every tone was confirmed by computation, not assumed.** The computed
+colour, background, border and shadow of each element were read on both
+pages at 1440:
+- the section;
+- the title;
+- the kicker;
+- the note;
+- both caption tones;
+- both chips;
+- the prints;
+- both buttons.
+
+**All eleven are IDENTICAL to collision's.** So no pair on Jamison's ink
+section is new, and every ratio is one collision's record already holds.
+No new measurement was owed.
+
+**It is 18px taller on ink**, 2,059 against 2,041 at 390. That is
+`.dark .cta-row`'s 44px of air above the ask, where a light section gets
+26px. It is the collision rule doing what it does there, and it was
+reused as ruled.
+
+#### The grounds, printed from the rendered page
+
+```
+#town-head      ox      rgb(105, 28, 23)
+#why-the-trip   white   rgb(255, 255, 255)
+#real-repairs   INK     rgb(18, 27, 39)
+#for-jamison    silver  (page ground)
+#getting-here   white   rgb(255, 255, 255)
+#fix            silver  (page ground)
+#start          ox      rgb(105, 28, 23)
+#faq            silver  (page ground)
+#nearby         white   rgb(255, 255, 255)
+footer.site     ink     rgb(18, 27, 39)
+ADJACENT REPEATS: none
+```
+
+**The directions section keeps its white**, because silver on either
+side is what the alternation dictates. Nothing else flipped.
+
+**THIS CLOSES 3.67'S OPEN FINDING.** 3.67 recorded "silver pairs beside
+the silver FAQ" as a known adjacent repeat from 3.63's placement,
+recorded and not changed. Item 2 closed it: Real Repairs left the FAQ's
+side. Item 3 made the pairs ink, so they repeat nothing where they now
+sit either. The FAQ now follows the ox promise band.
+
+#### Variance: confirmed, not assumed
+
+The ids did not change, so `TOWN_PATTERN_SECTIONS` and
+`TOWN_PATTERN_CLASSES` did not either. `scripts/audit.py` and
+`scripts/test-audit-checks.py` have **no diff** at this commit. The
+fixtures pass as they stand, and the variance check passes on Jamison.
+
+#### Item 1: the number, from the render
+
+**Two equal columns, the map first.** The card's width was searched at
+1440 by measuring where each column ends, from the card's top:
+
+```
+max-width   map + credit ends   body content ends (Call + padding)
+  1000            715                  733      body 18 longer
+  1005            718                  733      body 15 longer
+  1010            721                  705      map 16 longer   <- chosen
+  1020            728                  705      map 23 longer
+  1040            741                  705      map 36 longer
+  1080            748                  649      map 99 longer
+```
+
+**Why 1,010:** it is the narrowest card at which the steps rewrap short
+enough that the body ends no lower than the portrait map. Past it, the
+map only grows away from the text. The number balances **Jamison's**
+body. Run two's towns have their own steps, so each will sit a line
+either side of level. That is expected, not re-tuned per town: one card,
+one number.
+
+**Contact's landscape embed fills its column's height** instead of
+keeping 4:3. Its details, hours and Call are 475px tall at every card
+width, and a 4:3 embed never reaches that: at 1,010 it would be 504x378,
+with a 97px white gap beside the details. Filled, it is 504x475, still
+wider than tall. The town's figure stretches the same way, and its SVG
+keeps its own ratio at the top, which is where it was.
+
+**Measured at every width that matters,** with scroll width equal to the
+viewport at all of them:
+
+```
+            Jamison card     map        body       contact card   embed
+  360       stacked          318x424    318x967    stacked        318x239
+  390       stacked          348x464    348x939    stacked        348x261
+  899       stacked, 520     518x691    518x692    stacked, 520   518x389
+  900       860x815 split    429x572    429x813    860x477 split  429x475
+ 1024       984x734 split    491x655    491x732    984x477 split  491x475
+ 1440      1010x723 split    504x672    504x721   1010x477 split  504x475
+```
+
+**The one cost, recorded:** at exactly 900px the town body is 813 tall
+beside a 572 map: 241px of column under the map, the credit's two lines
+taking the top of it. At that
+width the button and chip also wrap to two rows, as they do on a phone.
+It is gone by 1024. The 900px breakpoint is the ruling's, and the card
+follows it.
+
+**The CSS** is one media block after the card's base rules. It must come
+after them, because it overrides `.dir-embed`'s 4:3 at equal specificity;
+its comment says so. `.dir-card .numbered`'s one-column rule stands. The
+header comment of the directions card block records the supersession.
+
+#### Measured, confirmed rather than assumed
+
+**The ask runs at 390, by 3.65's two rules. Every call counts toward the
+ceiling; the floor governs the repeated section asks only:**
+
+```
+header Call (furniture)   -> proof cards' row (section ask)             1,516   unchanged
+proof cards' row          -> PAIRS' ROW (section ask)                   1,998   NEW NEIGHBOUR
+pairs' row                -> directions card's Call (furniture)         2,146
+card's Call               -> promise band (section ask)                 1,119
+promise band              -> footer (furniture)                         1,723
+footer                    -> footer, call bar                           426, 171
+CEILING 2,146 (under 2,684).
+FLOOR: the two section asks that item 2 brought together are 1,998 apart
+(over 1,634); pairs' row to the promise band is 3,327.
+```
+
+**The risk the brief named did not land.** The pairs' ask is now the
+proof cards' ask's nearest section neighbour, at 1,998, which is 364 over
+the floor. No run breaks the ceiling. So there was no stop, and no ask
+was dropped.
+
+**The fold, 390x664, innerHeight 664:** CALL 401 to 463, the call bar at
+604, clearing it by 141, unchanged. The proof section still starts at
+511; the pairs now start at 2,166, well below it. At 360x640 it clears by
+117, unchanged.
+
+**Nothing else moved:** 268 of 278 probe entries are identical to 3.69.
+The ten that differ are Jamison at 1440, 390 and 360, and `/contact-us/`
+at 1440 only. **Contact's 390 and 360 layouts are identical,** so it
+stacks exactly as it did. Every other page's diff is its stamp line.
+
+**Rendered and inspected at 1440 and 390, on both pages:**
+- **Jamison:** the ink pairs under the white cards, with ox AFTER chips,
+  dark prints and the ask centred on ink; the directions card splits at
+  1440 and stacks at 390.
+- **Contact:** the embed beside the details at 1440, stacked at 390.
+
+**One headless render at 1440 painted the embed blank.** It was timing:
+the same render, repeated, drew the tiles filling the column. Greg's
+real-browser check of the embed from 3.65 still stands.
+
+#### The suite
+
+- Both test scripts pass.
+- `stamp-assets.py --check` exits 0 after the restamp, and
+  `build-sitemap.py --check` exits 0.
+- `STAGING=1 audit.py --strict`: **23 pages at 95, Jamison at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 485 passing.** The report
+  is identical to 3.69's except the stamp lines.
+- No em dash was added.
+
 ---
 
 ## 4. The claims list
