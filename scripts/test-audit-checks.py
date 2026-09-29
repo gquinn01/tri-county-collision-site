@@ -1429,6 +1429,74 @@ def main():
     p, w, f, n, kind = run_kind("", hub(("richboro-pa", "About 12 minutes.")))
     check("     an undeclared page is not read as the hub", "does not derive" not in f, f)
 
+    # BATCH 1, 3.81: the variance gate under Greg's option C, proved in both
+    # directions on the shipped pages; the empty-map check; the town
+    # script's title rule and derived nearby order.
+    print("31. The town tier: option C's gate both ways, an undrawn map, the town script's rules")
+    import importlib.util as _ilu
+    _spec = _ilu.spec_from_file_location("build_town", os.path.join(os.path.dirname(os.path.abspath(__file__)), "build-town.py"))
+    bt = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(bt)
+    tier = {os.path.basename(os.path.dirname(f)): f for f in glob.glob(os.path.join(root, "docs", "areas-served*", "index.html"))}
+
+    def pair(a_html, b_html, a_key, b_key):
+        r = audit.town_variance_findings({"a": (a_html, audit.own_town_names(tier[a_key])),
+                                          "b": (b_html, audit.own_town_names(tier[b_key]))})
+        return r["pairs"][0][2], r["shared_h2"]
+    ben_k, ric_k = "areas-served-collision-repair-bensalem-pa", "areas-served-collision-repair-richboro-pa"
+    ben, ric = open(tier[ben_k]).read(), open(tier[ric_k]).read()
+    base, _h = pair(ben, ric, ben_k, ric_k)
+    allpairs = audit.town_variance_findings({k: (open(f).read(), audit.own_town_names(f)) for k, f in tier.items()})
+    worst = max(x[2] for x in allpairs["pairs"])
+    check("     the shipped tier clears the gate: every pair under 30%, no shared H2",
+          worst < audit.TOWN_SHARED_MAX and not allpairs["shared_h2"], (worst, allpairs["shared_h2"]))
+    ben_open = re.search(r'(?s)<section id="for-bensalem">.*?<div class="prose"[^>]*>(.*?)</div>', ben).group(1)
+    ric_open = re.search(r'(?s)(<section id="for-richboro">.*?<div class="prose"[^>]*>)(.*?)(</div>)', ric)
+    copied = ric.replace(ric_open.group(0), ric_open.group(1) + ben_open + ric_open.group(3))
+    v, _h = pair(ben, copied, ben_k, ric_k)
+    check("     caught: Bensalem's opening copied into Richboro's page fails the gate",
+          v >= audit.TOWN_SHARED_MAX, (base, v))
+    ben_ans = re.findall(r"(?s)<details>.*?<p>(.*?)</p>", ben)[3]
+    ric_ans = re.findall(r"(?s)<details>.*?<p>(.*?)</p>", ric)
+    copied2 = ric
+    for x in ric_ans[2:4]:
+        copied2 = copied2.replace(f"<p>{x}</p>", f"<p>{ben_ans}</p>", 1)
+    v2, _h = pair(ben, copied2, ben_k, ric_k)
+    check("     caught: Bensalem FAQ answers copied into Richboro's page fail the gate",
+          v2 >= audit.TOWN_SHARED_MAX, (base, v2))
+    ben_steps = re.search(r'(?s)<ol class="numbered">.*?</ol>', ben).group(0)
+    ric_steps = re.search(r'(?s)<ol class="numbered">.*?</ol>', ric).group(0)
+    v3, _h = pair(ben, ric.replace(ric_steps, ben_steps), ben_k, ric_k)
+    check("     the derived steps do not count: Bensalem's steps in Richboro's card leave the pair unchanged",
+          abs(v3 - base) < 1e-9, (base, v3))
+    intro_ben = re.search(r'(?s)<div class="dir-body">\s*<div class="prose">\s*(<p>.*?</p>)', ben).group(1)
+    intro_ric = re.search(r'(?s)<div class="dir-body">\s*<div class="prose">\s*(<p>.*?</p>)', ric).group(1)
+    v4, _h = pair(ben, ric.replace(intro_ric, intro_ben), ben_k, ric_k)
+    check("     the card's intro line does not count either", abs(v4 - base) < 1e-9, (base, v4))
+    jam = open(tier["areas-served-collision-repair-jamison-pa"]).read()
+    tt = audit._TownText()
+    tt.feed(jam)
+    words = " ".join(" ".join(tt.words).split())
+    check("     Jamison's alternative-route paragraph is prose and still counts",
+          "Staying on York Road" in words and "From the crossroads" not in words and "Head south on York" not in words, None)
+    town_meta = '<meta name="tri-county-page" content="town">'
+    for label, frag, want in (
+            ("a town page whose MAP markers are empty", "<!-- MAP:BEGIN, written by x --><!-- MAP:END -->", "map is empty"),
+            ("a town page with no MAP markers at all", "<p>No map.</p>", "no MAP markers")):
+        p, w, f, n, kind = run_kind(town_meta, frag)
+        check(f"     caught as a critical: {label}", want in f, f)
+    p, w, f, n, kind = run_kind(town_meta, '<!-- MAP:BEGIN, x --><svg viewBox="0 0 1 1" role="img" aria-label="Map"></svg><!-- MAP:END -->')
+    check("     a drawn map passes", "map is drawn" in p and "map is empty" not in f, (p, f))
+    for name in bt.TOWN_NAMES.values():
+        t = bt.title_for(name)
+        full = f"Collision Repair for {name}, PA | Tri-County Collision"
+        check(f"     the title for {name} is {len(t)} characters, and the short brand only where needed",
+              len(t) <= 60 and (t == full if len(full) <= 60 else t.endswith("| Tri-County")), t)
+    check("     Jamison's nearby order derives: Warminster, Richboro, Hatboro, Horsham",
+          bt.nearest("jamison-pa") == ["warminster-pa", "richboro-pa", "hatboro-pa", "horsham-pa"], bt.nearest("jamison-pa"))
+    check("     build-town.py carries no Jamison nearby exception",
+          "nearby" not in bt.CONTENT["jamison-pa"], None)
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} check(s) failed:")

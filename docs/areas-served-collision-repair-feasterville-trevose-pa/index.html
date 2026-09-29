@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       FEASTERVILLE-TREVOSE, A TOWN PAGE OF THE AREAS TIER, built by
+       scripts/build-town.py from the Jamison template (3.62 to 3.76) in run
+       two (3.77 onward), proposed-changes.md, which holds every per-town
+       sentence as a pair. Every drive figure, road, turn and compass word
+       is TOWN_ROUTES['feasterville-trevose-pa'] in scripts/audit.py, the routing the strategy
+       chat verified independently (3.78), and the audit's routing check
+       gates the page. The township, county and crossroads are
+       OpenStreetMap's (3.81). Nothing about Feasterville-Trevose that a map cannot check
+       is on this page.
+
+       BUILD ORDER: this page first, then scripts/prepare-map-image.py
+       --frame town --town feasterville-trevose-pa --name "Feasterville-Trevose", which draws between the MAP markers. Rebuilding the page
+       empties them, and the audit fails a town page with an empty map.
+
+       STAGING, DELIBERATE, AND NOT A DEFECT: noindex below, docs/robots.txt
+       disallows everything, and the canonical is absolute to the
+       production domain. All three come off together at cutover.
+
+       NO PRICE, OFFER, REVIEW OR RATING MARKUP.
+       ============================================================ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Ink. The palette lives in assets/site.css; a meta tag cannot read a
+       custom property, which is why this one hex is duplicated. -->
+  <meta name="theme-color" content="#121B27">
+
+  <title>Collision Repair for Feasterville-Trevose, PA | Tri-County</title>
+  <meta name="description" content="Tri-County Collision in Southampton repairs cars for Feasterville-Trevose, PA drivers, about 6 minutes away. Directions, free estimates, (215) 322-5350.">
+
+  <link rel="canonical" href="https://tricountycollision.com/areas-served-collision-repair-feasterville-trevose-pa/">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- A TOWN PAGE, declared, and exempt from nothing: Greg's ruling of
+       2026-09-28, proposed-changes.md 3.62. It carries a real FAQ and has
+       to earn its words. The tier's gate is the variance check in
+       scripts/audit.py, which compares every town page with its siblings
+       and the hub. -->
+  <meta name="tri-county-page" content="town">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Collision Repair for Feasterville-Trevose, PA | Tri-County">
+  <meta property="og:description" content="Tri-County Collision in Southampton repairs cars for Feasterville-Trevose, PA drivers, about 6 minutes away. Directions, free estimates, (215) 322-5350.">
+  <meta property="og:url" content="https://tricountycollision.com/areas-served-collision-repair-feasterville-trevose-pa/">
+  <!-- NO IMAGE ON THIS PAGE, SO ITS SHARE CARD FOLLOWS HOME'S, byte for
+       byte, as /contact-us/'s does. It moves to a real shop photograph
+       after the shoot. -->
+  <meta property="og:image" content="https://tricountycollision.com/assets/img/hero-wrecked-sedan-in-shop.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="800">
+  <meta property="og:image:alt" content="A red sedan with its front end crushed and the bumper torn loose, in the shop before repair.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- No analytics tag yet. GA4 goes in the CLIENT'S OWN Google account at
+       cutover, and the CallRail snippet goes in beside it. Neither is here,
+       because a measurement ID nobody has given us is a fact nobody has
+       confirmed. docs/privacy/ ships in the same commit as the first tag. -->
+
+  <!-- Both faces are self-hosted and both are needed above the fold, so they
+       are preloaded rather than discovered inside the stylesheet. They are
+       SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
+  <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/site.css?v=2c3895cf">
+  <script src="../assets/site.js?v=e67e271c" defer></script>
+
+  <!-- One @graph. The AutoBodyShop node repeats in full on every page under
+       the SAME @id, so the whole site resolves to one business entity.
+       geo IS THE SHOP'S VERIFIED PIN, GEO_LAT and GEO_LON in scripts/audit.py,
+       and there is no per-town geo: Feasterville-Trevose is where the reader is, not
+       where the shop is. The town is named once, as the areaServed of this
+       page's own Service node. sameAs IS DELIBERATELY ABSENT until the
+       client's verified list lands. The FAQPage node is generated from the
+       same strings as the visible questions, so the two cannot differ. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AutoBodyShop",
+        "@id": "https://tricountycollision.com/#business",
+        "name": "Tri-County Collision",
+        "url": "https://tricountycollision.com/",
+        "telephone": "+12153225350",
+        "email": "contact@tricountycollision.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "995 Jaymor Rd",
+          "addressLocality": "Southampton",
+          "addressRegion": "PA",
+          "postalCode": "18966",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 40.1660232,
+          "longitude": -75.0512847
+        },
+        "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "08:00",
+            "closes": "18:00"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-bucks-county",
+            "name": "Bucks County, Pennsylvania"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-montgomery-county",
+            "name": "Montgomery County, Pennsylvania"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-philadelphia",
+            "name": "Philadelphia, Pennsylvania"
+          },
+          {
+            "@type": "City",
+            "name": "Southampton, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Feasterville-Trevose, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Richboro, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Warminster, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Langhorne, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Bensalem, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Jamison, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Huntingdon Valley, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Hatboro, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Willow Grove, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Horsham, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Jenkintown, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "Place",
+            "name": "Northeast Philadelphia, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-philadelphia"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://tricountycollision.com/areas-served-collision-repair-feasterville-trevose-pa/#webpage",
+        "url": "https://tricountycollision.com/areas-served-collision-repair-feasterville-trevose-pa/",
+        "name": "Collision Repair for Feasterville-Trevose, PA | Tri-County",
+        "description": "Tri-County Collision in Southampton repairs cars for Feasterville-Trevose, PA drivers, about 6 minutes away. Directions, free estimates, (215) 322-5350.",
+        "inLanguage": "en-US",
+        "dateModified": "2026-09-29",
+        "isPartOf": {
+          "@id": "https://tricountycollision.com/#business"
+        },
+        "about": {
+          "@id": "https://tricountycollision.com/areas-served-collision-repair-feasterville-trevose-pa/#service"
+        },
+        "breadcrumb": {
+          "@id": "https://tricountycollision.com/areas-served-collision-repair-feasterville-trevose-pa/#breadcrumb"
+        }
+      },
+      {
+        "@type": "Service",
+        "@id": "https://tricountycollision.com/areas-served-collision-repair-feasterville-trevose-pa/#service",
+        "name": "Collision Repair for Feasterville-Trevose, PA",
+        "serviceType": "Collision Repair",
+        "url": "https://tricountycollision.com/areas-served-collision-repair-feasterville-trevose-pa/",
+        "provider": {
+          "@id": "https://tricountycollision.com/#business"
+        },
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Feasterville-Trevose, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://tricountycollision.com/areas-served-collision-repair-feasterville-trevose-pa/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://tricountycollision.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Areas We Serve",
+            "item": "https://tricountycollision.com/areas-served/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Feasterville-Trevose",
+            "item": "https://tricountycollision.com/areas-served-collision-repair-feasterville-trevose-pa/"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://tricountycollision.com/areas-served-collision-repair-feasterville-trevose-pa/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How far is Tri-County Collision from Feasterville-Trevose?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Tri-County Collision is about 2.9 miles and 6 minutes from Buck Road and Street Road without traffic, the shortest drive of any town on the shop's Areas We Serve page. It is in Southampton at 995 Jaymor Rd, Southampton, PA 18966, not in Feasterville-Trevose itself."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the route from Buck Road?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Head along Street Road (PA 132) for about 2 miles, turn left onto 2nd Street Pike (PA 232) for about 1 mile, and turn right onto Jaymor Rd; the shop is about a quarter mile along."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is the drive the same from the Trevose side?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The figure on this page starts at Buck Road and Street Road in Feasterville. The Trevose side of Feasterville-Trevose runs longer, so allow a few more minutes from there."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does the trip from Buck Road use the turnpike?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Neither the turnpike nor an interstate. The drive from Buck Road runs on Street Road (PA 132), then 2nd Street Pike (PA 232), then Jaymor Rd, about 2.9 miles in all, with no toll road along the way."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is Tri-County Collision part of a chain?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Tri-County Collision is family owned and operated, not a chain or a franchise, and it works from 995 Jaymor Rd, Southampton, PA 18966, about 6 minutes from Buck Road and Street Road without traffic."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Removed at cutover, with the noindex tag and the robots.txt disallow.
+       A human who opens this page should not have to guess why it is not
+       indexed. -->
+  <p class="staging">Staging build. Not the live site. The shop's live site is at tricountycollision.com</p>
+
+  <header class="nav">
+    <div class="wrap inner">
+      <a class="nav-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+      <nav class="nav-main" aria-label="Main"><ul>
+        <li><a href="../collision-repair/">Collision Repair</a></li>
+      </ul></nav>
+      <a class="btn btn-sm" href="tel:+12153225350">Call (215) 322-5350</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- 1. THE COMPACT OX HEADER, the page-header identity, extended to the
+         areas tier by Greg's ruling of 2026-09-28 (3.61, amended in 3.62).
+         It carries the call, like /contact-us/'s.
+         THE LEAD IS TWO SENTENCES, a template rule (3.71, Greg's ruling of
+         2026-09-29). The FIRST is per-town: name, place, routed minutes,
+         which the routing check reads. The SECOND is the same two claims
+         on every town page BY DESIGN, the brand count (BRAND_COUNT, which
+         the brand-count check reads here) and the lifetime warranty, both
+         the proof cards' own: true claims do not vary by town, and a
+         paraphrase per town would be fake variance. This header is not a
+         pattern section, so that sentence counts in the town-to-town
+         measure, and 3.71 records what it adds to every pair. -->
+    <section class="hero dark field-ox" id="town-head">
+      <div class="wrap">
+        <!-- Mirrors the BreadcrumbList, same labels and same order. -->
+        <nav class="crumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="../">Home</a></li>
+            <li><a href="../areas-served/">Areas We Serve</a></li>
+            <li>Feasterville-Trevose</li>
+          </ol>
+        </nav>
+        <div>
+          <p class="eyebrow">Bucks County, PA</p>
+          <h1>Collision Repair for Feasterville-Trevose, PA</h1>
+          <p class="lead">Tri-County Collision is a family-owned body shop in Southampton, about 6 minutes from Feasterville-Trevose. Factory-certified for 12 brands, with a lifetime warranty on all repair work.</p>
+          <div class="cta-row">
+            <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. WHY DRIVERS PASS CLOSER SHOPS, ONE PROOF SECTION, as cards: a
+         template amendment (3.67, Greg's rulings of 2026-09-29). It replaces
+         three stacked proof moments: the header's chip row (3.63), the stat
+         band (3.62) and the ox argument band (3.64, 3.66). Each of those
+         records stands; this is the supersession. It is the one white band
+         under the ox header.
+         EVERY LINE WAS ALREADY VETTED; NOTHING HERE IS NEWLY WRITTEN:
+         - the lead is 3.64's first paragraph cut at "on us.", the new
+           sentence boundary approved by Greg in the 3.67 brief;
+         - the three figure cards are the stat band's own lines, lifted
+           from /collision-repair/ by this builder so they cannot drift,
+           and the review count, rating and date are the constants the
+           audit reads (REVIEW_COUNT, REVIEW_RATING, REVIEW_COUNTED_ON);
+         - the right-to-choose and free-estimates cards are 3.64's
+           sentences, and "Insurance paperwork handled" is the vetted chip,
+           a headline card with no support line, by ruling.
+         IT KEEPS THE .statband CLASS so site.js's odometer still finds the
+         figures: the numbers count on arrival as they did in the band.
+         BYTE-IDENTICAL ON EVERY TOWN PAGE BY DESIGN: pattern text for the
+         variance gate, by this id, in code. It closes on its Call/Email
+         row, the section's ask. -->
+    <section class="statband" id="why-the-trip">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Why drivers pass closer shops</h2>
+          <p>A collision repair is two drives: one to drop the car off, one to pick it up. Everything between them is on us.</p>
+        </div>
+        <div class="grid3">
+          <article class="card card-figure">
+            <span class="stat-n">Lifetime</span>
+            <span class="stat-l">Warranty on all repair work</span>
+            <span class="stat-s">If anything isn't right, we'll make it right.</span>
+          </article>
+          <article class="card card-figure">
+            <span class="stat-n">274</span>
+            <span class="stat-l">Google reviews</span>
+            <span class="stat-s">4.9 stars on Google, counted on September 10, 2026.</span>
+          </article>
+          <article class="card card-figure">
+            <span class="stat-n">12</span>
+            <span class="stat-l">Vehicle brands, factory-certified</span>
+            <span class="stat-s">INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep.</span>
+          </article>
+          <!-- ROW TWO WEARS ROW ONE'S GRAMMAR (3.68, Greg's rulings of
+               2026-09-29): each card a vetted chip claim SPLIT into a big ox
+               word and a bold label, never reworded. Its big word is .fig-n,
+               which shares .stat-n's look, and not .stat-n, which site.js's
+               odometer rolls: the arrival motion stays the three figures the
+               motion amendment scoped it to. Cards 5 and 6 carry support lines quoted byte for byte from /collision-repair/, which ships both sentences. -->
+          <article class="card card-figure">
+            <span class="fig-n">Free</span>
+            <span class="stat-l">Estimates</span>
+            <span class="stat-s">Estimates are free and there is no obligation.</span>
+          </article>
+          <article class="card card-figure">
+            <span class="fig-n">Handled</span>
+            <span class="stat-l">Insurance paperwork</span>
+            <span class="stat-s">We handle the paperwork and communication so you don't have to.</span>
+          </article>
+          <article class="card card-figure">
+            <span class="fig-n">Detailed</span>
+            <span class="stat-l">After every repair</span>
+            <span class="stat-s">Vehicles detailed inside and out after every repair.</span>
+          </article>
+        </div>
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. REAL REPAIRS, a template amendment (3.63): THREE of home's five
+         pairs, byte for byte, captions as vetted, the prints treatment by
+         the same #real-repairs id and classes. Chosen for variety: a
+         minivan's front end, a coupe's rear end, an SUV's door dents. The
+         cars are the shop's own work; nothing here says they came from the
+         town. Pattern text for the variance gate, by this id, in code.
+         DIRECTLY UNDER THE PROOF CARDS, ON INK, by Greg's rulings of
+         2026-09-29 (3.70): claims first, the photographs proving them
+         second. The ground is /collision-repair/'s own treatment of this
+         section, dark field-ink, so the dark print shadow, the .dark
+         caption tones and the ink ground's buttons are that page's
+         existing rules, reused. It closes on home's own Call/Email row. -->
+    <section id="real-repairs" class="dark field-ink">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Real Repairs</h2>
+          <p class="sec-sub">Restored to pre-accident condition</p>
+        </div>
+        <p class="repairs-note">Vehicles repaired at our Southampton shop. License plates are blurred.</p>
+        <div class="repairs-grid">
+          <figure class="ba">
+            <div class="ba-stack">
+              <div class="ba-frame ba-frame--before">
+                <img src="../assets/img/repairs/job2-before.jpg" width="960" height="540" loading="lazy" decoding="async" alt="Black Dodge Grand Caravan with a crushed front bumper, a broken headlight and a buckled hood.">
+                <span class="ba-chip">Before</span>
+              </div>
+              <div class="ba-frame ba-frame--after">
+                <img src="../assets/img/repairs/job2-after.jpg" width="960" height="540" loading="lazy" decoding="async" alt="The same Dodge Grand Caravan after repair, with the front bumper, headlight and hood back in line.">
+                <span class="ba-chip">After</span>
+              </div>
+            </div>
+            <figcaption><strong>Dodge Grand Caravan</strong> Front-end collision</figcaption>
+          </figure>
+          <figure class="ba">
+            <div class="ba-stack">
+              <div class="ba-frame ba-frame--before">
+                <img src="../assets/img/repairs/job5-before.jpg" width="1050" height="590" loading="lazy" decoding="async" alt="Black Mercedes CLE 300 with its rear bumper torn loose and the rear quarter panel creased.">
+                <span class="ba-chip">Before</span>
+              </div>
+              <div class="ba-frame ba-frame--after">
+                <img src="../assets/img/repairs/job5-after.jpg" width="1050" height="590" loading="lazy" decoding="async" alt="The same Mercedes CLE 300 after repair, rear bumper and quarter panel back to shape.">
+                <span class="ba-chip">After</span>
+              </div>
+            </div>
+            <figcaption><strong>Mercedes CLE 300</strong> Rear-end collision</figcaption>
+          </figure>
+          <figure class="ba">
+            <div class="ba-stack">
+              <div class="ba-frame ba-frame--before">
+                <img src="../assets/img/repairs/job4-before.jpg" width="1050" height="787" loading="lazy" decoding="async" alt="Close-up of a silver Nissan Murano with a deep crease running across the rear door and quarter panel.">
+                <span class="ba-chip">Before</span>
+              </div>
+              <div class="ba-frame ba-frame--after">
+                <img src="../assets/img/repairs/job4-after.jpg" width="1050" height="787" loading="lazy" decoding="async" alt="The same Nissan Murano after repair, rear door and quarter panel smooth again, parked at the shop.">
+                <span class="ba-chip">After</span>
+              </div>
+            </div>
+            <figcaption><strong>Nissan Murano</strong> Door dents</figcaption>
+          </figure>
+        </div>
+        <!-- THE ASK, JOINED TO THE PROOF MOMENT. Client ruling
+             2026-09-22, the same pair as #what-we-fix and as the hero,
+             copied verbatim. Light ground here, so the base button
+             grammar applies and .btn is the ox filled act button;
+             measured, --ox on --silver is 10.50 for the ghost's label
+             and its border alike. Centring is NOT free on a light
+             ground, so this section has a scoped rule in site.css.
+             proposed-changes.md 3.30. -->
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. THE OPENING, centred, the service pages' intro shape (Greg's
+         3.52 ruling). The PROSE is per-town (3.63): run two writes each
+         town's own opening to this pattern and never reuses these
+         sentences; the variance gate holds them apart. The neighbors are
+         only places the shop's own hub already serves.
+         NO ASK OF ITS OWN SINCE 3.64, on Greg's ruling: the ask 3.62 put
+         here was scaffolding for one askless run, and the proof section
+         above now closes on an ask its own copy argues for.
+         TWO PARAGRAPHS, a template rule (3.72, Greg's ruling of
+         2026-09-29): the second ends on the call-first sentence, so the
+         paragraph ends on the ask. The ask is in words only: 3.64's ruling
+         still holds, and the section carries no Call button of its own. -->
+    <section id="for-feasterville-trevose">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">For drivers from Feasterville-Trevose</h2>
+        </div>
+        <div class="prose" style="text-align:center">
+          <p>Of all the towns on our Areas We Serve page, Feasterville-Trevose is the closest by road. Even so, the shop is not in Feasterville or Trevose; it is in Southampton, about 2.9 miles from Buck Road. We also work on cars for drivers from Richboro, Huntingdon Valley, Bensalem and Northeast Philadelphia.</p>
+          <p>Buck Road meets Street Road (PA 132) in Lower Southampton Township, Bucks County. That crossroads is about 6 minutes from our shop in light traffic. When something hits your car, our number is worth dialing before any other.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. THE DIRECTIONS CARD, a template amendment (3.65, Greg's ruling):
+         the map, then the body in the order 3.75 ruled (Greg, 2026-09-29,
+         superseding 3.74's chip at the top): the steps and the alternative
+         route, which are the content, open the body; then the Call, the
+         primary ask; and last the getaway kit, "Open in Google Maps" and
+         the drive-time chip sharing one row, the address beneath. Open in
+         Google Maps is an EXIT action, so it may not outrank the conversion
+         action: content, then the ask, then the utilities.
+         EVERY ROUTE FACT HERE IS THE RECORDED ROUTING, TOWN_ROUTES in
+         scripts/audit.py, and its town_route_findings fails the page if a turn
+         word, a road, a step's distance or a minute count disagrees with it.
+         THE CHIP'S TILDE IS THE QUALIFIER'S FIRST HALF: "~15 min" hedges
+         the number, and the intro sentence ABOVE it in this same card, at
+         the head of the steps, carries the full "about 15 minutes without
+         traffic" (the chip sits in the kit since 3.75). Together they
+         satisfy the qualifier rule, so a future sitting must not strip the
+         chip for lacking it.
+         The street is always "Jaymor Rd", no period, and the number only in
+         the full canonical address, which scripts/audit.py enforces.
+         NON-BREAKING SPACES IN THE STEPS, a template rule (3.76): a figure
+         and its unit ("about 4&nbsp;miles") and a route number's two halves
+         ("(PA&nbsp;263)") are joined by &nbsp; wherever a wrap split them,
+         and run two's builder does the same for every town's steps. The
+         routing check reads straight through them (test section 26). -->
+    <section id="getting-here" class="band-panel">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Getting to the shop from Feasterville-Trevose</h2>
+        </div>
+        <div class="dir-card">
+          <!-- THE MAP DRAWS THE PRIMARY ROUTE ONLY, Greg's ruling of
+               2026-09-28 (3.63): it shows exactly what the steps below say.
+               Drawn by scripts/prepare-map-image.py --frame town --town feasterville-trevose-pa --name "Feasterville-Trevose" from one
+               Overpass query and the recorded routing; rebuilt after this
+               page, never by hand. -->
+          <figure class="map-box dir-map">
+            <!-- MAP:BEGIN, written by scripts/prepare-map-image.py -->
+            <!-- Drawn from OpenStreetMap data, base timestamp 2026-09-29T19:46:21Z. Do not edit by hand. -->
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener"><svg viewBox="0 0 360 240" role="img" aria-label="Map of the drive from Feasterville-Trevose, at Buck Rd and Street Rd, by 2nd Street Pike (PA 232) and Jaymor Rd to Tri-County Collision in Southampton. Opens directions in Google Maps."><defs><path id="map-r1" d="M98.5 37.7 L99.6 38.5 L101.5 39.9 L101.9 40.1 L102.7 40.7 L105.5 42.7 L106.7 43.6 L108.2 44.7 L110.9 46.7 L111.7 47.3 L114 49 L118.1 52 L120.9 54.1 L129.8 60.4 L130.9 61.2 L131.8 61.9 L134 63.5 L135.5 64.6 L136.9 65.6 L138.4 66.7 L139.8 67.7 L141.6 68.9 L141.9 69.1 L142.5 69.6 L143.4 70.3 L144.5 71.1 L146.2 72.2 L146.7 72.6 L147.2 72.9 L148.3 73.7 L150.3 75.1 L151.9 76.2 L154.5 78 L156.4 79.4 L159 81.3 L162.1 83.5 L163.2 84.2 L166.7 86.6 L170.8 89.4 L173.8 91.5 L174.7 92.1 L175 92.3 L176.4 93.3 L177 93.7 L178.4 94.8 L180 95.9 L182.1 97.4 L183.5 98.4 L188 101.7 L190.3 103.4 L191.7 104.4 L193 105.4 L201.1 111.4 L206.2 115.2 L210.3 118.2 L218.5 124.3 L224.5 128.8 L224.8 129 L228.7 132 L237.2 138.3 L244 143.4 L249.4 147.4 L254.8 151.5 L262.4 157.2 L263.9 158.4 L264.3 158.7 L264.7 159 L267.7 161.3 L273.1 165.3 L274.3 166.2 L277.7 168.8 L281.1 171.3 L282.2 172.1 L288.4 176.8 L292.6 179.9 L293.7 180.8 L297.8 183.8 L298.8 184.6 L301.5 186.7 L304.8 189.2 L306.4 190.4 L307.5 191.2 L309.5 192.7 L311.8 194.4 L313.4 195.6 L314.2 196.2 L317.5 198.7 L319 199.8 L319.9 200.5 L321.6 201.8"/></defs><rect class="map-ground" width="360" height="240"/><path class="map-case" stroke-width="2.4" d="M97.8 41.2 L98.4 40.7 L98.7 40.4 L99 40.1 L99.3 40 L99.8 39.9 L100.5 39.9 L101.5 39.9 M135.5 64.6 L135.8 65.4 L135.8 66.1 L135.7 66.4 L135.7 66.6 L135.1 67.5"/><path class="map-case" stroke-width="3.4" d="M138.4 66.7 L141.5 63 L142 62.4 L142.6 61.7 L144.4 59.3 L146.2 57.1 L149.1 53.3 L150.3 51.8 L152.2 49.4 L153.6 47.6 L154.1 47.1 L155.1 45.9 L155.4 45.7 L155.6 45.5 L156.4 44.9 L157.7 43.9 L164 39.7 L168.5 36.7 L170.6 35.3 L172.4 34.1 L177.2 30.8 L188.5 23.2 L195.5 18.5 L198.4 16.5 L203.5 12.9 L206.2 11.2 L207.3 10.7 L208.5 10.2 L210.5 9.5 L211.8 9.1 L212.6 8.9 L216.5 8 L217.9 7.6 L225.9 5.6 L226.9 5.4 L230.3 4.5 L233.2 3.8 L243.4 1.2 L244.3 0.9 L249.3 -0.4 L252.5 -1.2 L254.2 -1.6 L255.8 -2.1 L257.5 -2.6 L258.7 -3.2 L260.5 -4.3 L261.9 -5.4 L262.8 -6.3 L263.8 -7.4 L264.7 -8.5 L264.9 -8.7 L265.3 -9.4 M352.4 -5 L353.5 -5.6 L356.5 -7.4 L361.2 -10.4 L361.9 -10.8 L364.3 -12.2 L366.3 -13.5 L368.1 -14.5 L377.1 -20 M258 260 L259.1 258.7 L266.4 249.6 L266.8 249 L271.9 242.7 L274.7 239 L275.8 237.6 L279.5 232.5 L284.1 226.2 L286.3 223.2 L287.4 221.7 L288.4 220.3 L290 218.1 L290.8 217 L291.7 215.9 L292.5 214.9 L293 214.2 L297 208.8 L297.6 208.2 L298.3 207.7 L299 207.3 L299.8 207 L300.6 206.8 L302.8 206.4 L307.9 205.6 L312.4 204.8 L315.1 204.3 L316.1 204.1 L319.7 203.3 L320.2 203.1 L320.8 202.7 L321.4 202.1 L321.6 201.8 M265.8 -9.9 L266.7 -11.2 L266.9 -11.4 L268.1 -13.2 L268.4 -13.6 L270.3 -16.1 L271 -17.2 L272.9 -20 M265.3 -9.4 L265.8 -9.9"/><path class="map-case" stroke-width="3.7" d="M77.5 216.7 L69.4 210.6 L66.4 208.3 M332.4 -20 L333.6 -19 L335.3 -17.7 L335.7 -17.4 L341.1 -13 L345.9 -9.7 L347.7 -8.4 L348.8 -7.5 L349.1 -7.3 L350.1 -6.5 L351.6 -5.3 L352.1 -5 L352.4 -5 L352.8 -4.8 L353.6 -4.2 L354.7 -3.2 L359.3 0.7 L361 1.8 L362.7 3.2 L363.3 3.7 L364.1 4.2 L368.7 7.8 L374.3 11.9 L375.3 12.7 L380 16.1 M375.1 81.9 L374.8 80.2 M63.4 206 L59.5 203.1 M380 118.9 L379.6 117.4 L378.6 114.2 L378.2 112.8 L377.9 111.9 L377.8 111.4 M133.8 260 L128.7 256.1 L124.8 253.2 L119.3 248.9 L115.7 246.2 L112.3 243.6 L110.1 241.9 L98 232.5 L92.3 228.1 L90.1 226.4 L89.6 226 L86.3 223.5 L83.1 221 L77.5 216.7 M66.4 208.3 L64.5 206.8 M377.6 110.8 L377.5 110.4 L377 108.2 L376.7 105.9 L376.3 101.9 L375.8 93.4 L375.2 83.9 L375.2 83.4 L375.1 81.9 M377.8 111.4 L377.6 110.8 M374.7 79.3 L374.6 79 L374.3 77.6 L373.9 76.1 L373.3 74.7 L372.6 73 L371.8 71.5 L370.9 69.9 L369.9 68 L366.7 62.7 L362.7 55.8 L360.9 52.7 L358.7 48.3 L357.5 46 L357 44.9 L352.9 35.8 L352.8 35.5 L349.2 26.5 L349 25.8 L347.5 21.5 L346.8 19.1 L346.2 16.7 L346.1 16.1 L346 15 L346 13.9 L346.1 13.3 L346.2 12.3 L347 9.9 L349.4 3.2 L349.5 2.7 L349.9 1.6 L351.9 -4.6 L352.1 -4.8 L352.4 -5 M374.8 80.2 L374.7 79.3 M64.5 206.8 L63.8 206.3 M63.8 206.3 L63.8 206.3 L63.4 206"/><path class="map-case" stroke-width="4" d="M59.5 203.1 L60.8 200.7 L61.2 199.8 L62 198.1 L62.1 197.7 L62.4 197.1 L62.5 196.8 L63.6 194.1 L63.8 193.8 L64 193.1 L64.2 192.7 L65 190.7 L65.7 188.9 L65.9 188.4 L66.2 187.5 L66.3 187 L66.6 186.1 L67.1 184 L67.2 183.5 L68.2 178.9 M103.3 25.9 L104.3 24.7 M68.8 175.3 L69.6 171.8 L69.8 170.7 L71.5 162.9 M68.2 178.9 L68.8 175.3 M-9 149.6 L-12.2 147.2 M-4.5 153.1 L-9 149.6 M72.6 157.8 L73.2 155.1 M71.5 162.9 L72.6 157.8 M-3 154.2 L-4.5 153.1 M59.5 203.1 L56.8 200.9 L55.2 199.7 L36.6 185 L26.8 177.4 L24.4 175.5 L15.3 168.5 L9.9 164.3 L7 162 L6.1 161.3 L2.1 158.2 L-2.1 155 L-3 154.2 M95 35.1 L90.2 31.5 L87.9 29.8 L85.3 27.9 L83.5 26.5 L81.2 24.7 L77.5 21.9 L77.1 21.6 L74.9 20 L73.8 19.1 L72.8 18.4 L71.6 17.4 L70 16.2 L66.8 13.8 L65.4 12.8 L63.9 11.6 L63.6 11.4 L62.8 10.9 L58.1 7.6 L56.6 6.5 L53.6 4.3 L50.1 1.9 L47.7 0.2 L42.9 -3.4 L41.3 -4.6 L37.3 -7.6 L26.4 -15.8 L25.2 -16.7 L20.9 -20 M365.5 236.4 L363 234.5 M369.4 239.5 L367.6 238.1 L366.8 237.4 L366.1 236.9 L365.5 236.4 M326.5 205.5 L321.6 201.8 M363 234.5 L362.2 233.8 L361.8 233.5 L360.1 232.1 L358.8 231.1 L354.4 227.6 L354.1 227.4 L350.8 224.8 L346.7 221.5 L344.7 219.9 L339.5 215.7 L338.4 214.9 L337.3 214 L334.5 211.8 L333.3 210.8 L330.6 208.7 L326.5 205.5 M21.3 260 L21.9 259.4 L29 252 L35.7 243.8 L36.4 242.8 L49 222.1 L54.6 212 L59.5 203.1 M74.2 150.5 L74.5 149.1 M74.5 149.1 L75 146.3 M91.3 72.2 L91.7 70.2 L92 68.9 M73.2 155.1 L74.2 150.5 M87.2 90.8 L87.4 89.9 M75 146.3 L76 141.7 M83.3 107.7 L83.3 107.5 L83.4 107.1 M-12.2 147.2 L-17.4 143.2 M98.5 37.7 L99.1 35.6 L99.5 34 L99.9 32.2 L100.2 31.3 L100.2 31.2 L100.6 30.3 L100.9 29.7 L101 29.4 L101.5 28.5 L102 27.6 L102.2 27.4 L102.8 26.7 L103.3 25.9 M98.5 37.7 L97.4 36.9 L95 35.1 M309.5 192.7 L309.3 192.5 M-17.4 143.2 L-20 141.2 M97.4 43.2 L97.6 42.1 L97.8 41.2 M377.1 245.4 L374.1 243.2 L370.3 240.2 L369.4 239.5 M104.6 24.3 L105.2 23.6 L106.5 21.9 L107.2 21.1 M380 247.5 L377.8 245.9 L377.1 245.4 M104.3 24.7 L104.6 24.3 M107.2 21.1 L108.1 19.8 L109.7 17.8 L111.1 16 L112.6 14.1 L119.3 5.8 L122.1 2.3 L122.5 1.8 L124.6 -0.9 L127 -4 L129 -6.6 L132.8 -11.8 L134.4 -14.1 L135.9 -16.1 L138.7 -19.9 L138.7 -20"/><path class="map-case" stroke-width="4.4" d="M229.1 260 L219.9 255.7 L212.2 251.6 L198.9 243.6 L191.2 238.9 L173.7 227 L162.4 219.4 L128.5 196.8 M128.1 197.8 L155.4 216.4 L171.1 227.1 L194.5 242.8 L199.2 245.4 L213.5 253.8 L225.4 259.7 L226 260 M124 195 L128.1 197.8 M128.5 196.8 L125.2 194.5 M125.2 194.5 L111 184.6 L102.4 178.7 M-20 153.3 L-10.4 152.5 L1.7 151.6 L20.1 150.4 L28.7 150.2 L34.7 150.7 L41.5 151.3 L48.6 152.7 L59.1 155.8 L65.5 158.3 L70.1 160.2 L76.9 163.5 L80.5 165.7 L89.1 171.4 L94.4 174.9 M94.4 174.9 L100.5 179 M100.5 179 L110.2 185.6 L124 195 M97 175.1 L92.8 172.2 L83.8 166.2 L76.4 161.8 L70.6 158.9 L67.4 157.5 L59.8 154.6 L55.1 153.1 L46.2 150.8 L40 149.8 L37.6 149.4 L26.4 148.7 L13.9 149.2 L1.1 150.2 L-9.6 150.9 L-20 151.7 M102.4 178.7 L97 175.1"/><path class="map-road" stroke-width="1.5" d="M97.8 41.2 L98.4 40.7 L98.7 40.4 L99 40.1 L99.3 40 L99.8 39.9 L100.5 39.9 L101.5 39.9 M135.5 64.6 L135.8 65.4 L135.8 66.1 L135.7 66.4 L135.7 66.6 L135.1 67.5"/><path class="map-road" stroke-width="2.4" d="M138.4 66.7 L141.5 63 L142 62.4 L142.6 61.7 L144.4 59.3 L146.2 57.1 L149.1 53.3 L150.3 51.8 L152.2 49.4 L153.6 47.6 L154.1 47.1 L155.1 45.9 L155.4 45.7 L155.6 45.5 L156.4 44.9 L157.7 43.9 L164 39.7 L168.5 36.7 L170.6 35.3 L172.4 34.1 L177.2 30.8 L188.5 23.2 L195.5 18.5 L198.4 16.5 L203.5 12.9 L206.2 11.2 L207.3 10.7 L208.5 10.2 L210.5 9.5 L211.8 9.1 L212.6 8.9 L216.5 8 L217.9 7.6 L225.9 5.6 L226.9 5.4 L230.3 4.5 L233.2 3.8 L243.4 1.2 L244.3 0.9 L249.3 -0.4 L252.5 -1.2 L254.2 -1.6 L255.8 -2.1 L257.5 -2.6 L258.7 -3.2 L260.5 -4.3 L261.9 -5.4 L262.8 -6.3 L263.8 -7.4 L264.7 -8.5 L264.9 -8.7 L265.3 -9.4 M352.4 -5 L353.5 -5.6 L356.5 -7.4 L361.2 -10.4 L361.9 -10.8 L364.3 -12.2 L366.3 -13.5 L368.1 -14.5 L377.1 -20 M258 260 L259.1 258.7 L266.4 249.6 L266.8 249 L271.9 242.7 L274.7 239 L275.8 237.6 L279.5 232.5 L284.1 226.2 L286.3 223.2 L287.4 221.7 L288.4 220.3 L290 218.1 L290.8 217 L291.7 215.9 L292.5 214.9 L293 214.2 L297 208.8 L297.6 208.2 L298.3 207.7 L299 207.3 L299.8 207 L300.6 206.8 L302.8 206.4 L307.9 205.6 L312.4 204.8 L315.1 204.3 L316.1 204.1 L319.7 203.3 L320.2 203.1 L320.8 202.7 L321.4 202.1 L321.6 201.8 M265.8 -9.9 L266.7 -11.2 L266.9 -11.4 L268.1 -13.2 L268.4 -13.6 L270.3 -16.1 L271 -17.2 L272.9 -20 M265.3 -9.4 L265.8 -9.9"/><path class="map-road" stroke-width="2.7" d="M77.5 216.7 L69.4 210.6 L66.4 208.3 M332.4 -20 L333.6 -19 L335.3 -17.7 L335.7 -17.4 L341.1 -13 L345.9 -9.7 L347.7 -8.4 L348.8 -7.5 L349.1 -7.3 L350.1 -6.5 L351.6 -5.3 L352.1 -5 L352.4 -5 L352.8 -4.8 L353.6 -4.2 L354.7 -3.2 L359.3 0.7 L361 1.8 L362.7 3.2 L363.3 3.7 L364.1 4.2 L368.7 7.8 L374.3 11.9 L375.3 12.7 L380 16.1 M375.1 81.9 L374.8 80.2 M63.4 206 L59.5 203.1 M380 118.9 L379.6 117.4 L378.6 114.2 L378.2 112.8 L377.9 111.9 L377.8 111.4 M133.8 260 L128.7 256.1 L124.8 253.2 L119.3 248.9 L115.7 246.2 L112.3 243.6 L110.1 241.9 L98 232.5 L92.3 228.1 L90.1 226.4 L89.6 226 L86.3 223.5 L83.1 221 L77.5 216.7 M66.4 208.3 L64.5 206.8 M377.6 110.8 L377.5 110.4 L377 108.2 L376.7 105.9 L376.3 101.9 L375.8 93.4 L375.2 83.9 L375.2 83.4 L375.1 81.9 M377.8 111.4 L377.6 110.8 M374.7 79.3 L374.6 79 L374.3 77.6 L373.9 76.1 L373.3 74.7 L372.6 73 L371.8 71.5 L370.9 69.9 L369.9 68 L366.7 62.7 L362.7 55.8 L360.9 52.7 L358.7 48.3 L357.5 46 L357 44.9 L352.9 35.8 L352.8 35.5 L349.2 26.5 L349 25.8 L347.5 21.5 L346.8 19.1 L346.2 16.7 L346.1 16.1 L346 15 L346 13.9 L346.1 13.3 L346.2 12.3 L347 9.9 L349.4 3.2 L349.5 2.7 L349.9 1.6 L351.9 -4.6 L352.1 -4.8 L352.4 -5 M374.8 80.2 L374.7 79.3 M64.5 206.8 L63.8 206.3 M63.8 206.3 L63.8 206.3 L63.4 206"/><path class="map-road" stroke-width="3" d="M59.5 203.1 L60.8 200.7 L61.2 199.8 L62 198.1 L62.1 197.7 L62.4 197.1 L62.5 196.8 L63.6 194.1 L63.8 193.8 L64 193.1 L64.2 192.7 L65 190.7 L65.7 188.9 L65.9 188.4 L66.2 187.5 L66.3 187 L66.6 186.1 L67.1 184 L67.2 183.5 L68.2 178.9 M103.3 25.9 L104.3 24.7 M68.8 175.3 L69.6 171.8 L69.8 170.7 L71.5 162.9 M68.2 178.9 L68.8 175.3 M-9 149.6 L-12.2 147.2 M-4.5 153.1 L-9 149.6 M72.6 157.8 L73.2 155.1 M71.5 162.9 L72.6 157.8 M-3 154.2 L-4.5 153.1 M59.5 203.1 L56.8 200.9 L55.2 199.7 L36.6 185 L26.8 177.4 L24.4 175.5 L15.3 168.5 L9.9 164.3 L7 162 L6.1 161.3 L2.1 158.2 L-2.1 155 L-3 154.2 M95 35.1 L90.2 31.5 L87.9 29.8 L85.3 27.9 L83.5 26.5 L81.2 24.7 L77.5 21.9 L77.1 21.6 L74.9 20 L73.8 19.1 L72.8 18.4 L71.6 17.4 L70 16.2 L66.8 13.8 L65.4 12.8 L63.9 11.6 L63.6 11.4 L62.8 10.9 L58.1 7.6 L56.6 6.5 L53.6 4.3 L50.1 1.9 L47.7 0.2 L42.9 -3.4 L41.3 -4.6 L37.3 -7.6 L26.4 -15.8 L25.2 -16.7 L20.9 -20 M365.5 236.4 L363 234.5 M369.4 239.5 L367.6 238.1 L366.8 237.4 L366.1 236.9 L365.5 236.4 M326.5 205.5 L321.6 201.8 M363 234.5 L362.2 233.8 L361.8 233.5 L360.1 232.1 L358.8 231.1 L354.4 227.6 L354.1 227.4 L350.8 224.8 L346.7 221.5 L344.7 219.9 L339.5 215.7 L338.4 214.9 L337.3 214 L334.5 211.8 L333.3 210.8 L330.6 208.7 L326.5 205.5 M21.3 260 L21.9 259.4 L29 252 L35.7 243.8 L36.4 242.8 L49 222.1 L54.6 212 L59.5 203.1 M74.2 150.5 L74.5 149.1 M74.5 149.1 L75 146.3 M91.3 72.2 L91.7 70.2 L92 68.9 M73.2 155.1 L74.2 150.5 M87.2 90.8 L87.4 89.9 M75 146.3 L76 141.7 M83.3 107.7 L83.3 107.5 L83.4 107.1 M-12.2 147.2 L-17.4 143.2 M98.5 37.7 L99.1 35.6 L99.5 34 L99.9 32.2 L100.2 31.3 L100.2 31.2 L100.6 30.3 L100.9 29.7 L101 29.4 L101.5 28.5 L102 27.6 L102.2 27.4 L102.8 26.7 L103.3 25.9 M98.5 37.7 L97.4 36.9 L95 35.1 M309.5 192.7 L309.3 192.5 M-17.4 143.2 L-20 141.2 M97.4 43.2 L97.6 42.1 L97.8 41.2 M377.1 245.4 L374.1 243.2 L370.3 240.2 L369.4 239.5 M104.6 24.3 L105.2 23.6 L106.5 21.9 L107.2 21.1 M380 247.5 L377.8 245.9 L377.1 245.4 M104.3 24.7 L104.6 24.3 M107.2 21.1 L108.1 19.8 L109.7 17.8 L111.1 16 L112.6 14.1 L119.3 5.8 L122.1 2.3 L122.5 1.8 L124.6 -0.9 L127 -4 L129 -6.6 L132.8 -11.8 L134.4 -14.1 L135.9 -16.1 L138.7 -19.9 L138.7 -20"/><path class="map-road" stroke-width="3.4" d="M229.1 260 L219.9 255.7 L212.2 251.6 L198.9 243.6 L191.2 238.9 L173.7 227 L162.4 219.4 L128.5 196.8 M128.1 197.8 L155.4 216.4 L171.1 227.1 L194.5 242.8 L199.2 245.4 L213.5 253.8 L225.4 259.7 L226 260 M124 195 L128.1 197.8 M128.5 196.8 L125.2 194.5 M125.2 194.5 L111 184.6 L102.4 178.7 M-20 153.3 L-10.4 152.5 L1.7 151.6 L20.1 150.4 L28.7 150.2 L34.7 150.7 L41.5 151.3 L48.6 152.7 L59.1 155.8 L65.5 158.3 L70.1 160.2 L76.9 163.5 L80.5 165.7 L89.1 171.4 L94.4 174.9 M94.4 174.9 L100.5 179 M100.5 179 L110.2 185.6 L124 195 M97 175.1 L92.8 172.2 L83.8 166.2 L76.4 161.8 L70.6 158.9 L67.4 157.5 L59.8 154.6 L55.1 153.1 L46.2 150.8 L40 149.8 L37.6 149.4 L26.4 148.7 L13.9 149.2 L1.1 150.2 L-9.6 150.9 L-20 151.7 M102.4 178.7 L97 175.1"/><path class="map-case map-case--major" stroke-width="4" d="M33.2 118.4 L34.2 120 L35.1 121.2 L36.2 122.7 L36.7 123.2 L37.7 124.4 L38.3 125.1 L38.5 125.3 L39 125.9 L39.7 126.4 L40.4 126.9 L40.6 127.1 L41.1 127.4 L41.8 127.8 L42.8 128.4 L43.2 128.6 L44.5 129.1 L45.8 129.6 L48.3 130.7 L52.6 132.5 L52.9 132.6 L55.1 133.5 L55.4 133.6 L57.2 134.4 L58.8 135.2 L60.1 136 L61.6 136.8 L62.6 137.3 L63.5 137.8 L64.2 138.2 L65.2 138.8 L66.2 139.3 L66.6 139.4 L67.3 139.7 L68.8 140.2 L68.9 140.2 L70.2 140.5 L70.6 140.6 L70.9 140.7 L74.6 141.4 L76 141.7"/><path class="map-case map-case--major" stroke-width="6.8" d="M304.8 189.2 L301.5 186.7 L298.8 184.6 L297.8 183.8 L293.7 180.8 L292.6 179.9 L288.4 176.8 L282.2 172.1 L281.1 171.3 L277.7 168.8 L274.3 166.2 L273.1 165.3 L267.7 161.3 L264.7 159 L264.3 158.7 L263.9 158.4 L262.4 157.2 L254.8 151.5 L249.4 147.4 L244 143.4 L237.2 138.3 L228.7 132 L224.8 129 L224.5 128.8 L218.5 124.3 L210.3 118.2 L206.2 115.2 L201.1 111.4 L193 105.4 L191.7 104.4 L190.3 103.4 L188 101.7 L183.5 98.4 L182.1 97.4 L180 95.9 L178.4 94.8 L177 93.7 L176.4 93.3 L175 92.3 L174.7 92.1 L173.8 91.5 L170.8 89.4 L166.7 86.6 L163.2 84.2 L162.1 83.5 L159 81.3 L156.4 79.4 L154.5 78 L151.9 76.2 L150.3 75.1 L148.3 73.7 L147.2 72.9 L146.7 72.6 L146.2 72.2 L144.5 71.1 L143.4 70.3 L142.5 69.6 M116 50.4 L114 49 L111.7 47.3 L110.9 46.7 L108.2 44.7 L106.7 43.6 L105.5 42.7 L102.7 40.7 L101.9 40.1 L101.5 39.9 M118.1 52 L116 50.4 M88.4 85.2 L89.1 82 L89.3 81.2 L89.5 80.5 L90 78.5 L90.3 77 L91 73.8 L91.3 72.2 M92.9 64.6 L93.2 63.2 L93.9 59.9 L94 59 L94.4 57.2 L94.6 56.2 L94.9 54.8 L95.5 52.3 L95.5 52 L95.8 50.6 L96.4 47.7 L96.8 46.1 L97.4 43.2 M134 63.5 L131.8 61.9 L130.9 61.2 L129.8 60.4 L120.9 54.1 L118.1 52 M81.4 116.3 L81.8 114.4 M82.5 111.5 L83.3 107.7 M86.4 94.6 L87 91.9 L87.2 90.8 M83.4 107.1 L83.9 104.9 M81.8 114.4 L82 113.6 L82.5 111.5 M77 137.1 L77.2 136.1 L77.4 135.1 L77.6 134.1 M76 141.7 L76.7 138.5 L77 137.1 M97.8 41.2 L98.2 39.1 L98.5 37.7 M77.6 134.1 L77.9 132.8 L78 132.2 L78.2 131.3 L78.4 130.2 L78.5 129.6 M92 68.9 L92.3 67.4 L92.6 66 L92.9 64.6 M87.4 89.9 L87.5 89.6 L88.2 85.9 L88.4 85.2 M78.5 129.6 L78.8 128.3 L79.3 125.9 L79.4 125.6 L80 122.9 L80.3 121.4 L80.5 120.5 L80.7 119.5 L81.2 117.4 L81.4 116.3 M83.9 104.9 L84.7 101.9 L85.1 100.1 L85.4 98.9 L86.1 95.7 L86.4 94.6 M142.5 69.6 L141.9 69.1 L141.6 68.9 L139.8 67.7 L138.4 66.7 M101.5 39.9 L99.6 38.5 L98.5 37.7 M138.4 66.7 L136.9 65.6 L135.5 64.6 L134 63.5 M317.5 198.7 L314.2 196.2 L313.4 195.6 M313.4 195.6 L311.8 194.4 L309.5 192.7 M321.6 201.8 L319.9 200.5 L319 199.8 L317.5 198.7 M309.3 192.5 L307.5 191.2 L306.4 190.4 L304.8 189.2"/><path class="map-road" stroke-width="2.6" d="M33.2 118.4 L34.2 120 L35.1 121.2 L36.2 122.7 L36.7 123.2 L37.7 124.4 L38.3 125.1 L38.5 125.3 L39 125.9 L39.7 126.4 L40.4 126.9 L40.6 127.1 L41.1 127.4 L41.8 127.8 L42.8 128.4 L43.2 128.6 L44.5 129.1 L45.8 129.6 L48.3 130.7 L52.6 132.5 L52.9 132.6 L55.1 133.5 L55.4 133.6 L57.2 134.4 L58.8 135.2 L60.1 136 L61.6 136.8 L62.6 137.3 L63.5 137.8 L64.2 138.2 L65.2 138.8 L66.2 139.3 L66.6 139.4 L67.3 139.7 L68.8 140.2 L68.9 140.2 L70.2 140.5 L70.6 140.6 L70.9 140.7 L74.6 141.4 L76 141.7"/><path class="map-road" stroke-width="5.1" d="M304.8 189.2 L301.5 186.7 L298.8 184.6 L297.8 183.8 L293.7 180.8 L292.6 179.9 L288.4 176.8 L282.2 172.1 L281.1 171.3 L277.7 168.8 L274.3 166.2 L273.1 165.3 L267.7 161.3 L264.7 159 L264.3 158.7 L263.9 158.4 L262.4 157.2 L254.8 151.5 L249.4 147.4 L244 143.4 L237.2 138.3 L228.7 132 L224.8 129 L224.5 128.8 L218.5 124.3 L210.3 118.2 L206.2 115.2 L201.1 111.4 L193 105.4 L191.7 104.4 L190.3 103.4 L188 101.7 L183.5 98.4 L182.1 97.4 L180 95.9 L178.4 94.8 L177 93.7 L176.4 93.3 L175 92.3 L174.7 92.1 L173.8 91.5 L170.8 89.4 L166.7 86.6 L163.2 84.2 L162.1 83.5 L159 81.3 L156.4 79.4 L154.5 78 L151.9 76.2 L150.3 75.1 L148.3 73.7 L147.2 72.9 L146.7 72.6 L146.2 72.2 L144.5 71.1 L143.4 70.3 L142.5 69.6 M116 50.4 L114 49 L111.7 47.3 L110.9 46.7 L108.2 44.7 L106.7 43.6 L105.5 42.7 L102.7 40.7 L101.9 40.1 L101.5 39.9 M118.1 52 L116 50.4 M88.4 85.2 L89.1 82 L89.3 81.2 L89.5 80.5 L90 78.5 L90.3 77 L91 73.8 L91.3 72.2 M92.9 64.6 L93.2 63.2 L93.9 59.9 L94 59 L94.4 57.2 L94.6 56.2 L94.9 54.8 L95.5 52.3 L95.5 52 L95.8 50.6 L96.4 47.7 L96.8 46.1 L97.4 43.2 M134 63.5 L131.8 61.9 L130.9 61.2 L129.8 60.4 L120.9 54.1 L118.1 52 M81.4 116.3 L81.8 114.4 M82.5 111.5 L83.3 107.7 M86.4 94.6 L87 91.9 L87.2 90.8 M83.4 107.1 L83.9 104.9 M81.8 114.4 L82 113.6 L82.5 111.5 M77 137.1 L77.2 136.1 L77.4 135.1 L77.6 134.1 M76 141.7 L76.7 138.5 L77 137.1 M97.8 41.2 L98.2 39.1 L98.5 37.7 M77.6 134.1 L77.9 132.8 L78 132.2 L78.2 131.3 L78.4 130.2 L78.5 129.6 M92 68.9 L92.3 67.4 L92.6 66 L92.9 64.6 M87.4 89.9 L87.5 89.6 L88.2 85.9 L88.4 85.2 M78.5 129.6 L78.8 128.3 L79.3 125.9 L79.4 125.6 L80 122.9 L80.3 121.4 L80.5 120.5 L80.7 119.5 L81.2 117.4 L81.4 116.3 M83.9 104.9 L84.7 101.9 L85.1 100.1 L85.4 98.9 L86.1 95.7 L86.4 94.6 M142.5 69.6 L141.9 69.1 L141.6 68.9 L139.8 67.7 L138.4 66.7 M101.5 39.9 L99.6 38.5 L98.5 37.7 M138.4 66.7 L136.9 65.6 L135.5 64.6 L134 63.5 M317.5 198.7 L314.2 196.2 L313.4 195.6 M313.4 195.6 L311.8 194.4 L309.5 192.7 M321.6 201.8 L319.9 200.5 L319 199.8 L317.5 198.7 M309.3 192.5 L307.5 191.2 L306.4 190.4 L304.8 189.2"/><text class="map-label" font-size="11" dy="5"><textPath href="#map-r1" startOffset="60%" text-anchor="middle">Street Rd</textPath></text><rect class="map-shield" x="120.8" y="59.3" width="45.2" height="22" rx="3"/><text class="map-shield-text" font-size="10" x="143.4" y="74.8" text-anchor="middle">PA 132</text><path class="map-pin" d="M40.9 122.8 c-3 -9 -12 -13 -12 -21 a12 12 0 1 1 24 0 c0 8 -9 12 -12 21z"/><circle class="map-pin-dot" cx="40.9" cy="101.8" r="4.5"/><text class="map-pin-label" font-size="12.5" x="56.9" y="106.8">Tri-County Collision</text><circle class="map-corner" cx="321.6" cy="201.8" r="7"/><text class="map-pin-label" font-size="12.5" x="307.6" y="207.8" text-anchor="end">Feasterville-Trevose</text></svg></a>
+            <!-- MAP:END -->
+            <figcaption class="map-credit">Map data &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>, available under the <a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener">Open Database License</a>.</figcaption>
+          </figure>
+          <div class="dir-body">
+            <div class="prose">
+              <p>From the crossroads of Buck Road and Street Road, the drive is about 2.9 miles and takes about 6 minutes without traffic.</p>
+              <ol class="numbered">
+                <li><strong>Head northwest on Street Road (PA&nbsp;132)</strong> for about 2&nbsp;miles.</li>
+                <li><strong>Turn left onto 2nd Street Pike (PA&nbsp;232)</strong> and follow it for about 1&nbsp;mile.</li>
+                <li><strong>Turn right onto Jaymor Rd</strong>, and the shop is about a quarter mile along, at 995 Jaymor Rd, Southampton, PA 18966.</li>
+              </ol>
+            </div>
+            <div class="cta-row">
+              <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+            </div>
+            <div class="dir-utils">
+              <div class="dir-top">
+                <a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">Open in Google Maps</a>
+                <span class="dir-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>~6 min from Feasterville-Trevose</span>
+              </div>
+              <p class="dir-address"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. WHAT WE FIX. Each card restates only what its own page's meta
+         description already says. No demand claim: nothing here says which
+         repair Feasterville-Trevose drivers ask for most, because nobody knows. -->
+    <section id="fix">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">What we fix for Feasterville-Trevose drivers</h2>
+          <p>Pick the one that fits what happened. Each page explains how the repair works.</p>
+        </div>
+        <div class="grid2">
+          <a class="svc-card" href="../collision-repair/">
+            <div class="svc-card-body">
+              <h3>Collision Repair</h3>
+              <p>Minor and major collision damage, with a lifetime warranty on the work.</p>
+            </div>
+          </a>
+          <a class="svc-card" href="../commercial-collision-repair/">
+            <div class="svc-card-body">
+              <h3>Commercial Collision Repair</h3>
+              <p>Work vehicles and fleets, with help on the insurance side.</p>
+            </div>
+          </a>
+          <a class="svc-card" href="../auto-glass-repair-replacement/">
+            <div class="svc-card-body">
+              <h3>Auto Glass Repair</h3>
+              <p>Windshields, side windows and rear windows.</p>
+            </div>
+          </a>
+          <a class="svc-card" href="../paintless-dent-repair/">
+            <div class="svc-card-body">
+              <h3>Paintless Dent Repair</h3>
+              <p>Door dings and hail dents, fixed without repainting.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. THE PROMISE BAND, home's #start byte for byte, by Greg's ruling
+         of 2026-09-28: the approved promise, not a new one. It carries the
+         call, so the band test is met. -->
+    <section class="dark field-ox" id="start">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">We will get you back on the road with your vehicle restored to its pre-accident condition.</h2>
+          <p class="sec-sub">Estimates are free and there is no obligation</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. THE FAQ, unique to the town, and the geographic objection first,
+         answered in its opening sentence. -->
+    <section id="faq">
+      <div class="wrap" style="max-width:880px">
+        <div class="sec-head">
+          <h2 class="sec-title">Questions from Feasterville-Trevose drivers</h2>
+        </div>
+        <details>
+          <summary>How far is Tri-County Collision from Feasterville-Trevose?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Tri-County Collision is about 2.9 miles and 6 minutes from Buck Road and Street Road without traffic, the shortest drive of any town on the shop's Areas We Serve page. It is in Southampton at 995 Jaymor Rd, Southampton, PA 18966, not in Feasterville-Trevose itself.</p>
+        </details>
+        <details>
+          <summary>What is the route from Buck Road?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Head along Street Road (PA 132) for about 2 miles, turn left onto 2nd Street Pike (PA 232) for about 1 mile, and turn right onto Jaymor Rd; the shop is about a quarter mile along.</p>
+        </details>
+        <details>
+          <summary>Is the drive the same from the Trevose side?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>The figure on this page starts at Buck Road and Street Road in Feasterville. The Trevose side of Feasterville-Trevose runs longer, so allow a few more minutes from there.</p>
+        </details>
+        <details>
+          <summary>Does the trip from Buck Road use the turnpike?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>Neither the turnpike nor an interstate. The drive from Buck Road runs on Street Road (PA 132), then 2nd Street Pike (PA 232), then Jaymor Rd, about 2.9 miles in all, with no toll road along the way.</p>
+        </details>
+        <details>
+          <summary>Is Tri-County Collision part of a chain?<span class="faq-ico" aria-hidden="true"></span></summary>
+          <p>No. Tri-County Collision is family owned and operated, not a chain or a franchise, and it works from 995 Jaymor Rd, Southampton, PA 18966, about 6 minutes from Buck Road and Street Road without traffic.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- 9. NEARBY TOWNS: the four sibling pages nearest Feasterville-Trevose by straight
+         line between recorded place points (3.81), and the hub. Each is a link
+         once its page is built and a pending span until then. -->
+    <section id="nearby" class="band-panel">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Nearby towns we serve</h2>
+        </div>
+        <div class="grid2">
+          <div class="svc-card" data-pending-href="../areas-served-collision-repair-northeast-philadelphia/">
+            <div class="svc-card-body">
+              <h3>Northeast Philadelphia</h3>
+            </div>
+          </div>
+          <div class="svc-card" data-pending-href="../areas-served-collision-repair-huntingdon-valley-pa/">
+            <div class="svc-card-body">
+              <h3>Huntingdon Valley, PA</h3>
+            </div>
+          </div>
+          <a class="svc-card" href="../areas-served-collision-repair-richboro-pa/">
+            <div class="svc-card-body">
+              <h3>Richboro, PA</h3>
+            </div>
+          </a>
+          <div class="svc-card" data-pending-href="../areas-served-collision-repair-hatboro-pa/">
+            <div class="svc-card-body">
+              <h3>Hatboro, PA</h3>
+            </div>
+          </div>
+          <a class="svc-card" href="../areas-served/">
+            <div class="svc-card-body">
+              <h3>Every town we serve</h3>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <a class="foot-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+          <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
+          <p class="foot-nap">
+            Tri-County Collision<br>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd<br>
+            Southampton, PA 18966</a><br>
+            <a href="tel:+12153225350">(215) 322-5350</a><br>
+            <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>
+          </p>
+        </div>
+        <div>
+          <h2 class="foot-head">Hours</h2>
+          <p>Monday to Friday, 8&nbsp;a.m. to 6&nbsp;p.m.<br>
+          Saturday by appointment only</p>
+        </div>
+        <div>
+          <!-- These columns list only pages that exist. They grow as pages
+               land, and never before. -->
+          <h2 class="foot-head">Services</h2>
+          <ul class="foot-links">
+            <li><a href="../collision-repair/">Collision Repair</a></li>
+            <li><a href="../auto-glass-repair-replacement/">Auto Glass Repair</a></li>
+            <li><a href="../paintless-dent-repair/">Paintless Dent Repair</a></li>
+            <li><a href="../commercial-collision-repair/">Commercial Collision&nbsp;Repair</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="foot-head">Get Started</h2>
+          <ul class="foot-links">
+            <li><a href="tel:+12153225350">Call (215) 322-5350</a></li>
+            <li><a href="mailto:contact@tricountycollision.com">Email the shop</a></li>
+            <li><a href="../contact-us/">Send us your details online</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <!-- The year is written into the markup so it is right with
+             JavaScript off, and assets/site.js updates it so it is right
+             next January. A hard-coded year is a stale-clock claim. -->
+        <p>&copy; <span data-year>2026</span> Tri-County Collision &middot; <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> &middot; <a href="tel:+12153225350">(215) 322-5350</a> &middot; <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- The one element the whole design turns on. Fixed to the bottom of
+       every phone viewport, hidden above 900px where the header's own call
+       button is always visible. -->
+  <a class="callbar" href="tel:+12153225350">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h3l1.5 3.8-2 1.4a12.5 12.5 0 0 0 6.2 6.2l1.4-2 3.8 1.5v3a1.8 1.8 0 0 1-2 1.8A16.5 16.5 0 0 1 4.8 5.5a1.8 1.8 0 0 1 1.8-2z"/></svg>
+    Call (215) 322-5350
+  </a>
+
+</body>
+</html>

@@ -221,6 +221,49 @@ FRAMES = {
         "TOWN": "Jamison",
     },
 }
+
+
+def town_frame(key: str, name: str, route: dict) -> dict:
+    """A town frame DERIVED, not typed (3.81): from TOWN_ROUTES[key] (the
+    corner, its place point, its radius) and the recorded routing's own
+    geometry. The width is Jamison's 360 units with Jamison's 11-unit
+    labels, which is what holds the 10.5px label floor on a phone: the card
+    draws the map about 348px wide at 390, so a label renders at
+    11 x 348 / 360 = 10.6px. The height follows the route's shape, 240 to 480
+    units, and the scale is whatever fits the route, the corner and the pin
+    with a quarter of the frame to spare."""
+    rec = _audit.TOWN_ROUTES[key]
+    pts = [(lat, lon) for lon, lat in route["routes"][0]["geometry"]["coordinates"]]
+    pts += [(rec["corner"][3], rec["corner"][4]), (PIN_LAT, PIN_LON)]
+    s_, n_ = min(p[0] for p in pts), max(p[0] for p in pts)
+    w_, e_ = min(p[1] for p in pts), max(p[1] for p in pts)
+    clat, clon = (s_ + n_) / 2, (w_ + e_) / 2
+    h_m = (n_ - s_) * 110574.0
+    w_m = (e_ - w_) * 111320.0 * math.cos(math.radians(clat))
+    vb_w = 360
+    vb_h = int(max(240, min(480, round(vb_w * h_m / max(w_m, 1) / 10) * 10)))
+    mpu = math.ceil(max(w_m * 1.25 / vb_w, h_m * 1.25 / vb_h) * 2) / 2
+    half_h = vb_h / 2 * mpu * 1.15 / 110574.0
+    half_w = vb_w / 2 * mpu * 1.15 / (111320.0 * math.cos(math.radians(clat)))
+    return {
+        "PAGE": os.path.join(ROOT, "docs", _audit.TOWN_ROUTE_PREFIX + key, "index.html"),
+        "VB_W": vb_w, "VB_H": vb_h, "M_PER_UNIT": mpu,
+        "FRAME_CX_LAT": round(clat, 4), "FRAME_CX_LON": round(clon, 4),
+        "QUERY_BBOX": (round(clat - half_h, 4), round(clon - half_w, 4),
+                       round(clat + half_h, 4), round(clon + half_w, 4)),
+        "ROAD_CLASSES": MAIN_CLASSES, "LABEL_NEAR_M": 0,
+        "ROUTE_REQUIRED": True, "PRIMARY_ONLY": True, "ROUTE_KEY": key,
+        "MINOR_NEAR_M": 450, "WIDTH_SCALE": 0.42,
+        # Jamison's join tolerance, 2 units at 24 m a unit, held at the same
+        # ground distance, 48m, whatever this frame's scale.
+        "JOIN_TOL": round(48.0 / mpu, 2),
+        "LABEL_SIZE": 11, "SHIELD_SIZE": 10, "PIN_LABEL_SIZE": 12.5,
+        "CORNER": {"label": name, "roads": tuple(rec["corner"][:2]),
+                   "place": (rec["place"][1], rec["place"][2]), "max_m": rec["max_m"]},
+        "TOWN": name,
+    }
+
+
 LABEL_ONLY = None
 CORNER = None
 TOWN = None
@@ -256,6 +299,10 @@ def use_frame(name: str):
                   '({0},{1},{2},{3});'
                   'way["building"](around:120,{4},{5}););out geom tags;').format(
                       *g["QUERY_BBOX"], PIN_LAT, PIN_LON)
+    if g["ROUTE_REQUIRED"]:
+        # 3.81: a town frame's data carries each way's node list, so the
+        # route's ways are found by OSM node, as roads_driven was.
+        g["QUERY"] = g["QUERY"].replace("out geom tags;", "out geom;")
     if g["MINOR_NEAR_M"]:
         ends = [(PIN_LAT, PIN_LON)] + ([g["CORNER"]["place"]] if g["CORNER"] else [])
         g["QUERY"] = g["QUERY"].replace('way["building"]', "".join(
@@ -641,6 +688,36 @@ def draw(data: dict, route: dict = None):
                 # does not come along whole.
                 if along >= ROUTE_MIN_M and (along >= 0.5 * way_len or along >= 150):
                     on_route.add(e["id"])
+        # 3.81: ON THE ROUTE BY OSM NODE, when the data allows it. The
+        # geometric test above read a Turnpike bridge crossing Street Road
+        # (Bensalem) and North York Road, collinear past the corner
+        # (Warminster), as driven; the routing's own node record disproves
+        # both. When the routing file carries OSRM's node list and the map
+        # data carries each way's nodes, a way is on the route exactly when
+        # the route traverses its edges for ROUTE_MIN_M or more: the method
+        # that built roads_driven, one source of truth. The geometric test
+        # stays only as the fallback for older caches without node lists,
+        # which is what keeps Jamison's map and the contact reference
+        # byte-identical.
+        route_nodes = [rt["legs"][0].get("annotation", {}).get("nodes") for rt in drawn_routes]
+        way_nodes = [e for e in els if e.get("tags", {}).get("highway") and e.get("nodes") and e.get("geometry")]
+        if all(route_nodes) and way_nodes:
+            edges = {frozenset(pr) for ns in route_nodes for pr in zip(ns, ns[1:])}
+            by_node = set()
+            for e in way_nodes:
+                g = [(p["lat"], p["lon"]) for p in e["geometry"]]
+                along = sum(m(g[i], g[i + 1]) for i, pr in enumerate(zip(e["nodes"], e["nodes"][1:]))
+                            if frozenset(pr) in edges)
+                if along >= ROUTE_MIN_M:
+                    by_node.add(e["id"])
+            def _names(ids):
+                return {e["tags"].get("name") for e in els if e["id"] in ids and e.get("tags", {}).get("name")}
+            dropped = sorted(_names(on_route) - _names(by_node))
+            print(f"route    on the route by OSM node identity (3.81): {len(by_node)} ways"
+                  + (f"; the geometric test's {dropped} are not driven" if dropped else ""))
+            on_route = by_node
+        else:
+            print("route    no node lists in this data: on the route by the geometric test (fallback)")
         ROUTE_ROADS = True
         names_on = sorted({e["tags"].get("name") for e in els if e["id"] in on_route and e["tags"].get("name")})
         refs_on = sorted({e["tags"].get("ref") for e in els if e["id"] in on_route and e["tags"].get("ref")})
@@ -966,9 +1043,20 @@ def main() -> int:
                     "byte, and exit 1 if it differs (the contact frame's non-regression proof)")
     ap.add_argument("--route", help="a town frame's cached OSRM routing to draw")
     ap.add_argument("--fetch-route", help="make the one OSRM request and cache it here (outside the repo)")
-    ap.add_argument("--frame", default="contact", choices=sorted(FRAMES),
-                    help="which frame to draw, from FRAMES (default: contact)")
+    ap.add_argument("--frame", default="contact", choices=sorted(FRAMES) + ["town"],
+                    help="which frame to draw, from FRAMES (default: contact), or \"town\" "
+                         "with --town and --name for a frame derived from TOWN_ROUTES")
+    ap.add_argument("--town", help="with --frame town: the TOWN_ROUTES key")
+    ap.add_argument("--name", help="with --frame town: the town's name as the corner label")
     a = ap.parse_args()
+    if a.frame == "town":
+        if not (a.town and a.name and a.route):
+            raise SystemExit("FAILED: --frame town needs --town, --name and the recorded --route.")
+        with open(a.route, encoding="utf-8") as f:
+            FRAMES["town"] = town_frame(a.town, a.name, json.load(f))
+        print(f"label    {FRAMES['town']['LABEL_SIZE']} units in {FRAMES['town']['VB_W']}: about "
+              f"{FRAMES['town']['LABEL_SIZE'] * 348 / FRAMES['town']['VB_W']:.1f}px on a 390 phone "
+              f"(floor 10.5)")
     use_frame(a.frame)
     print(f"frame    {a.frame}: {VB_W}x{VB_H} at {M_PER_UNIT} m/unit, centre "
           f"{FRAME_CX_LAT}, {FRAME_CX_LON}, page "

@@ -2184,8 +2184,30 @@ TOWN_HUB_PATH = os.path.join("areas-served", "index.html")
 # and its header chip row (".badges") merged into #why-the-trip, so both
 # entries left: a list naming what no town page carries would excuse text
 # the template no longer ships. What ships is listed; what died, died.
-TOWN_PATTERN_SECTIONS = ("start", "nearby", "real-repairs", "why-the-trip")
-TOWN_PATTERN_CLASSES = ("svc-card",)
+# 3.81, GREG'S OPTION C: THE GATE STOPS COUNTING FIXED LAYOUT AND DERIVED
+# DIRECTIONS. Each exclusion and its reason:
+#   #fix          What we fix: the same four cards and one sentence on every
+#                 town page, layout, not copy.
+#   .map-credit   the ODbL credit under every map, required and identical.
+#   .dir-utils    the getaway kit: Open in Google Maps, the chip, the address.
+#   .numbered     the numbered steps, and
+#   the intro     the first paragraph of the directions card's prose ("From
+#                 the crossroads of ...").
+# The last two are DERIVED DATA, policed word for word by the routing check
+# (town_route_findings), and two towns that arrive on the same roads will
+# rightly share them: every route ends on 2nd Street Pike or James Way into
+# Jaymor Rd. Counting them would force filler written only to dilute a
+# metric, which is the doorway-page disease inverted. THE HEADER, THE
+# OPENINGS AND THE FAQS STAY COUNTED: option D, which excluded the header,
+# was put to Greg and declined, because it would reverse 3.71's
+# first-sentence pressure. A Jamison-style alternative-route paragraph in
+# the card is prose, not derived, and stays counted too.
+TOWN_PATTERN_SECTIONS = ("start", "nearby", "real-repairs", "why-the-trip", "fix")
+TOWN_PATTERN_CLASSES = ("svc-card", "map-credit", "dir-utils", "numbered")
+# The card's intro line has no class of its own, and giving it one would
+# change shipped markup to suit a metric; it is found by position instead:
+# the first <p> directly inside the .prose of a .dir-body.
+TOWN_PATTERN_INTRO = ("dir-body", "prose")
 TOWN_SHINGLE = 3
 TOWN_SHARED_MAX = 0.30
 TOWN_PLACE_NAMES = (
@@ -2205,7 +2227,7 @@ class _TownText(HTMLParser):
 
     def __init__(self):
         super().__init__(convert_charrefs=True)
-        self.stack = []           # (tag, skipping) for every open element
+        self.stack = []           # [tag, skipping, classes, first <p> seen] per open element
         self.main = 0
         self.words = []
         self.h2s = []
@@ -2213,6 +2235,20 @@ class _TownText(HTMLParser):
 
     def _skipping(self):
         return bool(self.stack) and self.stack[-1][1]
+
+    def _is_card_intro(self, tag):
+        """The directions card's intro line: a <p> whose parent is the
+        .prose of a .dir-body, and the first <p> that .prose opens (3.81)."""
+        if tag != "p" or len(self.stack) < 2:
+            return False
+        parent, grand = self.stack[-1], self.stack[-2]
+        outer, inner = TOWN_PATTERN_INTRO
+        if inner not in parent[2] or outer not in grand[2]:
+            return False
+        if parent[3]:
+            return False
+        parent[3] = True          # this .prose has opened its first <p>
+        return True
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -2223,8 +2259,9 @@ class _TownText(HTMLParser):
         classes = (a.get("class") or "").split()
         skip = (self._skipping() or tag in ("nav", "script", "style")
                 or (tag == "section" and a.get("id") in TOWN_PATTERN_SECTIONS)
-                or any(c in TOWN_PATTERN_CLASSES for c in classes))
-        self.stack.append((tag, skip))
+                or any(c in TOWN_PATTERN_CLASSES for c in classes)
+                or self._is_card_intro(tag))
+        self.stack.append([tag, skip, classes, False])
         if tag == "h2" and not skip:
             self._h2 = ""
 
@@ -2663,6 +2700,22 @@ def audit(source: str, coverage: dict = None):
         else:
             passes.append(f"The Google Maps embed is centred on the verified pin, {want}, "
                           f"by coordinates, titled, and lazy-loaded.")
+
+    # --- The map is drawn (3.81), town pages only ---
+    # build-town.py writes the MAP markers empty and prepare-map-image.py
+    # draws between them afterwards. A page built and never drawn would ship
+    # a blank map box, and nothing else would notice: a critical, by Greg's
+    # ruling that an undrawn map never ships silently.
+    if declared_kind == TOWN_KIND:
+        mm = re.search(r"(?s)<!-- MAP:BEGIN[^>]*-->(.*?)<!-- MAP:END -->", html)
+        if not mm:
+            fails.append("**This town page has no MAP markers, so no map can be drawn into it.** "
+                         "Rebuild it with scripts/build-town.py.")
+        elif not re.search(r"<svg\b[^>]*\brole=\"img\"", mm.group(1)):
+            fails.append("**This town page's map is empty: the MAP markers hold no drawing.** Run "
+                         "scripts/prepare-map-image.py for this town after building the page.")
+        else:
+            passes.append("The page's map is drawn between its MAP markers.")
 
     # --- One routing, every rendering derived (3.65), town pages only ---
     if declared_kind == TOWN_KIND:

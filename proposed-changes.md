@@ -12344,6 +12344,432 @@ how.
   is identical to 3.79's except the hub's word count, ~1,221 to ~1,225.
 - No em dash was added.
 
+### 3.81 Batch 1: Bensalem, Feasterville-Trevose, Langhorne, Richboro and Warminster. TEMPLATE AMENDMENTS. BUILT 2026-09-29
+
+**Five town pages built from the Jamison template by a new repo script,
+`scripts/build-town.py`, under Greg's rulings on 3.80's batch report and
+on its two map stops.** Every figure derives from the routing table the
+strategy chat verified in 3.78. **One commit** holds:
+- the five pages;
+- the town script;
+- the variance gate's change;
+- Jamison's nearby swap;
+- the map machinery;
+- the empty-map check.
+
+**The strategy chat now re-routes all five towns from its own machine
+(protocol e) and re-checks Richboro's township** before batch 2 is
+released.
+
+#### Greg's rulings for this batch
+
+1. **THE VARIANCE GATE, OPTION C.** The gate stops counting:
+   - the fixed layout pieces: What we fix, the map credit, and the Open
+     in Google Maps/address block;
+   - the directions card's intro line and numbered steps.
+
+   **The reason, recorded with the exclusions in `scripts/audit.py`:**
+   those sentences are derived data, policed word for word by the routing
+   check, and two towns that arrive on the same roads will rightly share
+   them. Counting them would force filler written only to dilute a
+   metric, which is the doorway-page disease inverted. **The header, the
+   openings and the FAQs stay counted.** Option D, which excluded the
+   header, was put to Greg and declined, because it would reverse 3.71's
+   first-sentence pressure. **Each town gained one more unique FAQ.**
+2. **NEARBY-TOWN ORDER DERIVES EVERYWHERE:** by haversine from the
+   recorded place points, with zero exceptions. Jamison's two cards swap
+   so Hatboro precedes Horsham. **This is a correction of 3.62's source
+   points, recorded forward, not a rewrite.** 3.62 measured Horsham
+   (5.54 mi) before Hatboro (5.62) from different points; from 3.78's
+   recorded points, Hatboro is 5.62 and Horsham 5.67.
+3. **STOP 1, OPTION A: the map gate identifies on-route roads by OSM
+   node** (below). **Option C was rejected by name:** adding undriven
+   roads to `roads_driven` would falsify the record this system exists to
+   keep true.
+4. **STOP 2, OPTION A, Greg's ruling: Langhorne's map ships unlabelled:**
+   the route line, the Langhorne corner and the shop pin.
+   - **The 150-unit minimum label run stays as the one rule, unchanged:**
+     maps label roads where labels fit, and where they don't, the
+     numbered steps carry every name.
+   - **This ruling sets the rule for batch 2:** Jenkintown's long route
+     gets the same treatment automatically, without a stop.
+5. **THE SIX NEW AND REPLACED Q&As ARE APPROVED as quoted, with two
+   riders:**
+   - **"Not a chain or a franchise"** (Feasterville-Trevose) ships now,
+     following from the vetted "family owned and operated", and becomes
+     **owner question 34**. Greg's ruling called it 32; 31 to 33 were
+     already assigned in 3.79.
+   - **"Upper Southampton Township"** (Richboro) ships subject to the
+     strategy chat's independent OSM confirmation after the push. If the
+     two machines disagree, the batch is not accepted. This build's
+     `is_in` query is the record until then.
+
+**Ratified, so none of them drift:**
+- **The meta description keeps its short "lifetime warranty":** metas
+  are summaries, and the vetted scoped rendering lives in page copy.
+- **Per-town call-first sentences:** each town has its own wording, and
+  every opening still ends on a call.
+- **NO alternative-route paragraph on the new towns, and this is now the
+  rule:** the routing check reads only the primary route, and claims
+  nothing checks don't ship. Jamison's hand-verified alternative stays
+  as the recorded exception.
+- **Feasterville-Trevose's meta falls back under 160,** and the rule
+  lives in the script.
+- **The empty-map check lands in this commit,** with its own proof.
+
+#### `scripts/build-town.py`: the template, out of scratch space
+
+**The Jamison builder, moved into the repo and generalised.**
+- **Derived, never typed**, from `TOWN_ROUTES`:
+  - the lead's first sentence and minutes;
+  - the card's intro line, steps and chip;
+  - the title (ruling 4, as code, including the "| Tri-County" fallback
+    past 60);
+  - the meta, with its own fallback past 160;
+  - the schema;
+  - the page's `llms.txt` entry;
+  - the four nearby towns.
+- **Every rounding is half-up**, and a step under an eighth of a mile is
+  in feet.
+- **Written per town:** the two-paragraph opening, ending on its own
+  call-first sentence, and the FAQ. Their figures are placeholders filled
+  from the routing, so prose cannot carry a stale number.
+- **Lifted byte for byte:** the chrome, the proof cards, Real Repairs and
+  the promise band.
+- **The template's HTML comments are Jamison's own records,** copied
+  verbatim with the town substituted, so every town page carries the
+  rulings that shaped it. Jamison's head comment and its two 3.71 opening
+  lines are its own data.
+- **Step 1 always "heads" from the corner** (3.65, approved as read). A
+  first build derived Warminster's as "Make a sharp left onto York Road",
+  because OSRM starts a few metres along Street Road. That is meaningless
+  to a driver standing at the crossroads, and was caught in the render
+  before commit.
+
+**THE FAITHFULNESS PROOF, as ruled.** With the five new pages moved aside
+(so no pending link converts), Jamison regenerated from the town script
+differs from the shipped page in exactly:
+- the two-card swap;
+- the nearby section's comment, which now names the rule that orders
+  those cards.
+
+**A second build is byte-identical.** With the new pages present,
+Jamison's Warminster and Richboro cards become links, as the pending-link
+test requires.
+
+#### THE THREE CHECKABLE LOCAL FACTS, per 3.62's rule 7
+
+1. **The township and county containing each corner,** by OSM `is_in`:
+   - Bensalem Township;
+   - Lower Southampton Township (Feasterville-Trevose);
+   - Langhorne borough;
+   - Northampton Township (Richboro);
+   - Warminster Township.
+
+   All are in Bucks County. **The same query placed the shop in Upper
+   Southampton Township, Bucks County**, and confirmed Jamison's Warwick
+   Township as already shipped.
+2. **The crossroads**, as ruled in 3.78.
+3. **The route**, with its distance and time.
+
+#### The pages, every per-town sentence
+
+The steps, card intro and chip are derived. The openings and FAQs are
+new, and each is a claim for the owner. Every sentence is sourced from
+the routing table, the OSM facts or an already-vetted claim.
+
+##### Bensalem
+
+- **Title** (56): Collision Repair for Bensalem, PA | Tri-County Collision
+- **Meta** (155): Tri-County Collision in Southampton repairs cars for Bensalem, PA drivers, about 15 minutes away. Directions from Bensalem, free estimates, (215) 322-5350.
+- **Eyebrow:** Bucks County, PA. **H1:** Collision Repair for Bensalem, PA
+- **Lead, first sentence (template, routed minutes):** Tri-County Collision is a family-owned body shop in Southampton, about 15 minutes from Bensalem.
+- **Card intro (derived, not counted by the gate):** From the crossroads of Knights Road and Street Road, the drive is about 8.1 miles and takes about 15 minutes without traffic.
+  1. Head north on Street Road (PA 132) for about 7 miles.
+  2. Turn left onto 2nd Street Pike (PA 232) and follow it for about 1 mile.
+  3. Turn right onto Jaymor Rd, and the shop is about a quarter mile along, at 995 Jaymor Rd, Southampton, PA 18966.
+- **Chip:** ~15 min from Bensalem
+- **Nearby, derived:** Northeast Philadelphia, Feasterville-Trevose, Langhorne, Huntingdon Valley, and the hub
+- **Opening, NEW (per-town):**
+  > Tri-County Collision repairs cars for Bensalem drivers, and for their neighbors in Feasterville-Trevose, Langhorne, Huntingdon Valley and Northeast Philadelphia. The shop is in Southampton, not Bensalem Township. From Knights Road the drive is about 8 miles, and almost all of it is Street Road.
+
+  > Knights Road crosses Street Road (PA 132) inside Bensalem Township, Bucks County. Leave from that crossroads and you reach our door in about 15 minutes when the road is clear. Before your car goes to a shop you didn't pick, pick up the phone and call us.
+
+- **FAQ, NEW (per-town):**
+
+  - **Is there a Tri-County Collision location in Bensalem?** Bensalem has no Tri-County Collision location. The shop is at 995 Jaymor Rd, Southampton, PA 18966, about 8 miles and 15 minutes from Knights Road and Street Road on clear roads. Where your car gets fixed is your decision under Pennsylvania law, not your insurer's, and our write-up of Pennsylvania's anti-steering rules sets out what that means.
+  - **Which roads lead from Bensalem to the shop?** Street Road (PA 132) does almost all the work: stay on it about 7 miles from Knights Road, go left at 2nd Street Pike (PA 232) and drive about 1 mile, then make the right onto Jaymor Rd, where the shop is about a quarter mile in.
+  - **Does Tri-County Collision handle the insurance claim for a Bensalem driver?** Tri-County Collision handles the paperwork and communication with your insurer, so you don't have to, and it works with all major insurance companies.
+  - **Will Street Road traffic change the drive time?** It can. The figure of about 15 minutes is a routing on empty roads, measured from where Knights Road crosses Street Road, so traffic on Street Road adds to it. Allow for the time of day when you set out.
+  - **How much of the drive from Bensalem is on Street Road?** Nearly all of it. Of the roughly 8.1 miles from Knights Road to Tri-County Collision, about 7 miles are on Street Road (PA 132). The last stretch is about 1 mile on 2nd Street Pike (PA 232), then about a quarter mile on Jaymor Rd to the shop.
+
+##### Feasterville-Trevose
+
+- **Title** (58): Collision Repair for Feasterville-Trevose, PA | Tri-County
+- **Meta** (152): Tri-County Collision in Southampton repairs cars for Feasterville-Trevose, PA drivers, about 6 minutes away. Directions, free estimates, (215) 322-5350.
+- **Eyebrow:** Bucks County, PA. **H1:** Collision Repair for Feasterville-Trevose, PA
+- **Lead, first sentence (template, routed minutes):** Tri-County Collision is a family-owned body shop in Southampton, about 6 minutes from Feasterville-Trevose.
+- **Card intro (derived, not counted by the gate):** From the crossroads of Buck Road and Street Road, the drive is about 2.9 miles and takes about 6 minutes without traffic.
+  1. Head northwest on Street Road (PA 132) for about 2 miles.
+  2. Turn left onto 2nd Street Pike (PA 232) and follow it for about 1 mile.
+  3. Turn right onto Jaymor Rd, and the shop is about a quarter mile along, at 995 Jaymor Rd, Southampton, PA 18966.
+- **Chip:** ~6 min from Feasterville-Trevose
+- **Nearby, derived:** Northeast Philadelphia, Huntingdon Valley, Richboro, Hatboro, and the hub
+- **Opening, NEW (per-town):**
+  > Of all the towns on our Areas We Serve page, Feasterville-Trevose is the closest by road. Even so, the shop is not in Feasterville or Trevose; it is in Southampton, about 2.9 miles from Buck Road. We also work on cars for drivers from Richboro, Huntingdon Valley, Bensalem and Northeast Philadelphia.
+
+  > Buck Road meets Street Road (PA 132) in Lower Southampton Township, Bucks County. That crossroads is about 6 minutes from our shop in light traffic. When something hits your car, our number is worth dialing before any other.
+
+- **FAQ, NEW (per-town):**
+
+  - **How far is Tri-County Collision from Feasterville-Trevose?** Tri-County Collision is about 2.9 miles and 6 minutes from Buck Road and Street Road without traffic, the shortest drive of any town on the shop's Areas We Serve page. It is in Southampton at 995 Jaymor Rd, Southampton, PA 18966, not in Feasterville-Trevose itself.
+  - **What is the route from Buck Road?** Head along Street Road (PA 132) for about 2 miles, turn left onto 2nd Street Pike (PA 232) for about 1 mile, and turn right onto Jaymor Rd; the shop is about a quarter mile along.
+  - **Is the drive the same from the Trevose side?** The figure on this page starts at Buck Road and Street Road in Feasterville. The Trevose side of Feasterville-Trevose runs longer, so allow a few more minutes from there.
+  - **Does the trip from Buck Road use the turnpike?** Neither the turnpike nor an interstate. The drive from Buck Road runs on Street Road (PA 132), then 2nd Street Pike (PA 232), then Jaymor Rd, about 2.9 miles in all, with no toll road along the way.
+  - **Is Tri-County Collision part of a chain?** No. Tri-County Collision is family owned and operated, not a chain or a franchise, and it works from 995 Jaymor Rd, Southampton, PA 18966, about 6 minutes from Buck Road and Street Road without traffic.
+
+##### Langhorne
+
+- **Title** (57): Collision Repair for Langhorne, PA | Tri-County Collision
+- **Meta** (157): Tri-County Collision in Southampton repairs cars for Langhorne, PA drivers, about 16 minutes away. Directions from Langhorne, free estimates, (215) 322-5350.
+- **Eyebrow:** Bucks County, PA. **H1:** Collision Repair for Langhorne, PA
+- **Lead, first sentence (template, routed minutes):** Tri-County Collision is a family-owned body shop in Southampton, about 16 minutes from Langhorne.
+- **Card intro (derived, not counted by the gate):** From the crossroads of Bellevue Avenue and West Maple Avenue, the drive is about 8.8 miles and takes about 16 minutes without traffic.
+  1. Head west on West Maple Avenue (PA 213) for about 3 miles.
+  2. At the roundabout, continue onto Bridgetown Pike (PA 213) for about 2 miles.
+  3. Continue onto Bustleton Pike (PA 532) for about a quarter mile.
+  4. Turn right onto Street Road (PA 132) and follow it for about 3 miles.
+  5. Turn left onto 2nd Street Pike (PA 232) and follow it for about 1 mile.
+  6. Turn right onto Jaymor Rd, and the shop is about a quarter mile along, at 995 Jaymor Rd, Southampton, PA 18966.
+- **Chip:** ~16 min from Langhorne
+- **Nearby, derived:** Feasterville-Trevose, Bensalem, Richboro, Northeast Philadelphia, and the hub
+- **Opening, NEW (per-town):**
+  > Langhorne is one of the longer trips to our door, and we'd rather say so up front. Tri-County Collision is in Southampton, about 9 miles from the middle of the borough. Drivers from Bensalem, Feasterville-Trevose, Richboro and Northeast Philadelphia bring their cars to us too.
+
+  > The borough's center is where Maple Avenue (PA 213) crosses Bellevue Avenue, in Langhorne, Bucks County. Without traffic the drive from there takes about 16 minutes. After a crash, a call to us is a good first move.
+
+- **FAQ, NEW (per-town):**
+
+  - **Isn't Southampton a long way from Langhorne?** Southampton is about 9 miles and 16 minutes from Maple Avenue and Bellevue Avenue without traffic, and Tri-County Collision is there, at 995 Jaymor Rd, Southampton, PA 18966. It is a longer drive than some, which is why this page shows the route and the shop's case for making it.
+  - **Does the drive from Langhorne use an interstate?** The recorded route uses no interstate: Maple Avenue (PA 213), Bridgetown Pike, Bustleton Pike, Street Road (PA 132), 2nd Street Pike (PA 232) and Jaymor Rd, in that order.
+  - **Does an estimate cost anything?** No. At Tri-County Collision estimates are free and there is no obligation, whichever town you come from.
+  - **Will my car come back clean?** It will. At Tri-County Collision, vehicles are detailed inside and out after every repair.
+  - **Is Tri-County Collision certified for my car's brand?** Tri-County Collision is factory-certified for 12 brands: INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep. That list is the same whether you drive in from Langhorne or from next door.
+
+##### Richboro
+
+- **Title** (56): Collision Repair for Richboro, PA | Tri-County Collision
+- **Meta** (154): Tri-County Collision in Southampton repairs cars for Richboro, PA drivers, about 8 minutes away. Directions from Richboro, free estimates, (215) 322-5350.
+- **Eyebrow:** Bucks County, PA. **H1:** Collision Repair for Richboro, PA
+- **Lead, first sentence (template, routed minutes):** Tri-County Collision is a family-owned body shop in Southampton, about 8 minutes from Richboro.
+- **Card intro (derived, not counted by the gate):** From the crossroads of 2nd Street Pike and Almshouse Road, the drive is about 4.5 miles and takes about 8 minutes without traffic.
+  1. Head south on 2nd Street Pike (PA 232) for about a quarter mile.
+  2. Keep right to stay on 2nd Street Pike (PA 232) for about 4 miles.
+  3. Turn right onto Jaymor Rd, and the shop is about a quarter mile along, at 995 Jaymor Rd, Southampton, PA 18966.
+- **Chip:** ~8 min from Richboro
+- **Nearby, derived:** Feasterville-Trevose, Warminster, Jamison, Langhorne, and the hub
+- **Opening, NEW (per-town):**
+  > Richboro drivers have one of the simplest trips to Tri-County Collision: stay on one road until the last turn. The shop is in Southampton, about 4.5 miles from the Richboro crossroads, not in Richboro. We see cars from Feasterville-Trevose, Warminster, Jamison and Langhorne as well.
+
+  > Richboro's crossroads is 2nd Street Pike (PA 232) at Almshouse Road, in Northampton Township, Bucks County. From it the shop is about 8 minutes away with no traffic. Make us your first call when the damage is done, and decide the rest after.
+
+- **FAQ, NEW (per-town):**
+
+  - **Does Tri-County Collision have a shop in Richboro?** Tri-County Collision has no shop in Richboro. It is at 995 Jaymor Rd, Southampton, PA 18966, about 4.5 miles and 8 minutes from 2nd Street Pike and Almshouse Road without traffic.
+  - **Is it really one road from Richboro?** Nearly. From Almshouse Road, head along 2nd Street Pike (PA 232) for about a quarter mile, keep right to stay on it for about 4 miles, then turn right onto Jaymor Rd; the shop is about a quarter mile along.
+  - **My insurer named a different shop. Do I have to use it?** You do not. In Pennsylvania the choice of collision shop belongs to you, and an insurer cannot make you use the one it prefers. Our post on your right to choose a body shop goes through the law.
+  - **Are the technicians certified?** They are. Tri-County Collision's technicians are ASE and I-CAR Gold Class certified.
+  - **Is Tri-County Collision in the same county as Richboro?** Yes. Richboro's crossroads is in Northampton Township and the shop is in Upper Southampton Township, and both townships are in Bucks County. The drive between them is about 4.5 miles.
+
+##### Warminster
+
+- **Title** (58): Collision Repair for Warminster, PA | Tri-County Collision
+- **Meta** (158): Tri-County Collision in Southampton repairs cars for Warminster, PA drivers, about 9 minutes away. Directions from Warminster, free estimates, (215) 322-5350.
+- **Eyebrow:** Bucks County, PA. **H1:** Collision Repair for Warminster, PA
+- **Lead, first sentence (template, routed minutes):** Tri-County Collision is a family-owned body shop in Southampton, about 9 minutes from Warminster.
+- **Card intro (derived, not counted by the gate):** From the crossroads of Street Road and York Road, the drive is about 4.6 miles and takes about 9 minutes without traffic.
+  1. Head south on York Road (PA 263) for about 1 mile.
+  2. Turn left onto East County Line Road and follow it for about 3 miles.
+  3. Turn left onto James Way and follow it for about half a mile.
+  4. Turn right onto Jaymor Rd, and the shop is about 300 feet along, at 995 Jaymor Rd, Southampton, PA 18966.
+- **Chip:** ~9 min from Warminster
+- **Nearby, derived:** Hatboro, Horsham, Jamison, Willow Grove, and the hub
+- **Opening, NEW (per-town):**
+  > A Southampton shop on a Warminster page needs explaining, so here it is: Tri-County Collision is not in Warminster, and the drive from Warminster's crossroads is about 4.6 miles. We also repair cars from Hatboro, Horsham, Jamison and Willow Grove.
+
+  > York Road (PA 263) meets Street Road in Warminster Township, Bucks County, and the drive time from that junction is about 9 minutes with no traffic. Call us after an accident, before the car goes anywhere else.
+
+- **FAQ, NEW (per-town):**
+
+  - **Why is a Southampton shop on a Warminster page?** Because Tri-County Collision repairs cars for Warminster drivers, and the shop, at 995 Jaymor Rd, Southampton, PA 18966, is about 4.6 miles and 9 minutes from York Road and Street Road without traffic. It is not in Warminster, and this page says so.
+  - **Which way do I drive from York Road and Street Road?** Take York Road (PA 263) for about 1 mile, turn left onto East County Line Road for about 3 miles, turn left onto James Way for about half a mile, then turn right onto Jaymor Rd; the shop is about 300 feet along.
+  - **Where does the drive time on this page start?** This page times the trip from the junction of York Road (PA 263) and Street Road in Warminster Township. Warminster is a big township, so if you start near its edges, expect the trip to run longer or shorter than that.
+  - **Is the repair work guaranteed?** Tri-County Collision gives a lifetime warranty on all repair work, for Warminster drivers as for everyone else.
+  - **Which part of the drive from Warminster is longest?** East County Line Road, at about 3 miles. York Road (PA 263) takes up about 1 mile before it, and James Way and Jaymor Rd after it are shorter still.
+
+#### The variance gate under option C
+
+**The exclusions, in code** (`TOWN_PATTERN_SECTIONS`,
+`TOWN_PATTERN_CLASSES`, `TOWN_PATTERN_INTRO`):
+- `#fix`;
+- `.map-credit`, `.dir-utils` and `.numbered`;
+- the card's intro line, found by position (the first `<p>` of a
+  `.dir-body`'s `.prose`), so no shipped markup changed to suit the
+  metric.
+
+**Jamison's alternative-route paragraph is prose and still counts.**
+
+**All 21 pairs, as shipped; no shared substantive H2:**
+
+```
+27.7%  Feasterville-Trevose / Warminster      24.5%  Feasterville-Trevose / Langhorne
+27.5%  Bensalem / Jamison                     23.5%  Bensalem / Langhorne
+27.2%  Feasterville-Trevose / Richboro        22.5%  Langhorne / Richboro
+26.6%  Bensalem / Feasterville-Trevose        22.3%  Feasterville-Trevose / Jamison
+25.8%  Richboro / Warminster                  22.2%  Langhorne / Warminster
+25.2%  Bensalem / Warminster                  21.9%  Jamison / Langhorne
+25.2%  Jamison / Warminster                   16.9%  hub / Langhorne
+24.7%  Bensalem / Richboro                    12.0%  hub / Richboro
+24.7%  Jamison / Richboro                     11.0%  hub / Feasterville-Trevose
+                                              10.8%  hub / Bensalem
+                                              10.5%  hub / Warminster
+                                               8.6%  hub / Jamison
+```
+
+**How the pages got there:**
+- **As built, the worst pair shared 43%.** Of Bensalem and
+  Feasterville-Trevose's 157 shared shingles, 79 were the directions
+  card, because both routes are the same roads for their last two steps.
+- **Option C took the worst to 33.6%.**
+- **The new questions, and honest variation in wording where my own
+  drafts had repeated phrasing across towns, took it to 27.7%.** Nothing
+  new was asserted. Bensalem links the right-to-choose post by its own
+  title's other name, "Pennsylvania's anti-steering rules". The post's
+  title is "PA Law: Your Right to Choose a Body Shop (Anti-Steering)".
+
+#### The maps
+
+**Frames are DERIVED, not typed:** `prepare-map-image.py --frame town
+--town KEY --name NAME` takes the corner, place and radius from
+`TOWN_ROUTES`, and the extent from the recorded routing's own geometry.
+- **The width is fixed at Jamison's 360 units, with 11-unit labels:**
+  about 10.6px on a 390 phone, over the 10.5px floor.
+- **The height follows the route,** from 240 to 480 units.
+- **Jamison keeps its hand-set frame.**
+
+```
+Bensalem               360x320 at 30.5 m/unit   labels: Street Rd
+Feasterville-Trevose   360x240 at 11.0 m/unit   labels: Street Rd, PA 132
+Langhorne              360x240 at 39.0 m/unit   none, by ruling (the route is ~11km wide)
+Richboro               360x480 at 15.0 m/unit   labels: Second Street Pike, N 2nd Street Pike, PA 232
+Warminster             360x390 at 15.5 m/unit   labels: York Rd, PA 263
+```
+
+**THE NODE GATE (Stop 1, option A).** The geometric on-route test read
+two roads as driven that the routing's own node record disproves:
+- **Bensalem:** the Pennsylvania Turnpike, two short segments on the
+  bridge over Street Road.
+- **Warminster:** North York Road, collinear with York Road past the
+  corner.
+
+**The fix:** when the routing file carries OSRM's node list and the map
+data carries each way's nodes, a way is on the route exactly when the
+route traverses its edges for `ROUTE_MIN_M` or more. **That is the method
+that built `roads_driven`: one source of truth.** Town frames now fetch
+node lists (`out geom`). The geometric test survives only as the fallback
+for older caches.
+
+**PROVED, both required ways:**
+- **Jamison's map redraws byte-identical** on the fallback, because its
+  cache has no node lists.
+- **The contact frame.** Its 2026-09-24 cache is no longer on this
+  machine, so the proof was made two stronger ways. The HEAD script and
+  the new script, on today's contact data, draw byte-identical maps. And
+  the new script's drawing **matches `scripts/fixtures/contact-map-reference.svg`
+  byte for byte, 22,210 bytes.**
+
+**The gate still refuses, by hand, outside the repo:**
+
+```
+(a) Bensalem's data with node lists stripped: the geometric fallback, which still refuses the Turnpike
+(b) node gate, Street Road deleted from roads_driven: "FAILED: the route's OSM ways carry ['Street Road']"
+(c) the routing doctored by one minute: "FAILED: this routing file measures 8.14 mi, 15.8 min..."
+```
+
+`audit.py` was restored byte for byte after (b). **All five maps are
+drawn under the node gate**, with every label a road the recorded
+routing drives.
+
+**THE EMPTY-MAP CHECK:** a town page whose MAP markers hold no drawing,
+or that has no markers at all, is a critical. `build-town.py` writes the
+markers empty, and the map script draws into them, so a built but undrawn
+page can never ship silently.
+
+#### Catches, not corrections: the checks did their job before anything shipped
+
+- **Feasterville-Trevose's first question 4, "Can I bring my car in on a
+  Saturday?"** named a day outside the two exact hours strings, and the
+  hours check failed the page.
+- **Its replacement, a detailing question,** duplicated Langhorne's,
+  which I had kept rather than replaced; the variance measure exposed it.
+  **Question 4 is now the turnpike question.**
+- **A Bensalem answer ending "...on Jaymor Rd."** read as the street
+  spelled with a period, and the NAP check failed it. It was reworded.
+- **Warminster's step 1** "sharp left", above.
+
+#### Measured, confirmed rather than assumed
+
+**The fold, where Call clears the call bar by:**
+
+```
+                        390x664   360x640
+Bensalem                   78        13
+Feasterville-Trevose       37        13
+Langhorne                  78        13
+Richboro                   78        54
+Warminster                 37        13
+```
+
+**A longer lead wraps one more line on four pages at 360,** and on
+Feasterville-Trevose and Warminster at 390 too, putting Call at 505 to
+567. **It fits whole in every case; 13px at 360 is the tightest on the
+site.**
+- **Horizontal scroll:** none at 360, 390 or 1440.
+- **The ask rhythm at 390:** the longest run is 1,998, under the 2,684
+  ceiling. The proof row and the pairs' row are 1,997 or more apart, over
+  the 1,634 floor.
+
+**Rendered and inspected at 1440 and 390:** all five directions cards,
+with maps, steps, kit and chip.
+- **Langhorne's short, wide frame leaves its map well above a taller
+  body at 1440.** This is 3.74's imbalance at its most visible.
+
+**The hub rebuilt by `migrate-hub.py`:** its five town names became
+links, and that is its only change. The routing check passes the hub.
+
+**Nothing else moved:** the layout sweep changes only the hub and
+Jamison, and adds the five new pages.
+
+#### The suite, and THE NEW EXPECTED LINE
+
+- Both test scripts pass: **304 checks**, where there were 281.
+- **Section 31, 23 checks:**
+  - the shipped tier under 30%;
+  - a copied opening and copied FAQ answers caught;
+  - derived steps and the intro line proved not to count;
+  - Jamison's alternative route still counted;
+  - the empty and missing map markers caught, and a drawn map passing;
+  - all 12 titles under the rule;
+  - Jamison's derived nearby order;
+  - no Jamison nearby exception left in the script.
+- `stamp-assets.py --check`, `build-sitemap.py --check` (30 pages) and
+  `sync-area-served.py --check` all exit 0.
+- `STAGING=1 audit.py --strict`: **15 pages at 95, 15 at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 683 passing.** The five
+  new towns score 96.
+- No em dash in any shipped source. `llms.txt` gains the five entries,
+  derived.
+
 ---
 
 ## 4. The claims list
@@ -13035,3 +13461,8 @@ Ordered by how much else depends on it.
     verified independently by the strategy chat (3.78). Is "about 6 minutes"
     from Buck Road and Street Road what a Feasterville customer would say it
     takes? The same question stands for all eleven.
+34. **Is Tri-County Collision "not a chain or a franchise"?** The
+    Feasterville-Trevose FAQ says so (3.81), following from the vetted
+    "family owned and operated" (4.5). It ships now; Greg asks for the
+    owner's confirmation as cheap insurance. (Greg's ruling called this
+    question 32; 31 to 33 were already assigned in 3.79, so it is 34.)
