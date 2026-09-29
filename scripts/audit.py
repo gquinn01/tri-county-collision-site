@@ -1514,6 +1514,7 @@ TOWN_ROUTES = {
         "recorded": "2026-09-28",
         "miles": 8.42,
         "minutes": 14.8,
+        "corner": ("York Road", "Almshouse Road", 158375416),
         "steps": (
             ("York Road", "PA 263", "right", 194, 1.92),
             ("West Bristol Road", "", "left", 126, 4.09),
@@ -1522,6 +1523,117 @@ TOWN_ROUTES = {
         ),
         "roads_driven": ("York Road", "West Bristol Road", "East Bristol Road",
                          "Second Street Pike", "2nd Street Pike", "Jaymor Road"),
+    },
+    # RUN TWO'S ROUTINGS, 3.77. Every town routed before any hub copy leans
+    # on it, so the strategy chat double-checks the whole table once. A
+    # town whose corner stopped is ABSENT, not guessed: Bensalem,
+    # Feasterville-Trevose, Horsham, Huntingdon Valley and Northeast
+    # Philadelphia wait on Greg's corner rulings (3.77). "corner" is the two
+    # named roads and the OSM node the routing starts from: a junction node
+    # for run two, and for Jamison (3.62) its place node, which sits on the
+    # junction.
+    # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 110966333,
+    # Bellevue Avenue at West Maple Avenue, 3m from place node 158846519, to GEO_LAT, GEO_LON.
+    # proposed-changes.md 3.77. Steps condensed by the rules recorded there.
+    "langhorne-pa": {
+        "recorded": "2026-09-29",
+        "miles": 8.78,
+        "minutes": 16.0,
+        "corner": ("Bellevue Avenue", "West Maple Avenue", 110966333),
+        "steps": (
+            ("West Maple Avenue", "PA 213", "", 258, 2.53),
+            ("Bridgetown Pike", "PA 213", "straight", 209, 2.29),
+            ("Bustleton Pike", "PA 532", "straight", 198, 0.20),
+            ("Street Road", "PA 132", "right", 227, 2.73),
+            ("2nd Street Pike", "PA 232", "left", 189, 0.73),
+            ("Jaymor Road", "", "right", 281, 0.28),
+        ),
+        "roads_driven": ("West Maple Avenue", "Bridgetown Pike", "Bustleton Pike", "Street Road", "2nd Street Pike", "Jaymor Road"),
+    },
+    # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 111455644,
+    # 2nd Street Pike at Almshouse Road, 29m from place node 158624917, to GEO_LAT, GEO_LON.
+    # proposed-changes.md 3.77. Steps condensed by the rules recorded there.
+    "richboro-pa": {
+        "recorded": "2026-09-29",
+        "miles": 4.48,
+        "minutes": 8.0,
+        "corner": ("2nd Street Pike", "Almshouse Road", 111455644),
+        "steps": (
+            ("2nd Street Pike", "PA 232", "", 183, 0.29),
+            ("2nd Street Pike", "PA 232", "right", 227, 3.89),
+            ("Jaymor Road", "", "right", 281, 0.28),
+        ),
+        "roads_driven": ("2nd Street Pike", "North 2nd Street Pike", "Second Street Pike", "Jaymor Road"),
+    },
+    # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 111018891,
+    # Street Road at York Road, 12m from place node 158566218, to GEO_LAT, GEO_LON.
+    # proposed-changes.md 3.77. Steps condensed by the rules recorded there.
+    "warminster-pa": {
+        "recorded": "2026-09-29",
+        "miles": 4.61,
+        "minutes": 9.2,
+        "corner": ("Street Road", "York Road", 111018891),
+        "steps": (
+            ("York Road", "PA 263", "sharp left", 189, 1.17),
+            ("East County Line Road", "", "left", 125, 2.96),
+            ("James Way", "", "left", 40, 0.40),
+            ("Jaymor Road", "", "right", 146, 0.06),
+        ),
+        "roads_driven": ("Street Road", "York Road", "East County Line Road", "West County Line Road", "James Way", "Jaymor Road"),
+    },
+    # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 112228579,
+    # South York Road at Byberry Road, 6m from place node 158588118, to GEO_LAT, GEO_LON.
+    # proposed-changes.md 3.77. Steps condensed by the rules recorded there.
+    "hatboro-pa": {
+        "recorded": "2026-09-29",
+        "miles": 3.58,
+        "minutes": 7.9,
+        "corner": ("South York Road", "Byberry Road", 112228579),
+        "steps": (
+            ("Byberry Road", "", "", 90, 1.30),
+            ("Davisville Road", "", "left", 64, 0.85),
+            ("East County Line Road", "", "right", 126, 0.96),
+            ("James Way", "", "left", 40, 0.40),
+            ("Jaymor Road", "", "right", 146, 0.06),
+        ),
+        "roads_driven": ("Byberry Road", "Davisville Road", "East County Line Road", "James Way", "Jaymor Road"),
+    },
+    # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 2125917445,
+    # Old York Road at West Avenue, 16m from place node 158472613, to GEO_LAT, GEO_LON.
+    # proposed-changes.md 3.77. Steps condensed by the rules recorded there.
+    "jenkintown-pa": {
+        "recorded": "2026-09-29",
+        "miles": 7.77,
+        "minutes": 17.1,
+        "corner": ("Old York Road", "West Avenue", 2125917445),
+        "steps": (
+            ("West Avenue", "", "", 88, 0.20),
+            ("Newbold Road", "", "right", 133, 0.04),
+            ("Washington Lane", "", "left", 36, 0.98),
+            ("Susquehanna Road", "", "left", 343, 0.08),
+            ("Valley Road", "", "right", 343, 2.06),
+            ("Welsh Road", "PA 63", "right", 127, 0.71),
+            ("Huntingdon Pike", "PA 232", "left", 119, 3.40),
+            ("Jaymor Road", "", "left", 281, 0.28),
+        ),
+        "roads_driven": ("West Avenue", "Newbold Road", "Washington Lane", "Susquehanna Road", "Valley Road", "Welsh Road", "Huntingdon Pike", "2nd Street Pike", "Jaymor Road"),
+    },
+    # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 601352294,
+    # Easton Road at York Road, 38m from place node 158472698, to GEO_LAT, GEO_LON.
+    # proposed-changes.md 3.77. Steps condensed by the rules recorded there.
+    "willow-grove-pa": {
+        "recorded": "2026-09-29",
+        "miles": 4.59,
+        "minutes": 10.5,
+        "corner": ("Easton Road", "York Road", 601352294),
+        "steps": (
+            ("York Road", "PA 611", "", 124, 0.07),
+            ("Davisville Road", "", "left", 36, 3.08),
+            ("East County Line Road", "", "right", 126, 0.96),
+            ("James Way", "", "left", 40, 0.40),
+            ("Jaymor Road", "", "right", 146, 0.06),
+        ),
+        "roads_driven": ("York Road", "Davisville Road", "East County Line Road", "James Way", "Jaymor Road"),
     },
 }
 COMPASS_8 = ("north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest")

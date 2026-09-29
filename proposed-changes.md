@@ -11389,6 +11389,269 @@ sameAs the only warning; zero criticals; 508 passing.**
 
 No em dash was added to any file this commit touches.
 
+### 3.77 Run two opens: the routing table, before any copy leans on it. BUILT 2026-09-29
+
+**Run two builds the areas tier:** the hub and the eleven towns, from the
+Jamison template. This first commit carries **no page**. It holds three
+things:
+- the rulings that open the run;
+- the pagemap amendment they require;
+- the routing table for every town whose corner is clean.
+
+**The hub's copy waits** until the strategy chat has double-checked this
+table (Greg's Q1 ruling, below).
+
+#### The rulings opening run two (Greg, 2026-09-29)
+
+1. **Jamison as shipped (3.62 to 3.76) IS the approved template.** The
+   eleven towns are PRODUCED FROM IT: a rebuild to the template, not a
+   migration of the old pages' copy. This is his ruling on the 3.62-era
+   question of what to do with the eleven lookalikes (56 to 65% shared
+   phrasing). **`pagemap.md` row 26 is amended to say so,** with its old
+   text struck through, not deleted. CLAUDE.md's rule is that the map
+   changes first and the build follows.
+2. **THE ACCURACY RULE, in his words:** all map, location and direction
+   information is double-checked and 100% accurate, with no discrepancy.
+   It is **a gate per town, not a goal,** mechanised as the protocol
+   below.
+3. **The Search Console gate remains.** It is read before cutover,
+   exactly as Jamison's was ruled in 3.62.
+
+#### A correction, with its cause
+
+**The opening brief named a misspelled live slug,
+`/areas-served-collision-repair-jenkinton-pa/`. No such slug exists.** The
+live sitemap, the live hub's links and this repo all carry `jenkintown`,
+spelled correctly. The cause, as the strategy chat recorded it: a mangled
+fetch summary wrote "jenkinton" down as live fact. **The live slugs ship
+exactly:**
+- `/areas-served-collision-repair-jenkintown-pa/`;
+- `/areas-served-collision-repair-northeast-philadelphia/`, the one
+  town slug without `-pa`.
+
+#### Greg's rulings on the hub's three stops, binding its commit
+
+- **Q1, what the hub states about towns: option B, MODIFIED.** All eleven
+  towns are routed before the hub's copy is written, so every hub figure
+  derives from a routing that exists, and the strategy chat checks the
+  complete table once, early.
+  **The modification:** a town whose corner genuinely stops does NOT
+  block the hub. That town's blurb ships without drive figures, its stop
+  rides to its own batch, and the record says so. The hub ships ONCE with
+  derived figures.
+- **Q2, the other location claims: option A.**
+  - **Bearings and straight-line distances come off.** A straight-line
+    "three miles east" beside a road reality of five driven miles is
+    technically true and practically misleading. Road-derived figures are
+    this site's one honest currency for distance.
+  - **Road claims stay only where the road is in that town's
+    `roads_driven`.**
+  - **The five places without pages** (Bryn Athyn, Ivyland, Churchville,
+    Holland, Newtown) keep their names and lose their distances.
+  - **OPTION FOR LATER, recorded, not built:** those five could get
+    routings of their own. Greg decides after the tier lands.
+- **Q3, unconfirmed business claims: option A, with one amendment.**
+  - **The 52 years and the second generation are held,** pending 4.5.
+  - **Everything else migrates,** with pairs and owner-claims entries,
+    the blog's discipline.
+  - **EXCEPT the warranty phrase:** "lifetime warranty on parts and
+    labor" is normalised to the vetted "lifetime warranty on all repair
+    work". One claim, one rendering, and warranty phrasing is itself an
+    open owner item.
+  - **"Towing assistance" migrates flagged, AND joins the owner
+    questions.** Whether the shop actually tows is a scope question no
+    page has answered.
+  - **The planned exclusions are confirmed:** the 231-review widget, the
+    testimonials, the boilerplate, the form, the tracking number and
+    `info@`.
+
+#### THE PER-TOWN ACCURACY PROTOCOL, binding every batch
+
+- **a. The corner.** Each town gets its OSM reference corner: a real
+  junction of two named roads within 60m of the town's recorded place
+  point. That is the map script's existing refusal. A town with no sane
+  corner is a STOP with options, never a guess.
+- **b. The routing.** A fresh OSRM routing from the corner to the pin,
+  cached outside the repo, and recorded in `TOWN_ROUTES` in Jamison's
+  shape: roads in driving order, maneuvers, bearings and distances.
+- **c. Every rendering derives from it:**
+  - the lead's minutes;
+  - the opening's miles and minutes;
+  - the chip;
+  - the card intro;
+  - the steps, with turn words, compass words and 3.76's nbsp treatment;
+  - the map alt text, `llms.txt` and any meta.
+
+  `town_route_findings` gates every page of the town kind.
+- **d. The map.** It draws the primary route only, labels a subset of
+  the driven roads, and honours the 10.5px label floor; below it is a
+  STOP, not a ship. The corner and pin refusals apply as built.
+- **e. THE DOUBLE CHECK.** After each batch is pushed, the strategy chat
+  independently re-fetches every routing in the batch from its own
+  machine, and compares distance and duration to `TOWN_ROUTES`.
+  - **Tolerance:** 0.05 mi and 0.3 min, for OSM drift.
+  - **Beyond tolerance,** the batch is NOT accepted, and the discrepancy
+    is chased to ground.
+  - **This table is the first thing it checks.**
+- **f. The hub is held to the routings too.** Any drive time or distance
+  the hub states for a named town must agree with that town's
+  `TOWN_ROUTES` entry, or come off. The routing check is extended to read
+  the hub's named-town figures. This is where the old Bensalem
+  contradiction dies. The live Bensalem page says "10 to 15 minutes away"
+  in one sentence and "Figure 15 to 20 minutes" in another.
+
+#### How the corners were found
+
+**One Overpass query** returned each town's OSM place node, and **one
+more** returned every named road within 180m of each. Both answers are
+cached outside the repo. The nearest shared node of two differently
+named roads is the candidate corner. Bensalem's node is named "Bensalem
+Township" (node 158863395, `place=town`), which took its own query.
+
+| Town | Place node | Nearest junction | Distance | Verdict |
+|---|---|---|---|---|
+| Langhorne | 158846519, village | Bellevue Avenue / West Maple Avenue (PA 213), node 110966333 | 3m | clean |
+| Hatboro | 158588118, village | South York Road / Byberry Road, node 112228579 | 6m | clean |
+| Warminster | 158566218, town | Street Road / York Road, node 111018891 | 12m | clean |
+| Jenkintown | 158472613, town | Old York Road / West Avenue, node 2125917445 | 16m | clean |
+| Richboro | 158624917, village | 2nd Street Pike / Almshouse Road, node 111455644 | 29m | clean |
+| Willow Grove | 158472698, village | Easton Road / York Road, node 601352294 | 38m | clean |
+| Bensalem | 158863395, town | Knights Road / Virginia Avenue; Knights Road / Street Road | 59.8m; 61.6m | **STOP** |
+| Feasterville-Trevose | 9484861996, village (the combined census place) | Central Avenue / Heights Lane | 91m | **STOP** |
+| Horsham | 158401563, town | Easton Road / Horsham Road | 92m | **STOP** |
+| Huntingdon Valley | 158228562, hamlet | Huntingdon Pike / Wynkoop Avenue | 61.0m | **STOP** |
+| Northeast Philadelphia | 12752353867, suburb | Cottman Avenue / Frankford Avenue | 12m | **STOP**, by the brief's own warning |
+
+**Each clean corner is its town's own main crossroads**, checked
+against the map, not only against the refusal. Each is where a local
+would say the town is.
+
+#### The routing table, for the double check
+
+**All seven entries now in `TOWN_ROUTES`,** Jamison included. Each is one
+request to `https://router.project-osrm.org/route/v1/driving/{corner
+lon},{corner lat};-75.0512847,40.1660232`, with
+`?alternatives=true&overview=full&geometries=geojson&steps=true&annotations=nodes`,
+fetched 2026-09-29 and cached outside the repo. The primary route is the
+recorded one.
+
+| Town | Corner (lat, lon) | Miles | Minutes | Steps |
+|---|---|---|---|---|
+| Jamison (3.62) | 40.2548297, -75.0893372 (place node) | 8.42 | 14.8 | 4 |
+| Langhorne | 40.1761610, -74.9202792 | 8.78 | 16.0 | 6 |
+| Richboro | 40.2153240, -75.0105320 | 4.48 | 8.0 | 3 |
+| Warminster | 40.2067688, -75.0997553 | 4.61 | 9.2 | 4 |
+| Hatboro | 40.1745959, -75.1068825 | 3.58 | 7.9 | 5 |
+| Jenkintown | 40.0958613, -75.1257942 | 7.77 | 17.1 | 8 |
+| Willow Grove | 40.1436640, -75.1156279 | 4.59 | 10.5 | 5 |
+
+**The steps are OSRM's own, condensed by four rules.** The first and
+third are Jamison's 3.62 rules; the second is new, and the fourth
+generalises Jamison's:
+1. A `depart` under 0.02 mi is dropped: the route merely leaves the
+   corner along its first road.
+2. **A roundabout and its exit merge** into one step on the exit road
+   (Langhorne, onto Bridgetown Pike).
+3. A `new name` that keeps the route number or the name merges into the
+   step before. Jamison's Second Street Pike was 1.37 plus 0.73; here,
+   Richboro's and Jenkintown's PA 232.
+4. The unnamed final turn into the lot, and the arrive, are dropped.
+
+**A `continue` with a turn in it is NOT merged.** Richboro's "continue
+right" onto the same road is a real keep-right fork 0.29 mi south of the
+corner, so it stays its own step. Greg's accuracy rule outranks a shorter
+list.
+
+**`roads_driven` is read off the ground, not off the steps.** A third
+Overpass query took every OSM node each route passes through (OSRM's
+`annotations=nodes`) and returned every way containing them. A road is
+driven when the route runs at least 15m along it, the map script's own
+`ROUTE_MIN_M`. It is listed in driving order.
+- **This found renames OSRM never reported as steps:** West County Line
+  Road on Warminster's route (0.40 mi), and North 2nd Street Pike and
+  Second Street Pike on Richboro's.
+- **It also refused a false one:** Pioneer Road touches the Hatboro and
+  Willow Grove routes at one junction for 0.00 mi. It is crossed, not
+  driven, and is not listed.
+
+**Known for the batches, recorded now:** four steps are under an eighth
+of a mile:
+- Willow Grove's York Road, 0.07 mi;
+- Jenkintown's Newbold Road, 0.04 mi, and Susquehanna Road, 0.08 mi;
+- the James Way approach's Jaymor Road, 0.06 mi.
+
+`step_miles_phrase` derives "0.0 miles" for these, so the routing check
+needs a rule for a sub-eighth-mile step before any of those pages is
+written. It is a check change at batch time; the recorded data is right
+as it stands.
+
+#### THE FIVE CORNER STOPS, for Greg's ruling
+
+**Every option was routed, so each carries its real consequence.** The
+figures are OSRM's, from the same request shape.
+
+1. **Bensalem.** The township's label point sits at Knights Road and
+   Street Road.
+   - **A:** Knights Road / Street Road, node 111019889, 61.6m. It fails
+     the 60m refusal by 1.6m. **8.14 mi, 14.8 min.**
+   - **B:** Knights Road / Virginia Avenue, node 111166642, 59.8m. It
+     passes, but Virginia Avenue is a residential side street nobody
+     would give as Bensalem's corner. **8.22 mi, 14.9 min.**
+   - **C:** no routing; the blurb and the page state no figure.
+2. **Feasterville-Trevose.** OSM carries a combined census node (91m
+   from any junction), and separate Feasterville and Trevose nodes.
+   - **A:** the Feasterville node's Buck Road / Street Road, node
+     111017981, 15.7m from node 157558047. A main crossroads. **2.92 mi,
+     6.0 min.**
+   - **B:** the Trevose node's Clay Avenue / Ridge Avenue, node
+     111982103, 22.6m, both residential. **5.37 mi, 11.0 min.**
+   - **C:** no routing.
+3. **Horsham.** The town node is 92m from Easton Road (PA 611) and
+   Horsham Road, the obvious centre.
+   - **A:** that junction, node 601720529, as a recorded exception to the
+     refusal. **5.39 mi, 11.3 min.**
+   - **B:** no routing.
+4. **Huntingdon Valley.** A hamlet node in a census place that spans
+   Lower Moreland.
+   - **A:** Huntingdon Pike / Wynkoop Avenue, node 5549211250, 61.0m, a
+     recorded 1m exception. **3.39 mi, 7.8 min.**
+   - **B:** no routing.
+5. **Northeast Philadelphia.** An area, not a village. OSM's suburb point
+   sits at Cottman Avenue and Frankford Avenue, in its far south.
+   - **A:** Cottman / Frankford, node 4783711741, 12m. It passes the
+     refusal, but it measures the area's far side. **11.06 mi, 22.1
+     min.**
+   - **B:** Somerton, the neighbourhood the live hub itself names first,
+     OSM node 158530515. Its corner is Bustleton Avenue / Byberry Road,
+     node 110154627, 45m. The page would have to say "from Somerton"
+     honestly. **4.39 mi, 8.5 min.**
+   - **C:** no routing; the page speaks of the area and states no figure.
+
+**Until these are ruled, those five towns are absent from `TOWN_ROUTES`,
+and the hub's blurbs for them carry no figures,** exactly as the Q1
+modification provides.
+
+#### Mechanics
+
+- **`scripts/audit.py`:** six entries join `TOWN_ROUTES`, each with a
+  `corner` field naming its two roads and node. Jamison gained the same
+  field, so all seven share one shape. **No check reads these entries
+  until their pages exist:** the routing check runs on the town kind,
+  and only Jamison is built.
+- **Pages:** none changed; no page, CSS or JS was touched.
+- **The caches** (live pages, place nodes, roads, routings, driven ways)
+  are outside the repo, in the build machine's scratch space, per the
+  cache discipline.
+
+#### The suite
+
+- Both test scripts pass.
+- `stamp-assets.py --check` exits 0, and `build-sitemap.py --check` exits 0.
+- `STAGING=1 audit.py --strict`: **17 pages at 95, 7 at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 508 passing.** The report
+  is identical to 3.76's.
+- No em dash was added.
+
 ---
 
 ## 4. The claims list
