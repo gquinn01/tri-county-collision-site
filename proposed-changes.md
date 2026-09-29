@@ -10172,6 +10172,159 @@ each with its label and line.
   count and the brand count still agree everywhere.
 - No em dash was added.
 
+### 3.69 The Free card tells the truth about how estimates happen. TEMPLATE AMENDMENT, and a correction. BUILT 2026-09-28
+
+**Run two inherits it.** The Free card's support line, and the opening's
+closing paragraph, stop implying that a phone call produces an estimate.
+
+#### The correction, from Greg as fact-checker of record
+
+**Estimates are not done over the phone.** "Call first: the estimate is
+free, and you'll know where you stand before the car goes anywhere." came
+from 3.64's close, and 3.68 carried it onto the Free card. Read plainly, it
+says a call tells you where you stand, and a call does not do that. **This
+corrects 3.64's approved copy.** It is the fact-check working, not a strike
+against the record, and 3.64 and 3.68 stand as written, superseded here.
+
+#### The pairs
+
+| Where | Before (3.68) | After (3.69) | Source |
+|---|---|---|---|
+| `#why-the-trip`, Free card, support line | "Call first: the estimate is free, and you'll know where you stand before the car goes anywhere." | "Estimates are free and there is no obligation." | byte for byte the sentence 3.68's opening already shipped, and the same words as the `#start` sub-line on home and every service page |
+| `#for-jamison`, third paragraph | "If your car has been in an accident, call before you decide where it goes. Estimates are free and there is no obligation." | "If your car has been in an accident, call before you decide where it goes." | Greg's approval, via the brief. The second sentence moved to the card rather than being said twice in two screens |
+
+**Nothing was written.** Both after-texts are strings that already ship.
+The page now carries "Estimates are free and there is no obligation" twice,
+on the Free card and in the promise band's sub-line, as it did before in
+the opening and the band. The count did not change; only one of the two
+places did.
+
+#### TEMPLATE NOTE, for run two
+
+**The pattern card now owns "Estimates are free and there is no
+obligation."** The Free card sits in `#why-the-trip`, which is pattern text
+by its id, so the variance gate does not count it. The per-town opening is
+counted. **Run two's openings must NOT reuse that sentence:** it would say
+the same thing twice on one page, and it is the kind of shared string the
+opening exists to be free of. The Jamison opening now ends on the ask,
+"call before you decide where it goes", and makes no estimate claim at all.
+
+#### The sweep, ITEM 3: reported, NOT edited
+
+The whole of `docs/` was read, every page's visible text, its JSON-LD
+strings and meta description, plus `docs/llms.txt`, for any sentence
+carrying "estimate" or "call first". Also grepped: `templates/`,
+`scripts/`, `pagemap.md`.
+
+**(a) The retired sentence appears nowhere else.** It was on the Jamison
+Free card only, and it is gone. It was never in `llms.txt`, a schema string,
+a meta, the template or another page.
+
+**(b) Other copy that implies, or can be read as implying, an estimate by
+phone.** None of these was touched, as the brief requires. **Each is for
+Greg to rule on.** They are listed strongest first.
+
+1. **`/collision-repair/`, `#why`, "Why Choose Tri-County Collision" list
+   item.** Visible only.
+   > Free estimates online and by phone.
+
+   **The one explicit claim on the site.** It states a phone estimate
+   outright, which is exactly what the correction says does not happen.
+2. **`/collision-repair/`, `#insurance`, "Insurance Claims Assistance",
+   closing paragraph.** Visible only.
+   > Get a free estimate by calling (215) 322-5350 or requesting one online.
+
+   "Get ... by calling" says the call yields the estimate.
+3. **`/paintless-dent-repair/`, FAQ answer, visible AND FAQPage schema.**
+   > Estimates are free, so the fastest way to a real number is to call (215) 322-5350 or stop by.
+
+   "A real number" by calling. This is in the schema, so it is also what an
+   assistant would quote.
+4. **`/auto-glass-repair-replacement/`, FAQ "How do I get an estimate for
+   auto glass work?", visible AND schema.**
+   > To get an estimate for auto glass work, call us at (215) 322-5350 or request an estimate online.
+
+   Softer: it can be read as "call to arrange one". The same page says
+   elsewhere "When you bring your vehicle in, our technicians assess the
+   damage and give you a precise estimate", which is the true process.
+5. **`/commercial-collision-repair/`, FAQ "How do I get a commercial repair
+   estimate?", visible AND schema.**
+   > To get a commercial repair estimate, call (215) 322-5350 or request an estimate online.
+
+   Same shape as 4. That page's process list gets it right: "Free estimate:
+   Call us or request one online. We'll arrange to assess the damage and
+   give you a detailed estimate".
+6. **`/` and `/collision-repair/`, the cost FAQ answer, visible AND schema,
+   same text on both.**
+   > You can request an estimate online or call us at (215) 322-5350.
+
+   **The weakest reading, and probably fine**: "request", then "or call us".
+   Listed so the ruling covers it explicitly rather than by omission.
+
+**Not flagged, read and cleared:** every "Free estimates" chip, meta and
+schema description (a claim that estimates are free, silent on how); the
+`#start` sub-line; `/contact-us/`'s "Free online estimate" card and meta,
+which are CarWise and an online route, not a phone one; `llms.txt`'s three
+lines ("Estimates are free.", "the shop quotes it from a free estimate",
+and the CarWise line); Jamison's meta and schema description, "Directions
+from Jamison, free estimates, (215) 322-5350.", where the number sits beside
+the claim but says nothing about how an estimate is made; and every post's
+use of "estimate" as a general noun.
+
+**One adjacent question, raised and not ruled on:** items 1 and the
+CarWise card both say "online". Whether an online submission produces an
+estimate, or only a request for one, is the same class of question for the
+owner. It is recorded here and not added to section 5 until Greg says so.
+
+#### Mechanics
+
+- **The builder** (scratch, not committed) changed the two strings. The page
+  was rebuilt with `SUPPORT=1`, and the map was redrawn with the recorded
+  jamison frame. **The page diff is exactly those two lines;** the redrawn
+  inline SVG is byte-identical.
+- **No CSS or JS was touched,** so there was no restamp. `stamp-assets.py
+  --check` exits 0.
+- **Variance: no list change,** and the test file has no diff.
+
+#### Measured, confirmed rather than assumed
+
+**Jamison is 53px shorter at both widths:** the proof section by 25 (the
+Free card's line is one line shorter on a phone, and row two sets its own
+height at 1440), and the opening by 28, one line.
+
+**The ask runs at 390, by 3.65's two rules:**
+
+```
+header Call (furniture)   -> the section's Call/Email row (section ask)   1,516   was 1,541
+section's row             -> card's Call (furniture)                      2,147   was 2,175
+card's Call               -> promise band (section ask)                   1,119   was 1,120
+promise band              -> pairs' row (section ask)                     1,979   unchanged
+pairs' row                -> footer (furniture)                           1,723   was 1,722
+CEILING 2,147 (under 2,684); FLOOR, the nearest two SECTION asks, 1,979 (over 1,634)
+```
+
+**The fold, 390x664:** CALL 401 to 463, clearing the call bar by 141,
+unchanged, and the proof section still starts at 511. 360x640 is also
+unchanged, at 401 to 463.
+
+**Nothing else moved:** every other page is **identical to 3.68 in every
+layout hash and map, 271 of 271 probe entries outside Jamison's seven.**
+The stubs are byte-unchanged.
+
+**Rendered and inspected at 1440 and 390:** the Free card reads "Free /
+Estimates / Estimates are free and there is no obligation."; row two stays
+level at 1440; and the opening ends on the ask.
+
+#### The suite
+
+- Both test scripts pass, **208 checks**.
+- `stamp-assets.py --check` exits 0, and `build-sitemap.py --check` exits 0.
+- `STAGING=1 audit.py --strict`: **23 pages at 95, Jamison at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 485 passing.** The report
+  is identical to 3.68's except for one line, Jamison's word count, which
+  went from ~849 to ~832.
+- No em dash was added.
+
 ---
 
 ## 4. The claims list
