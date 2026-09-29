@@ -10672,6 +10672,83 @@ here.
   13 to 14, all 12; and Jamison's word count, ~832 to ~847.
 - No em dash was added.
 
+### 3.72 The opening ends on the ask. TEMPLATE AMENDMENT. BUILT 2026-09-28
+
+**Run two inherits it.** Greg's ruling of 2026-09-29: the opening's third
+paragraph merges into its second. **The copy changes by zero bytes; one
+paragraph boundary moves.** This was confirmed by extracting the page's
+visible text before and after: it is identical, 5,189 characters both
+times.
+
+#### The pair
+
+| Where | Before (3.71) | After (3.72) |
+|---|---|---|
+| `#for-jamison`, paragraphs 2 and 3 | `<p>`Jamison sits in Warwick Township, where York Road (PA 263) meets Almshouse Road. From that corner to our shop is about 15 minutes without traffic.`</p>` `<p>`If your car has been in an accident, call before you decide where it goes.`</p>` | `<p>`Jamison sits in Warwick Township, where York Road (PA 263) meets Almshouse Road. From that corner to our shop is about 15 minutes without traffic. If your car has been in an accident, call before you decide where it goes.`</p>` |
+
+#### TEMPLATE RULE: the per-town opening is TWO paragraphs
+
+**The second paragraph ends on the call-first sentence, so the paragraph
+ends on the ask.** The ask is in words only: 3.64's ruling still holds,
+and the section carries no Call button of its own. The rule is recorded
+in the opening's own comment on the page, beside 3.71's two.
+
+#### Measured, confirmed rather than assumed
+
+**The routing check reads the merged paragraph's "about 15 minutes".**
+The live page has no findings. A one-off mutant, with the merged
+paragraph's 15 made 20, is caught:
+"the page says 20 minutes (...our shop is about 20 minutes without t...);
+the recorded routing derives 15". No test anchors on either paragraph,
+so the test file is unchanged.
+
+**The opening is shorter, by one paragraph gap and the lines it saves:**
+
+```
+          3.71    3.72    paragraph heights
+ 390      538     491     168, 140   (was three)
+1440      490     471     112, 84
+```
+
+**The ask runs at 390, by 3.65's two rules:**
+
+```
+header Call (furniture)   -> proof cards' row (section ask)         1,516   unchanged
+proof cards' row          -> pairs' row (section ask)               1,998   unchanged
+pairs' row                -> directions card's Call (furniture)     2,128   was 2,175
+card's Call               -> promise band (section ask)             1,119   unchanged
+promise band              -> footer (furniture)                     1,723   unchanged
+CEILING 2,128 (under 2,684); FLOOR 1,998 (over 1,634)
+```
+
+**The fold is unchanged, because the header did not change:** at
+390x664, CALL 464 to 526 with the bar at 604, clearing it by 78, and the
+proof section at 574. At 360x640 it clears by 54.
+
+**Nothing else moved.** Every other page is byte-unchanged, and there is
+no restamp.
+
+**The sweep flagged the two redirect stubs, and that was the probe, not
+the stubs.** They are byte-unchanged in git. Over `file://`, a stub's
+meta refresh lands on the Jamison directory, and Chrome renders that
+directory as a listing table. The one column that moved, 164px to 172px,
+is the listing's "Date modified" text for the rebuilt file. It is
+recorded so the next sweep that shows it is not chased.
+
+**Rendered and inspected at 1440 and 390:** two paragraphs, the second
+closing on "call before you decide where it goes." 3.71's one-word line,
+"road.", at 1440 is unchanged, because it is in the first paragraph.
+It is still Greg's to rule on.
+
+#### The suite
+
+- Both test scripts pass.
+- `stamp-assets.py --check` exits 0, and `build-sitemap.py --check` exits 0.
+- `STAGING=1 audit.py --strict`: **23 pages at 95, Jamison at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 485 passing.** The report
+  is identical to 3.71's.
+- No em dash was added.
+
 ---
 
 ## 4. The claims list
