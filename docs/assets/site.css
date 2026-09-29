@@ -802,8 +802,11 @@ section { padding: var(--pad) 0; }
    takes the site's own card interior, .card's 26px by 24px, so the
    directions read as a card like every other on the page. */
 .dir-body { padding: 26px 24px; }
-/* The top row. Since 3.74 it holds the chip ALONE, opening the body:
-   the drive time is persuasion and belongs before the steps. */
+/* The button-and-chip row. 3.74 put the chip alone at the top of the
+   body; 3.75 (Greg's ruling of 2026-09-29) superseded that and moved the
+   row, button and chip as first built, into the getaway kit at the
+   card's foot. It wraps on a phone. Its 20px margin meets the address's
+   20px and collapses to the one 3.73 step. */
 .dir-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 20px; }
 /* The chip is the vetted chip's pill, so it is named beside .badges li
    rather than restyled; it is not in .badges because it is per-town text,
@@ -822,8 +825,9 @@ section { padding: var(--pad) 0; }
 .dir-card .prose { max-width: none; }
 .dir-card .contact-lines { margin-top: 0; }
 /* THE GETAWAY KIT, 3.74 (Greg's ruling of 2026-09-29). "Open in Google
-   Maps" and, on the town card, the address close the card as its
-   utilities, below the Call: Open in Google Maps is an EXIT action and
+   Maps" and, on the town card, the drive-time chip on the same row (since
+   3.75) and the address beneath close the card as its utilities, below
+   the Call: Open in Google Maps is an EXIT action and
    may not outrank the conversion action. Content, then the ask, then the
    kit. Contact's lines lose their top margin because they now open that
    body, where the button used to.
@@ -845,9 +849,10 @@ section { padding: var(--pad) 0; }
    1440, where the body ended 3px short of the map and its credit. The map
    stops growing there, because the column does.
    NO LONGER BALANCED SINCE 3.74: the reorder gave the getaway kit its own
-   tier below the Call, and the town body now runs 76px past the map at
-   1440. The card is already at the full column, so width cannot restore
-   it; recorded in proposed-changes.md 3.74 for a ruling, not re-tuned.
+   tier below the Call, and the town body ran 76px past the map at 1440.
+   3.75 put the chip back on the button's row and it runs 13px past. The
+   card is already at the full column, so width cannot restore it;
+   recorded in proposed-changes.md 3.74 and 3.75, not re-tuned.
    Contact's landscape embed FILLS ITS COLUMN'S HEIGHT rather than keeping
    4:3: its details, hours and Call stand 475px tall at every card width,
    and a 4:3 embed never reaches that, so it would leave a white gap

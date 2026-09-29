@@ -11079,6 +11079,117 @@ inspected.** The "before" renders come from an export of HEAD's `docs/`.
   under the 35-day warning.
 - No em dash was added.
 
+### 3.75 The chip joins the getaway kit. TEMPLATE AMENDMENT. BUILT 2026-09-29
+
+**Run two inherits it.** Greg's ruling of 2026-09-29, by the Mac's local
+date, made on seeing 3.74 rendered.
+
+**Supersession, striking nothing:** 3.74 kept the drive-time chip at the
+top of the body. That was Greg's own choice, and his eye on the render
+overruled it. 3.74's record stands.
+
+#### The pair
+
+| Town card body | Before (3.74) | After (3.75) |
+|---|---|---|
+| order | chip alone / intro, steps, alternative route / Call / Open in Google Maps / address | intro, steps, alternative route / Call / **[Open in Google Maps + chip]** / address |
+
+**The body now opens on its content.** The kit is the original top-row
+arrangement, the button and then the chip on one row, relocated to the
+card's foot, with the address beneath it. That is the grouping in Greg's
+first screenshot. **Contact has no chip, and its card is untouched.**
+
+**Copy changed by zero bytes:** the page's content lines, compared as a
+multiset with wrappers and comments set aside, are identical to 3.74's.
+The blocks moved whole.
+
+#### The qualifier comment moved with the truth
+
+**The rule is unchanged.** The chip's tilde and the card's full "about
+15 minutes without traffic" are still the ruled pair satisfying the
+qualifier rule, in the same card. **The sentence now sits ABOVE the
+chip,** at the head of the steps, and the builder's comment says so. It
+no longer says "directly below". The section comment now states 3.75's
+order and names the supersession.
+
+**Two comments in `site.css` were also made true,** which is why this
+commit restamps:
+- `.dir-top`'s comment said since 3.74 it held the chip alone at the top.
+  It now describes the row in the kit.
+- The kit's comment now names the chip.
+
+No rule's values changed.
+
+#### No new value: the kit's spacing is the 3.73 rhythm, measured
+
+**The row sits 20px above the address.** `.dir-top`'s own 20px bottom
+margin meets the address's 20px top margin, and the two collapse to the
+one 3.73 step.
+- **At 1024 and wider,** the button and the chip share one line, a row
+  50px tall.
+- **At 900 and on phones** the row wraps to two lines, as the original
+  top row always did.
+
+**The body's gaps at every width:** content, then 26 to the Call, then
+36 to the kit (the 3.74 values), then 20 inside the kit.
+
+**3.74's open cost shrinks.** The chip left the body's head and now
+shares a row the kit already had:
+
+```
+          body content past map + credit
+          3.74      3.75
+ 900      +259      +249
+1024      +176      +113
+1440       +76       +13
+```
+
+It is recorded, not re-tuned, and `site.css`'s note on it carries the
+new figure.
+
+#### Measured, confirmed rather than assumed
+
+**The ask runs at 390.** The card's Call is still in-card furniture:
+
+```
+header Call (furniture)   -> proof cards' row (section ask)       1,516   unchanged
+proof cards' row          -> pairs' row (section ask)             1,998   unchanged
+pairs' row                -> card's Call (furniture)              1,951   was 2,014
+card's Call               -> promise band (section ask)           1,332   was 1,279
+promise band              -> footer (furniture)                   1,723   unchanged
+CEILING 1,998 (under 2,684); FLOOR 1,998 (over 1,634)
+```
+
+**The fold, 390x664, is unchanged:** CALL 464 to 526, clearing the call
+bar by 78. At 360x640 it clears by 54.
+
+**Variance: confirmed, not assumed.** No ids changed. `scripts/audit.py`
+and `scripts/test-audit-checks.py` have **no diff**; the fixtures pass
+as they stand. The routing check reads the chip, the intro and the steps
+with no findings.
+
+**Nothing else moved:** 271 of 278 probe entries are identical to 3.74.
+The seven that differ are all Jamison; this time the stubs' listing
+column did not flicker. Every other page's diff is its stamp line, as is
+the template's.
+
+**Before and after crops of the card at 1440 and 390 were rendered and
+inspected.** The "before" renders come from an export of HEAD's `docs/`.
+
+**3.74's open item stands:** the Call alignment. Jamison's Call is
+centred between left text and a left kit, and contact's sits left. The
+A/B/C previews are unchanged by this commit.
+
+#### The suite
+
+- Both test scripts pass.
+- `stamp-assets.py --check` exits 0 after the restamp, and
+  `build-sitemap.py --check` exits 0.
+- `STAGING=1 audit.py --strict`: **23 pages at 95, Jamison at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 485 passing.** The report
+  is identical to 3.74's except the stamps.
+- No em dash was added.
+
 ---
 
 ## 4. The claims list
