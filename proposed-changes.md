@@ -9880,7 +9880,9 @@ other pages are identical by construction.
   on the sameAs bar, as every run has.
 - No em dash was added.
 
-### 3.67 One proof section: "Why drivers pass closer shops", as cards. TEMPLATE AMENDMENT. BUILT 2026-09-29
+### 3.67 One proof section: "Why drivers pass closer shops", as cards. TEMPLATE AMENDMENT. BUILT 2026-09-28
+
+*Date corrected in 3.76 from 2026-09-29: the strategy chat's clock runs UTC and rolled mid-sitting; records follow the Mac's local clock, and this commit is dated 2026-09-28.*
 
 **The town page's three stacked proof moments become one section.** Those
 were the header's chip row, the stat band and the ox argument band. Run
@@ -10058,7 +10060,9 @@ stacked, the figures centred and fitting, and the closing ask.
   100; sameAs the only warning; zero criticals; 485 passing.**
 - No em dash was added.
 
-### 3.68 The proof section's second row matches the first. TEMPLATE AMENDMENT. BUILT 2026-09-29
+### 3.68 The proof section's second row matches the first. TEMPLATE AMENDMENT. BUILT 2026-09-28
+
+*Date corrected in 3.76 from 2026-09-29: the strategy chat's clock runs UTC and rolled mid-sitting; records follow the Mac's local clock, and this commit is dated 2026-09-28.*
 
 **Run two inherits it.** Row two of "Why drivers pass closer shops" now
 wears row one's figure-card grammar and carries the three chip claims:
@@ -11189,6 +11193,201 @@ A/B/C previews are unchanged by this commit.
   100; sameAs the only warning; zero criticals; 485 passing.** The report
   is identical to 3.74's except the stamps.
 - No em dash was added.
+
+### 3.76 The housekeeping sitting before run two. TEMPLATE AMENDMENT in two places. BUILT 2026-09-29
+
+One commit, one restamp. Greg's rulings were folded in via the brief and
+are dated 2026-09-29 by the Mac's clock. **The crumb mirror check is new,
+and it changes the expected audit line; see the suite.**
+
+#### Greg's rulings, recorded
+
+1. **CALL ALIGNMENT: option B, both Calls left-aligned.** The card's
+   content and kit are left-aligned, and a centred button between them
+   read adrift. **This closes 3.73's open item** (and 3.74's and 3.75's
+   restatements of it).
+2. **RECORD DATES: 3.67 and 3.68 now read 2026-09-28,** their commits'
+   local date. Each heading carries a one-line note naming the cause: the
+   strategy chat's clock runs UTC and rolled mid-sitting, and records
+   follow the Mac's local clock. Only the headings were corrected; the
+   ruling dates inside those records were left as written.
+3. **THE "road." ORPHAN at 1440, raised in 3.71: CONSIDERED AND KEPT.**
+   It is closed here so no future sitting re-raises it.
+
+#### The pairs
+
+| Where | Before (3.75) | After (3.76) |
+|---|---|---|
+| Jamison, step 1 | `<strong>Head south on York Road (PA 263)</strong>` | `<strong>Head south on York Road (PA&nbsp;263)</strong>` |
+| Jamison, step 2 | `...and follow it for about 4 miles.` | `...and follow it for about 4&nbsp;miles.` |
+| both cards, the Call row | Jamison's centred by `.prose + .cta-row`; contact's left | both left: `.dir-card .dir-body > .cta-row { justify-content: flex-start; }` |
+| `/contact-us/` head comment | `"Tri County Collision Center" and the unconfirmed [the fourth number, written out],` | `"Tri County Collision Center" and the unconfirmed fourth number (owner questions 23 and 24),` |
+
+The before cell for the comment names the number rather than printing
+it, because this file is not the place to reintroduce what the item
+removed.
+
+#### ITEM 1: the two wraps take non-breaking spaces. TEMPLATE RULE.
+
+**The breaks were the ones 3.73 found:** "about 4 / miles" at 1440 and
+"(PA / 263)" at 390. Each now carries an `&nbsp;` at the break point.
+**Rendered and confirmed:** at 1440, step 2 now ends "about / 4 miles";
+at 390, step 1 reads "York Road / (PA 263)". Every step keeps its line
+count, because the non-breaking space moved a word rather than adding a
+line.
+
+**THE ROUTING CHECK STILL READS BOTH, proved before committing:**
+- **The live page has no findings.**
+- **The step parser gets the raw text with U+00A0 in it** and reads it
+  normalised: "Head south on York Road (PA 263)" and "...follow it for
+  about 4 miles." It normalises with Python's `str.split()`, which
+  treats U+00A0 as whitespace.
+- **The step-2 distance mutant is caught** in both spellings, `&nbsp;`
+  and a literal U+00A0: 4 made 5 reports "step 2 says ... 5 miles; its
+  recorded 4.09 miles derives 4 miles", and the page-level check fires
+  too.
+- **The route-number mutant, (PA&nbsp;611), is caught:** "step 1 gives
+  route number PA 611; the routing's is PA 263".
+
+**Four fixtures in `test-audit-checks.py` section 26 were anchored on
+the old strings.** They now carry the non-breaking space on both sides.
+Two are renamed "behind the nbsp (3.76)", so the suite itself proves a
+stale value cannot hide behind one.
+
+**TEMPLATE RULE:** run two's builder applies the same treatment to every
+town's steps. A figure and its unit, and a route number's two halves,
+are joined by `&nbsp;` wherever a wrap split them. It is recorded in the
+directions section's own comment on the page.
+
+**One report line moved and is explained:** Jamison's word count went
+from ~847 to ~845, because the counter reads "4 miles" and "PA 263" as
+one word each once they are joined. No copy was lost.
+
+#### ITEM 2: the banned digits leave the source
+
+Contact's 3.65 head comment named the Business Profile's fourth number
+literally. It now reads "the unconfirmed fourth number (owner questions
+23 and 24)"; 23 is the number and 24 is the name.
+
+**Confirmed site-wide.** All 70 files in `docs/` and `templates/`,
+images included and read as bytes, were scanned for both banned numbers
+in any spelling: the CallRail number and the fourth number, with or
+without area code, parentheses, dots, dashes or spaces. **Zero hits,
+comments included.** The numbers remain only outside the site, where
+they have to be:
+- `scripts/audit.py` and `scripts/test-audit-checks.py`: the check's own
+  constants and fixtures;
+- `CLAUDE.md` and `pagemap.md`: the lines stating the CallRail rule;
+- this file's records and owner questions.
+
+#### ITEM 3: THE CRUMB MIRROR CHECK. This closes 3.60's open item 1.
+
+**What it enforces:** every page's visible breadcrumb, the `<li>` items
+of the first `<nav class="crumb">`, must equal its `BreadcrumbList`,
+read in `position` order. Labels and order must be byte-identical, in
+both directions. It reads a name on the ListItem or on its item node.
+
+**The severity is argued from the FAQ mirror's precedent, case by case:**
+
+| Case | Severity | The FAQ precedent it follows |
+|---|---|---|
+| both present, any difference (a label edited on one side, an item on one side only, the order) | **CRITICAL** | FAQ drift between page and schema is a critical: the machines hand out a trail the reader never sees |
+| a visible crumb, no BreadcrumbList | **warning** | a visible FAQ with no FAQPage schema is a warning, not a critical |
+| a BreadcrumbList, no readable crumb | **note, never scored** | FAQ schema with no readable FAQ is a note: the weekly scan reads the live WordPress site, whose crumb markup this parser may not recognise, and a stranger's markup is not scored down |
+| neither | silent | a page with no FAQ says nothing |
+
+A crumb nav whose items are not `<li>`s reads as unreadable, not as
+empty, so it lands in the note case rather than as a mismatch.
+
+**Every shipped crumb already mirrors its schema.** All 23 crumbed pages
+pass. Home and the two stubs carry neither. No page changed to satisfy
+the check.
+
+**Smoke tests, section 27, sixteen checks,** including:
+- a mirrored crumb with a pending span item;
+- the schema read by position, not array order;
+- names nested on the item node;
+- a long curly-quoted post title;
+- five critical mutations: a label edited on the page, a label edited
+  in the schema, an item missing from the schema, an item missing from
+  the page, and the order;
+- the warning case, the note case, the no-list-items case and the
+  neither case;
+- the shipped Jamison, contact and post 5 crumbs.
+
+**Mutation proof: seven mutants of the check, all killed.**
+
+```
+every crumb agrees (comparison forced true)      5 checks fail
+order-blind comparison (both lists sorted)       1 fails: the order case
+schema read in array order                       1 fails: the position case
+no warning for a crumb with no schema            1 fails: the warning case
+schema-only scored as a critical                 2 fail: the note cases
+parser never finds the crumb nav                13 fail
+nested item names ignored                        1 fails: the item-node case
+```
+
+`audit.py` was restored byte for byte after the run.
+
+**It gates run two:** twelve town crumbs, each Home / Areas We Serve /
+[town], will be held to their BreadcrumbLists from the first build.
+
+#### ITEM 4: the stale doc lines from 3.61's found-not-changed list. Appends, nothing struck.
+
+- **`CLAUDE.md`, the contact-header section:** a paragraph now follows
+  the "because it asks" text. It names the 3.61 and 3.62 widening:
+  the compact ox header is the page-header identity, chrome and not an
+  in-flow band, and it is worn by contact, the blog, the sixteen posts
+  and the areas tier. "Because it asks" described contact's instance,
+  not the rule's boundary. Privacy is decided when it is built.
+- **`site.css`, the palette note:** "ONE SANCTIONED PAGE-HEADER
+  IDENTITY", with 3.61 and 3.62 named, beside the chrome accent, the
+  prose ground and the AFTER chip. It is recorded as the fourth
+  extension.
+
+#### Measured, confirmed rather than assumed
+
+**The Call alignment:** on both cards, at 1440 and 390, the Call's left
+edge is the body's text edge, level with the kit's button: 36px in at
+the split and 24px stacked. **The rule outranks `.prose + .cta-row` by
+specificity** (three classes to two), so it does not depend on where it
+sits in the file.
+
+**The rhythm and fold are unchanged from 3.75.** The card's Call moved
+only horizontally, x96 to x45 at 390; runs are 1,516 / 1,998 / 1,951 /
+1,332 / 1,723, and the fold at 390x664 clears by 78.
+
+**The layout sweep:** 269 of 278 probe entries are identical to 3.75.
+- **Jamison differs** at all three widths: the Call's x and the two
+  rewraps.
+- **The two stubs show the directory-listing date column again** (3.72).
+  They are byte-unchanged in git.
+- **Contact's layout is identical,** because its Call was already left.
+  Its only diffs are the comment and the stamp.
+- **Every other page's diff is its stamp line,** as is the template's.
+
+**Before and after crops of both cards at 1440 and 390 were rendered and
+inspected.** The "before" renders come from an export of HEAD's `docs/`.
+
+#### The suite, and THE NEW EXPECTED LINE
+
+- Both test scripts pass: **224 checks**, where there were 208.
+- `stamp-assets.py --check` exits 0 after the restamp, and
+  `build-sitemap.py --check` exits 0.
+- `STAGING=1 audit.py --strict`: **508 passing, 24 warnings, zero
+  criticals, sameAs the only warning.** The crumb check adds one pass to
+  each of the 23 crumbed pages.
+
+**THE NEW EXPECTED LINE: 17 pages at 95, 7 at 96, 2 stubs at 100;
+sameAs the only warning; zero criticals; 508 passing.**
+- **The seven at 96:** Jamison, the four service pages, and the two
+  posts that carry an FAQ (deer season, and your right to choose).
+- **The six that moved from 95 to 96 are the denominator talking,** as
+  CLAUDE.md describes for contact: 22 of 23 rounds to 96 where 21 of 22
+  rounded to 95. They are exactly as clean as they were. Jamison stays
+  at 96, at 23 of 24.
+
+No em dash was added to any file this commit touches.
 
 ---
 

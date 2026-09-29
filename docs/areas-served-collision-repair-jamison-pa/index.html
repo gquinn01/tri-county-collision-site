@@ -90,7 +90,7 @@
        SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
   <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/site.css?v=0f267d70">
+  <link rel="stylesheet" href="../assets/site.css?v=2c3895cf">
   <script src="../assets/site.js?v=e67e271c" defer></script>
 
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
@@ -593,7 +593,12 @@
          satisfy the qualifier rule, so a future sitting must not strip the
          chip for lacking it.
          The street is always "Jaymor Rd", no period, and the number only in
-         the full canonical address, which scripts/audit.py enforces. -->
+         the full canonical address, which scripts/audit.py enforces.
+         NON-BREAKING SPACES IN THE STEPS, a template rule (3.76): a figure
+         and its unit ("about 4&nbsp;miles") and a route number's two halves
+         ("(PA&nbsp;263)") are joined by &nbsp; wherever a wrap split them,
+         and run two's builder does the same for every town's steps. The
+         routing check reads straight through them (test section 26). -->
     <section id="getting-here" class="band-panel">
       <div class="wrap">
         <div class="sec-head">
@@ -616,8 +621,8 @@
             <div class="prose">
               <p>From the crossroads of York Road and Almshouse Road, the drive is about 8.4 miles and takes about 15 minutes without traffic.</p>
               <ol class="numbered">
-                <li><strong>Head south on York Road (PA 263)</strong> for about 2 miles.</li>
-                <li><strong>Turn left onto West Bristol Road</strong> and follow it for about 4 miles.</li>
+                <li><strong>Head south on York Road (PA&nbsp;263)</strong> for about 2 miles.</li>
+                <li><strong>Turn left onto West Bristol Road</strong> and follow it for about 4&nbsp;miles.</li>
                 <li><strong>Turn right onto Second Street Pike (PA 232)</strong> and go south for about 2 miles.</li>
                 <li><strong>Turn right onto Jaymor Rd</strong>, and the shop is about a quarter mile along, at 995 Jaymor Rd, Southampton, PA 18966.</li>
               </ol>

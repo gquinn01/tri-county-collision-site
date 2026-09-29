@@ -921,6 +921,14 @@ class PageParser(HTMLParser):
         # if markup ever nests one inside another by mistake.
         self.headings = []
         self._heading_stack = []
+        # The visible breadcrumb, as the rendered text of each <li> of the
+        # first <nav> whose class names a crumb, for the crumb mirror
+        # check (3.76). None when the page has no such nav; an empty list
+        # when it has one this parser cannot read as a list.
+        self.crumb_visible = None
+        self._crumb_nav = 0       # depth inside the crumb nav, 0 outside
+        self._crumb_done = False  # only the first crumb nav is read
+        self._crumb_li = None     # the open item's text, or None
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -930,6 +938,14 @@ class PageParser(HTMLParser):
             self._svg_depth += 1
         if tag in HEADING_TAGS:
             self._heading_stack.append([tag, self.getpos()[0], ""])
+        if tag == "nav":
+            if self._crumb_nav:
+                self._crumb_nav += 1
+            elif not self._crumb_done and "crumb" in (a.get("class") or "").split():
+                self._crumb_nav = 1
+                self.crumb_visible = []
+        if tag == "li" and self._crumb_nav:
+            self._crumb_li = ""
         if tag == "title" and not self._svg_depth:
             self._in_title = True
         elif tag == "h1":
@@ -968,6 +984,13 @@ class PageParser(HTMLParser):
                 self.links_internal += 1
 
     def handle_endtag(self, tag):
+        if tag == "li" and self._crumb_nav and self._crumb_li is not None:
+            self.crumb_visible.append(" ".join(self._crumb_li.split()))
+            self._crumb_li = None
+        if tag == "nav" and self._crumb_nav:
+            self._crumb_nav -= 1
+            if not self._crumb_nav:
+                self._crumb_done = True
         if tag in HEADING_TAGS and self._heading_stack and self._heading_stack[-1][0] == tag:
             self.headings.append(tuple(self._heading_stack.pop()))
         if tag == "svg" and self._svg_depth:
@@ -1009,6 +1032,8 @@ class PageParser(HTMLParser):
             self._faq_a += data
         if self._skip_depth:
             return
+        if self._crumb_li is not None and not self._svg_depth:
+            self._crumb_li += data
         for h in self._heading_stack:
             h[2] += data
         if not NAP_CONTACT_RES:
@@ -2181,6 +2206,7 @@ def audit(source: str, coverage: dict = None):
     # --- Structured data (JSON-LD) ---
     types = []
     faq_nodes = []            # every FAQPage node found, for the mirror check
+    crumb_nodes = []          # every BreadcrumbList node, for the crumb mirror
     business_same_as = False  # sameAs found ON the business node, not just anywhere
     for block in p.jsonld_blocks:
         try:
@@ -2208,6 +2234,8 @@ def audit(source: str, coverage: dict = None):
                     types.extend(names)
                     if "FAQPage" in names:
                         faq_nodes.append(item)
+                    if "BreadcrumbList" in names:
+                        crumb_nodes.append(item)
                     # sameAs is only an entity signal where it sits on
                     # the BUSINESS. See the check further down for the
                     # false pass this exists to prevent.
@@ -2300,6 +2328,73 @@ def audit(source: str, coverage: dict = None):
         if not (only_schema or only_page or mismatched) and schema_faq:
             passes.append(f"All {len(schema_faq)} FAQ questions and answers are byte-identical "
                           f"between the visible page and the FAQPage schema.")
+
+    # --- Crumb mirror: does the BreadcrumbList say what the crumb says? ---
+    # 3.76, closing 3.60's open item 1. The FAQ mirror's law applied to the
+    # breadcrumb: Google shows the BreadcrumbList's names as the result's
+    # path, so a crumb edited on the page and not in the schema hands out a
+    # trail the reader never sees. Labels and order must be byte-identical,
+    # both directions. SEVERITY ARGUED FROM THE FAQ MIRROR, case by case:
+    #   both present, any difference ...... a CRITICAL, as FAQ drift is;
+    #   a visible crumb, no BreadcrumbList . a WARNING, as a visible FAQ
+    #                                        with no FAQPage schema is;
+    #   a BreadcrumbList, no readable crumb  a NOTE, as FAQ schema with no
+    #                                        readable FAQ is: the weekly scan
+    #                                        reads the live WordPress site,
+    #                                        whose crumb markup this parser
+    #                                        may not recognise, and a stranger's
+    #                                        markup is not scored down.
+    # A crumb nav whose items are not <li>s reads as unreadable, not empty.
+    schema_crumb = []
+    for node in crumb_nodes[:1]:
+        elements = node.get("itemListElement") or []
+        elements = [e for e in (elements if isinstance(elements, list) else [elements])
+                    if isinstance(e, dict)]
+        def _pos(e):
+            try:
+                return float(e.get("position"))
+            except (TypeError, ValueError):
+                return float("inf")
+        for e in sorted(elements, key=_pos):
+            name = e.get("name")
+            if name is None and isinstance(e.get("item"), dict):
+                name = e["item"].get("name")
+            schema_crumb.append(" ".join(str(name or "").split()))
+    page_crumb = p.crumb_visible or []
+    if page_crumb and schema_crumb:
+        if page_crumb == schema_crumb:
+            passes.append(f"The visible breadcrumb and the BreadcrumbList agree, "
+                          f"{len(page_crumb)} items in the same order: "
+                          + " / ".join(page_crumb) + ".")
+        else:
+            only_page = [x for x in page_crumb if x not in schema_crumb]
+            only_schema = [x for x in schema_crumb if x not in page_crumb]
+            if len(only_page) == 1 and len(only_schema) == 1 and len(page_crumb) == len(schema_crumb):
+                fails.append(f"**Breadcrumb label differs between the page and its schema.** The page "
+                             f"says “{only_page[0][:80]}”, the BreadcrumbList says "
+                             f"“{only_schema[0][:80]}”. Each label must be byte-identical in both: "
+                             f"edit one, edit both.")
+            else:
+                for x in only_page:
+                    fails.append(f"**Breadcrumb item on the page but not in the BreadcrumbList: "
+                                 f"“{x[:80]}”.** Search results show the schema's trail, so this "
+                                 f"step is missing from it.")
+                for x in only_schema:
+                    fails.append(f"**Breadcrumb item in the BreadcrumbList but not on the page: "
+                                 f"“{x[:80]}”.** The schema is handing out a step the reader "
+                                 f"never sees.")
+                if not only_page and not only_schema:
+                    fails.append("**Breadcrumb order differs between the page and its schema.** "
+                                 "The page reads " + " / ".join(page_crumb) + "; the BreadcrumbList "
+                                 "reads " + " / ".join(schema_crumb) + ". Same items, same order.")
+    elif page_crumb:
+        warns.append("**A visible breadcrumb with no BreadcrumbList schema.** Search results cannot "
+                     "show the trail " + " / ".join(page_crumb) + " until it is marked up; add a "
+                     "BreadcrumbList with the same labels in the same order.")
+    elif schema_crumb:
+        notes.append(f"A BreadcrumbList of {len(schema_crumb)} items, but no visible breadcrumb this "
+                     f"check can read to compare it against: either the page shows none, or it is "
+                     f"built with markup this check does not read.")
 
     # Entity clarity: sameAs links tie the business to its profiles
     # (Google Business Profile, Yelp, Instagram...), which is how AI

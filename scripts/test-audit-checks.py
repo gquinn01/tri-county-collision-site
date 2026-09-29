@@ -33,6 +33,7 @@ Usage:
 """
 
 import glob
+import json
 import os
 import re
 import sys
@@ -1167,18 +1168,18 @@ def main():
             ("a wrong turn word, step 2 left made right",
              one("<strong>Turn left onto West Bristol Road</strong>", "<strong>Turn right onto West Bristol Road</strong>"), llms),
             ("a wrong compass word, step 1 south made north",
-             one("<strong>Head south on York Road (PA 263)</strong>", "<strong>Head north on York Road (PA 263)</strong>"), llms),
+             one("<strong>Head south on York Road (PA&nbsp;263)</strong>", "<strong>Head north on York Road (PA&nbsp;263)</strong>"), llms),
             ("two steps in the wrong order", jam.replace(steps[1], "@@").replace(steps[2], steps[1]).replace("@@", steps[2]), llms),
             ("a step dropped", jam.replace(steps[3], ""), llms),
-            ("a wrong route number", one("(PA 263)</strong>", "(PA 611)</strong>"), llms),
-            ("a stale step distance, 4 miles made 5", one("follow it for about 4 miles", "follow it for about 5 miles"), llms),
+            ("a wrong route number, behind the nbsp (3.76)", one("(PA&nbsp;263)</strong>", "(PA&nbsp;611)</strong>"), llms),
+            ("a stale step distance, 4 miles made 5, behind the nbsp (3.76)", one("follow it for about 4&nbsp;miles", "follow it for about 5&nbsp;miles"), llms),
             ("a stale quarter mile made half a mile", one("about a quarter mile along", "about half a mile along"), llms),
             # These two isolate their checks: nothing else about the step is
             # wrong, and the figure is valid ELSEWHERE on this route.
             ("the wrong road on a step, turn and distance untouched",
              one("<strong>Turn left onto West Bristol Road</strong>", "<strong>Turn left onto Street Road</strong>"), llms),
             ("another step's distance on step 2, 4 miles made 2",
-             one("follow it for about 4 miles", "follow it for about 2 miles"), llms),
+             one("follow it for about 4&nbsp;miles", "follow it for about 2&nbsp;miles"), llms),
             ("a stale minute count in the lead",
              one("about 15 minutes from Jamison. Factory-certified", "about 20 minutes from Jamison. Factory-certified"), llms),
             ("a stale minute count in the chip", one("~15 min from Jamison", "~18 min from Jamison"), llms),
@@ -1215,6 +1216,85 @@ def main():
             ("an embed that loads eagerly", good.replace(' loading="lazy"', ""))):
         p, w, f = run(frag)
         check(f"     caught: {label}", "embed is wrong" in f, f)
+
+    # THE CRUMB MIRROR, 3.76, closing 3.60's open item 1: the visible
+    # breadcrumb and the BreadcrumbList agree in labels and order, both
+    # directions. Severity from the FAQ mirror: drift is a critical, a
+    # crumb with no schema a warning, schema with no readable crumb a note.
+    print("27. The crumb mirror: the visible breadcrumb is the BreadcrumbList")
+
+    def crumb(*labels, pending=None):
+        items = []
+        for i, x in enumerate(labels):
+            if i == 0:
+                items.append(f'<li><a href="../">{x}</a></li>')
+            elif pending == i:
+                items.append(f'<li><span data-pending-href="../hub/">{x}</span></li>')
+            else:
+                items.append(f"<li>{x}</li>")
+        return '<nav class="crumb" aria-label="Breadcrumb"><ol>' + "".join(items) + "</ol></nav>"
+
+    def crumb_schema(*labels, order=None, nested=False):
+        els = []
+        for i, x in enumerate(labels, 1):
+            els.append({"@type": "ListItem", "position": i,
+                        "item": {"@id": f"https://tricountycollision.com/{i}/", "name": x}}
+                       if nested else {"@type": "ListItem", "position": i, "name": x})
+        if order:
+            els = [els[k] for k in order]
+        return ('<script type="application/ld+json">'
+                + json.dumps({"@context": "https://schema.org",
+                              "@graph": [{"@type": "BreadcrumbList", "itemListElement": els}]})
+                + "</script>")
+
+    three = ("Home", "Areas We Serve", "Jamison")
+    p, w, f, n, kind = run_kind("", crumb(*three, pending=1) + crumb_schema(*three))
+    check("     a crumb that mirrors its schema passes, a pending span item included",
+          "breadcrumb and the BreadcrumbList agree, 3 items" in p and "Breadcrumb" not in f, (p, f))
+    p, w, f, n, kind = run_kind("", crumb(*three) + crumb_schema(*three, order=(2, 0, 1)))
+    check("     the schema is read by position, not by array order",
+          "BreadcrumbList agree" in p and "Breadcrumb" not in f, (p, f))
+    p, w, f, n, kind = run_kind("", crumb(*three) + crumb_schema(*three, nested=True))
+    check("     a name carried on the item node is read too",
+          "BreadcrumbList agree" in p, p)
+    curly = ("Home", "Blog", "“Collision Repair Near Me”? Choosing a Southampton Body Shop")
+    p, w, f, n, kind = run_kind("", crumb(*curly) + crumb_schema(*curly))
+    check("     a post's long curly-quoted title mirrors byte for byte",
+          "BreadcrumbList agree" in p, p)
+    for label, page, schema, want in (
+            ("a label edited on the page only", ("Home", "Areas We Serve", "Jamison, PA"), three,
+             "label differs"),
+            ("a label edited in the schema only", three, ("Home", "Service Areas", "Jamison"),
+             "label differs"),
+            ("an item on the page, missing from the schema", three, ("Home", "Jamison"),
+             "on the page but not in the BreadcrumbList"),
+            ("an item in the schema, missing from the page", ("Home", "Jamison"), three,
+             "in the BreadcrumbList but not on the page"),
+            ("the same items in a different order", ("Home", "Jamison", "Areas We Serve"), three,
+             "order differs")):
+        p, w, f, n, kind = run_kind("", crumb(*page) + crumb_schema(*schema))
+        check(f"     caught as a critical: {label}", want in f and "BreadcrumbList agree" not in p, (p, f))
+    p, w, f, n, kind = run_kind("", crumb(*three))
+    check("     a visible crumb with no BreadcrumbList is a warning, not a critical",
+          "visible breadcrumb with no BreadcrumbList" in w and "Breadcrumb" not in f, (w, f))
+    p, w, f, n, kind = run_kind("", crumb_schema(*three))
+    check("     a BreadcrumbList with no readable crumb is a note, never scored",
+          "no visible breadcrumb this check can read" in n and "readcrumb" not in f + w, (n, f, w))
+    p, w, f, n, kind = run_kind("", '<nav class="crumb"><a href="../">Home</a> / Jamison</nav>'
+                                + crumb_schema(*three))
+    check("     a crumb nav with no list items reads as unreadable, not as a mismatch",
+          "no visible breadcrumb this check can read" in n and "readcrumb" not in f, (n, f))
+    p, w, f, n, kind = run_kind("", "<p>No trail here.</p>")
+    check("     a page with neither says nothing about breadcrumbs",
+          "readcrumb" not in p + w + f + n, (p, w, f, n))
+    for page in ("areas-served-collision-repair-jamison-pa", "contact-us",
+                 "collision-repair-near-me-in-southampton-how-to-choose-the-right-auto-body-shop"):
+        src = os.path.join(root, "docs", page, "index.html")
+        audit.load = lambda _s, _h=open(src, encoding="utf-8").read(): _h
+        ps, ws, fs, ns, kd = audit.audit(src, coverage=None)
+        check(f"     the shipped {page[:40]} crumb mirrors its schema",
+              any("BreadcrumbList agree" in x for x in ps) and not any("readcrumb" in x for x in fs),
+              [x for x in fs if "readcrumb" in x])
 
     print()
     if FAILURES:

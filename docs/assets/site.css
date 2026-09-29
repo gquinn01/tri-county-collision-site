@@ -263,6 +263,15 @@
    target; it names which photograph you are looking at. See .ba-chip for
    the construction and proposed-changes.md 3.33 for the measurements.
 
+   ONE SANCTIONED PAGE-HEADER IDENTITY, DATED 2026-09-28, appended here in
+   3.76. The compact ox header, .hero.dark.field-ox, is a PAGE-HEADER
+   IDENTITY: chrome, not an in-flow band, on Greg's ruling
+   (proposed-changes.md 3.61), extended to the areas tier, the hub and the
+   twelve town pages (3.62). /contact-us/, /blog/, the sixteen posts and
+   the town pages wear it. The band test above still governs bands in the
+   page flow; it does not govern the page header field. Privacy is decided
+   when it is built. It is the fourth extension recorded here.
+
    TWO SANCTIONED SECTION-BACKGROUND GRADIENTS, BOTH DATED 2026-09-10.
    The second is the homepage hero's scrim, the ground its type sits on;
    see THE HERO and the readability amendment. It is not a gradient on
@@ -838,6 +847,13 @@ section { padding: var(--pad) 0; }
    began to detach the kit from the card. One value at every width. */
 .dir-utils { margin-top: 36px; }
 .dir-utils .dir-address { margin: 20px 0 0; }
+/* THE CARD'S CALL SITS LEFT, 3.76 (Greg's ruling, option B), closing
+   3.73's open item: the card's content and its kit are left-aligned, and
+   a centred button between them read adrift. One rule, both cards. It
+   has to outrank .prose + .cta-row, which centres a row following a
+   .prose anywhere and is what centred the town card's Call; three classes
+   beat that rule's two wherever either sits in the file. */
+.dir-card .dir-body > .cta-row { justify-content: flex-start; }
 /* THE SPLIT. Two equal columns, the map first. 1010px IS THE RENDER'S
    NUMBER, not a round one: at equal columns it is the narrowest card at
    which Jamison's steps rewrap short enough that the body ends no lower

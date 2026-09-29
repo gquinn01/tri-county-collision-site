@@ -642,6 +642,13 @@ than retyped, and `.hero.dark .cta-row` keeps the call row left and at the
 base margin, so the fold does not pay for the band. Every tone on it measured
 in `proposed-changes.md` 3.54.
 
+**Widened 2026-09-28 (3.61, 3.62), appended 2026-09-29 (3.76): the compact
+ox header is the PAGE-HEADER IDENTITY**, chrome and not an in-flow band, on
+Greg's ruling. `/contact-us/`, `/blog/`, the sixteen posts and the areas
+tier (the hub and the twelve town pages) wear it. "Because it asks" above
+described contact's instance, not the boundary of the rule. The band test
+still governs bands in the page flow. Privacy is decided when it is built.
+
 ## The motion amendment, 2026-09-10
 
 **Motion used to be zero except the FAQ accordion. It is not zero any more.**
