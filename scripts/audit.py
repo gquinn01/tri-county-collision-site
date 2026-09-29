@@ -30,6 +30,7 @@ import argparse
 import glob
 import hashlib
 import json
+import math
 import os
 import re
 import sys
@@ -1486,10 +1487,18 @@ def check_brand_count_local(passes: list, warns: list, fails: list,
 #   miles, minutes   the whole primary route, as OSRM measured it, free-flow
 #   steps            (road, ref, modifier, bearing, miles), one per NUMBERED
 #                    STEP on the page, in driving order. The depart step is
-#                    left out when it is 0.00 mi (the page starts at the
-#                    town's corner), the unnamed final metres into the lot
-#                    are left out, and a "new name" maneuver is not a turn:
-#                    its miles fold into the step before it.
+#                    left out when it is under 0.02 mi (the page starts at
+#                    the town's corner), the unnamed final metres into the
+#                    lot are left out, and a "new name" maneuver is not a
+#                    turn: its miles fold into the step before it. Since
+#                    3.77 a roundabout and its exit are one step on the
+#                    exit road, and a "continue" WITH a turn (Richboro's
+#                    keep-right) stays its own step.
+#   place, corner,   the OSM place node the corner is measured from; the
+#   max_m            corner's two roads, its node and coordinates (the
+#                    routing's origin); and the refusal radius, 60m unless
+#                    Greg widened it for one town with a recorded
+#                    max_m_why (3.78)
 #   roads_driven     every OSM road name the route's ways carry, which is a
 #                    superset of the step names (3.65, Greg's ruling: West
 #                    Bristol Road is "East Bristol Road" in OSM for half its
@@ -1497,10 +1506,16 @@ def check_brand_count_local(passes: list, warns: list, fails: list,
 #                    label it). The map's labels must be a subset of this.
 #
 # THE DERIVATIONS, and the only renderings the check accepts:
-#   minutes          round(minutes): "about 15 minutes", "~15 min"
-#   route miles      round(miles) or round(miles, 1): "about 8", "about 8.4"
-#   step miles       under half a mile, to the nearest quarter ("a quarter
-#                    mile"); otherwise round(miles): "about 2 miles"
+#   minutes          minutes rounded half-up: "about 15 minutes", "~15 min"
+#   route miles      whole miles half-up, or to one decimal: "about 8",
+#                    "about 8.4"
+#   step miles       under an eighth of a mile, feet to the nearest hundred,
+#                    never under 100 ("about 200 feet", 3.78); under half a
+#                    mile, the nearest quarter ("a quarter mile"); otherwise
+#                    whole miles half-up: "about 2 miles"
+#   EVERY ROUNDING IS HALF-UP (3.78): Python's round() is banker's, and sent
+#                    an eighth of a mile, half a mile, 8.5 and 10.5 minutes
+#                    the wrong way.
 #   turn words       "left" and "right" against the step's maneuver modifier
 #   compass words    against the maneuver's bearing, on eight points; OSRM
 #                    has no compass modifier, and step 1 begins at the
@@ -1514,7 +1529,9 @@ TOWN_ROUTES = {
         "recorded": "2026-09-28",
         "miles": 8.42,
         "minutes": 14.8,
-        "corner": ("York Road", "Almshouse Road", 158375416),
+        "place": (158375416, 40.2548297, -75.0893372),
+        "corner": ("York Road", "Almshouse Road", 158375416, 40.2548297, -75.0893372),
+        "max_m": 60,
         "steps": (
             ("York Road", "PA 263", "right", 194, 1.92),
             ("West Bristol Road", "", "left", 126, 4.09),
@@ -1524,22 +1541,59 @@ TOWN_ROUTES = {
         "roads_driven": ("York Road", "West Bristol Road", "East Bristol Road",
                          "Second Street Pike", "2nd Street Pike", "Jaymor Road"),
     },
-    # RUN TWO'S ROUTINGS, 3.77. Every town routed before any hub copy leans
-    # on it, so the strategy chat double-checks the whole table once. A
-    # town whose corner stopped is ABSENT, not guessed: Bensalem,
-    # Feasterville-Trevose, Horsham, Huntingdon Valley and Northeast
-    # Philadelphia wait on Greg's corner rulings (3.77). "corner" is the two
-    # named roads and the OSM node the routing starts from: a junction node
-    # for run two, and for Jamison (3.62) its place node, which sits on the
-    # junction.
+    # RUN TWO'S ROUTINGS, 3.77 and 3.78. Every town routed before any hub
+    # copy leans on it, so the strategy chat double-checks the whole table
+    # once. "place" is the OSM place node the corner is measured from;
+    # "corner" is the two named roads, the OSM node the routing starts from
+    # and its coordinates, which are the routing's origin; "max_m" is the
+    # refusal radius, 60 unless Greg widened it for one town, and a widened
+    # one carries "max_m_why". test-audit-checks.py holds every entry to its
+    # own radius, and refuses a widened radius with no reason.
+    # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 111019889,
+    # Knights Road at Street Road, 62m from place node 158863395, to GEO_LAT, GEO_LON.
+    # proposed-changes.md 3.78. Steps condensed by the rules recorded in 3.77.
+    "bensalem-pa": {
+        "recorded": "2026-09-29",
+        "miles": 8.14,
+        "minutes": 14.8,
+        "place": (158863395, 40.1045549, -74.951279),
+        "corner": ("Knights Road", "Street Road", 111019889, 40.104902, -74.950713),
+        "max_m": 65,
+        "max_m_why": "Knights Road at Street Road is Bensalem's main crossroads, 61.6m from the township's label point; the only junction inside 60m is a residential side street (Greg, 3.78)",
+        "steps": (
+            ("Street Road", "PA 132", "", 340, 7.12),
+            ("2nd Street Pike", "PA 232", "left", 189, 0.73),
+            ("Jaymor Road", "", "right", 281, 0.28),
+        ),
+        "roads_driven": ("Street Road", "2nd Street Pike", "Jaymor Road"),
+    },
+    # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 111017981,
+    # Buck Road at Street Road, 16m from place node 157558047, to GEO_LAT, GEO_LON.
+    # proposed-changes.md 3.78. Steps condensed by the rules recorded in 3.77.
+    "feasterville-trevose-pa": {
+        "recorded": "2026-09-29",
+        "miles": 2.92,
+        "minutes": 6.0,
+        "place": (157558047, 40.1581651, -75.0151696),
+        "corner": ("Buck Road", "Street Road", 111017981, 40.158159, -75.014985),
+        "max_m": 60,
+        "steps": (
+            ("Street Road", "PA 132", "", 307, 1.90),
+            ("2nd Street Pike", "PA 232", "left", 189, 0.73),
+            ("Jaymor Road", "", "right", 281, 0.28),
+        ),
+        "roads_driven": ("Street Road", "2nd Street Pike", "Jaymor Road"),
+    },
     # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 110966333,
     # Bellevue Avenue at West Maple Avenue, 3m from place node 158846519, to GEO_LAT, GEO_LON.
-    # proposed-changes.md 3.77. Steps condensed by the rules recorded there.
+    # proposed-changes.md 3.77. Steps condensed by the rules recorded in 3.77.
     "langhorne-pa": {
         "recorded": "2026-09-29",
         "miles": 8.78,
         "minutes": 16.0,
-        "corner": ("Bellevue Avenue", "West Maple Avenue", 110966333),
+        "place": (158846519, 40.1761812, -74.9202481),
+        "corner": ("Bellevue Avenue", "West Maple Avenue", 110966333, 40.176161, -74.9202792),
+        "max_m": 60,
         "steps": (
             ("West Maple Avenue", "PA 213", "", 258, 2.53),
             ("Bridgetown Pike", "PA 213", "straight", 209, 2.29),
@@ -1552,12 +1606,14 @@ TOWN_ROUTES = {
     },
     # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 111455644,
     # 2nd Street Pike at Almshouse Road, 29m from place node 158624917, to GEO_LAT, GEO_LON.
-    # proposed-changes.md 3.77. Steps condensed by the rules recorded there.
+    # proposed-changes.md 3.77. Steps condensed by the rules recorded in 3.77.
     "richboro-pa": {
         "recorded": "2026-09-29",
         "miles": 4.48,
         "minutes": 8.0,
-        "corner": ("2nd Street Pike", "Almshouse Road", 111455644),
+        "place": (158624917, 40.2151086, -75.0107245),
+        "corner": ("2nd Street Pike", "Almshouse Road", 111455644, 40.215324, -75.010532),
+        "max_m": 60,
         "steps": (
             ("2nd Street Pike", "PA 232", "", 183, 0.29),
             ("2nd Street Pike", "PA 232", "right", 227, 3.89),
@@ -1567,12 +1623,14 @@ TOWN_ROUTES = {
     },
     # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 111018891,
     # Street Road at York Road, 12m from place node 158566218, to GEO_LAT, GEO_LON.
-    # proposed-changes.md 3.77. Steps condensed by the rules recorded there.
+    # proposed-changes.md 3.77. Steps condensed by the rules recorded in 3.77.
     "warminster-pa": {
         "recorded": "2026-09-29",
         "miles": 4.61,
         "minutes": 9.2,
-        "corner": ("Street Road", "York Road", 111018891),
+        "place": (158566218, 40.2067751, -75.0996159),
+        "corner": ("Street Road", "York Road", 111018891, 40.2067688, -75.0997553),
+        "max_m": 60,
         "steps": (
             ("York Road", "PA 263", "sharp left", 189, 1.17),
             ("East County Line Road", "", "left", 125, 2.96),
@@ -1583,12 +1641,14 @@ TOWN_ROUTES = {
     },
     # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 112228579,
     # South York Road at Byberry Road, 6m from place node 158588118, to GEO_LAT, GEO_LON.
-    # proposed-changes.md 3.77. Steps condensed by the rules recorded there.
+    # proposed-changes.md 3.77. Steps condensed by the rules recorded in 3.77.
     "hatboro-pa": {
         "recorded": "2026-09-29",
         "miles": 3.58,
         "minutes": 7.9,
-        "corner": ("South York Road", "Byberry Road", 112228579),
+        "place": (158588118, 40.1746252, -75.106825),
+        "corner": ("South York Road", "Byberry Road", 112228579, 40.1745959, -75.1068825),
+        "max_m": 60,
         "steps": (
             ("Byberry Road", "", "", 90, 1.30),
             ("Davisville Road", "", "left", 64, 0.85),
@@ -1598,14 +1658,53 @@ TOWN_ROUTES = {
         ),
         "roads_driven": ("Byberry Road", "Davisville Road", "East County Line Road", "James Way", "Jaymor Road"),
     },
+    # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 601720529,
+    # Easton Road at Horsham Road, 92m from place node 158401563, to GEO_LAT, GEO_LON.
+    # proposed-changes.md 3.78. Steps condensed by the rules recorded in 3.77.
+    "horsham-pa": {
+        "recorded": "2026-09-29",
+        "miles": 5.39,
+        "minutes": 11.3,
+        "place": (158401563, 40.1784422, -75.1285061),
+        "corner": ("Easton Road", "Horsham Road", 601720529, 40.1776137, -75.1283706),
+        "max_m": 95,
+        "max_m_why": "a township's place point is not a village centre; Easton Road at Horsham Road, 92.3m, is the self-evident reference corner (Greg, 3.78)",
+        "steps": (
+            ("Horsham Road", "", "", 89, 0.30),
+            ("Blair Mill Road", "", "left", 36, 1.41),
+            ("West County Line Road", "", "right", 126, 3.21),
+            ("James Way", "", "left", 40, 0.40),
+            ("Jaymor Road", "", "right", 146, 0.06),
+        ),
+        "roads_driven": ("Horsham Road", "Blair Mill Road", "West County Line Road", "East County Line Road", "James Way", "Jaymor Road"),
+    },
+    # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 5549211250,
+    # Huntingdon Pike at Wynkoop Avenue, 61m from place node 158228562, to GEO_LAT, GEO_LON.
+    # proposed-changes.md 3.78. Steps condensed by the rules recorded in 3.77.
+    "huntingdon-valley-pa": {
+        "recorded": "2026-09-29",
+        "miles": 3.39,
+        "minutes": 7.8,
+        "place": (158228562, 40.1226101, -75.0635049),
+        "corner": ("Huntingdon Pike", "Wynkoop Avenue", 5549211250, 40.1229069, -75.0641086),
+        "max_m": 65,
+        "max_m_why": "Huntingdon Pike at Wynkoop Avenue, 61.0m, is the main crossroads by the place point; same reasoning as Bensalem (Greg, 3.78)",
+        "steps": (
+            ("Huntingdon Pike", "PA 232", "", 34, 3.10),
+            ("Jaymor Road", "", "left", 281, 0.28),
+        ),
+        "roads_driven": ("Huntingdon Pike", "2nd Street Pike", "Jaymor Road"),
+    },
     # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 2125917445,
     # Old York Road at West Avenue, 16m from place node 158472613, to GEO_LAT, GEO_LON.
-    # proposed-changes.md 3.77. Steps condensed by the rules recorded there.
+    # proposed-changes.md 3.77. Steps condensed by the rules recorded in 3.77.
     "jenkintown-pa": {
         "recorded": "2026-09-29",
         "miles": 7.77,
         "minutes": 17.1,
-        "corner": ("Old York Road", "West Avenue", 2125917445),
+        "place": (158472613, 40.0959539, -75.125651),
+        "corner": ("Old York Road", "West Avenue", 2125917445, 40.0958613, -75.1257942),
+        "max_m": 60,
         "steps": (
             ("West Avenue", "", "", 88, 0.20),
             ("Newbold Road", "", "right", 133, 0.04),
@@ -1620,12 +1719,14 @@ TOWN_ROUTES = {
     },
     # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 601352294,
     # Easton Road at York Road, 38m from place node 158472698, to GEO_LAT, GEO_LON.
-    # proposed-changes.md 3.77. Steps condensed by the rules recorded there.
+    # proposed-changes.md 3.77. Steps condensed by the rules recorded in 3.77.
     "willow-grove-pa": {
         "recorded": "2026-09-29",
         "miles": 4.59,
         "minutes": 10.5,
-        "corner": ("Easton Road", "York Road", 601352294),
+        "place": (158472698, 40.1439985, -75.1157286),
+        "corner": ("Easton Road", "York Road", 601352294, 40.143664, -75.1156279),
+        "max_m": 60,
         "steps": (
             ("York Road", "PA 611", "", 124, 0.07),
             ("Davisville Road", "", "left", 36, 3.08),
@@ -1634,6 +1735,23 @@ TOWN_ROUTES = {
             ("Jaymor Road", "", "right", 146, 0.06),
         ),
         "roads_driven": ("York Road", "Davisville Road", "East County Line Road", "James Way", "Jaymor Road"),
+    },
+    # OSRM driving, router.project-osrm.org, fetched 2026-09-29, from OSM node 110154627,
+    # Bustleton Avenue at Byberry Road, 45m from place node 158530515, to GEO_LAT, GEO_LON.
+    # proposed-changes.md 3.78. Steps condensed by the rules recorded in 3.77.
+    "northeast-philadelphia": {
+        "recorded": "2026-09-29",
+        "miles": 4.39,
+        "minutes": 8.5,
+        "place": (158530515, 40.1234434, -75.0148921),
+        "corner": ("Bustleton Avenue", "Byberry Road", 110154627, 40.123599, -75.015384),
+        "max_m": 60,
+        "steps": (
+            ("Byberry Road", "", "", 307, 2.87),
+            ("Huntingdon Pike", "PA 232", "right", 45, 1.22),
+            ("Jaymor Road", "", "left", 281, 0.28),
+        ),
+        "roads_driven": ("Byberry Road", "Huntingdon Pike", "2nd Street Pike", "Jaymor Road"),
     },
 }
 COMPASS_8 = ("north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest")
@@ -1644,17 +1762,31 @@ def compass_of(bearing: float) -> str:
 
 
 def step_miles_phrase(mi: float) -> str:
-    """The one way a step's distance is written, derived."""
+    """The one way a step's distance is written, derived.
+
+    UNDER AN EIGHTH OF A MILE, FEET (3.78, Greg's ruling): rounded half-up
+    to the nearest hundred and never under 100, so 0.04 mi derives
+    "200 feet" and 0.08 derives "400 feet"; the page writes it with the
+    house qualifier, "about 200 feet", as it writes "about 2 miles". It
+    never derives "0.0 miles", which the quarter-mile rounding used to for
+    any step this short. Rounding is half-up throughout the short range:
+    Python's round() is banker's, which sent exactly an eighth (0.125 mi)
+    to "0.0 miles" as well."""
+    if mi < 0.125:
+        return f"{max(100, int(mi * 5280 / 100 + 0.5) * 100)} feet"
     if mi < 0.5:
-        q = round(mi * 4) / 4
+        q = int(mi * 4 + 0.5) / 4
         return {0.25: "a quarter mile", 0.5: "half a mile"}.get(q, f"{q} miles")
-    n = round(mi)
+    # Half-up here too, found while testing the short-step rule: round() sent
+    # exactly half a mile to "0 miles", and 2.5 to 2 while 3.5 went to 4.
+    n = int(mi + 0.5)
     return f"{n} mile" if n == 1 else f"{n} miles"
 
 
 ROUTE_QTY_RE = re.compile(
     r"(?:~\s*|about\s+|roughly\s+|around\s+)?(\d+(?:\.\d+)?)\s*(miles?|minutes?|mins?)\b"
-    r"|\b(a quarter mile|half a mile)\b", re.I)
+    r"|\b(a quarter mile|half a mile)\b"
+    r"|\b(\d{2,5})\s*feet\b", re.I)
 _USPS = {"road": "rd", "avenue": "ave", "street": "st", "drive": "dr", "lane": "ln",
          "boulevard": "blvd", "pike": "pike", "turnpike": "tpke", "highway": "hwy"}
 
@@ -1677,6 +1809,8 @@ def route_quantities(text: str) -> list:
         snip = text[max(0, m.start() - 30):m.end() + 10].strip()
         if m.group(3):
             out.append(("step", m.group(3).lower(), snip))
+        elif m.group(4):
+            out.append(("step", f"{int(m.group(4))} feet", snip))
         elif m.group(2).lower().startswith("mi") and not m.group(2).lower().startswith("min"):
             out.append(("miles", float(m.group(1)), snip))
         else:
@@ -1727,11 +1861,15 @@ def town_route_findings(html_text: str, route: dict, llms_entry: str = "") -> li
     """Every disagreement between a town page and its recorded routing, as
     human-readable strings. Empty means the page derives from the routing."""
     bad = []
-    minutes = round(route["minutes"])
-    miles_ok = {round(route["miles"]), round(route["miles"], 1)}
+    # Half-up (3.78): round() is banker's, and derived 10 from Willow Grove's
+    # 10.5 minutes and 8 from Northeast Philadelphia's 8.5.
+    minutes = int(route["minutes"] + 0.5)
+    # Half-up, as step_miles_phrase is (3.78): the whole-mile figure a page
+    # may state must be the one the phrase derivation would give.
+    miles_ok = {float(int(route["miles"] + 0.5)), round(route["miles"], 1)}
     steps = route["steps"]
     step_phrases = {step_miles_phrase(s[4]) for s in steps}
-    miles_ok |= {float(round(s[4])) for s in steps if s[4] >= 0.5}
+    miles_ok |= {float(int(s[4] + 0.5)) for s in steps if s[4] >= 0.5}
     # 1. Every rendering: the visible page, the meta description, the
     # JSON-LD (the FAQ's schema twin), every aria-label (the map's alt text)
     # and the page's llms.txt entry.
@@ -1788,6 +1926,29 @@ def town_route_findings(html_text: str, route: dict, llms_entry: str = "") -> li
             if said != step_miles_phrase(mi):
                 bad.append(f"step {i} says “{snip}”; its recorded {mi} miles derives "
                            f"“{step_miles_phrase(mi)}”")
+    return bad
+
+
+def town_route_config_findings(routes: dict = None) -> list:
+    """Every TOWN_ROUTES entry whose recorded corner is not its town's
+    corner by its own rule (3.78): the corner more than max_m from the place
+    point, a radius widened past 60m with no recorded reason, or a field
+    missing. Empty means every entry is held to its own tolerance."""
+    bad = []
+    for key, r in (TOWN_ROUTES if routes is None else routes).items():
+        try:
+            _pn, plat, plon = r["place"]
+            _ra, _rb, _cn, clat, clon = r["corner"]
+            max_m = r["max_m"]
+        except (KeyError, ValueError, TypeError):
+            bad.append(f"{key}: place, corner or max_m is missing or malformed")
+            continue
+        d = math.hypot((clat - plat) * 110574.0,
+                       (clon - plon) * 111320.0 * math.cos(math.radians(plat)))
+        if d > max_m:
+            bad.append(f"{key}: the corner is {d:.1f}m from the place point, over its {max_m}m")
+        if max_m > 60 and not str(r.get("max_m_why", "")).strip():
+            bad.append(f"{key}: max_m is widened to {max_m}m with no max_m_why recorded")
     return bad
 
 

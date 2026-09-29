@@ -1296,6 +1296,59 @@ def main():
               any("BreadcrumbList agree" in x for x in ps) and not any("readcrumb" in x for x in fs),
               [x for x in fs if "readcrumb" in x])
 
+    # THE SHORT-STEP RULE AND THE PER-TOWN RADIUS, 3.78. A step under an
+    # eighth of a mile is written in feet, to the nearest hundred, never
+    # "0.0 miles"; every rounding is half-up. And every TOWN_ROUTES entry
+    # is held to its own corner radius, a widened radius only with a reason.
+    print("28. Short steps derive feet; every town's corner holds its own radius")
+    for mi, want in ((0.04, "200 feet"), (0.08, "400 feet"), (0.06, "300 feet"), (0.07, "400 feet"),
+                     (0.005, "100 feet"), (0.1249, "700 feet"), (0.125, "a quarter mile"),
+                     (0.28, "a quarter mile"), (0.375, "half a mile"), (0.5, "1 mile"),
+                     (1.92, "2 miles"), (2.5, "3 miles"), (3.5, "4 miles")):
+        got = audit.step_miles_phrase(mi)
+        check(f"     {mi} mi derives \u201c{want}\u201d", got == want, got)
+    sweep = [audit.step_miles_phrase(k / 1000) for k in range(1, 10001)]
+    check("     no distance from 0.001 to 10 mi ever derives zero",
+          not any(x.startswith(("0 ", "0.0")) or x == "0 feet" for x in sweep),
+          [x for x in sweep if x.startswith(("0 ", "0.0"))][:3])
+    route = {"miles": 2.2, "minutes": 5.2, "roads_driven": ("Main Road", "Jaymor Road"),
+             "steps": (("Main Road", "", "", 90, 2.1), ("Jaymor Road", "", "right", 146, 0.06))}
+
+    def short_page(last, extra=""):
+        return ('<main><section id="getting-here"><p>About 5 minutes.' + extra + '</p><ol class="numbered">'
+                '<li><strong>Head east on Main Road</strong> for about 2&nbsp;miles.</li>'
+                f'<li><strong>Turn right onto Jaymor Rd</strong>, and the shop is {last}.</li>'
+                "</ol></section></main>")
+    got = audit.town_route_findings(short_page("about 300&nbsp;feet along"), route)
+    check("     a 0.06 mi last step written \u201cabout 300 feet\u201d passes", not got, got)
+    for label, page in (("the wrong hundred, 400 feet for 0.06 mi", short_page("about 400&nbsp;feet along")),
+                        ("the old wrong rendering, 0.0 miles", short_page("about 0.0 miles along")),
+                        ("a quarter mile for a 0.06 mi step", short_page("about a quarter mile along")),
+                        ("an underived feet figure in the prose", short_page("about 300&nbsp;feet along",
+                                                                           " The lot is 600 feet deep."))):
+        got = audit.town_route_findings(page, route)
+        check(f"     caught: {label}", bool(got), got)
+    ne = dict(route, minutes=audit.TOWN_ROUTES["northeast-philadelphia"]["minutes"])
+    check("     Northeast Philadelphia's recorded 8.5 minutes reads \u201cabout 9 minutes\u201d, half-up",
+          ne["minutes"] == 8.5 and not audit.town_route_findings(short_page("about 300&nbsp;feet along")
+                                                                  .replace("About 5 minutes", "About 9 minutes"), ne), None)
+    got = audit.town_route_findings(short_page("about 300&nbsp;feet along").replace("About 5 minutes", "About 8 minutes"), ne)
+    check("     caught: \u201cabout 8 minutes\u201d for 8.5, the banker's rounding", bool(got), got)
+    got = audit.town_route_config_findings()
+    check("     every recorded town's corner lies inside its own radius", not got, got)
+    check("     Bensalem, Horsham and Huntingdon Valley carry their widened radii with reasons",
+          all(audit.TOWN_ROUTES[k]["max_m"] > 60 and audit.TOWN_ROUTES[k].get("max_m_why")
+              for k in ("bensalem-pa", "horsham-pa", "huntingdon-valley-pa")), None)
+    base = dict(audit.TOWN_ROUTES["bensalem-pa"])
+    for label, mut in (("a corner outside its radius (Bensalem held to 60)", dict(base, max_m=60)),
+                       ("a widened radius with no reason", {k: v for k, v in dict(base, max_m=70).items()
+                                                            if k != "max_m_why"}),
+                       ("a corner moved 200m off its place", dict(base, corner=base["corner"][:3]
+                                                                   + (base["corner"][3] + 0.0018, base["corner"][4]))),
+                       ("an entry with no place recorded", {k: v for k, v in base.items() if k != "place"})):
+        got = audit.town_route_config_findings({"x-pa": mut})
+        check(f"     caught: {label}", bool(got), got)
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} check(s) failed:")

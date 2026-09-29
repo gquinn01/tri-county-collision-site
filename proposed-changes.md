@@ -11652,6 +11652,192 @@ modification provides.
   is identical to 3.76's.
 - No em dash was added.
 
+### 3.78 The five corners, ruled; the short-step rule; the full routing table. BUILT 2026-09-29
+
+**Still no page.** This commit completes the routing table that 3.77
+started, and adds one derivation rule. **The hub's copy stays held**
+until the strategy chat's double-check of the full table comes back:
+that is the Q1 order doing its job.
+
+#### Greg's rulings on the five corners
+
+**The principle running through all five, in his words:** the 60m
+tolerance exists to guarantee the corner is genuinely THE town's corner.
+It serves that purpose and never defeats it. **Every widened tolerance
+is a per-town recorded config with its reason, not a global
+loosening.**
+
+1. **Bensalem: option A.** Knights Road at Street Road, with the town's
+   `max_m` recorded at 65. A main crossroads 1.6 metres past the limit is
+   the town's corner; a side street inside the limit is not. "The
+   tolerance bends before the truth does."
+2. **Feasterville-Trevose: option A,** Buck Road at Street Road. The
+   card's intro line anchors every route to its named corner, as
+   Jamison's does, so the figure claims the crossroads, not the whole
+   census place. **RECORDED AS AN OPTION, NOT BUILT:** a second recorded
+   routing from the Trevose side, if Greg later wants the page to put a
+   number on Trevose's longer drive.
+3. **Horsham: option A,** Easton Road at Horsham Road, with `max_m`
+   recorded at 95 as the exception. A township's place point is not a
+   village centre, and the junction of the roads named Easton and
+   Horsham is the self-evident corner by any human reading.
+4. **Huntingdon Valley: option A,** Huntingdon Pike at Wynkoop Avenue,
+   with `max_m` recorded at 65, on the same reasoning as Bensalem.
+5. **Northeast Philadelphia: option B.** Somerton is the primary. The
+   chip, the steps and the card anchor on "from Somerton, at Bustleton
+   Avenue and Byberry Road". The live hub itself names Somerton first,
+   and it is honest about what the shop most serves. **The area's far
+   side:** Greg allowed a number only if a second recorded routing is
+   gated as cleanly as the primary.
+   - **TAKEN: the numberless sentence.** A second routing would mean the
+     check accepting two minute counts on one page. That loosens the one
+     gate that makes a stale minute a build failure, and cleaner
+     machinery is a larger change than this page needs.
+   - **So the page may say that "the far side of the Northeast runs
+     longer", with no number.** Numbers appear only where they are
+     derived.
+
+#### The table, complete
+
+**Eleven towns plus Jamison, all in `TOWN_ROUTES`.** Every routing is one
+request from the corner to `-75.0512847,40.1660232` with
+`?alternatives=true&overview=full&geometries=geojson&steps=true&annotations=nodes`,
+fetched 2026-09-29. The primary route is recorded. **The table below is generated from `TOWN_ROUTES`, not typed.** A typed first draft of this record carried wrong corner coordinates for Feasterville-Trevose and Northeast Philadelphia; it was caught against the data before commit. The 3.77 table was re-checked against the data the same way, and it matches exactly.
+
+| Town | Place node | Corner (lat, lon) | Corner to place | Radius | Miles | Minutes |
+|---|---|---|---|---|---|---|
+| Jamison (3.62) | 158375416 | 40.2548297, -75.0893372, York Road / Almshouse Road | 0.0m | 60 | 8.42 | 14.8 |
+| Bensalem | 158863395 | 40.104902, -74.950713, Knights Road / Street Road | 61.6m | **65** | 8.14 | 14.8 |
+| Feasterville-Trevose | 157558047 (Feasterville) | 40.158159, -75.014985, Buck Road / Street Road | 15.7m | 60 | 2.92 | 6.0 |
+| Langhorne | 158846519 | 40.176161, -74.9202792, Bellevue Avenue / West Maple Avenue | 3.5m | 60 | 8.78 | 16.0 |
+| Richboro | 158624917 | 40.215324, -75.010532, 2nd Street Pike / Almshouse Road | 28.9m | 60 | 4.48 | 8.0 |
+| Warminster | 158566218 | 40.2067688, -75.0997553, Street Road / York Road | 11.9m | 60 | 4.61 | 9.2 |
+| Hatboro | 158588118 | 40.1745959, -75.1068825, South York Road / Byberry Road | 5.9m | 60 | 3.58 | 7.9 |
+| Horsham | 158401563 | 40.1776137, -75.1283706, Easton Road / Horsham Road | 92.3m | **95** | 5.39 | 11.3 |
+| Huntingdon Valley | 158228562 | 40.1229069, -75.0641086, Huntingdon Pike / Wynkoop Avenue | 61.0m | **65** | 3.39 | 7.8 |
+| Jenkintown | 158472613 | 40.0958613, -75.1257942, Old York Road / West Avenue | 15.9m | 60 | 7.77 | 17.1 |
+| Willow Grove | 158472698 | 40.143664, -75.1156279, Easton Road / York Road | 38.0m | 60 | 4.59 | 10.5 |
+| Northeast Philadelphia | 158530515 (Somerton) | 40.123599, -75.015384, Bustleton Avenue / Byberry Road | 45.3m | 60 | 4.39 | 8.5 |
+
+**The five new routes' steps,** by 3.77's condensing rules:
+
+```
+bensalem-pa             Street Road (PA 132) 7.12 / left 2nd Street Pike (PA 232) 0.73 / right Jaymor Road 0.28
+feasterville-trevose-pa Street Road (PA 132) 1.90 / left 2nd Street Pike (PA 232) 0.73 / right Jaymor Road 0.28
+horsham-pa              Horsham Road 0.30 / left Blair Mill Road 1.41 / right West County Line Road 3.21
+                        / left James Way 0.40 / right Jaymor Road 0.06
+huntingdon-valley-pa    Huntingdon Pike (PA 232) 3.10 (with 0.44 as 2nd Street Pike) / left Jaymor Road 0.28
+northeast-philadelphia  Byberry Road 2.87 / right Huntingdon Pike (PA 232) 1.22 (with 0.44 as 2nd Street Pike)
+                        / left Jaymor Road 0.28
+```
+
+**`roads_driven` is read off the ground again,** for all eleven in one
+node-level query. The six 3.77 entries were regenerated from it
+**identically:** figures, steps, roads and corners. Horsham's route drives
+East County Line Road as well as West; the others drive only their step
+roads.
+
+#### The shape, extended: each town is held to its own radius
+
+**Every entry now records:**
+- **`place`:** the OSM place node the corner is measured from.
+- **`corner`:** the two roads, the node and its coordinates. Those are
+  the routing's origin, so the double check can re-run it exactly.
+- **`max_m`:** 60 unless widened.
+- **`max_m_why`:** mandatory wherever `max_m` is over 60.
+
+**`town_route_config_findings()` in `scripts/audit.py` is the mechanism.**
+It refuses:
+- a corner farther from its place than its own radius;
+- a widened radius with no reason;
+- a missing or malformed field.
+
+It is a function, not a comment, so the map script can call it when the
+town frames are drawn.
+
+**Two place points changed from 3.77's table, by the rulings:**
+- **Feasterville-Trevose** is measured from the Feasterville node, not
+  the combined census node.
+- **Northeast Philadelphia** is measured from Somerton, not the suburb
+  point.
+
+#### THE SHORT-STEP RULE, and every rounding half-up
+
+**Greg's ruling:** a step under an eighth of a mile renders in feet,
+rounded to the nearest hundred. **Implemented in `step_miles_phrase`,
+the one derivation.** 0.04 mi derives "200 feet", 0.08 derives "400
+feet", and nothing derives under 100. The page writes the house
+qualifier, "about 200 feet", as it writes "about 2 miles". **The parser
+now reads "N feet"** as a step phrase, so a figure in feet is gated like
+any other.
+
+**Testing it found the same defect three more times, all fixed here.**
+Python's `round()` is banker's rounding, and it sent:
+- **exactly an eighth of a mile to "0.0 miles"** (the quarter-mile
+  branch);
+- **exactly half a mile to "0 miles", and 2.5 miles to 2** while 3.5 went
+  to 4 (the whole-mile branch);
+- **Willow Grove's 10.5 minutes to 10, and Northeast Philadelphia's 8.5
+  to 8** (the minute derivation).
+
+**Every rounding in the derivation is now half-up,** and the check's
+accepted-miles set follows it. **Nothing shipped changes:** no recorded
+step's phrase moves, and Jamison's figures are unaffected (Jamison's
+page still has no findings). The two towns whose minutes move have no
+copy yet. **Their derived figures are Willow Grove "about 11 minutes"
+and Northeast Philadelphia "about 9 minutes".**
+
+**The derivations' reference table in `audit.py`** (THE DERIVATIONS) and
+THE SHAPE's comment now say all of this. They were written for Jamison
+alone, and a builder reads them first.
+
+#### Tests and mutation proof
+
+**Section 28, 27 checks.** It covers:
+- **Thirteen derivations,** both sides of every boundary.
+- **A sweep of every distance from 0.001 to 10 mi,** none deriving zero.
+- **A short-step page that passes,** and **four that are caught:**
+  - the wrong hundred;
+  - the old "0.0 miles";
+  - a quarter mile for a 0.06 mi step;
+  - an underived feet figure in prose.
+- **Northeast Philadelphia's 8.5 minutes,** passing as 9 and caught as 8.
+- **Every real entry inside its radius,** and the three widened radii
+  carrying reasons.
+- **Four config mutations caught:**
+  - Bensalem held to 60;
+  - a widened radius with no reason;
+  - a corner moved 200m;
+  - no place recorded.
+
+**Nine mutants of the new code, all killed by named failures:**
+
+```
+threshold an eighth moved to a tenth            2 fail
+feet rounded to fifty                           2 fail
+no 100-foot floor                               2 fail
+quarter branch back to banker's rounding        2 fail
+whole miles back to banker's rounding           3 fail
+minutes back to banker's rounding               2 fail
+the parser stops reading feet                   2 fail (the wrong hundred; the prose figure)
+radius check ignores distance                   2 fail
+widened radius needs no reason                  1 fails
+```
+
+**One mutant first "died" by crashing,** because it removed the handler
+but left the regex matching. A crash proves nothing, so the mutant was
+rewritten to remove both, and it is then killed by the two named
+failures above. `audit.py` was restored byte for byte after every run.
+
+#### The suite
+
+- Both test scripts pass: **251 checks**, where there were 224.
+- `stamp-assets.py --check` exits 0, and `build-sitemap.py --check` exits 0.
+- `STAGING=1 audit.py --strict`: **17 pages at 95, 7 at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 508 passing.** The report
+  is identical to 3.77's.
+- No page changed, and no em dash was added.
+
 ---
 
 ## 4. The claims list
