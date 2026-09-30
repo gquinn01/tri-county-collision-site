@@ -60,7 +60,7 @@
        SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
   <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/site.css?v=d4057176">
+  <link rel="stylesheet" href="../assets/site.css?v=be30a0f4">
   <script src="../assets/site.js?v=2cbec63d" defer></script>
 
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
@@ -365,23 +365,12 @@
        scripts/audit.py fails a page whose chrome differs from the others in
        anything but the current-page marking.
 
-       THE SLIM ROW ABOVE THE HEADER is the live header's two CarWise
-       buttons, desktop only, and it is not sticky: the sticky header and
-       the phone header are exactly the height they were. Below the
-       breakpoint the same two buttons live in the menu.
-
        THE LOGO IS THE WAY HOME, so the nav carries no Home item. It has
        been a link since 2026-09-10: until then it was a span carrying
        data-pending-href="../" because docs/index.html did not exist. The
        homepage was built, the link test demanded the conversion by
        failing, and that was the conversion, the mechanism in 3.10 working
        end to end rather than being described. -->
-  <div class="nav-util">
-    <div class="wrap">
-      <a class="btn btn-sm btn-ghost" href="https://www.carwise.com/online-photo-estimate/tri-county-collision-center-southampton-pa-18966/481195" target="_blank" rel="noopener">Get an Estimate</a>
-      <a class="btn btn-sm btn-ghost" href="https://www.carwise.com/auto-body-shops/book-appointment/tri-county-collision-center-southampton-pa-18966/481195" target="_blank" rel="noopener">Book an Appointment</a>
-    </div>
-  </div>
   <header class="nav">
     <div class="wrap inner">
       <a class="nav-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
@@ -417,10 +406,6 @@
           <li class="nav-item"><a href="../contact-us/">Contact Us</a></li>
           <li class="nav-item"><a href="../blog/">Blog</a></li>
         </ul>
-        <div class="nav-carwise">
-          <a class="btn btn-sm btn-ghost" href="https://www.carwise.com/online-photo-estimate/tri-county-collision-center-southampton-pa-18966/481195" target="_blank" rel="noopener">Get an Estimate</a>
-          <a class="btn btn-sm btn-ghost" href="https://www.carwise.com/auto-body-shops/book-appointment/tri-county-collision-center-southampton-pa-18966/481195" target="_blank" rel="noopener">Book an Appointment</a>
-        </div>
       </nav>
       <a class="btn btn-sm nav-call" href="tel:+12153225350">Call (215) 322-5350</a>
       <button class="navtoggle" type="button" aria-expanded="false" aria-controls="navmenu">

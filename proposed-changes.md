@@ -13293,6 +13293,11 @@ both mutation-proven:
 
 ### 3.83 The header-nav sweep: the live site's navigation, one generated chrome. BUILT 2026-09-29
 
+*(THE CARWISE PAIR WITHDRAWN 2026-09-29 by 3.84, on Greg's ruling at his
+click-through review of the full-site copy. The slim row and the menu's pair
+were built and proved as written below; his eye then decided against them.
+Everything else in this record stands. See 3.84.)*
+
 **Chrome only: no page copy, no new claim, no new page.** The nav now
 follows the live site's own navigation, minus Home, on Greg's ruling.
 The footer gains the full map. One script writes both onto every real
@@ -13636,6 +13641,174 @@ M6 blind: a missing page resolves           fails "missing page" and "link to a 
   - `f383_1099.png`, `f383_1100.png`;
   - `n383_collision-re_390_0.png`, `n383_collision-re_390_379.png`;
   - `f383_360_menu_areas.png`.
+
+### 3.84 The CarWise pair leaves the nav, on Greg's eye. BUILT 2026-09-29
+
+**3.83's CarWise pair is withdrawn:**
+- the slim desktop row above the header goes entirely;
+- the pair comes out of the phone menu.
+
+Greg ruled at his click-through review of the full-site copy.
+
+**This is a withdrawal, not a correction, in the 3.41 manner.** 3.83
+built what was ruled, and the pair worked as proved. Greg then saw it
+live in the full-site copy, and his eye decided against it. **It is
+recorded forward.** 3.83 stays as written and gains one line pointing
+here.
+
+#### What it does not touch
+
+- **/contact-us/ keeps both CarWise links,** on Greg's 2026-09-24
+  decision, and the owner-confirm rider on CarWise stays.
+- **Everything else ruled in 3.83 stands:**
+  - the five items and their dropdowns;
+  - the DocuSign item and owner question 35;
+  - Call, the Menu button and the overlay;
+  - the footer's Explore column;
+  - the generator and both checks.
+- **The only CarWise links on the site are /contact-us/'s two,** and
+  `llms.txt`'s contact entry, which describes them.
+
+#### The work
+
+- **`scripts/sync-chrome.py`** drops the slim row, the menu's pair, and
+  the paragraphs of its docstring and head comment that described them.
+  **All 36 pages regenerated: 540 lines deleted, 15 on each page, and
+  nothing added.** Those lines are the slim row, the menu's pair and the
+  row's comment paragraph.
+  - The regeneration ran once through a transitional pattern that also
+    cleared the 3.83 row.
+  - The pattern then came out, so no code or prose describes a row that
+    no page carries. `--check` passes on the simplified pattern.
+- **The builders inherit it through the generator, as designed.**
+  **PROVED:** all twelve towns rebuilt, every map redrawn from cache, and
+  the hub re-migrated from the live cache, **byte-identical** to the
+  generator's output.
+- **`site.css` loses the slim row's rules, the menu pair's rule and the
+  ghost-on-ink button rules,** which only the pair wore. **Their prose
+  came out with them:**
+  - the CarWise paragraph in the nav's comment;
+  - the not-sticky comment.
+
+  The focus ring's selector list no longer names `.nav-util`, and that
+  line is now exactly its pre-3.83 text.
+  - **One guard stays, deliberately:** `.nav-main a:not(.btn):hover`.
+    Dropping `:not(.btn)` would lower the rule's specificity and change
+    which underline the current page's link shows on hover. A withdrawal
+    should change nothing it does not name.
+- **`scripts/audit.py`: the two CarWise URLs leave
+  `CHROME_EXTERNAL_URLS`,** because an allowance nothing in the chrome
+  uses is a dead allowance.
+  - **The constants stay,** with a comment: they now record the contact
+    page's two links. Holding /contact-us/ to them is a recorded option,
+    not a check built today.
+  - `CHROME_HEAD_RE` now reads from the header itself, since no row sits
+    above it.
+- **The template** carries the regenerated chrome at `{{ROOT}}`, without
+  the slim row, the menu's pair or their comment. **CLAUDE.md**'s table
+  row loses "with its slim CarWise row".
+
+#### THE BREAKPOINT STANDS, re-measured
+
+The pair was never in the main row. **The row still needs 979.6px** for
+the logo, the five items and Call:
+- 1060px of room at 1100;
+- 1080px at 1440 and at 1920.
+
+So **1100px and its reason stand unchanged:** 4.4px of slack at 1024 is
+too thin for font metrics across platforms, and 80px at 1100 is not.
+The comment in `site.css` needed no change.
+
+#### MECHANISM: the withdrawal is enforced, not remembered
+
+- **The allowance is the enforcement.** With the CarWise URLs out of
+  `CHROME_EXTERNAL_URLS`, a CarWise link in the chrome fails the
+  resolution check.
+- **Section 33 gains that case:** "a CarWise link back in the chrome,
+  withdrawn in 3.84". No existing test had asserted the pair present.
+- **Every fixture rebuilds from the generator,** so all of them followed.
+- **The mutation proofs are green, seven now:** 3.83's six, each caught
+  as before, and **M7, the pair allowed back into
+  `CHROME_EXTERNAL_URLS`, caught by the new case.** `audit.py` was
+  restored byte for byte.
+
+#### Measured against 8ac9c95
+
+**PHONE WIDTHS: nothing moved.** At 360, 390 and 430, on all 36 pages:
+- the header is 68px, as it was;
+- `<main>` starts at the same pixel;
+- every visible box inside it sits at the same absolute position.
+
+**PIXEL-IDENTICAL, as the brief asked.** Full-page screenshots, staging
+banner on, of all 36 pages at 360 and 390, in both trees: 72 pairs, up to
+22,432px tall.
+- **51 were identical on the first, parallel run.**
+- **14 more were identical when shot one at a time.**
+- **4 more were identical on a third shot.**
+- **The last 3** (Langhorne at 360 and 390, Northeast Philadelphia at
+  390) differ in **149,503, 447,342 and 134,116 pixels, every one of them
+  inside an `<img>` box, and zero outside one.**
+
+**Why that is not the chrome.** The same measure run on 8ac9c95 against
+itself also differs, in the same Real Repairs band: Langhorne at 360, 479
+rows, y 3535 to 4025. Headless Chrome's photo decoding under a virtual
+time budget is not deterministic, and it varies with load, which is why
+the parallel run caught more. **Everything that is not a photograph is
+pixel-identical to 8ac9c95 on every page, at both widths,** and the
+geometry proof above covers the photographs' boxes.
+
+**DESKTOP: the 60px comes back on every page.** At 1440 and 1920:
+- `<main>` starts 60.5px higher than at 8ac9c95, every visible box inside
+  it unchanged;
+- **it now sits at exactly the absolute position it held at f1dbe45,
+  on all 36 pages;**
+- the sticky header is 96px, as it always was.
+
+**The first-screen margins at 1440x900, where each page's first call row
+clears the viewport's foot**, now against 3.83 and against f1dbe45:
+
+```
+                          3.84    3.83   f1dbe45
+the eight town pages       312     251     312
+home                       344     283     344
+three service pages        367     307     367
+the four other towns       380     320     380
+/collision-repair/         408     348     408
+/contact-us/               412     352     412
+/areas-served/             414     354     414
+```
+
+At 1920x1080 the tightest is 492 again, where 3.83 had 431.
+
+**THE ASK RHYTHM AT 390:** every page's call positions are identical to
+8ac9c95's, all 36 of them.
+- The pair was desktop-only in the row, and in the phone menu it was
+  CarWise links, not calls.
+- So removing it changed nothing at the width where the rhythm is
+  measured. **Proved, not assumed.**
+
+**THE LAYOUT SWEEP against 8ac9c95:**
+- the desktop chrome changed on every real page;
+- nothing changed at a phone width;
+- the two redirect stubs, `llms.txt` and the sitemap are untouched.
+
+**Rendered and inspected** (session scratchpad, not committed):
+- `g384_1440_services.png`: one header row, no row above it;
+- `g384_390_menu.png`: the menu ends at Blog;
+- `g384_360_closed.png`: Northeast Philadelphia's first screen, the
+  call row where it was.
+
+#### The suite, and THE EXPECTED LINE, unchanged
+
+- Both test scripts pass: **329 checks**, 328 and the new case.
+- These all exit 0:
+  - `stamp-assets.py --check`, restamped for `site.css`;
+  - `build-sitemap.py --check` (36 pages);
+  - `sync-area-served.py --check`;
+  - `sync-chrome.py --check`.
+- `STAGING=1 audit.py --strict`: **15 pages at 95, 21 at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 834 passing.**
+- No em dash and no banned digits added.
 
 ---
 

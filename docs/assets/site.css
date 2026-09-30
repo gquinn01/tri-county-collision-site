@@ -755,11 +755,6 @@ section { padding: var(--pad) 0; }
    in the accessibility tree. The fold table in 3.83 proves the header's
    height moved by nothing.
 
-   THE TWO CARWISE BUTTONS are the live header's own. They cannot share
-   the desktop row, so from 1100 they sit in .nav-util, a slim row above
-   the header that is NOT sticky, as the live header stacks them; below
-   1100 the same pair lives in the menu. Only one copy is ever displayed.
-
    NO MOTION AT ALL. A dropdown appears and disappears; the chevron flips
    without a transition. So there is nothing for prefers-reduced-motion to
    turn off, which is the simplest way to respect it.
@@ -793,18 +788,9 @@ section { padding: var(--pad) 0; }
    does, and the column count, not a town count, is all this knows. */
 .nav-sub-towns { columns: 2; column-gap: 16px; }
 .nav-sub-towns li { break-inside: avoid; }
-.nav-carwise, .navtoggle, .nav-util { display: none; }
-/* The ghost on ink: a border and a label, the Email ghost's grammar on
-   every dark ground. */
-.nav .btn-ghost, .nav-util .btn-ghost { background: transparent; color: var(--silver); border-color: var(--silver); }
-.nav .btn-ghost:hover, .nav-util .btn-ghost:hover { background: rgb(var(--silver-rgb) / .14); border-color: var(--silver); }
+.navtoggle { display: none; }
 
 @media (min-width: 1100px) {
-  /* NOT STICKY: it scrolls away, and the sticky header below it is the
-     height it always was. Ink, so the staging bar, this row and the header
-     read as one dark band. */
-  .nav-util { display: block; background: var(--ink); }
-  .nav-util .wrap { display: flex; justify-content: flex-end; gap: 10px; padding-top: 10px; }
   .nav-sub {
     position: absolute; top: 100%; left: -18px; z-index: 5; min-width: 270px; padding: 8px 0;
     background: var(--ink); border: 1px solid rgb(var(--silver-rgb) / .5); border-top: 4px solid var(--ox);
@@ -843,7 +829,6 @@ section { padding: var(--pad) 0; }
   .nav-sub-icon { flex: 0 0 auto; padding: 14px 16px; }
   .nav-sub { flex: 0 0 100%; padding: 0 0 12px 16px; }
   .nav-sub a { display: block; padding: 10px 0; }
-  .nav-carwise { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 }
 
 @media (max-width: 899px) {
@@ -2226,7 +2211,7 @@ section > .wrap > .cta-row:last-child { justify-content: center; }
    and footer, and on the heroes, over the photograph through the scrim,
    6.65 at the worst stop and 8.24 or better at every other, against a 3:1
    floor. Colour only, as on .dark. */
-.nav a:focus-visible, .nav button:focus-visible, .nav-util a:focus-visible,
+.nav a:focus-visible, .nav button:focus-visible,
 footer.site a:focus-visible,
 .heroB a:focus-visible { outline-color: var(--silver); }
 /* THE CALL BAR'S RING SITS INSIDE IT, on Greg's ruling, 3.60. The bar is

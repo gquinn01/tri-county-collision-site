@@ -1582,6 +1582,9 @@ def main():
             ("a link to a redirect stub", {"blog/index.html": pg("blog/", head=h.replace("../contact-us/", "../body-shop-jamison/", 1))}, "links"),
             ("an unrecorded external URL", {"blog/index.html": pg("blog/", head=h.replace("powerforms.docusign.net", "example.com", 1))}, "links"),
             ("a DocuSign URL one character off", {"blog/index.html": pg("blog/", head=h.replace("env=na4", "env=na3", 1))}, "links"),
+            ("a CarWise link back in the chrome, withdrawn in 3.84",
+             {"blog/index.html": pg("blog/", head=h.replace('</ul>\n      </nav>', '</ul>\n        <a class="btn btn-sm btn-ghost" href="'
+                                                        + html.escape(audit.CARWISE_ESTIMATE_URL) + '" target="_blank" rel="noopener">Get an Estimate</a>\n      </nav>', 1))}, "links"),
             ("a dead # link", {"blog/index.html": pg("blog/", head=h.replace('href="../blog/"', 'href="#"').replace('href="./"', 'href="#"', 1))}, "links"),
             ("a redirect stub wearing chrome", {"body-shop-jamison/index.html": stub.replace("<body>", "<body>" + h)}, "stub_chrome")):
         fx = audit.chrome_findings(site(**over))

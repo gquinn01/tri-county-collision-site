@@ -22,12 +22,9 @@ its main menu on 2026-09-29:
     Authorization Forms     the live nav's DocuSign PowerForm, new tab
     Contact Us, Blog        plain links
 
-The two CarWise buttons, Get an Estimate and Book an Appointment, are the
-live header's own buttons. They cannot share the desktop row with the five
-items and Call (measured in 3.83), so on a desktop they sit in a slim row
-above it, as the live header stacks them, and below the breakpoint they
-live in the menu. "Menu" is the live site's own label for its phone
-toggle. "Explore", the footer column's heading, is the one chrome word not
+The nav carries no CarWise buttons: Greg withdrew them at his
+click-through review (3.84), and /contact-us/ keeps both CarWise links.
+"Menu" is the live site's own label for its phone toggle. "Explore", the footer column's heading, is the one chrome word not
 migrated from the live site: a chrome label is furniture, not a claim.
 
 WHAT IT TOUCHES. On every page that is not a redirect stub: everything from
@@ -103,8 +100,6 @@ def render(page: str) -> tuple:
         c = f' class="{cls}"' if cls else ""
         return f'<a{c} href="{esc(url)}" target="_blank" rel="noopener">{label}</a>'
 
-    carwise = (ext(audit.CARWISE_ESTIMATE_URL, "Get an Estimate", "btn btn-sm btn-ghost"),
-               ext(audit.CARWISE_APPOINTMENT_URL, "Book an Appointment", "btn btn-sm btn-ghost"))
     svc = "\n".join(f"              <li>{link(t, esc(l))}</li>" for t, l in SERVICES)
     twn = "\n".join(f"              <li>{link(t, esc(l))}</li>" for t, l in towns())
     home = link("", f'<img src="{p}logo.png" alt="Tri-County Collision" width="1332" height="530">',
@@ -115,23 +110,12 @@ def render(page: str) -> tuple:
        scripts/audit.py fails a page whose chrome differs from the others in
        anything but the current-page marking.
 
-       THE SLIM ROW ABOVE THE HEADER is the live header's two CarWise
-       buttons, desktop only, and it is not sticky: the sticky header and
-       the phone header are exactly the height they were. Below the
-       breakpoint the same two buttons live in the menu.
-
        THE LOGO IS THE WAY HOME, so the nav carries no Home item. It has
        been a link since 2026-09-10: until then it was a span carrying
        data-pending-href="../" because docs/index.html did not exist. The
        homepage was built, the link test demanded the conversion by
        failing, and that was the conversion, the mechanism in 3.10 working
        end to end rather than being described. -->
-  <div class="nav-util">
-    <div class="wrap">
-      {carwise[0]}
-      {carwise[1]}
-    </div>
-  </div>
   <header class="nav">
     <div class="wrap inner">
       {home}
@@ -153,10 +137,6 @@ def render(page: str) -> tuple:
           <li class="nav-item">{link(*CONTACT)}</li>
           <li class="nav-item">{link(*BLOG)}</li>
         </ul>
-        <div class="nav-carwise">
-          {carwise[0]}
-          {carwise[1]}
-        </div>
       </nav>
       <a class="btn btn-sm nav-call" href="{PHONE_TEL}">Call {PHONE_TEXT}</a>
       <button class="navtoggle" type="button" aria-expanded="false" aria-controls="navmenu">
@@ -222,7 +202,7 @@ def render(page: str) -> tuple:
     return head, foot
 
 
-HEAD_RE = re.compile(r"(?s)(?:<!-- CHROME:HEAD.*?-->\s*<div class=\"nav-util\">.*?</div>\s*</div>\s*)?<header class=\"nav\">.*?</header>")
+HEAD_RE = re.compile(r"(?s)(?:<!-- CHROME:HEAD.*?-->\s*)?<header class=\"nav\">.*?</header>")
 FOOT_RE = re.compile(r'(?s)<footer class="site">.*?</footer>')
 
 

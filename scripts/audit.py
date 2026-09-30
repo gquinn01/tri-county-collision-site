@@ -129,8 +129,9 @@ TRACKING_PHONE_RE = re.compile(r"\(?215\)?[\s.\-]?709[\s.\-]?9665")
 # --- The chrome's recorded external links, 3.83 -----------------------
 # The header and the footer are written by scripts/sync-chrome.py, and
 # every link they carry must land on a real page under docs/ or on one of
-# these, character for character. Each is read off the live site, which
-# is Greg's guide for the nav (proposed-changes.md 3.83).
+# the two in CHROME_EXTERNAL_URLS, character for character: the DocuSign
+# link, read off the live site's nav, which is Greg's guide for the nav
+# (proposed-changes.md 3.83), and the footer's map link.
 #
 # The DocuSign PowerForm is the live nav's "Authorization Forms" item,
 # carried over exactly. OWNER QUESTION 35: whether it is current. If the
@@ -140,7 +141,10 @@ DOCUSIGN_URL = ("https://powerforms.docusign.net/2919d585-3b16-4977-833f-75a2416
                 "&accountId=228c4f1e-de2e-4461-9dbe-6a809b101cd4")
 # The shop's CarWise estimate and appointment links, exactly as
 # /contact-us/ has carried them since Greg's 2026-09-24 decision, owner
-# confirmation that CarWise is still in use already on the list.
+# confirmation that CarWise is still in use already on the list. They are
+# NOT chrome allowances: the nav carried them in 3.83 and Greg withdrew
+# them in 3.84, so they now record the contact page's two links. Holding
+# /contact-us/ to them is a recorded option, not a check built today.
 CARWISE_ESTIMATE_URL = ("https://www.carwise.com/online-photo-estimate/"
                         "tri-county-collision-center-southampton-pa-18966/481195")
 CARWISE_APPOINTMENT_URL = ("https://www.carwise.com/auto-body-shops/book-appointment/"
@@ -148,7 +152,7 @@ CARWISE_APPOINTMENT_URL = ("https://www.carwise.com/auto-body-shops/book-appoint
 # The footer's map link, the same maps search the contact page uses.
 MAPS_NAP_URL = ("https://www.google.com/maps/search/?api=1&query=Tri-County%20Collision"
                 "%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966")
-CHROME_EXTERNAL_URLS = (DOCUSIGN_URL, CARWISE_ESTIMATE_URL, CARWISE_APPOINTMENT_URL, MAPS_NAP_URL)
+CHROME_EXTERNAL_URLS = (DOCUSIGN_URL, MAPS_NAP_URL)
 
 # The contact patterns that are actually live. Built from whichever of the
 # two above is set, so turning one on or off changes nothing else.
@@ -2402,8 +2406,8 @@ def check_town_variance_local(passes: list, warns: list, fails: list, notes: lis
 
 
 # --- The site chrome, 3.83 --------------------------------------------
-# The header (with the slim CarWise row above it) and the footer are written
-# by scripts/sync-chrome.py. Two checks hold them, across every real page:
+# The header and the footer are written by scripts/sync-chrome.py. Two
+# checks hold them, across every real page:
 #
 #   IDENTITY. The chrome is the same on every page, compared with every
 #   href and src resolved to the site path it lands on and the current-page
@@ -2416,7 +2420,7 @@ def check_town_variance_local(passes: list, warns: list, fails: list, notes: lis
 #   CHROME_EXTERNAL_URLS character for character.
 #
 # A redirect stub stays bare: chrome on a stub is a failure too.
-CHROME_HEAD_RE = re.compile(r'(?s)<div class="nav-util">.*?</header>')
+CHROME_HEAD_RE = re.compile(r'(?s)<header class="nav">.*?</header>')
 CHROME_FOOT_RE = re.compile(r'(?s)<footer class="site">.*?</footer>')
 CHROME_TEL = "tel:+12153225350"
 CHROME_MAILTO = "mailto:contact@tricountycollision.com"
