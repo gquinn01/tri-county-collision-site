@@ -564,6 +564,14 @@ def main() -> int:
 {promise}
   </main>
 {body_end}'''
+    # THE CHROME IS THE GENERATOR'S (3.83): the lifted chrome is re-rendered
+    # for this page, so the page is marked as the current page in its nav
+    # and footer, as every page is.
+    import importlib.util
+    _spec = importlib.util.spec_from_file_location("sync_chrome", os.path.join(ROOT, "scripts", "sync-chrome.py"))
+    _sc = importlib.util.module_from_spec(_spec)
+    _spec.loader.exec_module(_sc)
+    page = _sc.synced(OUT, page)
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
         f.write(page)

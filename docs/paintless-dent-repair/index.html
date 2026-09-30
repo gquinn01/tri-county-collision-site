@@ -60,8 +60,8 @@
        SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
   <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/site.css?v=1dba9915">
-  <script src="../assets/site.js?v=e67e271c" defer></script>
+  <link rel="stylesheet" href="../assets/site.css?v=d4057176">
+  <script src="../assets/site.js?v=2cbec63d" defer></script>
 
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
        the SAME @id, so the whole site resolves to one business entity: a
@@ -352,13 +352,74 @@
        indexed. -->
   <p class="staging">Staging build. Not the live site. The shop's live site is at tricountycollision.com</p>
 
+  <!-- CHROME:HEAD, written by scripts/sync-chrome.py (proposed-changes.md 3.83).
+       Edit the script, never this block: it is rewritten on every page, and
+       scripts/audit.py fails a page whose chrome differs from the others in
+       anything but the current-page marking.
+
+       THE SLIM ROW ABOVE THE HEADER is the live header's two CarWise
+       buttons, desktop only, and it is not sticky: the sticky header and
+       the phone header are exactly the height they were. Below the
+       breakpoint the same two buttons live in the menu.
+
+       THE LOGO IS THE WAY HOME, so the nav carries no Home item. It has
+       been a link since 2026-09-10: until then it was a span carrying
+       data-pending-href="../" because docs/index.html did not exist. The
+       homepage was built, the link test demanded the conversion by
+       failing, and that was the conversion, the mechanism in 3.10 working
+       end to end rather than being described. -->
+  <div class="nav-util">
+    <div class="wrap">
+      <a class="btn btn-sm btn-ghost" href="https://www.carwise.com/online-photo-estimate/tri-county-collision-center-southampton-pa-18966/481195" target="_blank" rel="noopener">Get an Estimate</a>
+      <a class="btn btn-sm btn-ghost" href="https://www.carwise.com/auto-body-shops/book-appointment/tri-county-collision-center-southampton-pa-18966/481195" target="_blank" rel="noopener">Book an Appointment</a>
+    </div>
+  </div>
   <header class="nav">
     <div class="wrap inner">
       <a class="nav-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
-      <nav class="nav-main" aria-label="Main"><ul>
-        <li><a href="../collision-repair/">Collision Repair</a></li>
-      </ul></nav>
-      <a class="btn btn-sm" href="tel:+12153225350">Call (215) 322-5350</a>
+      <nav class="nav-main" id="navmenu" aria-label="Main">
+        <ul class="nav-list">
+          <li class="nav-item has-sub">
+            <button class="nav-sub-toggle" type="button" aria-expanded="false" aria-controls="nav-sub-services">Collision Services<svg class="nav-chev" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>
+            <ul class="nav-sub" id="nav-sub-services">
+              <li><a href="../collision-repair/">Collision Repair</a></li>
+              <li><a href="../commercial-collision-repair/">Commercial Collision Repair</a></li>
+              <li><a href="../auto-glass-repair-replacement/">Glass Repair &amp; Replacement</a></li>
+              <li><a href="./" aria-current="page">Paintless Dent Repair</a></li>
+            </ul>
+          </li>
+          <li class="nav-item has-sub">
+            <a href="../areas-served/">Areas We Serve</a><button class="nav-sub-toggle nav-sub-icon" type="button" aria-expanded="false" aria-controls="nav-sub-areas" aria-label="Toggle submenu for Areas We Serve"><svg class="nav-chev" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>
+            <ul class="nav-sub nav-sub-towns" id="nav-sub-areas">
+              <li><a href="../areas-served-collision-repair-bensalem-pa/">Bensalem</a></li>
+              <li><a href="../areas-served-collision-repair-feasterville-trevose-pa/">Feasterville-Trevose</a></li>
+              <li><a href="../areas-served-collision-repair-hatboro-pa/">Hatboro</a></li>
+              <li><a href="../areas-served-collision-repair-horsham-pa/">Horsham</a></li>
+              <li><a href="../areas-served-collision-repair-huntingdon-valley-pa/">Huntingdon Valley</a></li>
+              <li><a href="../areas-served-collision-repair-jamison-pa/">Jamison</a></li>
+              <li><a href="../areas-served-collision-repair-jenkintown-pa/">Jenkintown</a></li>
+              <li><a href="../areas-served-collision-repair-langhorne-pa/">Langhorne</a></li>
+              <li><a href="../areas-served-collision-repair-northeast-philadelphia/">Northeast Philadelphia</a></li>
+              <li><a href="../areas-served-collision-repair-richboro-pa/">Richboro</a></li>
+              <li><a href="../areas-served-collision-repair-warminster-pa/">Warminster</a></li>
+              <li><a href="../areas-served-collision-repair-willow-grove-pa/">Willow Grove</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a href="https://powerforms.docusign.net/2919d585-3b16-4977-833f-75a24163bec3?env=na4&amp;acct=228c4f1e-de2e-4461-9dbe-6a809b101cd4&amp;accountId=228c4f1e-de2e-4461-9dbe-6a809b101cd4" target="_blank" rel="noopener">Authorization Forms</a></li>
+          <li class="nav-item"><a href="../contact-us/">Contact Us</a></li>
+          <li class="nav-item"><a href="../blog/">Blog</a></li>
+        </ul>
+        <div class="nav-carwise">
+          <a class="btn btn-sm btn-ghost" href="https://www.carwise.com/online-photo-estimate/tri-county-collision-center-southampton-pa-18966/481195" target="_blank" rel="noopener">Get an Estimate</a>
+          <a class="btn btn-sm btn-ghost" href="https://www.carwise.com/auto-body-shops/book-appointment/tri-county-collision-center-southampton-pa-18966/481195" target="_blank" rel="noopener">Book an Appointment</a>
+        </div>
+      </nav>
+      <a class="btn btn-sm nav-call" href="tel:+12153225350">Call (215) 322-5350</a>
+      <button class="navtoggle" type="button" aria-expanded="false" aria-controls="navmenu">
+        <svg class="ico-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="ico-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        <span>Menu</span>
+      </button>
     </div>
   </header>
 
@@ -747,13 +808,20 @@
         </div>
         <div>
           <!-- These columns list only pages that exist. They grow as pages
-               land, and never before. -->
-          <h2 class="foot-head">Services</h2>
+               land, and never before. EXPLORE IS THE FULL MAP (3.83): the
+               four services, the hub, the blog and contact, so no page is a
+               dead end from its foot. Privacy joins it when it ships. The
+               labels are the nav's, so each destination has ONE name
+               across the chrome. -->
+          <h2 class="foot-head">Explore</h2>
           <ul class="foot-links">
             <li><a href="../collision-repair/">Collision Repair</a></li>
-            <li><a href="../auto-glass-repair-replacement/">Auto Glass Repair</a></li>
-            <li><a href="./">Paintless Dent Repair</a></li>
             <li><a href="../commercial-collision-repair/">Commercial Collision&nbsp;Repair</a></li>
+            <li><a href="../auto-glass-repair-replacement/">Glass Repair &amp; Replacement</a></li>
+            <li><a href="./" aria-current="page">Paintless Dent Repair</a></li>
+            <li><a href="../areas-served/">Areas We Serve</a></li>
+            <li><a href="../blog/">Blog</a></li>
+            <li><a href="../contact-us/">Contact Us</a></li>
           </ul>
         </div>
         <div>

@@ -442,12 +442,21 @@ def shell():
     head_assets = "\n".join(l for l in s.split("\n") if "site.css?v=" in l or "site.js?v=" in l)
     graph = json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', s, re.S).group(1))
     biz = [n for n in graph["@graph"] if n.get("@type") == "AutoBodyShop"][0]
-    nav = re.search(r'  <header class="nav">.*?</header>\n', s, re.S).group(0)
-    foot = s[s.index("  <footer class=\"site\">"):]
-    foot = foot.replace('<li><a href="./">Send us your details online</a></li>',
-                        '<li><a href="../contact-us/">Send us your details online</a></li>')
-    assert 'href="./"' not in foot
-    return head_assets, biz, nav, foot
+    # THE CHROME COMES FROM scripts/sync-chrome.py, per page (3.83): the
+    # header and the footer are written there once for the whole site, and
+    # the page being built is marked as the current page. What follows the
+    # footer, the call bar and the closing tags, is still lifted from the
+    # shell.
+    tail = s[s.index("</footer>") + len("</footer>"):]
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("sync_chrome", os.path.join(ROOT, "scripts", "sync-chrome.py"))
+    sc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(sc)
+
+    def chrome(page):
+        head, foot = sc.render(page)
+        return "  " + head + "\n", "  " + foot + tail
+    return head_assets, biz, chrome
 
 
 def jsonld(graph):
@@ -691,9 +700,9 @@ def render_index(posts, record, assets, biz, nav, foot):
        ox header a page-header identity, chrome and not an in-flow band, so
        this top is now ox. The band test still governs bands in the flow.
 
-       NOTHING IN NAV OR FOOTER LINKS HERE YET, deliberately: the
-       header-nav sweep is its own queued sitting and the footer has no
-       honest seat for it. The sitemap and llms.txt carry it today.
+       THE NAV AND THE FOOTER LINK HERE since the header-nav sweep
+       (3.83): Blog is a nav item on every page and sits in the footer's
+       Explore column, written by scripts/sync-chrome.py.
 
        STAGING, DELIBERATE, AND NOT A DEFECT: noindex, robots.txt, and an
        absolute canonical. All three come off together at cutover.
@@ -769,7 +778,7 @@ def main():
     for s in a.posts:
         if s not in POSTS:
             raise SystemExit(f"FAILED: unknown slug {s}")
-    assets, biz, nav, foot = shell()
+    assets, biz, chrome = shell()
     landing = set(a.posts)
     built = []
     for slug in a.posts:
@@ -777,7 +786,7 @@ def main():
         out = os.path.join(DOCS, slug, "index.html")
         os.makedirs(os.path.dirname(out), exist_ok=True)
         with open(out, "w", encoding="utf-8") as f:
-            f.write(render_post(p, assets, biz, nav, foot))
+            f.write(render_post(p, assets, biz, *chrome(f"{slug}/")))
         built.append(p)
         print(f"built    {slug}  ({p['words']} words, {len(p['faq'])} FAQ, "
               f"published {p['pub'].date()}, modified {p['mod'].date()})")
@@ -794,7 +803,7 @@ def main():
         allp.sort(key=lambda p: p["pub"], reverse=True)
         os.makedirs(os.path.join(DOCS, "blog"), exist_ok=True)
         with open(os.path.join(DOCS, "blog", "index.html"), "w", encoding="utf-8") as f:
-            f.write(render_index(allp, a.record, assets, biz, nav, foot))
+            f.write(render_index(allp, a.record, assets, biz, *chrome("blog/")))
         print(f"built    blog/  ({sum(p['built'] for p in allp)} linked, "
               f"{sum(not p['built'] for p in allp)} pending)")
     print("\nPAIRS")

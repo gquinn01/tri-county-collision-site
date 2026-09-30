@@ -33,6 +33,7 @@ Usage:
 """
 
 import glob
+import html
 import json
 import os
 import re
@@ -1532,6 +1533,80 @@ def main():
     check("     the last crumb alone shrinks, and clips with an ellipsis",
           all(re.search(p, last) for p in (r"flex-shrink:\s*1", r"min-width:\s*0", r"text-overflow:\s*ellipsis",
                                            r"white-space:\s*nowrap", r"overflow:\s*hidden")), last)
+
+    # THE HEADER-NAV SWEEP, 3.83: the chrome is identical on every real
+    # page but for the current-page marking, and every chrome link lands on
+    # a real page or a recorded URL. Both checks, both directions, on
+    # fixtures built from the generator's own output.
+    print("33. The site chrome: identical but for the marking, every link real, stubs bare")
+    _spec = _ilu.spec_from_file_location("sync_chrome", os.path.join(os.path.dirname(os.path.abspath(__file__)), "sync-chrome.py"))
+    sc = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(sc)
+
+    def pg(page, head=None, foot=None, body="<main><h1>x</h1></main>"):
+        h, f = sc.render(page)
+        return f"<html><body>\n  {head if head is not None else h}\n{body}\n  {foot if foot is not None else f}\n</body></html>"
+    stub = ('<html><head><meta http-equiv="refresh" content="0; url=../collision-repair/"></head>'
+            '<body><p>Moved.</p></body></html>')
+    good_keys = ["index.html", "collision-repair/index.html", "contact-us/index.html", "blog/index.html",
+                 "areas-served/index.html", "auto-glass-repair-replacement/index.html",
+                 "commercial-collision-repair/index.html", "paintless-dent-repair/index.html"] + \
+                [f"areas-served-collision-repair-{k}/index.html" for k in audit.TOWN_ROUTES]
+
+    def site(**over):
+        s = {k: pg("" if k == "index.html" else k[:-len("index.html")]) for k in good_keys}
+        s["body-shop-jamison/index.html"] = stub
+        s.update(over)
+        return s
+
+    def bad(found):
+        return [k for k in ("missing", "differs", "marking", "links", "stub_chrome") if found[k]]
+    f0 = audit.chrome_findings(site())
+    check("     generated chrome on every page, at two depths and each page marked as itself, passes",
+          bad(f0) == [] and f0["forms"] == 1, f0)
+    ship = {}
+    for path in glob.glob(os.path.join(audit.SITE_DIR, "**", "index.html"), recursive=True):
+        with open(path, encoding="utf-8") as fh:
+            ship[os.path.relpath(path, audit.SITE_DIR)] = fh.read()
+    fs = audit.chrome_findings(ship)
+    check("     the shipped site passes both checks", bad(fs) == [], {k: fs[k] for k in bad(fs)})
+    h, f = sc.render("blog/")
+    for label, over, want in (
+            ("a page whose nav label drifts", {"blog/index.html": pg("blog/", head=h.replace(">Contact Us<", ">Contact<"))}, "differs"),
+            ("a page missing a nav item", {"blog/index.html": pg("blog/", head=re.sub(r'\s*<li class="nav-item"><a href="../contact-us/">Contact Us</a></li>', "", h))}, "differs"),
+            ("a page whose footer drifts", {"blog/index.html": pg("blog/", foot=f.replace("Explore", "Pages"))}, "differs"),
+            ("a page with no chrome", {"blog/index.html": "<html><body><main>x</main></body></html>"}, "missing"),
+            ("a link to itself without aria-current", {"blog/index.html": pg("blog/", head=h.replace(' aria-current="page"', "", 1))}, "marking"),
+            ("aria-current on a link that lands elsewhere", {"blog/index.html": pg("blog/", head=h.replace('href="../contact-us/"', 'href="../contact-us/" aria-current="page"', 1))}, "marking"),
+            ("a link to a page that does not exist", {"blog/index.html": pg("blog/", head=h.replace("../contact-us/", "../contact/", 1))}, "links"),
+            ("a link to a redirect stub", {"blog/index.html": pg("blog/", head=h.replace("../contact-us/", "../body-shop-jamison/", 1))}, "links"),
+            ("an unrecorded external URL", {"blog/index.html": pg("blog/", head=h.replace("powerforms.docusign.net", "example.com", 1))}, "links"),
+            ("a DocuSign URL one character off", {"blog/index.html": pg("blog/", head=h.replace("env=na4", "env=na3", 1))}, "links"),
+            ("a dead # link", {"blog/index.html": pg("blog/", head=h.replace('href="../blog/"', 'href="#"').replace('href="./"', 'href="#"', 1))}, "links"),
+            ("a redirect stub wearing chrome", {"body-shop-jamison/index.html": stub.replace("<body>", "<body>" + h)}, "stub_chrome")):
+        fx = audit.chrome_findings(site(**over))
+        check(f"     caught: {label}", bool(fx[want]), {k: fx[k] for k in bad(fx)})
+    check("     the DocuSign link is the live nav's, recorded character for character",
+          sc.render("")[0].count(html.escape(audit.DOCUSIGN_URL, quote=True)) == 1, None)
+    towns_in_nav = re.findall(r'<a href="areas-served-collision-repair-[^"]+/">([^<]+)</a>',
+                              re.search(r'(?s)id="nav-sub-areas".*?</ul>', sc.render("")[0]).group(0))
+    check("     the Areas We Serve dropdown lists every routed town, alphabetically",
+          towns_in_nav == sorted(towns_in_nav) and len(towns_in_nav) == len(audit.TOWN_ROUTES), towns_in_nav)
+    r = subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "sync-chrome.py"), "--check"],
+                       capture_output=True, text=True)
+    check("     sync-chrome.py --check: every page carries the generator's chrome", r.returncode == 0, r.stdout[-400:])
+    # The blog's builder cannot be re-run without its live cache, so its
+    # chrome is held to the shipped pages here, byte for byte.
+    _spec = _ilu.spec_from_file_location("migrate_blog", os.path.join(os.path.dirname(os.path.abspath(__file__)), "migrate-blog.py"))
+    mb = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(mb)
+    _assets, _biz, chrome = mb.shell()
+    for slug in ("deer-season-in-bucks-county-insurance-coverage-next-steps", "blog"):
+        with open(os.path.join(audit.SITE_DIR, slug, "index.html"), encoding="utf-8") as fh:
+            shipped = fh.read()
+        nav, foot = chrome(f"{slug}/")
+        check(f"     migrate-blog.py writes /{slug}/'s chrome exactly as it ships",
+              nav + "\n  <main>" in shipped and shipped.endswith(foot), None)
 
     print()
     if FAILURES:

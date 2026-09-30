@@ -48,6 +48,75 @@
   if (y) { y.textContent = String(new Date().getFullYear()); }
 
   /* ---------------------------------------------------------------------
+     THE NAV, 2026-09-29, proposed-changes.md 3.83
+     ---------------------------------------------------------------------
+     Without this block the nav still works: a dropdown opens on hover and
+     on focus-within, and a phone reader reaches every page from the
+     footer's Explore column. With it, each dropdown is a true disclosure
+     that says whether it is open (aria-expanded), Escape closes whatever
+     is open and hands focus back to its button, a click or a focus move
+     outside closes it, and the Menu button opens the phone menu. Nothing
+     animates, so reduced motion has nothing to turn off. */
+  document.documentElement.classList.add("js");
+  var nav = document.querySelector("header.nav");
+  if (nav) {
+    var menuBtn = nav.querySelector(".navtoggle");
+    var subBtns = Array.prototype.slice.call(nav.querySelectorAll(".nav-sub-toggle"));
+    var wide = window.matchMedia("(min-width: 1100px)");
+
+    var setSub = function (btn, open) { btn.setAttribute("aria-expanded", open ? "true" : "false"); };
+    var closeSubs = function (except) {
+      subBtns.forEach(function (b) { if (b !== except) { setSub(b, false); } });
+    };
+    var setMenu = function (open) {
+      if (!menuBtn) { return; }
+      menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      nav.classList.toggle("is-open", open);
+      if (!open) { closeSubs(null); }
+    };
+
+    subBtns.forEach(function (btn) {
+      var item = btn.closest(".nav-item");
+      btn.addEventListener("click", function () {
+        var open = btn.getAttribute("aria-expanded") !== "true";
+        closeSubs(btn);
+        setSub(btn, open);
+      });
+      /* A desktop pointer opens on hover, as the live site's does; a touch
+         or a keyboard uses the button. */
+      item.addEventListener("pointerenter", function (e) {
+        if (e.pointerType === "mouse" && wide.matches) { closeSubs(btn); setSub(btn, true); }
+      });
+      item.addEventListener("pointerleave", function (e) {
+        if (e.pointerType === "mouse" && wide.matches) { setSub(btn, false); }
+      });
+      item.addEventListener("focusout", function (e) {
+        if (wide.matches && !item.contains(e.relatedTarget)) { setSub(btn, false); }
+      });
+    });
+
+    if (menuBtn) {
+      menuBtn.addEventListener("click", function () {
+        setMenu(menuBtn.getAttribute("aria-expanded") !== "true");
+      });
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") { return; }
+      var openSub = subBtns.filter(function (b) { return b.getAttribute("aria-expanded") === "true"; })[0];
+      if (openSub) { setSub(openSub, false); openSub.focus(); return; }
+      if (menuBtn && menuBtn.getAttribute("aria-expanded") === "true") { setMenu(false); menuBtn.focus(); }
+    });
+    document.addEventListener("click", function (e) {
+      if (!nav.contains(e.target)) { closeSubs(null); setMenu(false); }
+    });
+    /* Crossing the breakpoint closes everything, so a menu opened on a
+       narrow window never lingers as a stray panel on a wide one. */
+    var onWide = function () { closeSubs(null); setMenu(false); };
+    if (wide.addEventListener) { wide.addEventListener("change", onWide); } else if (wide.addListener) { wide.addListener(onWide); }
+  }
+
+  /* ---------------------------------------------------------------------
      ARRIVAL MOTION
      --------------------------------------------------------------------- */
 

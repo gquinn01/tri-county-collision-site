@@ -126,6 +126,30 @@ NAP_EMAIL_WRONG_RE = re.compile(r"info@tricountycollision\.com", re.I)
 # pasted in during a hurried migration and is invisible by eye.
 TRACKING_PHONE_RE = re.compile(r"\(?215\)?[\s.\-]?709[\s.\-]?9665")
 
+# --- The chrome's recorded external links, 3.83 -----------------------
+# The header and the footer are written by scripts/sync-chrome.py, and
+# every link they carry must land on a real page under docs/ or on one of
+# these, character for character. Each is read off the live site, which
+# is Greg's guide for the nav (proposed-changes.md 3.83).
+#
+# The DocuSign PowerForm is the live nav's "Authorization Forms" item,
+# carried over exactly. OWNER QUESTION 35: whether it is current. If the
+# owner retires it, the item comes out by ruling, not silently.
+DOCUSIGN_URL = ("https://powerforms.docusign.net/2919d585-3b16-4977-833f-75a24163bec3"
+                "?env=na4&acct=228c4f1e-de2e-4461-9dbe-6a809b101cd4"
+                "&accountId=228c4f1e-de2e-4461-9dbe-6a809b101cd4")
+# The shop's CarWise estimate and appointment links, exactly as
+# /contact-us/ has carried them since Greg's 2026-09-24 decision, owner
+# confirmation that CarWise is still in use already on the list.
+CARWISE_ESTIMATE_URL = ("https://www.carwise.com/online-photo-estimate/"
+                        "tri-county-collision-center-southampton-pa-18966/481195")
+CARWISE_APPOINTMENT_URL = ("https://www.carwise.com/auto-body-shops/book-appointment/"
+                           "tri-county-collision-center-southampton-pa-18966/481195")
+# The footer's map link, the same maps search the contact page uses.
+MAPS_NAP_URL = ("https://www.google.com/maps/search/?api=1&query=Tri-County%20Collision"
+                "%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966")
+CHROME_EXTERNAL_URLS = (DOCUSIGN_URL, CARWISE_ESTIMATE_URL, CARWISE_APPOINTMENT_URL, MAPS_NAP_URL)
+
 # The contact patterns that are actually live. Built from whichever of the
 # two above is set, so turning one on or off changes nothing else.
 NAP_CONTACT_RES = [(k, rx) for k, rx in
@@ -2377,6 +2401,130 @@ def check_town_variance_local(passes: list, warns: list, fails: list, notes: lis
                       f"(ceiling under {TOWN_SHARED_MAX:.0%}).")
 
 
+# --- The site chrome, 3.83 --------------------------------------------
+# The header (with the slim CarWise row above it) and the footer are written
+# by scripts/sync-chrome.py. Two checks hold them, across every real page:
+#
+#   IDENTITY. The chrome is the same on every page, compared with every
+#   href and src resolved to the site path it lands on and the current-page
+#   marking set aside. The marking is the ONE permitted difference, and it
+#   is itself checked: a chrome link that lands on the page it sits on
+#   carries aria-current="page", and no other link does.
+#
+#   RESOLUTION. Every chrome link lands on a real page under docs/ (not a
+#   redirect stub), or is the shop's own phone or mailbox, or is one of
+#   CHROME_EXTERNAL_URLS character for character.
+#
+# A redirect stub stays bare: chrome on a stub is a failure too.
+CHROME_HEAD_RE = re.compile(r'(?s)<div class="nav-util">.*?</header>')
+CHROME_FOOT_RE = re.compile(r'(?s)<footer class="site">.*?</footer>')
+CHROME_TEL = "tel:+12153225350"
+CHROME_MAILTO = "mailto:contact@tricountycollision.com"
+
+
+def _chrome_page_url(rel_path: str) -> str:
+    d = os.path.dirname(rel_path).replace(os.sep, "/")
+    return "/" if d in ("", ".") else f"/{d}/"
+
+
+def chrome_findings(pages: dict) -> dict:
+    """pages maps a docs-relative path ("index.html", "blog/index.html") to
+    its HTML. Returns {"missing": [...], "marking": [...], "differs": [...],
+    "links": [...], "stub_chrome": [...], "forms": int}."""
+    from urllib.parse import urljoin
+    from html import escape as _esc
+    out = {"missing": [], "marking": [], "differs": [], "links": [], "stub_chrome": [], "forms": 0}
+    real = {}
+    for rel, raw in pages.items():
+        if REFRESH_RE.search(raw):
+            if CHROME_HEAD_RE.search(raw) or CHROME_FOOT_RE.search(raw) or 'class="nav"' in raw:
+                out["stub_chrome"].append(rel)
+            continue
+        real[rel] = raw
+    live = {_chrome_page_url(r) for r in real}
+    forms = {}
+    for rel, raw in sorted(real.items()):
+        h, f = CHROME_HEAD_RE.findall(raw), CHROME_FOOT_RE.findall(raw)
+        if len(h) != 1 or len(f) != 1:
+            out["missing"].append(rel)
+            continue
+        here = _chrome_page_url(rel)
+        chrome = re.sub(r"(?s)<!--.*?-->", "", h[0] + f[0])
+        for m in re.finditer(r"<a\b[^>]*>", chrome):
+            tag = m.group(0)
+            hm = re.search(r'\bhref="([^"]*)"', tag)
+            href = unescape(hm.group(1)) if hm else ""
+            current = 'aria-current="page"' in tag
+            if href.startswith(("http://", "https://")):
+                if href not in CHROME_EXTERNAL_URLS:
+                    out["links"].append((rel, href))
+                if current:
+                    out["marking"].append((rel, href, "an external link marked as the current page"))
+                continue
+            if href in (CHROME_TEL, CHROME_MAILTO):
+                continue
+            if not href or href.startswith(("#", "javascript:", "tel:", "mailto:")):
+                out["links"].append((rel, href or "(no href)"))
+                continue
+            target = urljoin(here, href)
+            if target not in live:
+                out["links"].append((rel, href))
+            if (target == here) != current:
+                out["marking"].append((rel, href, "lands on this page without aria-current" if not current
+                                       else "carries aria-current but lands elsewhere"))
+
+        def norm_attr(m):
+            v = unescape(m.group(2))
+            if not v.startswith(("http://", "https://", "tel:", "mailto:", "#")):
+                v = urljoin(here, v)
+            return f'{m.group(1)}="{_esc(v, quote=True)}"'
+        norm = re.sub(r'\b(href|src)="([^"]*)"', norm_attr, chrome)
+        norm = re.sub(r'\s+aria-current="page"', "", norm)
+        norm = re.sub(r"\s+", " ", norm).strip()
+        forms.setdefault(norm, []).append(rel)
+    out["forms"] = len(forms)
+    if len(forms) > 1:
+        major = max(forms.values(), key=len)
+        for pgs in forms.values():
+            if pgs is not major:
+                out["differs"].extend(pgs)
+    return out
+
+
+def check_chrome_local(passes: list, fails: list, root: str = None):
+    root = root or SITE_DIR
+    pages = {}
+    for dirpath, _dirs, files in os.walk(root):
+        if "index.html" in files:
+            path = os.path.join(dirpath, "index.html")
+            with open(path, encoding="utf-8") as f:
+                pages[os.path.relpath(path, root)] = f.read()
+    if not pages:
+        return
+    found = chrome_findings(pages)
+    for rel in found["missing"]:
+        fails.append(f"**`{rel}` carries no site chrome,** or more than one header or footer. "
+                     f"Run `scripts/sync-chrome.py` (proposed-changes.md 3.83).")
+    for rel in found["differs"]:
+        fails.append(f"**`{rel}`'s header or footer differs from every other page's.** The chrome "
+                     f"is identical on every page but for the current-page marking; run "
+                     f"`scripts/sync-chrome.py` rather than editing a page's chrome by hand.")
+    for rel, href, why in found["marking"]:
+        fails.append(f"**`{rel}`: the chrome link `{href}` {why}.** The current page is the one "
+                     f"thing the chrome may mark, and it must mark it exactly.")
+    for rel, href in found["links"]:
+        fails.append(f"**`{rel}`: the chrome link `{href}` lands nowhere real.** Every nav and "
+                     f"footer link must reach a page under docs/ or a recorded URL "
+                     f"(`CHROME_EXTERNAL_URLS`), character for character.")
+    for rel in found["stub_chrome"]:
+        fails.append(f"**`{rel}` is a redirect stub carrying site chrome.** A stub stays bare.")
+    if not any(found[k] for k in ("missing", "differs", "marking", "links", "stub_chrome")):
+        n = sum(1 for r in pages.values() if not REFRESH_RE.search(r))
+        passes.append(f"The site chrome is identical on all {n} pages but for the current-page "
+                      f"marking, which is exact, and every nav and footer link lands on a real "
+                      f"page or a recorded URL.")
+
+
 def check_hours_llms_local(passes: list, fails: list):
     """docs/llms.txt states the hours to AI agents, so it answers to the
     same constants as every page. Same test, same severity."""
@@ -3387,6 +3535,7 @@ def main():
         check_review_count_local(site_passes, site_warns, site_fails, site_notes)
         check_brand_count_local(site_passes, site_warns, site_fails, site_notes)
         check_town_variance_local(site_passes, site_warns, site_fails, site_notes)
+        check_chrome_local(site_passes, site_fails)
         check_asset_provenance_local(site_passes, site_warns, site_fails, site_notes)
         check_comment_convention_local(site_warns, site_notes)
         check_pending_links_local(site_warns, site_notes)

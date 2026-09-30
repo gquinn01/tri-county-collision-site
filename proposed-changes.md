@@ -13291,6 +13291,352 @@ both mutation-proven:
 - No em dash and no banned digits in `docs/` or the templates, and none
   added anywhere. `llms.txt` gains the six entries, derived.
 
+### 3.83 The header-nav sweep: the live site's navigation, one generated chrome. BUILT 2026-09-29
+
+**Chrome only: no page copy, no new claim, no new page.** The nav now
+follows the live site's own navigation, minus Home, on Greg's ruling.
+The footer gains the full map. One script writes both onto every real
+page, and two new audit checks hold them there. **One commit.**
+
+**The strategy chat now verifies,** rebuilds the full-site navigable
+copy, and Greg clicks the new nav on every page type before anything
+else moves.
+
+#### Greg's rulings
+
+**THE BRIEF:**
+- **The nav follows the LIVE SITE'S navigation as the guide, minus Home**
+  (the logo is the way home). The labels are the live site's own words.
+- **Collision Services** is a dropdown of the four service pages. ADAS
+  slots in there later without another sweep.
+- **Areas We Serve**: the parent links to the hub, and the dropdown lists
+  all twelve towns **alphabetically**, the one recorded order rule.
+- **Authorization Forms**: the live nav's DocuSign link, carried over
+  exactly, new tab. **Owner question 35.**
+- **Contact Us** and **Blog** are plain links.
+- **Call stays as it is.** The live header's two **CarWise** buttons join
+  the desktop header and the phone menu, with the same links and the same
+  owner-confirm rider /contact-us/ already carries.
+- **THE HARD CONSTRAINT:** the phone header's height is load-bearing. The
+  Menu button replaces the single text link **in the same row at the same
+  height**, the menu opens as an overlay, and the 13px pages must still
+  read exactly 13.
+- **The footer** gains the full map, in the same commit.
+- **Mechanism, not memory:** a chrome-identity check and a link-resolution
+  check, each mutation-proven in both directions. **Redirect stubs stay
+  bare.**
+
+**THE STOP, AND ITS RULINGS.** Measured widths showed the CarWise pair
+cannot share the desktop row at any width (below). Greg ruled:
+
+1. **OPTION A, a slim desktop-only row above the main row,** as the live
+   header stacks it. It is not sticky, and its first-screen cost is
+   measured for the record.
+2. **The footer's Services heading becomes "Explore"**, carrying the four
+   services, Areas We Serve, Blog and Contact Us. No heading is added.
+3. **The footer takes the nav's labels**, "Glass Repair & Replacement"
+   among them, so every page names each destination ONE way across its
+   chrome. Page titles and H1s are untouched.
+
+**Also carried:**
+- **"Menu"**, the hamburger's label, is the live site's own word for its
+  phone toggle.
+- **The 2026-09-10 logo comment** on /collision-repair/ is carried into
+  the generator's comments, not dropped.
+
+#### The live nav, read 2026-09-29
+
+Fetched from https://tricountycollision.com/ (cache outside the repo),
+`menu-main-menu`:
+
+```
+Home                              (not carried: the logo is the way home)
+Collision Services      href "#"  Collision Repair, Commercial Collision Repair,
+                                  Glass Repair & Replacement, Paintless Dent Repair
+Areas We Serve          /areas-served/   Bensalem ... Willow Grove, already alphabetical
+Authorization Forms     powerforms.docusign.net/2919d585-...   target _blank
+Contact Us, Blog
+```
+
+- **The header buttons:** "Get an Estimate" and "Book an Appointment", to
+  the same two CarWise URLs /contact-us/ carries.
+- **The phone toggle:** aria-label "Menu".
+- **The submenu toggles:** "Toggle submenu for Collision Services" and
+  "Toggle submenu for Areas We Serve".
+
+**Every URL is held in `scripts/audit.py`** (`DOCUSIGN_URL`,
+`CARWISE_ESTIMATE_URL`, `CARWISE_APPOINTMENT_URL`, `MAPS_NAP_URL`) and
+was matched character for character against its source:
+- the DocuSign URL against today's live page;
+- the other three against /contact-us/.
+
+**Two small departures from the live markup, both structural, no words:**
+- **The live "Collision Services" parent is a link to "#".** Here it is a
+  button, because a link that goes nowhere is a dead link.
+- **The live DocuSign link's `rel` is "noopener noreferrer".** Here it is
+  "noopener", the site's convention and the brief's.
+
+#### The stop's measurement, and the breakpoint
+
+**Rendered widths, Source Sans 3 at the nav's size:**
+
+```
+Collision Services + arrow  138    Get an Estimate        151
+Areas We Serve + arrow      122    Book an Appointment    194
+Authorization Forms         140    Call (215) 322-5350    174
+Contact Us                   74
+Blog                         31
+```
+
+**The header row is capped at 1,080px** at every viewport from 1120 up,
+because it sits on the page grid.
+- **Logo, the five items and Call need 979.6px**, measured in place with
+  the 18px gaps.
+- **With the CarWise pair the row needs about 1,333px**, 253px over at
+  every desktop width. Hence the stop.
+
+**THE BREAKPOINT IS 1100px, decided by measurement.** The row fits from a
+1020px viewport. At 1024, though, that leaves **4.4px** of slack, and a
+font that renders half a percent wider on another platform would break
+the row. **At 1100 the slack is 80px, about 8%.**
+- **From 1100:** the row, and the slim CarWise row above it.
+- **Below 1100:** the Menu button, in the same row. From 900 to 1099 the
+  header's Call sits beside it; below 900 the call bar carries the call,
+  as it always has.
+- **The standard widths:** 1440 and 1920 wear the row; 430, 390 and 360
+  wear Menu.
+
+#### `scripts/sync-chrome.py`: one definition, every page
+
+**The chrome is defined once and written onto all 36 real pages:** the
+slim row, the header and the footer. `--check` exits 1 on any drift.
+
+**The current page is the one permitted difference.** Every chrome link
+that lands on the page itself is written "./" with `aria-current="page"`.
+That includes:
+- the logo, on home;
+- the service, the town or the hub in the dropdowns and in Explore;
+- Contact Us and "Send us your details online" on /contact-us/.
+
+**Its comments carry the record:**
+- the ruling, and where each word came from;
+- the not-sticky row;
+- **the 2026-09-10 logo note, word for word in substance:** it was a span
+  carrying `data-pending-href="../"` until the homepage existed, and the
+  link test forced the conversion.
+
+**The builders take their chrome from it,** so a rebuild cannot bring the
+old nav back:
+- **`build-town.py` and `migrate-hub.py`** re-render the chrome they lift
+  for the page being built.
+  - **PROVED:** all twelve towns rebuilt, every map redrawn from cache,
+    and the hub re-migrated from the live cache, **byte-identical to the
+    generator's output.**
+- **`migrate-blog.py`** renders its chrome per page instead of lifting
+  /contact-us/'s, which now carries Contact's marking. Its live cache is
+  no longer on this machine, so **a test holds its chrome to the shipped
+  deer-season post and /blog/, byte for byte.**
+- **The /blog/ comment "NOTHING IN NAV OR FOOTER LINKS HERE YET"** was
+  true until today. It now says why the nav and footer link there, in the
+  script and on the page.
+
+**The service-page template** carries the generator's chrome at
+`{{ROOT}}`. Ten tokens only the old chrome used fill nothing now, and a
+dated note in its token list says so; their entries stay for the
+record:
+- `{{NAV_LINKS}}`, `{{CTA_NAV_LABEL}}`, `{{FOOTER_EXPLORE}}`;
+- `{{FOOTER_AREA}}`, `{{FOOTER_AREA_PROSE}}`, `{{FOOTER_TAGLINE}}`,
+  `{{FOOTER_BADGE}}`;
+- `{{SOCIAL_LINKS}}`, `{{LOGO_DIMS}}`, `{{SERVICES_PATH}}`.
+
+**CLAUDE.md** lists the script and adds it to the before-you-commit run.
+
+#### The nav's behaviour, tested in a browser
+
+**Tested headless at 1440, 1024, 390 and 360** on /collision-repair/ and
+Northeast Philadelphia:
+
+```
+desktop   both dropdowns closed at load; a click opens one and closes the other;
+          Escape closes and returns focus to the button; a click outside
+          closes; focus leaving the item closes; the slim row shows, the menu's
+          CarWise copy and the Menu button do not
+phone     closed: aria-expanded false, the menu display none, ZERO focusable
+          items in it, the slim row display none; open: display block,
+          position absolute, header height 68 either way; the towns disclose
+          inside it; the first Escape closes the open submenu, the second
+          closes the menu and returns focus to Menu
+no JS     a dropdown opens on focus-within and closes on blur; the Menu button
+          is not shown, and a phone reader reaches every page from Explore
+```
+
+- **Accessible:** real buttons with `aria-expanded` and `aria-controls`.
+- **The 3.60 focus-ring law** reaches the slim row: `.nav-util
+  a:focus-visible` joins the silver ring beside `.nav`.
+- **Nothing animates,** so reduced motion has nothing to turn off. The
+  chevron flips without a transition.
+- **The towns run DOWN two columns** (CSS columns, no town count coded).
+  "Northeast Philadelphia" wraps inside its column at 360.
+- **A desktop mouse opens a dropdown on hover,** as the live site's does.
+  Touch and keyboard use the button.
+
+#### MEASURED: the phone header moved by nothing
+
+**Against a worktree of f1dbe45, every page, at 360, 390, 430, 1440 and
+1920:**
+
+```
+360, 390, 430    header 68 -> 68, the menu display none, and EVERY visible box
+                 inside <main> at the same ABSOLUTE position on all 36 pages
+1440, 1920       header 96 -> 96 (sticky, unchanged), the slim row 60px above
+                 it, and every visible box inside <main> at the same position
+                 RELATIVE to <main> on all 36 pages
+```
+
+The only boxes that differed were **zero-size** ones: 1,260 hidden or
+empty elements whose rectangle reports the viewport's top. They were set
+aside by rule, not by eye.
+
+**THE FOLD, read directly:** the town table is identical to 3.82's, line
+for line.
+
+```
+                          390x664   360x640
+Hatboro                      78        54
+Horsham                      78        54
+Huntingdon Valley            37        13
+Jenkintown                   37        13
+Willow Grove                 37        13
+Northeast Philadelphia       37        13
+Bensalem                     78        13
+Feasterville-Trevose         37        13
+Langhorne                    78        13
+Richboro                     78        54
+Warminster                   37        13
+Jamison                      78        54
+```
+
+- **The eight 13px pages read exactly 13.**
+- **All 64 post readings** (16 posts, at 360 and 390, banner and cutover)
+  are unchanged.
+- **Home, the four services, contact, the hub and /blog/** are covered by
+  the absolute-position proof: nothing in their `<main>` moved at any
+  phone width.
+
+**THE SLIM ROW'S FIRST-SCREEN COST, at 1440x900, is 60px** (61 on nine
+pages, by sub-pixel rounding). It was projected at about 55. Where each
+page's first call row clears the viewport's foot, before and after:
+
+```
+the eight town pages at 312     now 251
+home                   344     now 283
+three service pages    367     now 307
+the four other towns   380     now 320
+/collision-repair/     408     now 348
+/contact-us/           412     now 352
+/areas-served/         414     now 354
+```
+
+**A correction:** the stop cited 288px as the margin to measure against.
+That was a projection from home's 344, and the tightest pages are the
+eight towns, at 312. **Measured, every first screen still clears by
+251px or more at 1440, and by 431 or more at 1920.**
+
+#### The footer
+
+- **The Services column is now "Explore":** Collision Repair, Commercial
+  Collision Repair, Glass Repair & Replacement, Paintless Dent Repair,
+  Areas We Serve, Blog, Contact Us.
+- **The order is the nav's.**
+- **The labels are the nav's.** "Auto Glass Repair" became "Glass Repair
+  & Replacement".
+- **"Commercial Collision&nbsp;Repair" keeps its no-break space.**
+- **No heading was added anywhere.** Privacy joins Explore when it ships.
+- **"EXPLORE" IS THE ONE CHROME WORD NOT MIGRATED** from the live site,
+  recorded as ruled. The live footer has no equivalent column, and a
+  chrome label is furniture, not a claim, so it asserts nothing for the
+  owner to confirm.
+
+**This is what fixes a dead-end page from its foot.** Every page now
+links every service, the hub, the blog and contact from its footer as
+well as its header.
+
+#### MECHANISM: two checks, both directions
+
+**`check_chrome_local` in `scripts/audit.py`, over every page under
+docs/:**
+- **IDENTITY.** The slim row, the header and the footer are compared with
+  every href and src resolved to the site path it lands on, and
+  `aria-current` set aside. One form must remain.
+- **THE MARKING, EXACT.** A chrome link that lands on its own page
+  carries `aria-current="page"`, and no other does.
+- **RESOLUTION.** Every chrome link lands on a real page (not a redirect
+  stub), on the shop's own tel: or mailto:, or on one of
+  `CHROME_EXTERNAL_URLS` **character for character**.
+- **STUBS STAY BARE.** A redirect stub wearing chrome fails.
+
+**`test-audit-checks.py` section 33, 19 checks:**
+- the generated chrome at two depths, each page marked, passes;
+- the shipped site passes;
+- **caught:**
+  - a drifted label, a missing item and a drifted footer;
+  - a page with no chrome;
+  - a self-link without the marking, and the marking on the wrong link;
+  - a link to a missing page, and a link to a redirect stub;
+  - an unrecorded URL, a DocuSign URL one character off, and a `#` link;
+  - a stub wearing chrome;
+- the DocuSign URL recorded exactly;
+- the towns alphabetical and complete;
+- `sync-chrome.py --check`;
+- the blog builder's chrome byte for byte on two pages.
+
+**MUTATION-PROVEN, BOTH DIRECTIONS.** Six mutants of the check, each
+caught; `audit.py` was restored byte for byte after them:
+
+```
+M1 too strict: aria-current not set aside   fails "generated chrome passes" and "shipped passes"
+M2 blind: identity never reported           fails the three drift cases
+M3 blind: any external URL accepted         fails "unrecorded URL" and "DocuSign one off"
+M4 blind: marking unchecked                 fails both marking cases
+M5 blind: stubs never read                  fails "stub wearing chrome"
+M6 blind: a missing page resolves           fails "missing page" and "link to a stub"
+```
+
+#### The sweep, the rhythm and the sitemap
+
+- **The layout sweep against f1dbe45:** the chrome changed on every real
+  page, and nothing else did (above). **The two redirect stubs are
+  untouched.**
+- **THE ASK RHYTHM AT 390.** The header's calls do not reach a phone, so
+  every page's call count is unchanged.
+  - **One gap changed, on every page:** the footer's address call to its
+    Get Started call, from 426 to 543px, because Explore grew by three
+    links.
+  - **No page's longest run moved.**
+  - **At 1440 the header's Call is sticky,** so a desktop reader always
+    has a call in view.
+- **The sitemap is unchanged: 36 pages.** Chrome is not content, so no
+  page's `dateModified` moved.
+
+#### The suite, and THE NEW EXPECTED LINE
+
+- Both test scripts pass: **328 checks**, where there were 309. That is
+  section 33's 19.
+- These all exit 0:
+  - `stamp-assets.py --check`, restamped for `site.css` and `site.js`;
+  - `build-sitemap.py --check` (36 pages);
+  - `sync-area-served.py --check`;
+  - `sync-chrome.py --check`.
+- `STAGING=1 audit.py --strict`: **15 pages at 95, 21 at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 834 passing.** That is
+  one more site-wide pass, the chrome.
+- No em dash and no banned digits added anywhere.
+- **Renders in the session scratchpad,** not committed:
+  - `f383_1440_areas.png`, `n383_collision-re_1440_589.png`;
+  - `f383_1099.png`, `f383_1100.png`;
+  - `n383_collision-re_390_0.png`, `n383_collision-re_390_379.png`;
+  - `f383_360_menu_areas.png`.
+
 ---
 
 ## 4. The claims list
@@ -13987,3 +14333,6 @@ Ordered by how much else depends on it.
     "family owned and operated" (4.5). It ships now; Greg asks for the
     owner's confirmation as cheap insurance. (Greg's ruling called this
     question 32; 31 to 33 were already assigned in 3.79, so it is 34.)
+35. **Is the Authorization Forms link current?** The nav carries the live
+    nav's DocuSign PowerForm, carried over exactly (3.83). If the owner has
+    retired it, the item comes out of the nav by ruling, not silently.

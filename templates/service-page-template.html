@@ -95,6 +95,16 @@
                              real logo file's pixels
          {{PROOF_LINE}}      see PROOF LINE below. No default on purpose.
 
+       RETIRED 2026-09-29, proposed-changes.md 3.83. The header and the
+       footer are written by scripts/sync-chrome.py, identical on every
+       page, and this file now carries its output at {{ROOT}}. So
+       {{NAV_LINKS}}, {{CTA_NAV_LABEL}}, {{FOOTER_EXPLORE}}, {{FOOTER_AREA}},
+       {{FOOTER_AREA_PROSE}}, {{FOOTER_TAGLINE}}, {{FOOTER_BADGE}},
+       {{SOCIAL_LINKS}}, {{LOGO_DIMS}} and {{SERVICES_PATH}} fill nothing
+       any more; their entries are kept below for the record. After a page
+       built from this file lands, run scripts/sync-chrome.py: it writes
+       the chrome at the page's own depth and marks the page as current.
+
        PAGE MAP TOKENS. These are the site's own navigation, so they
        come from the page map in the Tri-County plan, not from this
        file and not from the founding site's structure:
@@ -320,8 +330,8 @@
     gtag('config', '{{GA4_ID}}');
   </script>
 
-  <link rel="stylesheet" href="{{ROOT}}assets/site.css?v=1dba9915">
-  <script src="{{ROOT}}assets/site.js?v=e67e271c" defer></script>
+  <link rel="stylesheet" href="{{ROOT}}assets/site.css?v=d4057176">
+  <script src="{{ROOT}}assets/site.js?v=2cbec63d" defer></script>
 
   <!-- WHY: one @graph. The ProfessionalService node repeats the SAME @id
        as the homepage so every page resolves to one business entity. It
@@ -397,17 +407,73 @@
 </head>
 <body>
 
-  <!-- ============ STICKY DARK NAV (identical on every page) ============ -->
+  <!-- CHROME:HEAD, written by scripts/sync-chrome.py (proposed-changes.md 3.83).
+       Edit the script, never this block: it is rewritten on every page, and
+       scripts/audit.py fails a page whose chrome differs from the others in
+       anything but the current-page marking.
+
+       THE SLIM ROW ABOVE THE HEADER is the live header's two CarWise
+       buttons, desktop only, and it is not sticky: the sticky header and
+       the phone header are exactly the height they were. Below the
+       breakpoint the same two buttons live in the menu.
+
+       THE LOGO IS THE WAY HOME, so the nav carries no Home item. It has
+       been a link since 2026-09-10: until then it was a span carrying
+       data-pending-href="{{ROOT}}" because docs/index.html did not exist. The
+       homepage was built, the link test demanded the conversion by
+       failing, and that was the conversion, the mechanism in 3.10 working
+       end to end rather than being described. -->
+  <div class="nav-util">
+    <div class="wrap">
+      <a class="btn btn-sm btn-ghost" href="https://www.carwise.com/online-photo-estimate/tri-county-collision-center-southampton-pa-18966/481195" target="_blank" rel="noopener">Get an Estimate</a>
+      <a class="btn btn-sm btn-ghost" href="https://www.carwise.com/auto-body-shops/book-appointment/tri-county-collision-center-southampton-pa-18966/481195" target="_blank" rel="noopener">Book an Appointment</a>
+    </div>
+  </div>
   <header class="nav">
     <div class="wrap inner">
-      <a class="nav-home" href="{{ROOT}}" aria-label="Tri-County Collision home"><img src="{{ROOT}}logo-dark.png" alt="Tri-County Collision" {{LOGO_DIMS}}></a>
-      <nav class="nav-main" id="navmenu" aria-label="Main"><ul>
-{{NAV_LINKS}}
-      </ul></nav>
-      <a class="btn btn-sm" href="{{CTA_HREF}}">{{CTA_NAV_LABEL}}</a>
-      <button class="navtoggle" type="button" aria-expanded="false" aria-controls="navmenu" aria-label="Menu">
-        <svg class="ico-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-        <svg class="ico-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      <a class="nav-home" href="{{ROOT}}" aria-label="Tri-County Collision, home"><img src="{{ROOT}}logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+      <nav class="nav-main" id="navmenu" aria-label="Main">
+        <ul class="nav-list">
+          <li class="nav-item has-sub">
+            <button class="nav-sub-toggle" type="button" aria-expanded="false" aria-controls="nav-sub-services">Collision Services<svg class="nav-chev" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>
+            <ul class="nav-sub" id="nav-sub-services">
+              <li><a href="{{ROOT}}collision-repair/">Collision Repair</a></li>
+              <li><a href="{{ROOT}}commercial-collision-repair/">Commercial Collision Repair</a></li>
+              <li><a href="{{ROOT}}auto-glass-repair-replacement/">Glass Repair &amp; Replacement</a></li>
+              <li><a href="{{ROOT}}paintless-dent-repair/">Paintless Dent Repair</a></li>
+            </ul>
+          </li>
+          <li class="nav-item has-sub">
+            <a href="{{ROOT}}areas-served/">Areas We Serve</a><button class="nav-sub-toggle nav-sub-icon" type="button" aria-expanded="false" aria-controls="nav-sub-areas" aria-label="Toggle submenu for Areas We Serve"><svg class="nav-chev" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>
+            <ul class="nav-sub nav-sub-towns" id="nav-sub-areas">
+              <li><a href="{{ROOT}}areas-served-collision-repair-bensalem-pa/">Bensalem</a></li>
+              <li><a href="{{ROOT}}areas-served-collision-repair-feasterville-trevose-pa/">Feasterville-Trevose</a></li>
+              <li><a href="{{ROOT}}areas-served-collision-repair-hatboro-pa/">Hatboro</a></li>
+              <li><a href="{{ROOT}}areas-served-collision-repair-horsham-pa/">Horsham</a></li>
+              <li><a href="{{ROOT}}areas-served-collision-repair-huntingdon-valley-pa/">Huntingdon Valley</a></li>
+              <li><a href="{{ROOT}}areas-served-collision-repair-jamison-pa/">Jamison</a></li>
+              <li><a href="{{ROOT}}areas-served-collision-repair-jenkintown-pa/">Jenkintown</a></li>
+              <li><a href="{{ROOT}}areas-served-collision-repair-langhorne-pa/">Langhorne</a></li>
+              <li><a href="{{ROOT}}areas-served-collision-repair-northeast-philadelphia/">Northeast Philadelphia</a></li>
+              <li><a href="{{ROOT}}areas-served-collision-repair-richboro-pa/">Richboro</a></li>
+              <li><a href="{{ROOT}}areas-served-collision-repair-warminster-pa/">Warminster</a></li>
+              <li><a href="{{ROOT}}areas-served-collision-repair-willow-grove-pa/">Willow Grove</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a href="https://powerforms.docusign.net/2919d585-3b16-4977-833f-75a24163bec3?env=na4&amp;acct=228c4f1e-de2e-4461-9dbe-6a809b101cd4&amp;accountId=228c4f1e-de2e-4461-9dbe-6a809b101cd4" target="_blank" rel="noopener">Authorization Forms</a></li>
+          <li class="nav-item"><a href="{{ROOT}}contact-us/">Contact Us</a></li>
+          <li class="nav-item"><a href="{{ROOT}}blog/">Blog</a></li>
+        </ul>
+        <div class="nav-carwise">
+          <a class="btn btn-sm btn-ghost" href="https://www.carwise.com/online-photo-estimate/tri-county-collision-center-southampton-pa-18966/481195" target="_blank" rel="noopener">Get an Estimate</a>
+          <a class="btn btn-sm btn-ghost" href="https://www.carwise.com/auto-body-shops/book-appointment/tri-county-collision-center-southampton-pa-18966/481195" target="_blank" rel="noopener">Book an Appointment</a>
+        </div>
+      </nav>
+      <a class="btn btn-sm nav-call" href="tel:+12153225350">Call (215) 322-5350</a>
+      <button class="navtoggle" type="button" aria-expanded="false" aria-controls="navmenu">
+        <svg class="ico-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="ico-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        <span>Menu</span>
       </button>
     </div>
   </header>
@@ -704,12 +770,12 @@
   </main>
 
   <!-- ============ FOOTER (identical on every page) ============ -->
-  <footer class="site field-green">
+  <footer class="site">
     <div class="wrap">
       <div class="foot-grid">
         <div>
-          <a class="foot-home" href="{{ROOT}}" aria-label="Tri-County Collision home"><img src="{{ROOT}}logo-dark.png" alt="Tri-County Collision" {{LOGO_DIMS}}></a>
-          <p class="foot-tag">{{FOOTER_TAGLINE}}</p>
+          <a class="foot-home" href="{{ROOT}}" aria-label="Tri-County Collision, home"><img src="{{ROOT}}logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+          <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
           <p class="foot-nap">
             Tri-County Collision<br>
             <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd<br>
@@ -724,43 +790,37 @@
           Saturday by appointment only</p>
         </div>
         <div>
+          <!-- These columns list only pages that exist. They grow as pages
+               land, and never before. EXPLORE IS THE FULL MAP (3.83): the
+               four services, the hub, the blog and contact, so no page is a
+               dead end from its foot. Privacy joins it when it ships. The
+               labels are the nav's, so each destination has ONE name
+               across the chrome. -->
           <h2 class="foot-head">Explore</h2>
           <ul class="foot-links">
-{{FOOTER_EXPLORE}}
-          </ul>
-        </div>
-        <div>
-          <h2 class="foot-head">Services</h2>
-          <ul class="foot-links">
-            <li><a href="{{SERVICES_PATH}}collision-repair/">Collision Repair</a></li>
-            <li><a href="{{SERVICES_PATH}}auto-glass-repair-replacement/">Auto Glass Repair</a></li>
-            <li><a href="{{SERVICES_PATH}}paintless-dent-repair/">Paintless Dent Repair</a></li>
-            <li><a href="{{SERVICES_PATH}}commercial-collision-repair/">Commercial Collision&nbsp;Repair</a></li>
+            <li><a href="{{ROOT}}collision-repair/">Collision Repair</a></li>
+            <li><a href="{{ROOT}}commercial-collision-repair/">Commercial Collision&nbsp;Repair</a></li>
+            <li><a href="{{ROOT}}auto-glass-repair-replacement/">Glass Repair &amp; Replacement</a></li>
+            <li><a href="{{ROOT}}paintless-dent-repair/">Paintless Dent Repair</a></li>
+            <li><a href="{{ROOT}}areas-served/">Areas We Serve</a></li>
+            <li><a href="{{ROOT}}blog/">Blog</a></li>
+            <li><a href="{{ROOT}}contact-us/">Contact Us</a></li>
           </ul>
         </div>
         <div>
           <h2 class="foot-head">Get Started</h2>
           <ul class="foot-links">
-            <li><a href="{{CTA_HREF}}">{{CTA_LABEL}}</a></li>
             <li><a href="tel:+12153225350">Call (215) 322-5350</a></li>
             <li><a href="mailto:contact@tricountycollision.com">Email the shop</a></li>
             <li><a href="{{ROOT}}contact-us/">Send us your details online</a></li>
           </ul>
         </div>
-        <div class="foot-area" id="service-area">
-          <h2 class="foot-head">Service Area</h2>
-          <ul>
-{{FOOTER_AREA}}
-          </ul>
-          <p>{{FOOTER_AREA_PROSE}}</p>
-        </div>
       </div>
       <div class="foot-bottom">
-        <p>© 2026 Tri-County Collision · <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> · <a href="tel:+12153225350">(215) 322-5350</a> · <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a> · <a href="{{ROOT}}privacy/">Privacy Policy</a></p>
-        <p>{{FOOTER_BADGE}}</p>
-        <div class="social">
-{{SOCIAL_LINKS}}
-        </div>
+        <!-- The year is written into the markup so it is right with
+             JavaScript off, and assets/site.js updates it so it is right
+             next January. A hard-coded year is a stale-clock claim. -->
+        <p>&copy; <span data-year>2026</span> Tri-County Collision &middot; <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> &middot; <a href="tel:+12153225350">(215) 322-5350</a> &middot; <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a></p>
       </div>
     </div>
   </footer>
