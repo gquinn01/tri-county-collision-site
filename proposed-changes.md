@@ -9942,7 +9942,8 @@ factory certification it leaned on survives in card 3.
 the `.statband` class, so `site.js` still finds the three figures and they
 count on arrival, as they did in the band. That also gives the section its
 white ground. The brief was silent on motion; removing one class reverses
-this.
+this. *(Withdrawn 2026-09-30 by 3.85, on Greg's ruling: the counting effect
+leaves the site. The section keeps the class for its ground. See 3.85.)*
 
 #### The pairs
 
@@ -10134,7 +10135,8 @@ the same question,** and one answer settles both.
   list in `site.css` (`.stat-n, .fig-n`), and not `.stat-n`, which the
   odometer finds. Lifetime, the review count and 12 still roll; Free,
   Handled and Detailed stand still. **Changing `fig-n` to `stat-n` on the
-  three would make them roll, if Greg wants it.**
+  three would make them roll, if Greg wants it.** *(Moot since 3.85, which
+  withdraws the roll site-wide: all six figures stand still. See 3.85.)*
 - **Variance: no list change, and the fixtures pass UNEDITED.** The section
   is still pattern text by its id, and the test file has no diff at this
   commit.
@@ -13804,6 +13806,185 @@ At 1920x1080 the tightest is 492 again, where 3.83 had 431.
 - These all exit 0:
   - `stamp-assets.py --check`, restamped for `site.css`;
   - `build-sitemap.py --check` (36 pages);
+  - `sync-area-served.py --check`;
+  - `sync-chrome.py --check`.
+- `STAGING=1 audit.py --strict`: **15 pages at 95, 21 at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 834 passing.**
+- No em dash and no banned digits added.
+
+
+### 3.85 The odometer leaves, site-wide, on Greg's eye. BUILT 2026-09-30
+
+**The stat band's counting effect is withdrawn everywhere**: the rolling
+digits and the rolling "Lifetime" word. The figures stand still as the text
+they already are in the markup. Greg's ruling.
+
+**This is a withdrawal, not a correction, in the 3.41 manner.** The
+arrival-motion adoption of 2026-09-10 sanctioned the odometer. It was built
+and proved, and it worked as proved. Greg's eye has now ruled it out. **It
+is recorded forward.** The adoption's records gain pointer lines rather
+than being rewritten:
+- rule 8 and the motion amendment in `CLAUDE.md`;
+- the motion amendment in `site.css`'s header;
+- 3.67's "THE ODOMETER IS KEPT";
+- 3.68's "ROW TWO DOES NOT ROLL".
+
+#### What it does not touch
+
+**The lane on the directions steps is not withdrawn,** and nothing in its
+code changed, the fonts-ready rebuild included. `.statband` stays on all
+17 pages that carry it: it gives the section its white ground, and home's
+`.statcard` compounds on it. `.fig-n` stays as named. `.sr-only` stays,
+because `/blog/`'s "All posts" heading wears it.
+
+#### The work
+
+- **`site.js`:** the odometer block comes out whole: `buildOdometer`,
+  `buildWordOdometer`, `cell`, `ODO_STEP`, `ODO_TRAVEL`, `WORD_TRAVEL`, and
+  the stat band's arming. **The band leaves the arrival observer
+  entirely,** since the roll was its only effect. Nothing in the file
+  selects `.statband`, `.stat-n` or `.fig-n` now. The lane block is
+  byte-identical.
+- **`site.css`:** the `.odo` rules and both odometer comment blocks come
+  out, and `.odo-strip` leaves the reduced-motion block.
+  - **The motion law is AMENDED, not deleted.** Kind two now sanctions
+    only the lane, and one paragraph records the withdrawal. The same
+    applies to header rule 7 and the ARRIVAL MOTION block ("ONE EFFECT,
+    ONE RULE").
+  - The comments on `.statcard`, `.fig-n` and `.card-figure` lose their
+    odometer clauses.
+- **Every other home of the prose:**
+  - `site.js`'s header: "a number counts because the number is real", and
+    the odometer's true-digits sentence;
+  - `CLAUDE.md`: rule 8, the motion amendment's kind two, the number
+    bullet and the reduced-motion paragraph;
+  - home's stat-card comment;
+  - the two town comments in `scripts/build-town.py` and all twelve town
+    pages.
+
+  **Proved in step:** all twelve towns rebuilt in a scratch copy are
+  byte-identical to the committed pages outside the MAP markers, which
+  this change does not touch.
+- **`test-audit-checks.py` section 16 now proves the absence.** It proved
+  that the roll never disturbed the review count. It now holds:
+  - no odometer builder in `site.js` code, and no `.statband`, `.stat-n`
+    or `.fig-n` either;
+  - no `.odo` rule in `site.css`;
+  - no page under `docs/` carrying odometer markup.
+
+  **The motion law's remaining claims gain static proofs:**
+  - the lane is built and armed on its own section;
+  - the observer unobserves on first arrival;
+  - reduced motion returns before anything is armed;
+  - `site.css` rests the lane at `scaleY(1)` under it;
+  - `site.js` has no `setInterval` or `requestAnimationFrame`.
+
+  The review-count cases stay, and so does the baked-strip case: markup
+  is now the only way the effect could come back.
+
+#### PROVED BY RENDER, not asserted
+
+**A harness finding first, because it decides what can be believed.** The
+virtual-time probe used through 3.84 cannot see arrival motion. Under
+`--virtual-time-budget`, Chrome runs one to three animation frames and no
+more, so an IntersectionObserver never fires, and dd65c35's band sat
+armed and never rolled. **These proofs were taken in real time instead,**
+by driving headless Chrome over `--remote-debugging-pipe` with the
+standard library only.
+
+**The band at arrival, JS on, motion allowed.** Home, `/collision-repair/`
+and Bensalem, at 390 and 1440, sampled on load and then 0, 80, 160, 300,
+450, 650, 900, 1300 and 2000ms after the band is scrolled to, then again
+after a second arrival.
+- **3.85: all six read `Lifetime`, `274`, `12` at every sample,** exactly
+  the markup. No `.stat-n` has a child element. The band never gains a
+  motion class.
+- **dd65c35 on the same harness, for contrast:**
+  - at 390 it is caught mid-roll, reading `~474` and `~7~34` in flight,
+    and lands on the true figures by 900ms;
+  - at 1440 the band was already in view at load and had landed before
+    the first sample.
+
+  So the harness sees the effect where it exists.
+- **JS on matches JS off for the band.** Full-page shots of 3.85 with
+  scripting on and off, same six renders: **zero differing pixels inside
+  `.statband` on every one.**
+
+**The lane is unchanged.** `/collision-repair/`, both trees:
+- at 390, five dashes go from `scaleY` 0 through 0.23 to 1.00 by 650ms
+  (dd65c35: 0.30), and a second arrival changes nothing;
+- at 1440 it draws nothing, in both;
+- under reduced motion it rests at 1.00 from load, unarmed.
+
+#### Resting pixels against dd65c35
+
+**At phone widths the settled page is identical outside the band.** Home,
+`/collision-repair/` and Bensalem at 390: every difference lies inside the
+band's box, inside a photograph, or in the brand strip, which drifts and
+so is wherever the clock left it. The strip's 134px on
+`/collision-repair/` at 1440 appear identically in the JS-on-against-off
+comparison, which is the tell.
+
+**Why the band itself differs.** The odometer set each digit in a
+fixed .667em window. Plain text keeps Archivo Black's -.025em tracking,
+so each figure is about 1.5px narrower at 1440. The glyphs are the same
+glyphs, sitting slightly tighter.
+
+**FINDING, for Greg's eye: on the town pages at 1440, pixels move below
+the band.**
+- **The cause.** The odometer window was .88em of 57.6px, which Chrome's
+  layout units round to 50.6875px. Plain text lays out at 50.6719px, the
+  exact height row two's `.fig-n` words already had. So each figure card
+  in row one is 1/64px shorter, and everything below the section lifts by
+  1/64px.
+- **Page heights are unchanged on all twelve.**
+- **Where it shows.** The lift is invisible as geometry, but where a
+  line of text, a chevron or a hairline sat on a pixel-row edge, it
+  re-rasterises. Reduced-motion shots at 1440, outside the band and
+  outside photographs:
+  - Richboro and Willow Grove: 0 pixels;
+  - the other ten: between 605 and about 19,100 pixels;
+  - Huntingdon Valley is the largest, where the map's labels and its
+    ODbL credit re-rasterise too.
+- **Deterministic.** dd65c35 against itself, and 3.85 against itself,
+  are pixel-identical.
+- **Not patched, deliberately.** The only way back to identical pixels is
+  pinning `.stat-n` to the dead odometer's window height, which keeps a
+  withdrawn effect's geometry alive. As it stands, rows one and two of the
+  card grid are now exactly the same height, which dd65c35's were not.
+
+**Home and the four service pages at 1440** change inside the band only:
+every box outside it sits exactly where it did.
+
+#### The layout sweep against dd65c35
+
+All 36 real pages, at 1440, 390 and 360, every box compared by element
+path. The odometer's own spans inside a `.stat-n` are excluded, since
+3.85 does not have them; each `.stat-n`'s own box is kept.
+- **17 pages carry `.statband`:** home, the four service pages and the
+  twelve towns.
+- **360 and 390: all 36 identical.** Every call position and every first
+  call row's fold margin match.
+- **1440:** home and the four service pages change inside the band only.
+  The twelve towns change inside the band plus the 1/64px lift below it,
+  seen as 0.25px after quarter-pixel rounding.
+- **The other 19 pages: identical at every width.** The redirect stubs,
+  `llms.txt` and the sitemap are untouched.
+
+**THE FOLD AND THE ASK RHYTHM, from the same measurements.**
+- Every page's first-screen margin to its first call row is identical to
+  dd65c35's, at all three widths.
+- At 390 and 360, every call position on every page is identical.
+- At 1440, the town pages' call positions below the band sit 1/64px
+  higher, which is the finding above. Their fold margins are unchanged.
+
+#### The suite, and THE EXPECTED LINE, unchanged
+
+- Both test scripts pass: **336 checks.** That is 3.84's 329, minus the
+  two odometer cases, plus the nine absence and lane cases.
+- These all exit 0:
+  - `stamp-assets.py --check`, restamped for `site.css` and `site.js`;
+  - `build-sitemap.py --check`;
   - `sync-area-served.py --check`;
   - `sync-chrome.py --check`.
 - `STAGING=1 audit.py --strict`: **15 pages at 95, 21 at 96, 2 stubs at

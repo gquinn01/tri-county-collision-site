@@ -863,8 +863,8 @@ def build(key: str) -> tuple:
          - the right-to-choose and free-estimates cards are 3.64's
            sentences, and "Insurance paperwork handled" is the vetted chip,
            a headline card with no support line, by ruling.
-         IT KEEPS THE .statband CLASS so site.js's odometer still finds the
-         figures: the numbers count on arrival as they did in the band.
+         IT KEEPS THE .statband CLASS, which gives it the band's white
+         ground. The figures stand still, as the markup has them (3.85).
          BYTE-IDENTICAL ON EVERY TOWN PAGE BY DESIGN: pattern text for the
          variance gate, by this id, in code. It closes on its Call/Email
          row, the section's ask. -->
@@ -878,9 +878,9 @@ def build(key: str) -> tuple:
 {figure_cards}          <!-- ROW TWO WEARS ROW ONE'S GRAMMAR (3.68, Greg's rulings of
                2026-09-29): each card a vetted chip claim SPLIT into a big ox
                word and a bold label, never reworded. Its big word is .fig-n,
-               which shares .stat-n's look, and not .stat-n, which site.js's
-               odometer rolls: the arrival motion stays the three figures the
-               motion amendment scoped it to. Cards 5 and 6 carry support lines quoted byte for byte from /collision-repair/, which ships both sentences. -->
+               which shares .stat-n's look. It was split off so the counting
+               effect stayed on the three figures, and that effect is now
+               withdrawn (3.85). Cards 5 and 6 carry support lines quoted byte for byte from /collision-repair/, which ships both sentences. -->
           <article class="card card-figure">
             <span class="fig-n">Free</span>
             <span class="stat-l">Estimates</span>

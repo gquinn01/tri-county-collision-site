@@ -4,25 +4,25 @@
    Small, and it should stay that way. EVERY PAGE ON THIS SITE WORKS WITH
    JAVASCRIPT OFF: the FAQ is <details>/<summary>, the phone is a tel:
    link, the nav is a list, the stat band's numbers are text in the
-   markup. Nothing here is load-bearing.
+   markup and nothing here touches them. Nothing here is load-bearing.
 
    WHAT IS HERE, AND WHY IT IS ALLOWED TO BE.
 
    Arrival motion, adopted 2026-09-10. The motion law in site.css's
    header was amended for it, and the amendment is narrow: an effect may
-   fire ONCE, on a section's first arrival, and never again. A number
-   counts because the number is real. A lane draws because the section it
-   runs down is a road. Nothing loops, nothing re-triggers, nothing runs
-   on load.
+   fire ONCE, on a section's first arrival, and never again. A lane draws
+   because the section it runs down is a road. Nothing loops, nothing
+   re-triggers, nothing runs on load. The lane is the only arrival effect
+   left: the stat band's counting effect was withdrawn on Greg's ruling
+   (proposed-changes.md 3.85), and its figures stand still as the text
+   they are in the markup.
 
    THE RULE THAT SHAPES ALL OF THIS: NO ELEMENT IS EVER HIDDEN BY CSS
    ALONE. Every "from" state is added here, and only when the motion is
    actually going to run. So with JavaScript off, with
    prefers-reduced-motion set, or if this file throws on its first line,
    the page is complete and nothing is invisible waiting for a script
-   that is not coming. The odometer in particular starts on the TRUE
-   DIGITS and ends on them, so the number is right in every one of those
-   cases.
+   that is not coming.
 
    WHAT IS STILL NOT HERE, on purpose:
 
@@ -123,100 +123,6 @@
   var reduceMQ = window.matchMedia("(prefers-reduced-motion: reduce)");
   var sections = [];
 
-  /* ---------- The odometer ------------------------------------------
-     IT READS ITS TARGET FROM THE MARKUP and nowhere else. Whoever
-     refreshes the review count edits one number in the HTML; this
-     follows it and needs no knowledge of the effect. There is no list of
-     numbers in this file to keep in step, on purpose.
-
-     The strip is [target, 0-9, target]: it starts on the true digit and
-     lands on the true digit one revolution later. A wrong number is the
-     cardinal sin on this site, and an odometer parked on 000 waiting to
-     be scrolled to would be exactly the wrong kind of clever. */
-  var ODO_STEP = 0.88;    /* .stat-n's line-height in site.css */
-  var ODO_TRAVEL = 11;    /* cells from the armed digit to the landed one */
-
-  function cell(d) {
-    var s = document.createElement("span");
-    s.textContent = String(d);
-    return s;
-  }
-
-  /* THE WORD ROLLS TOO, on the same drum. A letter strip holds THE SAME
-     LETTER TWICE and travels exactly one cell, so the word never shows a
-     character that is not its own: no A-to-Z scramble, no slot machine,
-     nothing on screen that the warranty does not actually say.
-
-     Letters are not monospaced the way Archivo Black's digits are, so
-     there is no fixed cell width here. There does not need to be: a
-     strip holding one repeated letter is exactly as wide as that
-     letter, so each window sizes itself and nothing can jitter.
-
-     It runs a little quicker per cell than the numbers, 520ms against
-     700, and staggers at 60ms against 90, so eight letters finish at
-     about the same moment three digits do and the row still lands as
-     one event. */
-  var WORD_TRAVEL = 1;
-
-  function buildWordOdometer(el) {
-    var word = el.textContent.trim();
-    if (!word || /\d/.test(word)) { return false; }
-    var odo = document.createElement("span");
-    odo.className = "odo odo-word";
-    odo.setAttribute("aria-hidden", "true");
-    for (var i = 0; i < word.length; i++) {
-      var ch = word.charAt(i);
-      var win = document.createElement("span");
-      win.className = "odo-l";
-      var strip = document.createElement("span");
-      strip.className = "odo-strip";
-      strip.appendChild(cell(ch));
-      strip.appendChild(cell(ch));
-      strip.style.setProperty("--odo-end", (-WORD_TRAVEL * ODO_STEP).toFixed(3) + "em");
-      strip.style.setProperty("--odo-delay", (i * 60) + "ms");
-      win.appendChild(strip);
-      odo.appendChild(win);
-    }
-    var sr = document.createElement("span");
-    sr.className = "sr-only";
-    sr.textContent = word;
-    el.textContent = "";
-    el.appendChild(odo);
-    el.appendChild(sr);
-    return true;
-  }
-
-  function buildOdometer(el) {
-    var value = el.textContent.trim();
-    if (!/^\d+$/.test(value)) { return false; }
-    var odo = document.createElement("span");
-    odo.className = "odo";
-    odo.setAttribute("aria-hidden", "true");
-    for (var i = 0; i < value.length; i++) {
-      var target = Number(value.charAt(i));
-      var win = document.createElement("span");
-      win.className = "odo-d";
-      var strip = document.createElement("span");
-      strip.className = "odo-strip";
-      strip.appendChild(cell(target));
-      for (var d = 0; d <= 9; d++) { strip.appendChild(cell(d)); }
-      strip.appendChild(cell(target));
-      strip.style.setProperty("--odo-end", (-ODO_TRAVEL * ODO_STEP).toFixed(3) + "em");
-      strip.style.setProperty("--odo-delay", (i * 90) + "ms");
-      win.appendChild(strip);
-      odo.appendChild(win);
-    }
-    /* The rolling drum is decoration and is aria-hidden. The number
-       itself still has to reach a screen reader, once, as a number. */
-    var sr = document.createElement("span");
-    sr.className = "sr-only";
-    sr.textContent = value;
-    el.textContent = "";
-    el.appendChild(odo);
-    el.appendChild(sr);
-    return true;
-  }
-
   /* ---------- The lane ----------------------------------------------
      One dash per gap between steps, measured rather than guessed,
      because where a gap falls depends on how the text wrapped.
@@ -250,19 +156,6 @@
   }
 
   /* ---------- Build, then arm, then watch ---------------------------- */
-  var statband = document.querySelector(".statband");
-  if (statband) {
-    var numerals = statband.querySelectorAll(".stat-n");
-    var moving = false;
-    for (var n = 0; n < numerals.length; n++) {
-      /* A number rolls. The one stat that is a word gets stamped. The
-         whole row is one event on one class, so it arrives as a row. */
-      if (buildOdometer(numerals[n])) { moving = true; }
-      else if (buildWordOdometer(numerals[n])) { moving = true; }
-    }
-    if (moving) { sections.push(statband); }
-  }
-
   var steps = document.querySelector(".steps");
   if (steps) {
     buildLane(steps);
@@ -283,9 +176,8 @@
   if (!sections.length) { return; }
 
   /* THE FIRST OF THE TWO REDUCED-MOTION GUARDS. Nothing is armed, so
-     nothing is ever in a "from" state: the number rests at its true
-     value and the lane rests fully drawn. The second guard is the
-     prefers-reduced-motion block in site.css. */
+     nothing is ever in a "from" state: the lane rests fully drawn. The
+     second guard is the prefers-reduced-motion block in site.css. */
   if (reduceMQ.matches) { return; }
 
   sections.forEach(function (el) { el.classList.add("motion-armed"); });

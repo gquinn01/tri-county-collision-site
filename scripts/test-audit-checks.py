@@ -459,22 +459,47 @@ def main():
     check("     and the repo's own comments are clean right now",
           not warns and len(notes) == 1, warns)
 
-    print("16. The odometer must not disturb the review count")
-    # WHY. The stat band's numbers now roll. Each digit is a strip of
-    # [target, 0-9, target], so at runtime the DOM holds a lot of digits
-    # that are not the review count. THE STRIPS ARE BUILT BY site.js AND
-    # NEVER EXIST IN THE FILE, which is what keeps the review-count check
-    # honest: it reads source, not a rendered page. These cases hold that
-    # invariant down, because the tempting "optimisation" later is to
-    # pre-render the strips into the HTML.
+    print("16. The counting effect is withdrawn, and the lane still draws once")
+    # WHY. From 2026-09-10 the stat band's figures rolled like an odometer
+    # on first arrival, and this section proved the roll never disturbed
+    # the review count. GREG'S RULING, proposed-changes.md 3.85: the effect
+    # leaves the site, the rolling digits and the rolling word both. The
+    # figures stand still as the text they are in the markup. This section
+    # now proves the absence, and holds the motion law's remaining claims
+    # about the lane, the one arrival effect left.
+    import re as _re16
     import tempfile as _tempfile2
 
     site_js = open(os.path.join(root, "docs", "assets", "site.js"),
                    encoding="utf-8").read()
-    check("     site.js reads the number from the markup, not a constant",
-          ".stat-n" in site_js and str(audit.REVIEW_COUNT) not in site_js)
-    check("     so a review-count refresh needs no knowledge of the effect",
-          "textContent.trim()" in site_js)
+    site_css = open(os.path.join(root, "docs", "assets", "site.css"),
+                    encoding="utf-8").read()
+    js_code = _re16.sub(r"/\*.*?\*/", "", site_js, flags=_re16.S)
+    css_code = _re16.sub(r"/\*.*?\*/", "", site_css, flags=_re16.S)
+    check("     site.js builds no odometer, digit or word",
+          not _re16.search(r"buildOdometer|buildWordOdometer|ODO_|WORD_TRAVEL|odo-", js_code))
+    check("     site.js never touches the stat band or its figures",
+          not _re16.search(r"statband|stat-n|fig-n", js_code))
+    check("     site.css carries no .odo rule",
+          not _re16.search(r"\.odo\b", css_code))
+    odo_pages = [os.path.relpath(dp, root) for dp, _dn, fn in os.walk(os.path.join(root, "docs"))
+                 for f in fn if f.endswith(".html")
+                 and _re16.search(r'class="[^"]*\bodo\b', open(os.path.join(dp, f), encoding="utf-8").read())]
+    check("     and no page carries odometer markup", not odo_pages, odo_pages)
+
+    # The lane: once, on first arrival, never under reduced motion, and
+    # resting fully drawn when it does not run.
+    check("     the lane is still built and armed on its own section",
+          "buildLane(steps)" in js_code and "sections.push(steps" in js_code)
+    check("     it fires once: the observer unobserves on first arrival",
+          "io.unobserve(entry.target)" in js_code)
+    guard = js_code.find("if (reduceMQ.matches) { return; }")
+    check("     reduced motion returns before anything is armed",
+          0 <= guard < js_code.find('classList.add("motion-armed")'))
+    rm = _re16.search(r"@media \(prefers-reduced-motion: reduce\) \{\s*\.lane-dash, \.faq-ico \{ transition: none; \}\s*\.lane-dash \{ transform: scaleY\(1\); \}", css_code)
+    check("     and under it the lane rests fully drawn in site.css", bool(rm))
+    check("     nothing in site.js loops: no interval, no animation frame",
+          not _re16.search(r"setInterval|requestAnimationFrame", js_code))
 
     hits = audit.find_review_counts(os.path.join(root, "docs"))
     # NOT "exactly once". This asserted a count of 1 while docs/ held one
@@ -487,7 +512,9 @@ def main():
     check("     and at least one page states it",
           len(hits) >= 1, len(hits))
 
-    # And the guard would notice if someone ever baked the strips in.
+    # And the review-count check would still notice odometer strips baked
+    # into a page, the one way the withdrawn effect could come back as
+    # markup rather than script.
     with _tempfile2.TemporaryDirectory() as tmp:
         strip = "".join("<span>%d</span>" % d for d in range(10))
         with open(os.path.join(tmp, "p.html"), "w", encoding="utf-8") as fh:

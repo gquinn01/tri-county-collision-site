@@ -608,8 +608,9 @@ the sweep, so a card answers as one gesture rather than two. **Colour only, no
 blur, no glow**, and it is the one property outside transform, opacity and the
 rule's width that the stylesheet animates.
 
-**8. Arrival motion, adopted 2026-09-10.** The odometer and the lane, both
-from the same sampler.
+**8. Arrival motion, adopted 2026-09-10.** The lane, from the sampler. The
+odometer came from the same sampler and was withdrawn on Greg's ruling of
+2026-09-30 (`proposed-changes.md` 3.85).
 
 ### A sweep deletes only what it owns, 2026-09-13
 
@@ -653,30 +654,26 @@ still governs bands in the page flow. Privacy is decided when it is built.
 
 **Motion used to be zero except the FAQ accordion. It is not zero any more.**
 Five candidates were built on a sampler, judged, and the sampler was deleted
-once every verdict was in. Two were cut. The reasoning is in the git history
-around this date. Four things move now, in two kinds.
+once every verdict was in. Two were cut, and a third, the stat band's counting
+effect, was withdrawn on 2026-09-30 (3.85). The reasoning is in the git
+history around those dates. What moves divides into two kinds.
 
 **Kind one, which was always allowed: motion that answers a reader.** The FAQ
 disclosure and its chevron, the lift under a pointer, the press under a
 finger. Unremarkable.
 
 **Kind two, which is the actual amendment: motion may also fire once on a
-section's first arrival. A number counts. A word rolls with it. A lane draws.
-Never looping, never re-triggering.** The stat band is one event, not three:
-all three stats roll on the same drum and the same class, released by the same
-observer, so the row arrives as a row. The word's strips hold **the same letter
-twice** and travel one cell, so it rolls without ever showing a character that
-is not its own.
+section's first arrival. A lane draws. Never looping, never re-triggering.**
 
-Both are still evidence rather than costume, which is the only reason they
-were allowed in:
+**Withdrawn 2026-09-30 on Greg's ruling (`proposed-changes.md` 3.85): the stat
+band's counting effect, the rolling digits and the rolling word.** It was
+built and proved under this amendment, and his eye ruled it out. The figures
+stand still as the text they are in the markup, and nothing in `site.js`
+touches them.
 
-- **The number counts because the number is real.** The stat band carries
-  checked, dated figures, and an odometer is the one counting instrument that
-  belongs to a car. A counter over an invented number would be the prime law's
-  exact failure wearing a nice easing curve. **It reads its target from the
-  markup**, so the weekly review-count refresh edits one number in the HTML and
-  the effect follows. Nobody refreshing a count needs to know it exists.
+The lane is still evidence rather than costume, which is the only reason it
+was allowed in:
+
 - **The lane draws because the section is a road.** Six steps from the phone
   call to the keys, with a dashed centre line down them. A lane and not a
   progress bar on purpose: no track, no state change once painted, constant
@@ -687,11 +684,9 @@ only below 720px, the one width where `.steps` is a single column and a line
 from 01 to 06 is a road rather than a stray rule across a grid. A desktop
 reader never sees it. That is a deliberate scope, not an unfinished one.
 
-**Under `prefers-reduced-motion` both do nothing.** The number rests at its
-true value, which is what it was showing anyway, and the lane rests fully
+**Under `prefers-reduced-motion` it does nothing.** The lane rests fully
 drawn. Nothing is hidden and nothing is pending, in that case or with
-JavaScript off. The strips are `[target, 0-9, target]`, so the true number is
-on screen before the roll, after it, and when no script runs at all.
+JavaScript off.
 
 **The limit of this amendment:** once, on first arrival, then the observer
 stops watching. Anything that would move a second time, or move without a

@@ -80,10 +80,10 @@
       one gesture. That colour change is the ONE property outside
       transform, opacity and the rule's width that this file animates.
 
-   7. ARRIVAL MOTION, ADOPTED 2026-09-10. A number counts and a lane
-      draws, once each, the first time their section comes into view. See
-      the motion amendment below for what that is allowed to mean and
-      what it is not.
+   7. ARRIVAL MOTION, ADOPTED 2026-09-10. A lane draws, once, the first
+      time its section comes into view. See the motion amendment below
+      for what that is allowed to mean and what it is not. The stat
+      band's counting effect was withdrawn on Greg's ruling (3.85).
 
    The palette table, its provenance and its measured ratios follow. Read all
    of it before writing a hex, a font-family or a hero.
@@ -299,8 +299,8 @@
    not zero any more. Five candidates were built on a sampler, judged,
    and the sampler was deleted once every verdict was in; the build and
    the judging are in the git history around this date if the reasoning
-   is ever wanted. Two were cut. Four things move now, and they divide
-   into two kinds.
+   is ever wanted. Two were cut, and a third, the stat band's counting
+   effect, was withdrawn later (3.85). What moves divides into two kinds.
 
    KIND ONE, WHICH WAS ALWAYS ALLOWED: motion that ANSWERS A READER.
    The FAQ disclosure and its chevron, the lift under a pointer, the
@@ -308,20 +308,16 @@
    them, and they are unremarkable.
 
    KIND TWO, WHICH IS THE ACTUAL AMENDMENT: MOTION MAY ALSO FIRE ONCE ON
-   A SECTION'S FIRST ARRIVAL. A NUMBER COUNTS. A WORD ROLLS WITH IT. A
-   LANE DRAWS. NEVER LOOPING, NEVER RE-TRIGGERING.
+   A SECTION'S FIRST ARRIVAL. A LANE DRAWS. NEVER LOOPING, NEVER
+   RE-TRIGGERING.
 
-   The stat band is ONE event, not three. All three stats roll on the
-   same drum and the same class, released by the same observer, so the
-   row arrives as a row.
+   WITHDRAWN ON GREG'S RULING, proposed-changes.md 3.85: the stat band's
+   counting effect, the rolling digits and the rolling word. It was
+   built and proved under this amendment, and his eye ruled it out. The
+   figures stand still as the text they are in the markup.
 
-   Both are still evidence rather than costume, which is the only reason
-   they were allowed in:
-
-     THE NUMBER COUNTS BECAUSE THE NUMBER IS REAL. The stat band carries
-     checked, dated figures, and an odometer is the one counting
-     instrument that belongs to a car. A counter over an invented number
-     would be the prime law's exact failure, wearing a nice easing curve.
+   The lane is still evidence rather than costume, which is the only
+   reason it was allowed in:
 
      THE LANE DRAWS BECAUSE THE SECTION IS A ROAD. Six steps from the
      phone call to the keys, with a dashed centre line down them. It is
@@ -334,10 +330,9 @@
    stray rule across a grid. A desktop reader never sees it. That is a
    deliberate scope, not an unfinished one.
 
-   UNDER prefers-reduced-motion, BOTH DO NOTHING. The number rests at its
-   true value, which is what it was showing anyway, and the lane rests
-   fully drawn. Nothing is hidden and nothing is pending, in that case or
-   with JavaScript off.
+   UNDER prefers-reduced-motion, IT DOES NOTHING. The lane rests fully
+   drawn. Nothing is hidden and nothing is pending, in that case or with
+   JavaScript off.
 
    KIND THREE, ADDED 2026-09-10: ONE FADE ON PAGE LOAD, IN THE HERO
    ONLY. The photograph fades up over 500ms and the copy follows 200ms
@@ -1071,93 +1066,29 @@ section { padding: var(--pad) 0; }
 }
 
 /* ===========================================================================
-   ARRIVAL MOTION. ADOPTED 2026-09-10. TWO EFFECTS, ONE RULE.
+   ARRIVAL MOTION. ADOPTED 2026-09-10. ONE EFFECT, ONE RULE.
 
-   These are the only things on this site that move without a reader
-   doing anything to them, and the motion law was amended for them. See
-   the amendment in the header of this file. The rule they live under:
+   The lane is the only thing on this site that moves on arrival without
+   a reader doing anything to it, and the motion law was amended for it.
+   See the amendment in the header of this file. The rule it lives under:
    ONCE, ON A SECTION'S FIRST ARRIVAL. Never looping, never re-triggering,
-   never on load.
+   never on load. The stat band's counting effect lived here too, and was
+   withdrawn on Greg's ruling (3.85) with its rules and its prose.
 
-   The mechanism is shared. scripts add .motion-armed to a section when
-   the effect is actually going to run, and .motion-in when the section
+   The mechanism: site.js adds .motion-armed to a section when the
+   effect is actually going to run, and .motion-in when the section
    first crosses into view. Then the observer stops watching it, which is
    what makes "never re-triggering" a property of the code rather than a
    promise in a comment.
 
-   THE "FROM" STATE IS NEVER IN CSS ALONE. Both effects are armed by
-   site.js and only when motion is allowed, so with JavaScript off, or
+   THE "FROM" STATE IS NEVER IN CSS ALONE. The lane is armed by site.js
+   and only when motion is allowed, so with JavaScript off, or
    with prefers-reduced-motion set, nothing is ever hidden and nothing is
    ever pending. This is the rule that keeps an entrance effect from
    turning into a blank page when a script fails.
    =========================================================================== */
 
-/* ---------- The odometer: a number counts because it is real ----------
-   The stat band's real, dated numbers roll up like a mechanical
-   odometer, once. A counter that counts is the most generic effect on
-   the web; what makes this one honest is that the numbers ARE checked
-   and dated, and what makes it this shop's is the metaphor, the one
-   counting instrument that belongs to a car.
-
-   IT READS ITS TARGET FROM THE MARKUP. site.js takes the number out of
-   .stat-n's own text. Nothing about the effect is written down anywhere
-   else, so the weekly review-count refresh edits one number in the HTML
-   and the odometer follows it. Nobody refreshing a count needs to know
-   this exists.
-
-   THE STRIP IS [target, 0-9, target]. It starts on the TRUE DIGIT and
-   lands on the true digit one revolution later, so the true number is on
-   screen before the roll, after it, and with JavaScript off. An odometer
-   parked on 000 waiting to be scrolled to would put a false number on a
-   site whose whole discipline is that numbers are true.
-
-   THE STEP IS 0.88em BECAUSE THAT IS .stat-n's LINE-HEIGHT. Matching it
-   means the band does not change height when the effect is present.
-
-   IT RESTS ON ONE MEASUREMENT: Archivo Black's digits are all exactly
-   0.667em wide, all ten identical, so the window needs no
-   tabular-figures hack and the number cannot jitter as it rolls. If the
-   display face ever changes, measure again before trusting this. */
-.odo { display: inline-flex; }
-.odo-d { display: block; width: .667em; height: .88em; overflow: hidden; }
-.odo-strip { display: block; will-change: transform; }
-.odo-strip > span { display: block; height: .88em; line-height: .88; }
-/* A LETTER WINDOW HAS NO FIXED WIDTH, and does not need one. Archivo
-   Black's digits are all 0.667em, which is why .odo-d can be, but its
-   letters are not. A letter strip holds the same letter twice, so the
-   window is exactly as wide as that letter and nothing can jitter. */
-.odo-l { display: block; height: .88em; overflow: hidden; }
-.motion-in .odo-word .odo-strip { transition-duration: 520ms; }
-.motion-armed .odo-strip { transform: translateY(0); }
-.motion-in .odo-strip {
-  transform: translateY(var(--odo-end));
-  transition: transform 700ms cubic-bezier(.16, .84, .28, 1);
-  transition-delay: var(--odo-delay, 0ms);
-}
-
-/* ---------- The word rolls on the same drum ----------
-   "Lifetime" is the one stat that is a word rather than a number, and
-   since 2026-09-10 it arrives the same way the numbers do. It replaced
-   a stamp, which pressed the word onto the page from its own centre.
-   The stamp is gone rather than commented out.
-
-   A LETTER STRIP HOLDS THE SAME LETTER TWICE and travels exactly one
-   cell. The word rolls, but it never shows a character that is not its
-   own: no A-to-Z scramble, nothing on screen mid-flight that the
-   warranty does not say. A scrambling word is the cheap version of this
-   effect and it is the version that puts non-words in front of a reader.
-
-   THE LETTER WINDOWS SIZE THEMSELVES. Archivo Black's digits are all
-   0.667em, which is why .odo-d can carry a fixed width; its letters are
-   not, and do not need one, because a strip of one repeated letter is
-   exactly as wide as that letter. Nothing can jitter.
-
-   IT RUNS QUICKER PER CELL SO THE ROW STILL LANDS AS ONE EVENT: 520ms
-   against the numbers' 700, staggered at 60ms against 90, so eight
-   letters finish about when three digits do. */
-
-/* The drum is decoration and is aria-hidden. The number itself still has
-   to reach a screen reader, once, as a number. */
+/* Read by a screen reader, not drawn: /blog/'s "All posts" heading. */
 .sr-only {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
@@ -1200,13 +1131,11 @@ section { padding: var(--pad) 0; }
 }
 @media (min-width: 720px) { .lane { display: none; } }
 
-/* REDUCED MOTION. NEITHER EFFECT DOES ANYTHING. The number rests at its
-   true value, which it was already showing, and the lane rests fully
-   drawn. site.js is the first guard and never arms either one; this is
-   the second, and it also covers the FAQ chevron and its answer. */
+/* REDUCED MOTION. THE LANE DOES NOTHING: it rests fully drawn. site.js
+   is the first guard and never arms it; this is the second, and it also
+   covers the FAQ chevron and its answer. */
 @media (prefers-reduced-motion: reduce) {
-  .odo-strip, .lane-dash, .faq-ico { transition: none; }
-  .odo-strip { transform: none; }
+  .lane-dash, .faq-ico { transition: none; }
   .lane-dash { transform: scaleY(1); }
   #faq details[open] > p { animation: none; }
 }
@@ -1506,10 +1435,9 @@ section { padding: var(--pad) 0; }
 @media (min-width: 600px) { .proofstrip { display: none; } }
 
 /* ---------- The stat band, worn as jewellery ----------
-   SAME .statband CLASS ON PURPOSE. site.js finds the stats through it, so
-   the odometer and the letter roll arrive here exactly as they do on a
-   service page, on the same once-on-first-arrival class and under the
-   same amendment. .statcard only changes where the white sits.
+   SAME .statband CLASS ON PURPOSE: the same three stats in the same
+   type as a service page's band. .statcard only changes where the white
+   sits.
 
    COMPOUNDED, SO IT WINS ON SPECIFICITY AND NOT ON FILE ORDER. .statband
    declares its own background and border-bottom about 300 lines below
@@ -2565,7 +2493,9 @@ footer.site a { color: var(--silver); }
   .stat { padding: 8px 22px; }
   .stat + .stat { border-left: 1px solid var(--rule); }
 }
-/* .fig-n, 3.68: the same look for a figure the odometer must NOT find. */
+/* .fig-n, 3.68: .stat-n's look for a figure that is not one of the band's
+   three. The counting effect it was split off from is withdrawn (3.85);
+   the class stays as named. */
 .stat-n, .fig-n {
   display: block; font-family: var(--display); font-weight: 400;
   font-size: clamp(3.1rem, 6.4vw, 4.7rem); line-height: .88;
@@ -2578,8 +2508,7 @@ footer.site a { color: var(--silver); }
    cards, beside three claim cards, so Lifetime, the review count and 12
    still land at a glance. Centred, as .stat is. The band's size would run
    "Lifetime" about 320px wide into a card with about 297px inside it at
-   1440, so a card sets its own; the line-height stays the band's .88em,
-   which is the step site.js's odometer rolls on. */
+   1440, so a card sets its own; the line-height stays the band's .88em. */
 .card-figure { text-align: center; }
 .card-figure .stat-n, .card-figure .fig-n { font-size: clamp(2.6rem, 4.4vw, 3.6rem); }
 
