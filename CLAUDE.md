@@ -952,6 +952,18 @@ None is a thing to remember: the audit fails a page whose asset stamp is
 stale, whose `<url>` block is missing, or whose business node's served list
 is not `AREA_SERVED` (3.79), or whose chrome differs from every other page's (3.83).
 
+## Reporting a stop, 2026-09-30
+
+**Every mid-run stop ends with a section titled `===== RELAY TO THE
+STRATEGY CHAT =====`**, holding only what a ruling requires: the question,
+the options, and the measurements behind them. Everything above that
+section is for the record, not for relay. Standing instruction from the
+strategy chat.
+
+**A completed run needs no relay beyond "pushed".** The strategy chat pulls
+the commit and reads `proposed-changes.md` directly, so nothing in the
+record is retyped for it.
+
 ## GitHub Pages
 
 **Off, on purpose.** Turning it on before cutover would publish an empty

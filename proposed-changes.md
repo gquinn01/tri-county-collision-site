@@ -13930,8 +13930,8 @@ fixed .667em window. Plain text keeps Archivo Black's -.025em tracking,
 so each figure is about 1.5px narrower at 1440. The glyphs are the same
 glyphs, sitting slightly tighter.
 
-**FINDING, for Greg's eye: on the town pages at 1440, pixels move below
-the band.**
+**FINDING, RULED 2026-09-30: on the town pages at 1440, pixels move below
+the band. ACCEPTED, option 1, on the strategy chat's ruling.**
 - **The cause.** The odometer window was .88em of 57.6px, which Chrome's
   layout units round to 50.6875px. Plain text lays out at 50.6719px, the
   exact height row two's `.fig-n` words already had. So each figure card
@@ -13942,16 +13942,22 @@ the band.**
   line of text, a chevron or a hairline sat on a pixel-row edge, it
   re-rasterises. Reduced-motion shots at 1440, outside the band and
   outside photographs:
-  - Richboro and Willow Grove: 0 pixels;
+  - Richboro and Willow Grove: 0 pixels, the two towns whose content
+    happened not to sit on a pixel edge;
   - the other ten: between 605 and about 19,100 pixels;
   - Huntingdon Valley is the largest, where the map's labels and its
     ODbL credit re-rasterise too.
 - **Deterministic.** dd65c35 against itself, and 3.85 against itself,
   are pixel-identical.
-- **Not patched, deliberately.** The only way back to identical pixels is
-  pinning `.stat-n` to the dead odometer's window height, which keeps a
-  withdrawn effect's geometry alive. As it stands, rows one and two of the
-  card grid are now exactly the same height, which dd65c35's were not.
+- **Untouched:** phone widths, every page's fold margin, and every page
+  height.
+- **THE RULING: accept, and do not pin.** The 50.6875px was the
+  odometer's own cell-rounding artifact, not a design decision. Plain
+  text's 50.6719px is the natural height, and the two figure rows now
+  match exactly, which they never did under the effect. Pinning `.stat-n`
+  to the old height would keep the withdrawn effect's geometry alive in
+  the stylesheet: dead law in pixel form, the disease 3.41 named.
+  **The record is closed.**
 
 **Home and the four service pages at 1440** change inside the band only:
 every box outside it sits exactly where it did.
