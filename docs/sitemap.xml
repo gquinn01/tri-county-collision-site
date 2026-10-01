@@ -3,6 +3,10 @@
      script. Each lastmod is the page's own schema dateModified. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://tricountycollision.com/adas-calibration/</loc>
+    <lastmod>2026-10-01</lastmod>
+  </url>
+  <url>
     <loc>https://tricountycollision.com/adas-calibrations-after-a-crash/</loc>
     <lastmod>2025-09-24</lastmod>
   </url>

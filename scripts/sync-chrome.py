@@ -16,7 +16,11 @@ its main menu on 2026-09-29:
 
     Collision Services      a dropdown: Collision Repair, Commercial
                             Collision Repair, Glass Repair & Replacement,
-                            Paintless Dent Repair
+                            Paintless Dent Repair, and ADAS Calibration,
+                            which the live nav does not carry because the
+                            live site has no ADAS page. It slots in last,
+                            under its page's own H1 words, as 3.83 ruled
+                            it would (3.86)
     Areas We Serve          the parent links to the hub; the dropdown lists
                             every routed town, alphabetically
     Authorization Forms     the live nav's DocuSign PowerForm, new tab
@@ -54,11 +58,14 @@ PHONE_TEXT = "(215) 322-5350"
 EMAIL = "contact@tricountycollision.com"
 
 # The live nav's labels, word for word, and the pages they land on here.
+# ADAS Calibration is the one exception: the live site has no ADAS page, so
+# its label is the page's own H1 subject (3.86).
 SERVICES = (
     ("collision-repair/", "Collision Repair"),
     ("commercial-collision-repair/", "Commercial Collision Repair"),
     ("auto-glass-repair-replacement/", "Glass Repair & Replacement"),
     ("paintless-dent-repair/", "Paintless Dent Repair"),
+    ("adas-calibration/", "ADAS Calibration"),
 )
 HUB = ("areas-served/", "Areas We Serve")
 CONTACT = ("contact-us/", "Contact Us")
@@ -172,8 +179,8 @@ def render(page: str) -> tuple:
         </div>
         <div>
           <!-- These columns list only pages that exist. They grow as pages
-               land, and never before. EXPLORE IS THE FULL MAP (3.83): the
-               four services, the hub, the blog and contact, so no page is a
+               land, and never before. EXPLORE IS THE FULL MAP (3.83): every
+               service page, the hub, the blog and contact, so no page is a
                dead end from its foot. Privacy joins it when it ships. The
                labels are the nav's, so each destination has ONE name
                across the chrome. -->

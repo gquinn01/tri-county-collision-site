@@ -1575,9 +1575,10 @@ def main():
         return f"<html><body>\n  {head if head is not None else h}\n{body}\n  {foot if foot is not None else f}\n</body></html>"
     stub = ('<html><head><meta http-equiv="refresh" content="0; url=../collision-repair/"></head>'
             '<body><p>Moved.</p></body></html>')
-    good_keys = ["index.html", "collision-repair/index.html", "contact-us/index.html", "blog/index.html",
-                 "areas-served/index.html", "auto-glass-repair-replacement/index.html",
-                 "commercial-collision-repair/index.html", "paintless-dent-repair/index.html"] + \
+    # The service pages come from the generator's own SERVICES, not a typed
+    # list: a typed list missed /adas-calibration/ the day it landed (3.86).
+    good_keys = ["index.html", "contact-us/index.html", "blog/index.html", "areas-served/index.html"] + \
+                [f"{t}index.html" for t, _ in sc.SERVICES] + \
                 [f"areas-served-collision-repair-{k}/index.html" for k in audit.TOWN_ROUTES]
 
     def site(**over):

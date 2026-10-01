@@ -2250,6 +2250,14 @@ footer.site a:focus-visible,
   transform: rotate(-45deg);
 }
 .ticks strong { display: block; }
+/* A LIST INSIDE A RUN OF PROSE, 3.86. /adas-calibration/'s "required after:"
+   list is one sentence broken into items, so it reads down one column, sits
+   in the prose's own 70ch measure, and keeps a paragraph's spacing on both
+   sides. Two columns would read a sentence across a gutter. A MODIFIER, NOT
+   .prose .ticks: /commercial-collision-repair/'s #fleet already nests a
+   .ticks list of vehicle types in prose, two-up at desktop, and that is
+   its own decision to keep. */
+.prose .ticks--run { grid-template-columns: 1fr; margin: 0 0 1.1em; }
 
 /* ---------- Ordered steps in prose, the what-to-do-next list ---------- */
 .numbered { counter-reset: n; list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }

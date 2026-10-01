@@ -13997,6 +13997,244 @@ path. The odometer's own spans inside a `.stat-n` are excluded, since
   100; sameAs the only warning; zero criticals; 834 passing.**
 - No em dash and no banned digits added.
 
+### 3.86 The ADAS page: the 37th indexable page, Greg's copy. BUILT 2026-10-01, HERO IS SCAFFOLDING
+
+**Greg's ruling of 2026-10-01: build `/adas-calibration/`, and all
+calibration is in-house.** The copy is his, approved, and ships verbatim. It
+is the first service page that is not a migration, because the live site
+has no ADAS page. `pagemap.md`'s ADAS row flips from candidate to built on
+his ruling. **Its gate named two conditions**: Keyword Planner demand and
+the owner's in-house confirmation.
+This build rests on Greg's ruling for both. The repo holds no Keyword
+Planner figure, and the owner's confirmation is question 36.
+
+**The stop and the rulings, 2026-10-01.** This run stopped once, before
+commit, on two questions the brief did not settle, and a third it raised.
+The strategy chat ruled:
+
+1. **The hero: a licensed ADAS photograph, and not the glass page's
+   stock.** Greg licensed AdobeStock_345981008 the same sitting. It
+   arrived, and it is **not a photograph**:
+   - **It is a vector illustration:** cars on a HUD grid, their sensor
+     fields drawn around them.
+   - **Its metadata:** creator tool Adobe Illustrator CC 2017 (Windows),
+     with an Adobe C2PA manifest.
+   - **No `digitalSourceType`.** The audit's provenance reader returns no
+     reason to refuse it, so it is clean under rule 9.
+   - **Every hero is text over a photograph** (rule 1, amended 2026-09-10),
+     and the ruling asked for "a real ADAS photograph". An illustration as
+     a hero is a departure for its own ruling. 3.22's licensed render was a
+     band, not a hero.
+
+   It did not enter the repo. **So the ruling's other branch was taken**:
+   the built page is committed with the glass page's interim stock in
+   place, **RECORDED AS SCAFFOLDING.** It is not the approved hero. The
+   licensed image replaces it in the next commit, and **this page is not
+   reviewed, previewed or announced until it does.** The hero's comment
+   says so in the same words.
+
+   **Measured in a scratch copy, for that ruling:** a centred 3:2 crop at
+   1200x800 (275KB), in the ox hero. The fold is identical to the
+   scaffolding's at every width (10, 98 and 276), because the hero's
+   geometry does not depend on its image. The type reads on the scrim, and
+   at 1440 the right of the frame keeps a car and its sensor fields. **The
+   glyph-run contrast measurement (3.20's method) is owed** the day it is
+   ruled in.
+2. **The promise band: the line as built and measured.** "We will get you
+   back on the road with every camera and sensor aimed where the
+   manufacturer aimed it." It keeps the shared frame and completes it with
+   the lead's own words. Home's "pre-accident" reads wrong for windshield
+   work, as it did on glass (3.47, 3.51).
+3. **The two FAQ openers are corrected under the standalone law.** The
+   pairs are below.
+
+#### Fitting the copy, without rewording
+
+- **Structure:** the hero (crumb, H1, the lead, the CTA pair, the four
+  proof chips), the phone proof strip and the stat band, all byte for byte
+  the site's own. Then the six approved sections in order, the act band
+  with the why list, the closing paragraph, the promise band, and the FAQ
+  last.
+- **No eyebrow.** The approved H1 carries "Southampton, PA", which is what
+  every other service page's eyebrow says. An eyebrow repeating the
+  headline under it is furniture, and dropping it adds no words.
+- **Headings in the site's title case**, words unchanged: "What ADAS
+  Actually Is", "Why Calibration Exists", "When Calibration Is Required",
+  "Static, Dynamic, or Both", "Done In-House, as Part of the Repair",
+  "Insurance and What It Costs".
+- **Two headings the copy does not give, taken from the glass page's
+  pattern:** "Why Choose Tri-County Collision for ADAS Calibration" and
+  "ADAS Calibration FAQ". Pattern text, listed here for Greg's eye.
+- **The promise headline:** ruled, see above.
+- **Grounds alternate** so that no two neighbours share one: white stat
+  band, silver, ink, panel, silver, ink, panel, ox (#why), silver (the
+  closing paragraph, no heading, as the copy gives it none), ox (#start),
+  silver (FAQ).
+- **The "required after:" list** wears `.ticks` with a new modifier,
+  `.ticks--run`. It is one sentence broken into items, so it reads down
+  one column, inside the prose's 70ch measure, with a paragraph's spacing
+  on both sides.
+  - Without the modifier, at 1440 it broke out of the prose column into
+    two columns.
+  - It is a modifier rather than `.prose .ticks` because
+    `/commercial-collision-repair/`'s `#fleet` already nests a two-up
+    `.ticks` list in prose. A bare rule would have changed that page.
+  - `site.css` and `site.js` were restamped.
+- **Schema:** the business node, synced (`sync-area-served.py` wrote
+  nothing, already current). A Service node, "ADAS Calibration", under the
+  business `@id`; its description is the approved meta without the phone.
+  WebPage, a BreadcrumbList mirroring Home / ADAS Calibration, and a
+  FAQPage whose six answers are byte-identical to the visible ones.
+- **Title 58, meta 150, machine-counted.** The brief counted the meta at
+  156; the machine says 150, under 160 either way.
+
+#### The asks, measured at 360 and 390
+
+The approved copy runs about 5,400px at 390 between the hero's call and the
+act band's. Four placements of section-foot asks were measured (the hero's
+CTA pair, verbatim):
+
+```
+placement at 390                              runs between in-page asks
+#why-calibration + #static-dynamic   (TAKEN)  2,135  1,639  1,991
+#why-calibration + #in-house                  2,135  2,224  1,386
+#what-adas-is + #when-required + #in-house    1,513  1,536  1,456  1,386
+#why-calibration + #when-required             2,135    932  2,660
+```
+
+**As shipped** (the list spacing included):
+- **At 390:** hero 504, `#why-calibration` 2,639, `#static-dynamic` 4,278
+  and `#why` 6,269. The runs are 2,135, 1,639 and 1,991, every one inside
+  the site's 1,634 to 2,684.
+- **At 360:** the runs are 2,216, 1,752 and 2,018.
+- **The tail:** the closing paragraph's inline call sits 376 below `#why`,
+  and `#start` 360 below that. This is the tail cluster every service page
+  has.
+
+#### The fold and horizontal scroll
+
+```
+width   first call row's margin inside the first screen   h1 lines   hscroll
+360x640                 10                                    4          0
+390x664                 98                                    3          0
+1440x900               276                                    2          0
+```
+
+The full four-sentence lead stays in the hero: it fits the 360 fold, so it
+needed no split.
+
+#### ONE FACT, ONE STORY: the ADAS post
+
+**The post's step 3, "In-house or partner scheduling", is superseded by the
+ruling.** It now renders in-house, and it links to the new page.
+
+| | Before | After |
+|---|---|---|
+| label | In-house or partner scheduling | In-house scheduling |
+| text | We perform many calibrations on site; for brand-specific targets or equipment, we coordinate with our vetted calibration partner or dealer. | We perform [ADAS calibration](../adas-calibration/) in-house at our Southampton facility. |
+
+The after is the ADAS page's own first in-house sentence, word for word.
+**Both pairs are in `migrate-blog.py`'s edit table**, so a re-migration
+reproduces them.
+
+**The live cache is no longer on this machine (3.83),** so the shipped page
+was edited with the identical pairs. Each before matched exactly once. The
+migrator applies edits after link mapping, so its inserted link survives a
+re-run. Whether each before matches the uncached source exactly once can
+only be proved the day the cache is re-fetched.
+
+**Not changed, for Greg's eye:**
+- The post's dateModified stays the live post's, by the migrator's DATES
+  ARE FACTS rule.
+- The post's timing line ("Same-day to 1 to 3 business days", written
+  with a dash in the post) and the page's FAQ ("Some take under an hour and some
+  add several hours to a repair") describe different spans: the whole
+  visit against the calibration. They are not a contradiction, but a
+  reader may compare them.
+- The rest of the post still says the shop "coordinates" calibration,
+  which is still true in-house.
+
+#### The glass page links to it
+
+- **`#adas`'s "ADAS recalibration" is now a link.** It sits in the in-house
+  sentence, so the live page's wording is unchanged.
+- **The why list's "ADAS recalibration" item is a link too.**
+- **The FAQ answer is left unlinked.** It mirrors its acceptedAnswer, and
+  the mirror is text.
+
+#### The chrome
+
+**`SERVICES` gains "ADAS Calibration", last**, as 3.83 ruled it would slot
+in. It is the one nav label not taken from the live nav, because the live
+site has no ADAS page: the label is the page's own H1 subject. The script's
+docstring says so.
+- The nav dropdown and the footer's Explore column carry it on every page:
+  37 pages regenerated.
+- The service-page template's `{{ROOT}}` chrome gains it in both places.
+- The Explore comment's "four services" became "every service page", so
+  it cannot go stale again.
+
+**`test-audit-checks.py` section 33's fixture typed its service pages and
+failed when this page landed:** every chrome link to it read as a dead
+link. The fixture now takes them from `sync-chrome.py`'s own `SERVICES`.
+
+#### llms.txt, the sitemap, pagemap.md
+
+- **llms.txt** gains the page under Key pages, after commercial.
+- **The sitemap** is 36 to 37 (`build-sitemap.py`).
+- **`pagemap.md`:** the ADAS row reads BUILT, its gate is struck rather
+  than deleted, and Counts moves to its 38-with-ADAS branch: 38 indexable
+  once privacy ships, 37 in the sitemap until then.
+- **Not changed:** home's llms.txt entry and the town pages say "four
+  services". On home that is still literally the router grid, and on the
+  towns it is the four cards they show. Whether ADAS joins either grid is
+  Greg's call, not this run's.
+
+#### Editorial pass on the new page
+
+- **T1 to T9:** no self-reference, and no sentence over 35 words (machine
+  count). No em or en dash. No banned number, and no `info@`.
+- **The FAQ standalone test.** Four openers survive the lift. **Two did
+  not.** The approved copy failed the law twice, and these corrections were
+  applied on the ruling, in the visible answer and its acceptedAnswer
+  alike:
+
+| Q | Before (opener) | After, APPLIED |
+|---|---|---|
+| How long does ADAS calibration take? | It depends on the vehicle and on whether the procedure calls for a static calibration, a dynamic one, or both. | How long ADAS calibration takes depends on the vehicle and on whether the procedure calls for a static calibration, a dynamic one, or both. |
+| What does ADAS calibration cost? | It depends on which systems your vehicle carries and what the factory procedure requires, so an honest answer starts with your VIN, not a flat rate. | What ADAS calibration costs depends on which systems your vehicle carries and what the factory procedure requires, so an honest answer starts with your VIN, not a flat rate. |
+
+  "It" has no antecedent once the question is gone (T5). "Driving fine is
+  not the test" lifts thinly too, but it reads true alone and is protected
+  voice.
+- **A site-wide observation, not this page's to fix:** an inline phone
+  link in prose can break at its hyphen. This page's closing paragraph
+  does at 1440 ("322-" / "5350"). No inline tel link on the site carries
+  `nowrap`, so a fix is a sweep.
+
+#### The layout sweep against bf26a91, every page, 1440, 390 and 360
+
+- **Every page:** the header changes by its hidden dropdown item, and the
+  footer by one Explore line (+39px at phone widths, +0 at 1440, where the
+  column is not the tallest).
+- **`main` is identical everywhere except two pages:**
+  - **the glass page:** its two new link elements, with nothing moving;
+  - **the ADAS post:** below the edited passage everything rises 28px at
+    1440 and 56px at phones, and nothing above it moves. Its first call
+    was already below the first screen and still is.
+- **Fold margins:** unchanged on every other page.
+- **Horizontal scroll:** zero everywhere.
+
+#### The suite
+
+- Both test scripts pass. `test-audit-checks.py` holds 336 checks: the
+  fixture changed its source, not its count.
+- `stamp-assets.py`, `build-sitemap.py`, `sync-area-served.py` and
+  `sync-chrome.py --check` all exit 0.
+- `STAGING=1 audit.py --strict`: **15 pages at 95, 22 at 96 (the new page
+  is one), 2 stubs at 100; sameAs the only warning; zero criticals; 857
+  passing** (834 plus the new page's 23).
+
 ---
 
 ## 4. The claims list
@@ -14313,6 +14551,7 @@ this shop.**
 | `/auto-glass-repair-replacement/` | `hero-windshield-replacement-in-shop.jpg` | AdobeStock_64691325 | 3.47 |
 | `/paintless-dent-repair/` | `hero-dent-lifter-on-red-door.jpg` | AdobeStock_1571353580 | 3.48 |
 | `/commercial-collision-repair/` | `hero-wrecked-work-van.jpg` | AdobeStock_430555209 | 3.49 |
+| `/adas-calibration/` | `hero-windshield-replacement-in-shop.jpg`, **SCAFFOLDING**, the glass page's file | AdobeStock_64691325; its replacement is ruled, the licensed AdobeStock_345981008 is an illustration and awaits its own ruling | 3.86 |
 
 **The shoot list gains one photograph per page**, each showing that service's
 own work at this shop:
@@ -14521,6 +14760,27 @@ Greg as well as the owner.
   ASE/I-CAR Gold.
 - **Post 13: "Our certified technicians."**
 
+### 4.13 Claims the ADAS page adds (3.86)
+
+Greg's approved copy, shipped on his ruling. **The owner has confirmed none
+of it yet.** Owner question 36 covers it.
+
+- **All calibration is performed in-house** at the Southampton facility,
+  "as part of the repair": no dealer and no partner.
+- **Static calibration in the shop**: a level floor, measured distances,
+  calibration targets. That is a claim about equipment the shop owns.
+- **Dynamic calibration** on a prescribed route.
+- **The factory procedure is pulled for every vehicle**, and for every
+  calibration.
+- **A pre-scan and post-scan on every calibration, documented**, and "you
+  get the documentation".
+- **Timing:** "some take under an hour and some add several hours", and the
+  time is built into the repair schedule.
+- **Insurance:** the shop handles calibration on the claim with the
+  insurer.
+- **"We work on foreign and domestic vehicles alike"**, beside the twelve
+  certifications already checked (BRANDS).
+
 ### 4.12 Claims the hub adds (3.79)
 
 The areas hub migrated from the live page. Every claim below is on the
@@ -14696,3 +14956,9 @@ Ordered by how much else depends on it.
 35. **Is the Authorization Forms link current?** The nav carries the live
     nav's DocuSign PowerForm, carried over exactly (3.83). If the owner has
     retired it, the item comes out of the nav by ruling, not silently.
+36. **Is all ADAS calibration performed in-house, and since when?** Greg
+    ruled it on 2026-10-01 and `/adas-calibration/` is built on it (3.86).
+    The ruling supersedes the live post's "many on site" and its partner
+    or dealer. Scott, as fact-checker of record, confirms the scope (every
+    system and every make, static and dynamic, or which exceptions) and
+    the start date, before cutover. The claims the page makes are in 4.13.

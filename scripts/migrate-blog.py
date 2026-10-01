@@ -225,6 +225,16 @@ POSTS = {
             ('<a href="../auto-glass-repair-replacement/">', '<a href="../auto-glass-repair-replacement/#adas">',
              "the brief's ruling: the ADAS post stays a post and links to the glass page's ADAS "
              "section today, and to an ADAS page only if that page ever clears its gate"),
+            ("<strong>In-house or partner scheduling</strong>", "<strong>In-house scheduling</strong>",
+             "ONE FACT, ONE STORY (3.86): Greg's ruling of 2026-10-01 is that all calibration is "
+             "in-house, so the step's label loses the partner half"),
+            ("We perform many calibrations on site; for brand-specific targets or equipment, we "
+             "coordinate with our vetted calibration partner or dealer.",
+             'We perform <a href="../adas-calibration/">ADAS calibration</a> in-house at our '
+             "Southampton facility.",
+             "ONE FACT, ONE STORY (3.86): the all-in-house ruling supersedes the live post's "
+             "\"many on site\" and its partner or dealer; the after is the ADAS page's own first "
+             "in-house sentence, word for word, and links to that page, which cleared its gate"),
         ]),
 }
 
