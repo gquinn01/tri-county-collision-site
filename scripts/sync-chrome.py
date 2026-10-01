@@ -57,16 +57,10 @@ PHONE_TEL = "tel:+12153225350"
 PHONE_TEXT = "(215) 322-5350"
 EMAIL = "contact@tricountycollision.com"
 
-# The live nav's labels, word for word, and the pages they land on here.
-# ADAS Calibration is the one exception: the live site has no ADAS page, so
-# its label is the page's own H1 subject (3.86).
-SERVICES = (
-    ("collision-repair/", "Collision Repair"),
-    ("commercial-collision-repair/", "Commercial Collision Repair"),
-    ("auto-glass-repair-replacement/", "Glass Repair & Replacement"),
-    ("paintless-dent-repair/", "Paintless Dent Repair"),
-    ("adas-calibration/", "ADAS Calibration"),
-)
+# The service family is audit.SERVICES, the one list (3.87): the nav, the
+# footer and every body enumeration take it from there, and the audit fails
+# any enumeration that is not the whole family.
+SERVICES = audit.SERVICES
 HUB = ("areas-served/", "Areas We Serve")
 CONTACT = ("contact-us/", "Contact Us")
 BLOG = ("blog/", "Blog")

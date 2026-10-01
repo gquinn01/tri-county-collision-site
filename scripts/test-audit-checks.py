@@ -1659,6 +1659,70 @@ def main():
     check("     exactly one frame declares an illustration, the one the ruling names",
           [k for k, f in ph.FRAMES.items() if f.get("illustration")] == ["adas"], None)
 
+    # EVERY SERVICE ENUMERATION IS THE WHOLE FAMILY, 3.87. Mutation-proven
+    # both ways on the shipped pages: the full set passes, and each way of
+    # half-adding a service fails.
+    print("35. Every service enumeration carries the whole family in SERVICES")
+    def _page(rel):
+        with open(os.path.join(audit.SITE_DIR, rel, "index.html"), encoding="utf-8") as fh:
+            return fh.read()
+    def _meta(h):
+        m = re.search(r'<meta name="description" content="([^"]*)"', h)
+        return audit.unescape(m.group(1)) if m else ""
+    home, town = _page(""), _page("areas-served-collision-repair-bensalem-pa")
+    hub, blog = _page("areas-served"), _page("blog")
+    n, probs = audit.service_enumeration_findings(home, "", _meta(home))
+    check("     home as shipped: its card grid, its count and its two sentences all pass", probs == [] and n >= 4, (n, probs))
+    n, probs = audit.service_enumeration_findings(town, "areas-served-collision-repair-bensalem-pa/", _meta(town))
+    check("     a town's What we fix grid as shipped passes", probs == [] and n == 1, (n, probs))
+    n, probs = audit.service_enumeration_findings(hub, "areas-served/", _meta(hub))
+    check("     the hub's migrated sentence as shipped passes", probs == [] and n == 1, (n, probs))
+    n, probs = audit.service_enumeration_findings(blog, "blog/", _meta(blog))
+    check("     /blog/'s topic list (three services among post topics) is not an enumeration", probs == [] and n == 0, (n, probs))
+    card = re.search(r'\s*<a class="svc-card" href="adas-calibration/">.*?</a>', home, re.S).group(0)
+    _, probs = audit.service_enumeration_findings(home.replace(card, ""), "", _meta(home))
+    check("     home with its ADAS card dropped fails", any("lack ADAS Calibration" in x for x in probs), probs)
+    tcard = re.search(r'\s*<a class="svc-card" href="../paintless-dent-repair/">.*?</a>', town, re.S).group(0)
+    _, probs = audit.service_enumeration_findings(town.replace(tcard, ""), "areas-served-collision-repair-bensalem-pa/")
+    check("     a town with any one card dropped fails", any("lack Paintless Dent Repair" in x for x in probs), probs)
+    _, probs = audit.service_enumeration_findings(home.replace("Five services, one shop", "Four services, one shop"), "")
+    check("     a count typed as four fails", any("counts 4 services" in x for x in probs), probs)
+    _, probs = audit.service_enumeration_findings(home.replace(" ADAS calibration,", ""), "")
+    check("     home's sentence without ADAS calibration fails", any("names 4 services in words" in x for x in probs), probs)
+    _, probs = audit.service_enumeration_findings(home, "", _meta(home).replace(", ADAS", ""))
+    check("     home's meta description without ADAS fails", any("names 4 services" in x for x in probs), probs)
+    _saved = audit.SERVICES, audit.SERVICE_PATHS, dict(audit.SERVICE_TEXT_RE)
+    try:
+        audit.SERVICES = _saved[0] + (("towing/", "Towing"),)
+        audit.SERVICE_PATHS = tuple(p_ for p_, _l in audit.SERVICES)
+        audit.SERVICE_TEXT_RE["towing/"] = re.compile(r"\btowing\b", re.I)
+        _, probs = audit.service_enumeration_findings(home, "", _meta(home))
+        check("     a sixth service in SERVICES fails home everywhere it enumerates: cards, count, sentences",
+              any("lack Towing" in x for x in probs) and any("counts 5 services" in x for x in probs)
+              and sum("names 5 services in words" in x for x in probs) == 2, probs)
+        _, probs = audit.service_enumeration_findings(town, "areas-served-collision-repair-bensalem-pa/")
+        check("     ... and every town's grid", any("lack Towing" in x for x in probs), probs)
+    finally:
+        audit.SERVICES, audit.SERVICE_PATHS = _saved[0], _saved[1]
+        audit.SERVICE_TEXT_RE.clear(); audit.SERVICE_TEXT_RE.update(_saved[2])
+    with _tempfile.TemporaryDirectory() as td:
+        with open(os.path.join(audit.SITE_DIR, "llms.txt"), encoding="utf-8") as fh:
+            llms = fh.read()
+        open(os.path.join(td, "llms.txt"), "w").write(llms)
+        ps, fs = [], []
+        audit.check_service_count_llms_local(ps, fs, td)
+        check("     llms.txt as shipped counts the family", fs == [] and len(ps) == 1, (ps, fs))
+        open(os.path.join(td, "llms.txt"), "w").write(llms.replace("the five\n  services", "the four\n  services", 1))
+        ps, fs = [], []
+        audit.check_service_count_llms_local(ps, fs, td)
+        check("     llms.txt with one town's count typed as four fails, across a line wrap", len(fs) == 1, (ps, fs))
+    _spec = _ilu.spec_from_file_location("build_town_t", os.path.join(os.path.dirname(os.path.abspath(__file__)), "build-town.py"))
+    btm = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(btm)
+    check("     build-town.py has a What we fix card for every service, and only those",
+          sorted(btm.FIX_CARDS) == sorted(audit.SERVICE_PATHS), sorted(btm.FIX_CARDS))
+    check("     sync-chrome.py's SERVICES IS audit.SERVICES, not a copy", sc.SERVICES is audit.SERVICES, None)
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} check(s) failed:")

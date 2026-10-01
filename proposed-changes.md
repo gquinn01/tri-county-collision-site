@@ -14301,6 +14301,174 @@ link. The fixture now takes them from `sync-chrome.py`'s own `SERVICES`.
   is one), 2 stubs at 100; sameAs the only warning; zero criticals; 857
   passing** (834 plus the new page's 23).
 
+### 3.87 ADAS joins every service enumeration, and the family is one list. BUILT 2026-10-01
+
+**Greg's ruling: ADAS appears everywhere the site enumerates its services.**
+Fix the instance and kill the class.
+
+#### The mechanism first
+
+- **`audit.SERVICES` is the one list of the family.** It holds five
+  (path, nav label) pairs, beside the other constants.
+  - `sync-chrome.py` imports it rather than owning a copy. The chrome is
+    byte-identical after the move (`--check` exits 0).
+  - `build-town.py` builds What we fix from it. Its card words live in
+    `FIX_CARDS`, and the script stops if any service in the family has no
+    card.
+  - `COUNT_WORDS` derives every typed count. Nothing types "five".
+- **The audit fails any service enumeration that is not the whole
+  family.** It reads `<main>` and the meta description, in three shapes:
+  - **a card grid:** two or more `svc-card` links to service pages under
+    one parent must carry every service, once each;
+  - **a count typed beside "services":** it must be the family's size;
+  - **one sentence naming all but one of the family in words, or more:**
+    it must name them all. That is the half-added shape exactly.
+    **Three of five is not the bar.** `/blog/`'s lead names collision
+    repair, dent repair and ADAS calibration among its post topics, which
+    is not an enumeration, and a three-of-five bar flagged it.
+  - The chrome is not read here, because `check_chrome_local` holds it
+    and it is generated from the same list.
+- **`llms.txt`'s count is a site-level check:** whitespace-normalised, so
+  a count split across a line wrap is still read.
+- **A page reports a pass only where it enumerates**, so pages without an
+  enumeration keep their denominators and their scores.
+- **Mutation-proven both ways** (`test-audit-checks.py` section 35, 15
+  checks):
+  - **as shipped, these pass:** home, a town, the hub, `/blog/`'s topic
+    list and `llms.txt`;
+  - **each of these fails:** the ADAS card dropped from home, any card
+    dropped from a town, the count typed as four, home's sentence or meta
+    without ADAS, and one town's `llms.txt` count typed as four across a
+    wrap;
+  - **a sixth service added to `SERVICES`** fails home in all four places
+    (cards, count, both sentences) and every town's grid;
+  - `FIX_CARDS` is exactly the family, and `sync-chrome.py`'s `SERVICES`
+    is the same object.
+
+#### The inventory, found mechanically before editing
+
+An HTML parser recorded every service link in `<main>` with its section
+and its container. A second pass found sentences naming services in words,
+because bare-text lists hide from link scans.
+
+| Where | Shape | Before | Joins the sweep |
+|---|---|---|---|
+| `/` `#services` | card grid, `svc-cards` | 4 | yes |
+| `/` `#services` sub line | typed count | "Four services, one shop" | yes |
+| `/` `#who-we-are` | sentence | 4 named | yes |
+| `/` meta, og:description, WebPage description | sentence | 4 named | yes |
+| 12 town pages `#fix` | card grid, `grid2` | 4 | yes |
+| `/areas-served/` | migrated sentence | 4 named | yes |
+| `llms.txt` | typed count | "four services" x13 | yes |
+| `/adas-calibrations-after-a-crash/` | two contextual prose links | 2 | **no:** links in a sentence, not a list |
+| `/blog/` lead and meta | post topics | 3 named | **no:** topics, not services |
+| the four service pages | none | none | **no:** the brief expected cross-link lists; the parser finds no section on any service page linking two or more siblings, so none was added |
+| `/contact-us/` | none | none | no |
+
+#### The pairs
+
+| Where | Before | After |
+|---|---|---|
+| home, sub line | Four services, one shop | Five services, one shop |
+| home, `#who-we-are` | …we also handle auto glass, paintless dent repair, and commercial fleets. | …we also handle auto glass, paintless dent repair, ADAS calibration, and commercial fleets. |
+| home, meta (and og, and the WebPage description) | Collision repair, auto glass, dent repair & fleet work. | Collision repair, auto glass, dent repair, ADAS & fleet work. |
+| hub, migrated sentence | …paintless dent repair, towing assistance, rental coordination, and more. | …paintless dent repair, ADAS calibration, towing assistance, rental coordination, and more. |
+| `llms.txt`, home and 12 towns | four services | five services |
+
+- **The meta takes "ADAS", not "ADAS calibration", for Greg's eye.** The
+  full phrase runs to 172. "ADAS" lands at **exactly 160**, keeping every
+  other word. It reads "ADAS & fleet work", and the two nouns share
+  "work".
+- **The hub's pair is in `migrate-hub.py`'s `BEYOND`**, its reason
+  extended. **Proved on the cached live hub (`live377/hub.html`, still on
+  this machine):**
+  - the unmodified migrator reproduced the shipped hub **byte for byte**;
+  - the edited one differs by that one line only.
+
+#### The ADAS card
+
+**The approved copy:** "ADAS Calibration" and "Cameras and sensors
+re-aimed to factory spec after repairs.", the approved meta's own words.
+It links to `/adas-calibration/` and is the same rendering in both grids.
+
+- **The towns:** the card is generated. All twelve were rebuilt in a
+  scratch copy with each shipped map restored between its MAP markers.
+  **Each differs from its shipped page by exactly the six-line card,** and
+  those are the files installed. `llms.txt` came from the same run.
+- **Home:** the card is appended last; home keeps its own card order, and
+  the check holds the set, not the order.
+  - **Home's cards carry photographs, so this one needs an image.** It
+    reuses `hero-adas-sensor-fields-illustration.jpg`, the same file and
+    the same alt, so no asset is added.
+  - **This extends the 3.86 amendment's illustration from its page's hero
+    to the card that stands for that page,** for the same reason: the
+    subject is invisible to a camera. **It is recorded here for Greg's
+    eye.**
+- **The router comment** said "One card is a real link and three are
+  not". It has been false since the service pages landed, and now
+  describes what is there.
+
+#### What the fifth card does to each grid, rendered
+
+```
+                  360           390           1440
+home  #services   1 column      1 column      4 across + 1 centred (was pinned left)
+towns #fix        1 column      1 column      2, 2, 1 centred (3.55's rule, already there)
+```
+
+- **Home's lone card was pinned left** at 1440 (x 180) and between 760
+  and 1119.
+- **3.55's ruling governs that case,** so `.svc-cards` now uses `.grid2`'s
+  construction: twice the tracks, every card spanning two. A lone last
+  card starts at track 2 of 4 in the two-up state, or track 4 of 8 in the
+  four-up.
+- **Every card keeps its exact width:** 252 at 1440, 348 at 760, 528 at
+  1119.
+- **The lone card is centred:** its centre measures 720 at 1440, 380 at
+  760 and 560 at 1120.
+- The rule catches the one-card remainder only, which is the only
+  remainder the router has.
+
+#### The fold, the asks and the variance gate
+
+- **The fold is unchanged on every page at every width.** Nothing above
+  an enumeration moved: on home the first moved element is the router, on
+  the towns the fifth card.
+- **The towns' asks:** every run stays inside the site's 1,634 to 2,684.
+  The run crossing the cards grows 1,394 to 1,539 at 390 and 1,442 to
+  1,586 at 360.
+- **The hub:** identical at 1440 and 390. At 360 the sentence wraps one
+  more line and the run after it grows 28.
+- **Home, for Greg's eye, not changed:** the run from the hero's call to
+  `#what-we-fix`'s crosses the stat card and the router.
+  - **It was already 4,231 at 390 and 4,254 at 360 before this run,**
+    outside the site's band. Nothing in the record measures or rules on
+    home's phone rhythm.
+  - The fifth stacked card adds its own height: 4,638 and 4,639.
+  - **An added ask on the front door is a ruling, not an enumeration
+    fix,** so none was added.
+- **The variance gate is unmoved:** 13 pages, no shared substantive H2,
+  closest pair 29% before and after. The cards are excluded as pattern.
+
+#### The layout sweep against a5e5866, every page, 1440, 390 and 360
+
+- **Changed:** home, the twelve towns, and the hub at 360 only.
+- **Every other page is identical at every width,** and so is horizontal
+  scroll. `site.css` was restamped, so every page's stamp changed and
+  nothing else did.
+
+#### The suite
+
+- Both test scripts pass. `test-audit-checks.py` holds **360 checks**:
+  3.86's 345 plus section 35's 15.
+- `stamp-assets.py`, `build-sitemap.py`, `sync-area-served.py` and
+  `sync-chrome.py --check` all exit 0.
+- `STAGING=1 audit.py --strict`: **15 pages at 95, 22 at 96, 2 stubs at
+  100; sameAs the only warning; zero criticals; 872 passing.** That is
+  857 plus 15: one per enumerating page (home, the hub, twelve towns) and
+  one for `llms.txt`'s count.
+- No em dash and no banned digits added.
+
 ---
 
 ## 4. The claims list

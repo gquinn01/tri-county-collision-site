@@ -239,11 +239,13 @@ BEYOND = (
     "lifetime warranty on parts and labor. Every vehicle leaves detailed. And we use environmentally "
     "responsible products throughout the shop.",
     "Beyond collision work, we handle commercial and fleet repair, auto glass repair and replacement, "
-    "paintless dent repair, towing assistance, rental coordination, and more. Every repair carries our "
-    "lifetime warranty on all repair work. Every vehicle leaves detailed. And we use environmentally "
-    "responsible products throughout the shop.",
+    "paintless dent repair, ADAS calibration, towing assistance, rental coordination, and more. Every "
+    "repair carries our lifetime warranty on all repair work. Every vehicle leaves detailed. And we use "
+    "environmentally responsible products throughout the shop.",
     "the warranty takes its one vetted rendering, \"lifetime warranty on all repair work\" (Q3's "
-    "amendment); \"towing assistance\" migrates flagged and joins the owner questions (Q3)")
+    "amendment); \"towing assistance\" migrates flagged and joins the owner questions (Q3); ADAS "
+    "calibration joins the services named, after the four, on Greg's ruling that ADAS appears wherever "
+    "the site enumerates its services (3.87)")
 HELD_PITCH = ("Fifty-two years in one location, second generation, still family run. That's the whole pitch.",
               "HELD pending 4.5 (Q3): the 52 years and the second generation are the unconfirmed 1974 "
               "claim; without them the paragraph has nothing left to say")

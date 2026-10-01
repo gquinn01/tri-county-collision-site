@@ -32,6 +32,7 @@ import hashlib
 import json
 import math
 import os
+import posixpath
 import re
 import sys
 import urllib.parse
@@ -410,6 +411,43 @@ REVIEW_COUNT_RE = re.compile(r"\b(\d[\d,]{0,6})\s+(?:google\s+)?reviews?\b", re.
 BRAND_COUNT = 12
 BRANDS = ("INFINITI", "Nissan", "Hyundai", "Kia", "Acura", "Honda",
           "GM", "Chrysler", "Ford", "Dodge", "Subaru", "Jeep")
+
+# THE SERVICE FAMILY, 3.87. The one list of the site's service pages and
+# their nav labels. scripts/sync-chrome.py imports it for the nav dropdown
+# and the footer, scripts/build-town.py for the What we fix cards, and the
+# enumeration check below holds every page to it. A sixth service is one
+# line here; every surface that enumerates services then fails until it
+# carries the sixth too, so a service cannot be half-added. The labels
+# are the live nav's words, except ADAS Calibration, which the live site
+# never had (3.86).
+SERVICES = (
+    ("collision-repair/", "Collision Repair"),
+    ("commercial-collision-repair/", "Commercial Collision Repair"),
+    ("auto-glass-repair-replacement/", "Glass Repair & Replacement"),
+    ("paintless-dent-repair/", "Paintless Dent Repair"),
+    ("adas-calibration/", "ADAS Calibration"),
+)
+SERVICE_PATHS = tuple(p for p, _l in SERVICES)
+COUNT_WORDS = ("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
+
+# A count typed beside "services" ("Four services, one shop", "the four
+# services"). It must be the family's own size, spelled as a word.
+SERVICE_COUNT_RE = re.compile(r"\b(" + "|".join(COUNT_WORDS[1:]) + r"|\d+)\s+services\b", re.I)
+
+# A BARE-TEXT ENUMERATION: one sentence naming ALL BUT ONE of the family or
+# more, in words, with no links for a link-based scan to find. That is the
+# half-added shape exactly: a sentence written when the family was one
+# smaller. Three of five is NOT the bar, because /blog/'s lead names
+# collision repair, dent repair and ADAS calibration among its post TOPICS,
+# which is not an enumeration of services (3.87). The business name is
+# removed first, because "Tri-County Collision" is not a service.
+SERVICE_TEXT_RE = {
+    "collision-repair/": re.compile(r"\bcollision (?:repair|work)\b", re.I),
+    "commercial-collision-repair/": re.compile(r"\bcommercial\b|\bfleets?\b", re.I),
+    "auto-glass-repair-replacement/": re.compile(r"\bauto glass\b|\bglass repair\b|\bwindshields?\b", re.I),
+    "paintless-dent-repair/": re.compile(r"\bdent repair\b|\bpaintless\b|\bPDR\b", re.I),
+    "adas-calibration/": re.compile(r"\bADAS\b|\bcalibrat\w*", re.I),
+}
 
 # "12 vehicle brands", "12+ vehicle brands", "a dozen vehicle brands",
 # "Twelve manufacturers". The "+" is READ AS THE NUMBER: "12+" and "12"
@@ -2529,6 +2567,124 @@ def check_chrome_local(passes: list, fails: list, root: str = None):
                       f"page or a recorded URL.")
 
 
+class _CardGroups(HTMLParser):
+    """Every service card inside <main>, grouped by the element that holds
+    it. A card is anything whose class names svc-card and whose href or
+    data-pending-href lands on a service page."""
+    VOID = {"img", "br", "hr", "input", "meta", "link", "source", "wbr", "area", "col", "embed", "track"}
+
+    def __init__(self, page_rel: str):
+        super().__init__(convert_charrefs=True)
+        self.page_rel, self.stack, self.n, self.inmain = page_rel, [], 0, False
+        self.groups = {}
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag == "main":
+            self.inmain = True
+        cls = (a.get("class") or "").split()
+        href = a.get("href") if a.get("href") is not None else a.get("data-pending-href")
+        if self.inmain and "svc-card" in cls and href is not None and self.stack:
+            target = self.page_rel if href == "./" else \
+                posixpath.normpath(posixpath.join("/" + self.page_rel, href)).strip("/") + "/"
+            if target in SERVICE_PATHS:
+                parent = self.stack[-1]
+                self.groups.setdefault(parent, []).append(target)
+        if tag not in self.VOID:
+            self.n += 1
+            self.stack.append((self.n, tag, a.get("id") or "", " ".join(cls)))
+
+    def handle_endtag(self, tag):
+        if tag == "main":
+            self.inmain = False
+        for k in range(len(self.stack) - 1, -1, -1):
+            if self.stack[k][1] == tag:
+                del self.stack[k:]
+                break
+
+
+def _main_text_units(html_text: str) -> list:
+    """<main>'s visible text one block at a time, so a heading or a list
+    item never runs into its neighbour and forms a sentence nobody wrote."""
+    m = re.search(r"(?is)<main\b[^>]*>(.*)</main>", html_text)
+    body = m.group(1) if m else ""
+    body = re.sub(r"(?s)<!--.*?-->", " ", body)
+    body = re.sub(r"(?is)<(script|style)\b[^>]*>.*?</\1\s*>", " ", body)
+    body = re.sub(r"(?i)</?(p|li|h[1-6]|summary|figcaption|td|th|dt|dd|div|section|article|ul|ol|a)\b[^>]*>", "\n", body)
+    out = []
+    for block in visible_text_blocks(body):
+        out += [s for s in re.split(r"(?<=[.!?])\s+", block) if s]
+    return out
+
+
+def visible_text_blocks(body: str) -> list:
+    return [re.sub(r"\s+", " ", unescape(re.sub(r"(?s)<[^>]+>", " ", b))).strip()
+            for b in body.split("\n") if re.sub(r"(?s)<[^>]+>", "", b).strip()]
+
+
+def service_enumeration_findings(html_text: str, page_rel: str, meta: str = "") -> tuple:
+    """(enumerations found, problems). Three shapes, each held to the full
+    family in SERVICES (3.87): a group of service cards under one parent,
+    a count typed beside "services", and one sentence naming all but one of
+    the family or more, in words. The chrome is not read here; check_chrome_local
+    holds it, and it is generated from the same list."""
+    found, problems = 0, []
+    want = len(SERVICES)
+    p = _CardGroups(page_rel)
+    p.feed(html_text)
+    for (_n, tag, gid, gcls), targets in p.groups.items():
+        if len(set(targets)) < 2:
+            continue
+        found += 1
+        missing = [lbl for path, lbl in SERVICES if path not in targets]
+        where = f"<{tag}{' id=' + gid if gid else ''}{' class=' + gcls if gcls else ''}>"
+        if missing:
+            problems.append(f"the service cards in {where} lack {', '.join(missing)}")
+        dup = sorted({x for x in targets if targets.count(x) > 1})
+        if dup:
+            problems.append(f"the service cards in {where} repeat {', '.join(dup)}")
+    units = _main_text_units(html_text) + ([meta] if meta else [])
+    for u in units:
+        for m in SERVICE_COUNT_RE.finditer(u):
+            found += 1
+            w = m.group(1).lower()
+            n = int(w) if w.isdigit() else COUNT_WORDS.index(w)
+            if n != want:
+                problems.append(f"\u201c{m.group(0)}\u201d counts {n} services; the family is {COUNT_WORDS[want]}")
+        s = u.replace("Tri-County Collision", "")
+        named = [path for path, rx in SERVICE_TEXT_RE.items() if rx.search(s)]
+        if len(named) >= len(SERVICES) - 1:
+            found += 1
+            missing = [lbl for path, lbl in SERVICES if path not in named]
+            if missing:
+                problems.append(f"\u201c{u[:110]}\u201d names {len(named)} services in words and not "
+                                f"{', '.join(missing)}")
+    return found, problems
+
+
+def check_service_count_llms_local(passes: list, fails: list, root: str = None):
+    """llms.txt tells AI agents how many services a page shows. The count
+    word answers to the family, the same as on a page (3.87)."""
+    path = os.path.join(root or SITE_DIR, "llms.txt")
+    try:
+        text = open(path, encoding="utf-8").read()
+    except OSError:
+        return
+    text = re.sub(r"\s+", " ", text)
+    bad, n = [], 0
+    for m in SERVICE_COUNT_RE.finditer(text):
+        n += 1
+        w = m.group(1).lower()
+        if (int(w) if w.isdigit() else COUNT_WORDS.index(w)) != len(SERVICES):
+            bad.append(m.group(0))
+    for x in sorted(set(bad)):
+        fails.append(f"**`llms.txt` says \u201c{x}\u201d {bad.count(x)} time(s); the family in SERVICES is "
+                     f"{COUNT_WORDS[len(SERVICES)]}.** Derive the word from the list (3.87).")
+    if n and not bad:
+        passes.append(f"`llms.txt` counts the services as the family does, {COUNT_WORDS[len(SERVICES)]}, "
+                      f"in all {n} mentions.")
+
+
 def check_hours_llms_local(passes: list, fails: list):
     """docs/llms.txt states the hours to AI agents, so it answers to the
     same constants as every page. Same test, same severity."""
@@ -2824,6 +2980,20 @@ def audit(source: str, coverage: dict = None):
                      f"Delete the element; do not fill it with filler.")
     else:
         passes.append(f"No empty headings: all {len(p.headings)} h1 to h6 carry words.")
+
+    # --- Every service enumeration carries the whole family (3.87) ---
+    if not is_url(source):
+        _rel = os.path.relpath(os.path.dirname(os.path.abspath(source)),
+                               os.path.abspath(SITE_DIR)).replace(os.sep, "/")
+        _rel = "" if _rel == "." or _rel.startswith("..") else _rel + "/"
+        n_enum, enum_problems = service_enumeration_findings(html, _rel, d)
+        for x in enum_problems:
+            fails.append(f"**A service enumeration is not the whole family:** {x}. Every place the "
+                         f"site lists its services carries all {len(SERVICES)} in SERVICES, so a "
+                         f"service cannot be half-added (3.87).")
+        if n_enum and not enum_problems:
+            passes.append(f"All {n_enum} service enumeration(s) on the page carry the whole family of "
+                          f"{len(SERVICES)}.")
 
     # --- A Google Maps embed is the verified pin, by coordinates (3.65) ---
     # Greg's ruling of 2026-09-28: /contact-us/ embeds Google's map CENTRED
@@ -3544,6 +3714,7 @@ def main():
         check_comment_convention_local(site_warns, site_notes)
         check_pending_links_local(site_warns, site_notes)
         check_hours_llms_local(site_passes, site_fails)
+        check_service_count_llms_local(site_passes, site_fails)
     if expand_note:
         site_notes.append(expand_note)
 

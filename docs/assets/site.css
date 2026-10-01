@@ -1479,8 +1479,25 @@ section { padding: var(--pad) 0; }
    rises under a pointer and then does nothing is a promise the markup
    cannot keep. */
 .svc-cards { display: grid; gap: 24px; }
-@media (min-width: 760px)  { .svc-cards { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1120px) { .svc-cards { grid-template-columns: repeat(4, 1fr); } }
+/* A LONE LAST CARD SITS CENTRED, 3.87, by 3.55's ruling for the two-up
+   grid ("pinned left it reads as a card that lost its partner"), applied
+   here when the fifth service made the router odd. The same construction
+   as .grid2: twice the tracks, every card spanning two, so a card is
+   exactly the width it was (two tracks plus one gap) and the gap stays
+   the one value above. Two-up a lone card starts at track 2 of 4; four-up
+   it starts at track 4 of 8. It catches the one-card remainder only,
+   which is the only remainder the router has. */
+@media (min-width: 760px) {
+  .svc-cards { grid-template-columns: repeat(4, 1fr); }
+  .svc-cards > * { grid-column: span 2; }
+}
+@media (min-width: 760px) and (max-width: 1119px) {
+  .svc-cards > :last-child:nth-child(odd) { grid-column: 2 / span 2; }
+}
+@media (min-width: 1120px) {
+  .svc-cards { grid-template-columns: repeat(8, 1fr); }
+  .svc-cards > :last-child:nth-child(4n+1) { grid-column: 4 / span 2; }
+}
 .svc-card {
   display: flex; flex-direction: column; text-decoration: none; color: inherit;
   background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius);

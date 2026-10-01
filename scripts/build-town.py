@@ -605,12 +605,31 @@ def details(q, a):
             f'          <p>{a}</p>\n        </details>')
 
 
+# WHAT WE FIX, one card per service, in the family's order (3.87). The
+# family is audit.SERVICES; the words on each card live here, because they
+# are this tier's rendering. A service in the family with no card here
+# stops the build, so a sixth service cannot reach the nav and miss the
+# towns. The ADAS line is the approved meta's own words, the one vetted
+# rendering, shared with home's card.
+FIX_CARDS = {
+    "collision-repair/": ("Collision Repair", "Minor and major collision damage, with a lifetime warranty on the work."),
+    "commercial-collision-repair/": ("Commercial Collision Repair", "Work vehicles and fleets, with help on the insurance side."),
+    "auto-glass-repair-replacement/": ("Auto Glass Repair", "Windshields, side windows and rear windows."),
+    "paintless-dent-repair/": ("Paintless Dent Repair", "Door dings and hail dents, fixed without repainting."),
+    "adas-calibration/": ("ADAS Calibration", "Cameras and sensors re-aimed to factory spec after repairs."),
+}
+_unlisted = [p for p in audit.SERVICE_PATHS if p not in FIX_CARDS]
+if _unlisted:
+    raise SystemExit(f"FAILED: audit.SERVICES has {_unlisted} and FIX_CARDS has no card for it")
+
+
 def llms_entry(key, name, r, n_faq, origin=None):
-    words = {3: "three", 4: "four", 5: "five", 6: "six"}
+    words = dict(enumerate(audit.COUNT_WORDS))
     away = f"from {origin}" if origin else "away"
     body = (f"Collision repair for drivers from {name}, PA. The shop is not in {name}; it is in "
             f"Southampton, about {miles_whole(r)} miles and {mins(r)} minutes {away} without traffic. "
-            f"Driving directions from {name} by road and route number, the four services, and "
+            f"Driving directions from {name} by road and route number, the "
+            f"{words[len(audit.SERVICES)]} services, and "
             f"{words[n_faq]} questions {name} drivers ask.")
     lines = textwrap.wrap(body, width=74)   # 76 with the two-space indent, as the file wraps
     return f"- {BASE}{audit.TOWN_ROUTE_PREFIX}{key}/ :\n" + "\n".join("  " + l for l in lines)
@@ -654,6 +673,8 @@ def build(key: str) -> tuple:
         if not built(href):
             return f'          <div class="svc-card" data-pending-href="{href}">\n{body}          </div>'
         return f'          <a class="svc-card" href="{href}">\n{body}          </a>'
+
+    fix_cards = "\n".join(card(f"../{path}", *FIX_CARDS[path]) for path in audit.SERVICE_PATHS)
 
     chrome = open(CHROME, encoding="utf-8").read()
     head_assets = chrome[chrome.index("  <!-- No analytics tag yet."):chrome.index("  <!-- One @graph.")]
@@ -1001,10 +1022,7 @@ def build(key: str) -> tuple:
           <p>Pick the one that fits what happened. Each page explains how the repair works.</p>
         </div>
         <div class="grid2">
-{card("../collision-repair/", "Collision Repair", "Minor and major collision damage, with a lifetime warranty on the work.")}
-{card("../commercial-collision-repair/", "Commercial Collision Repair", "Work vehicles and fleets, with help on the insurance side.")}
-{card("../auto-glass-repair-replacement/", "Auto Glass Repair", "Windshields, side windows and rear windows.")}
-{card("../paintless-dent-repair/", "Paintless Dent Repair", "Door dings and hail dents, fixed without repainting.")}
+{fix_cards}
         </div>
       </div>
     </section>
