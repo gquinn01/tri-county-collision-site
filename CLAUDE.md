@@ -372,6 +372,18 @@ ride the same structure, the same scrim geometry, the same button grammar, and
 **the entrance keyframes exist once**. The split hero is deleted, with a
 tombstone in `site.css` naming what went with it.
 
+**Amended 2026-10-01, a scoped exception, Greg's ruling (`proposed-changes.md`
+3.86): every hero is text over a photograph, except where the page's subject
+is invisible to a camera.** There, a licensed, provenance-clean, human-made
+illustration may serve, recorded per page with its reason. **One page
+qualifies: `/adas-calibration/`.** Sensor fields and camera aim cannot be
+photographed, and its illustration (AdobeStock_345981008) shows exactly what
+the page teaches. **It is the only non-photograph hero on the site, by
+design.** A second one earns its own ruling: `scripts/prepare-hero-photo.py`
+refuses a source made in an illustration program unless its frame declares
+the ruling. The scrim law is unchanged, and it is measured the same way over an
+illustration as over a photograph.
+
 **The ox ground is weaker than ink, and everything follows from that.**
 Measured over a white photo pixel, `--silver` needs alpha .758 on ink to clear
 7:1 and .849 on ox; `--silver-2` needs .858 on ink and **.981 on ox**, because

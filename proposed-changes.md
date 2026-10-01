@@ -13997,7 +13997,7 @@ path. The odometer's own spans inside a `.stat-n` are excluded, since
   100; sameAs the only warning; zero criticals; 834 passing.**
 - No em dash and no banned digits added.
 
-### 3.86 The ADAS page: the 37th indexable page, Greg's copy. BUILT 2026-10-01, HERO IS SCAFFOLDING
+### 3.86 The ADAS page: the 37th indexable page, Greg's copy, and the one illustrated hero. BUILT 2026-10-01
 
 **Greg's ruling of 2026-10-01: build `/adas-calibration/`, and all
 calibration is in-house.** The copy is his, approved, and ships verbatim. It
@@ -14012,34 +14012,99 @@ Planner figure, and the owner's confirmation is question 36.
 commit, on two questions the brief did not settle, and a third it raised.
 The strategy chat ruled:
 
-1. **The hero: a licensed ADAS photograph, and not the glass page's
-   stock.** Greg licensed AdobeStock_345981008 the same sitting. It
-   arrived, and it is **not a photograph**:
-   - **It is a vector illustration:** cars on a HUD grid, their sensor
-     fields drawn around them.
-   - **Its metadata:** creator tool Adobe Illustrator CC 2017 (Windows),
-     with an Adobe C2PA manifest.
-   - **No `digitalSourceType`.** The audit's provenance reader returns no
-     reason to refuse it, so it is clean under rule 9.
-   - **Every hero is text over a photograph** (rule 1, amended 2026-09-10),
-     and the ruling asked for "a real ADAS photograph". An illustration as
-     a hero is a departure for its own ruling. 3.22's licensed render was a
-     band, not a hero.
+1. **The hero: first a licensed photograph, then the licensed
+   illustration, by a scoped amendment.** The first ruling was a licensed
+   ADAS photograph and not the glass page's stock. Greg licensed
+   AdobeStock_345981008 the same sitting, and it is **not a photograph** but
+   a vector illustration: cars on a HUD grid with their sensor fields drawn
+   around them.
+   - **The first commit, 57bfc90,** shipped the page with the glass stock
+     **recorded as scaffolding.** It was not the approved hero.
+   - **The illustration was then ruled in. This commit replaces the
+     scaffolding.** The scrim measurement is the 3.20 method; the
+     numbers are below.
 
-   It did not enter the repo. **So the ruling's other branch was taken**:
-   the built page is committed with the glass page's interim stock in
-   place, **RECORDED AS SCAFFOLDING.** It is not the approved hero. The
-   licensed image replaces it in the next commit, and **this page is not
-   reviewed, previewed or announced until it does.** The hero's comment
-   says so in the same words.
+   **THE AMENDMENT, in Greg's terms.** Every hero is text over a
+   photograph, **except where the page's subject is invisible to a
+   camera.** There, a licensed, provenance-clean, human-made illustration
+   may serve, recorded per page with its reason.
+   - **This page qualifies:** sensor fields and camera aim cannot be
+     photographed, and the illustration shows exactly what the page
+     teaches.
+   - **It is the only non-photograph hero on the site, by design.**
+   - **Recorded in** CLAUDE.md rule 1 and the hero block in `site.css`'s
+     header.
+   - **It is a mechanism, not a memory.** `prepare-hero-photo.py` refuses
+     a source whose CreatorTool names an illustration program (Illustrator,
+     Inkscape, CorelDRAW, Affinity Designer, Sketch, Figma, Vectorworks)
+     unless its frame carries an `illustration` declaration naming its
+     ruling. `test-audit-checks.py` section 34 holds both directions, and
+     that exactly one frame, `adas`, declares one.
+   - **Its limit, stated:** a raster illustration with no tool declared
+     passes. The judgement at purchase is still the control.
 
-   **Measured in a scratch copy, for that ruling:** a centred 3:2 crop at
-   1200x800 (275KB), in the ox hero. The fold is identical to the
-   scaffolding's at every width (10, 98 and 276), because the hero's
-   geometry does not depend on its image. The type reads on the scrim, and
-   at 1440 the right of the frame keeps a car and its sensor fields. **The
-   glyph-run contrast measurement (3.20's method) is owed** the day it is
-   ruled in.
+   **PROVENANCE, IN FULL:**
+   - Adobe Stock, AdobeStock_345981008, licensed by Greg on 2026-10-01
+     under Adobe Stock's standard licence.
+   - XMP CreatorTool: Adobe Illustrator CC 2017 (Windows). The version
+     predates generative AI.
+   - An Adobe C2PA manifest is embedded (three APP11 segments).
+   - **No `digitalSourceType` is declared.**
+   - Rule 9's reader, `audit.read_asset_provenance`, accepted it with no
+     reason given. The script read it before building anything on it.
+   - The shipped derivative carries no metadata, because the strip is
+     structural. So the asset id is recorded here, in the frame and in the
+     page's hero comment.
+   - The audit now reads 34 of 34 images clean.
+
+   **THE FRAME,** `prepare-hero-photo.py --frame adas`:
+   - **Source** 5444x2755.
+   - **The crop is measured, not eyeballed:** 3831x2554 at (1613, 200).
+     The red sensor fields are the only saturated red in a blue and green
+     frame, so a scan on 136px cells located them: rows 680 to 2719,
+     columns 2448 to 4895. They sit right of centre, where the scrim
+     leaves the image showing. The 1613 left columns, the merge curve and
+     two green-field cars, would sit under the scrim.
+   - **The top 200 rows went because the scrim measurement said so.**
+     Cropped from row 0, the illustration's own bright HUD frame border sat
+     under the 360 breadcrumb: one pixel of "Home" measured **6.73**
+     against the 7:1 target, rgb(121,70,70). The standard did not move, the
+     scrim did not change for every ox hero, and the type got no shadow.
+     The image's frame moved, which is this asset's own choice. The page
+     then measured **7.13** there.
+   - **Plate check:** run anyway; nothing is plate-like.
+   - **Output:** q92, **354,362 bytes**, 7.9% of the source. It is the
+     heaviest hero (the others are 171 to 272KB). The script's only size
+     rule is never larger than its source, and it was not tuned past that.
+   - **Re-proved byte for byte** through `--out-dir`.
+   - **The alt text says it is an illustration**: "Illustration of cars on
+     a multi-lane road seen from above, each surrounded by drawn sensor
+     fields, green where the lane is clear and red where another car is
+     close."
+
+   **THE SCRIM, 3.20'S METHOD.** The page is rendered, each hero element's
+   glyph runs are read with `Range.getClientRects()`, and the page is
+   rendered again with every hero glyph transparent. Every pixel under
+   every run is then sampled against the element's own colour. **The
+   probe was rebuilt this run and calibrated first on the glass page**,
+   where it landed within 0.06 of every figure 3.47 recorded.
+
+| Element | 1440 | 1920 | 430 | 390 | 360 | Needs |
+|---|---|---|---|---|---|---|
+| Breadcrumb | 10.25 | 9.46 | 10.04 | 8.99 | 7.13 | 7 |
+| H1 | 6.43 | 7.79 | 9.46 | 9.39 | 9.39 | 4.5 |
+| Lead | 9.46 | 9.46 | 9.59 | 9.53 | 9.53 | 7 |
+| Ghost button label | 10.26 | 10.59 | 9.66 | 9.78 | 10.04 | 7 |
+| Chips (desktop) | 9.33 | 9.27 | n/a | n/a | n/a | 7 |
+
+   **Every element clears its standard.**
+   - The page has no eyebrow, so that row is empty.
+   - **The H1's 6.43 at 1440 is display type against the 4.5 floor.** It
+     is glass's own case (6.47 there): a two-line H1's first line reaches
+     into the fade.
+   - **The fold is unchanged** at 10, 98 and 276, because the hero keeps
+     the 1200x800 contract.
+
 2. **The promise band: the line as built and measured.** "We will get you
    back on the road with every camera and sensor aimed where the
    manufacturer aimed it." It keeps the shared frame and completes it with
@@ -14227,7 +14292,8 @@ link. The fixture now takes them from `sync-chrome.py`'s own `SERVICES`.
 
 #### The suite
 
-- Both test scripts pass. `test-audit-checks.py` holds 336 checks: the
+- Both test scripts pass. `test-audit-checks.py` holds 345 checks: 3.85's
+  336, plus section 34's nine for the illustration refusal. Section 33's
   fixture changed its source, not its count.
 - `stamp-assets.py`, `build-sitemap.py`, `sync-area-served.py` and
   `sync-chrome.py --check` all exit 0.
@@ -14551,7 +14617,7 @@ this shop.**
 | `/auto-glass-repair-replacement/` | `hero-windshield-replacement-in-shop.jpg` | AdobeStock_64691325 | 3.47 |
 | `/paintless-dent-repair/` | `hero-dent-lifter-on-red-door.jpg` | AdobeStock_1571353580 | 3.48 |
 | `/commercial-collision-repair/` | `hero-wrecked-work-van.jpg` | AdobeStock_430555209 | 3.49 |
-| `/adas-calibration/` | `hero-windshield-replacement-in-shop.jpg`, **SCAFFOLDING**, the glass page's file | AdobeStock_64691325; its replacement is ruled, the licensed AdobeStock_345981008 is an illustration and awaits its own ruling | 3.86 |
+| `/adas-calibration/` | `hero-adas-sensor-fields-illustration.jpg` | AdobeStock_345981008, **an illustration by scoped amendment, the page's ruled hero and NOT interim stock or a cutover blocker**. The glass stock stood in as recorded scaffolding for one commit, 57bfc90 | 3.86 |
 
 **The shoot list gains one photograph per page**, each showing that service's
 own work at this shop:

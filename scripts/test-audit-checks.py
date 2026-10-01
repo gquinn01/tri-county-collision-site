@@ -1639,6 +1639,26 @@ def main():
         check(f"     migrate-blog.py writes /{slug}/'s chrome exactly as it ships",
               nav + "\n  <main>" in shipped and shipped.endswith(foot), None)
 
+    # THE HERO LAW'S SCOPED EXCEPTION, 3.86: an illustration needs its own
+    # ruling. The refusal is held in both directions on the script's own
+    # function and FRAMES, so a second illustration cannot arrive the way
+    # a photograph does, and the one ruled frame still builds.
+    print("34. A hero made in an illustration program needs a frame that declares its ruling")
+    _spec = _ilu.spec_from_file_location("prep_hero", os.path.join(os.path.dirname(os.path.abspath(__file__)), "prepare-hero-photo.py"))
+    ph = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(ph)
+    ill = "Adobe Illustrator CC 2017 (Windows)"
+    check("     an undeclared frame refuses an Illustrator source",
+          ph.illustration_refusal(ill, ph.FRAMES["glass"]) is not None, None)
+    check("     the ruled adas frame accepts it", ph.illustration_refusal(ill, ph.FRAMES["adas"]) is None, None)
+    for tool in ("Inkscape 1.2", "CorelDRAW 2021", "Affinity Designer 2"):
+        check(f"     {tool} is refused undeclared too", ph.illustration_refusal(tool, {}) is not None, None)
+    for tool in ("", "Adobe Photoshop 25.0 (Macintosh)", "Adobe Lightroom Classic"):
+        check(f"     a camera or photo tool ({tool or 'none declared'}) is not refused",
+              ph.illustration_refusal(tool, {}) is None, None)
+    check("     exactly one frame declares an illustration, the one the ruling names",
+          [k for k, f in ph.FRAMES.items() if f.get("illustration")] == ["adas"], None)
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} check(s) failed:")

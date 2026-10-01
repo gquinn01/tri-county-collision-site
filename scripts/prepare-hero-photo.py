@@ -179,7 +179,74 @@ FRAMES = {
                 "bare bolts and rust, inspected at full resolution",
         "cleared": [],
     },
+
+    # THE ONE HERO THAT IS NOT A PHOTOGRAPH, ADDED 2026-10-01, and it is
+    # here by a scoped amendment to the hero law, not by an exception
+    # quietly taken (proposed-changes.md 3.86, CLAUDE.md rule 1). Every
+    # hero is text over a photograph, except where the page's subject is
+    # invisible to a camera. /adas-calibration/ teaches sensor fields and
+    # camera aim, which no photograph can show, and this licensed,
+    # human-made illustration shows exactly that. It is NOT interim stock
+    # and not a cutover blocker: it is the page's ruled hero.
+    #
+    # THE CROP IS ANCHORED RIGHT, AND MEASURED. The sensor fields that
+    # read red, where another car is close, are the only saturated red in
+    # a blue and green frame, so a red scan found them: 136px cells, rows
+    # 680..2719, columns 2448..4895. That is right of centre, where the
+    # scrim leaves the image showing. The 1613 columns discarded on the
+    # left are the merge curve and two green-field cars, which would sit
+    # under the scrim.
+    #
+    # THE TOP 200 ROWS GO BECAUSE THE SCRIM MEASUREMENT SAID SO. Cropped
+    # from row 0, the illustration's own bright HUD frame border sat under
+    # the breadcrumb at 360x640, and one pixel of the "Home" glyph run
+    # measured 6.73 against the 7:1 target. The standard did not move and
+    # the type got no shadow; the frame of the image moved, which is this
+    # asset's own choice to make. One row is discarded at the foot to make
+    # exact 3:2.
+    "adas": {
+        "asset": "AdobeStock_345981008",
+        "out": "hero-adas-sensor-fields-illustration.jpg",
+        "src": (5444, 2755),
+        "crop": (1613, 200, 3831, 2554),
+        "subject": (680, 2719),      # the red sensor fields, rows
+        "subject_x": (2448, 4895),   # and columns
+        "wreck": (680, 2719),
+        "wreck_label": "red sensor fields",
+        "how": "saturated-red scan on 136px cells: the red fields are the "
+               "only saturated red in a blue and green frame",
+        "note": "1613 columns discarded on the left (the merge curve, two "
+                "green-field cars), 200 rows at the top (the HUD frame border, "
+                "which defeated the scrim under the 360 breadcrumb) and 1 at "
+                "the foot",
+        "cleared": [],
+        # THE DECLARATION THE ILLUSTRATION CHECK BELOW REQUIRES. A second
+        # illustration needs its own ruling, and its own entry here saying
+        # so; the script refuses one that arrives without it.
+        "illustration": "Greg's ruling of 2026-10-01, proposed-changes.md "
+                        "3.86: the page's subject, sensor fields and camera "
+                        "aim, is invisible to a camera",
+    },
 }
+
+# AN ILLUSTRATION NEEDS ITS OWN RULING, AND THIS IS THE MECHANISM, 3.86.
+# Every hero is a photograph unless a frame above carries an "illustration"
+# declaration naming its ruling. A source whose CreatorTool names a vector
+# illustration program is refused unless its frame declares one, so the
+# second illustration cannot arrive the way a photograph does. The limit is
+# the provenance reader's: a raster illustration with no tool declared
+# passes this, and the judgement at purchase time is still the control.
+VECTOR_TOOLS = ("illustrator", "inkscape", "coreldraw", "affinity designer",
+                "sketch", "figma", "vectorworks")
+
+
+def illustration_refusal(tool: str, frame: dict):
+    """None if this source may be built for this frame, else the reason."""
+    if any(v in (tool or "").lower() for v in VECTOR_TOOLS) and not frame.get("illustration"):
+        return (f"the source was made in {tool}, an illustration program, and "
+                f"this frame declares no illustration ruling. Every hero is a "
+                f"photograph unless a ruling says otherwise (3.86).")
+    return None
 
 
 # THE PLATE SIGNATURE IS THREE CONDITIONS, NOT ONE, and the third one was
@@ -300,7 +367,8 @@ def main() -> int:
     print(f"FRAME  {opts.frame}  ->  {OUT_NAME}")
     print(f"  subject rows {CAR_TOP}..{CAR_BOTTOM}, located by {F['how']}")
     if F.get("asset"):
-        print(f"  licensed asset     {F['asset']}  (interim stock, a cutover blocker)")
+        print(f"  licensed asset     {F['asset']}  "
+              f"{'(the ruled illustration, not interim stock)' if F.get('illustration') else '(interim stock, a cutover blocker)'}")
     print(f"  {F['note']}")
 
     sys.path.insert(0, HERE)
@@ -321,6 +389,12 @@ def main() -> int:
         print("\nFAILED before processing. Rule 9 bans AI imagery.")
         return 1
     print("  VERDICT            clean, no AI tell")
+    refusal = illustration_refusal(r["tool"], F)
+    if refusal:
+        print(f"\nFAILED before processing: {refusal}")
+        return 1
+    if F.get("illustration"):
+        print(f"  ILLUSTRATION       declared: {F['illustration']}")
 
     print("\nWHAT THE SOURCE CARRIES, by marker walk")
     for tag, ln, who in rp.app_segments(opts.source):
