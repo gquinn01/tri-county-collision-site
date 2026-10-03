@@ -14564,6 +14564,67 @@ it: replacing a photograph is a sourcing question, and real photos only.
   criticals.
 - No em dash added.
 
+#### Greg's reordering of home's router, RULED 2026-10-02
+
+**Greg reordered home's router at his review: Paintless Dent Repair and
+Auto Glass Repair swap places.** It is the first change to that order since
+the router shipped. Two cards in `docs/index.html`, no CSS.
+
+```
+row 1   Collision Repair   Commercial Collision Repair   Auto Glass Repair
+row 2          Paintless Dent Repair   ADAS Calibration
+```
+
+**How it was ruled, so nobody relitigates it from memory:**
+
+- **The first follow-up ruled the swap on a false premise.** It said the
+  swap would separate the repeated photograph's two copies by a row. That
+  claim was the strategy chat's. The builder rendered the swap before
+  committing, found it untrue, and stopped. **Nothing shipped on it.**
+- **Greg re-ruled on the measured geometry: Option A, ship the swap.**
+  - **The lasting merit is the pairing.** PDR and ADAS are centred
+    together as the two precision services.
+  - **The desktop view Greg flagged improves.**
+  - **The two-across stack is accepted as temporary.** It is the rarest
+    band, and the repeated photograph is already a cutover blocker (3.17,
+    4.9). Scott's real glass photograph resolves it before launch, in any
+    order.
+- **The strategy chat's two brief errors in 3.88 are recorded as its
+  seventh and eighth:**
+  - **Seventh:** the first brief took home's card order from the menu
+    order. The builder followed the ruling over its parenthetical.
+  - **Eighth:** the follow-up's "separates them by a row".
+
+**The trade, exactly as measured.** The repeated photograph is
+`accent-minor-collision-repair.jpg`, worn by Collision and Glass.
+
+| Width | Before the swap (fc30ab5) | After the swap (shipped) |
+|---|---|---|
+| 1120 to 1920, three across | **different rows**: Collision row 1 left (x 180 at 1440), Glass row 2 left of the pair (x 364, y 1546) | **same row**, at its two ends: Collision x 180, Glass x 916, both y 1143 at 1440, Commercial between |
+| 760 to 1119, two across | **diagonal**: Collision row 1 left, Glass row 2 right | **stacked**: Glass row 2 left, directly under Collision (x 20 at 900, y 1053 and 1512) |
+| phones, one column | cards 1 and 4 | cards 1 and 3 |
+
+- **No order gives both the pairing and a row between the copies.** With
+  PDR and ADAS as the centred pair, Collision, Commercial and Glass must
+  share row 1 at three across. The two ends of that row are the furthest
+  apart they can be.
+- **Rendered for the record:** home's router at 1440 (three and two) and at
+  900 (two, two and one), every image painted.
+- **Nothing else moved.** Card widths and heights and the row heights are
+  identical at every width measured (360, 390, 759, 760, 900, 1119, 1120,
+  1200, 1280, 1440, 1920).
+  - **The page height is unchanged** at 1440, 390 and 360.
+  - **The fold is unchanged.**
+- **The sweep against fc30ab5:**
+  - **Home:** only the two swapped cards' elements moved: 4 at 1440 and 8
+    at 390. At 360 the two cards are the same height, so no box moved.
+  - **Every other page is identical.**
+- **The suite:**
+  - Both test scripts pass, and every `--check` exits 0.
+  - `STAGING=1 audit.py --strict` writes a report byte-identical to
+    fc30ab5's. The enumeration check holds the set, not the order.
+  - The router comment now names the order as Greg's (3.88).
+
 ---
 
 ## 4. The claims list
