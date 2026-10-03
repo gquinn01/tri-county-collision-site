@@ -412,22 +412,35 @@ BRAND_COUNT = 12
 BRANDS = ("INFINITI", "Nissan", "Hyundai", "Kia", "Acura", "Honda",
           "GM", "Chrysler", "Ford", "Dodge", "Subaru", "Jeep")
 
-# THE SERVICE FAMILY, 3.87. The one list of the site's service pages and
-# their nav labels. scripts/sync-chrome.py imports it for the nav dropdown
-# and the footer, scripts/build-town.py for the What we fix cards, and the
-# enumeration check below holds every page to it. A sixth service is one
-# line here; every surface that enumerates services then fails until it
-# carries the sixth too, so a service cannot be half-added. The labels
-# are the live nav's words, except ADAS Calibration, which the live site
-# never had (3.86).
+# THE SERVICE FAMILY, 3.87, and since 3.90 THE ONE TABLE OF ITS CARDS. Each
+# row is (path, label, line): the page, its one name across the site, and
+# its one card line. scripts/sync-chrome.py imports it for the nav dropdown
+# and the footer, scripts/build-town.py for the What we fix cards, and
+# scripts/sync-service-cards.py for home's router text and the five
+# Related Services sections. The enumeration check below holds every page
+# to it: every grid carries the family (a service page's own grid, the
+# family minus itself), and every card carries its row's label and line,
+# so a card cannot drift and a service cannot be half-added. The labels are
+# the live nav's words, except ADAS Calibration, which the live site never
+# had (3.86). "Glass Repair & Replacement" is the one name on every card
+# too, Greg's ruling (3.90); "Auto Glass Repair" retired as a label.
+# THE LINES ARE THE TOWNS' (3.90, Greg's ruling). The collision line's "a
+# lifetime warranty on the work" is the card-length rendering of the hub's
+# "on all repair work": the same claim, held to the same owner confirmation
+# (proposed-changes.md 4.1). If it is ever normalised, this is the one place.
 SERVICES = (
-    ("collision-repair/", "Collision Repair"),
-    ("commercial-collision-repair/", "Commercial Collision Repair"),
-    ("auto-glass-repair-replacement/", "Glass Repair & Replacement"),
-    ("paintless-dent-repair/", "Paintless Dent Repair"),
-    ("adas-calibration/", "ADAS Calibration"),
+    ("collision-repair/", "Collision Repair",
+     "Minor and major collision damage, with a lifetime warranty on the work."),
+    ("commercial-collision-repair/", "Commercial Collision Repair",
+     "Work vehicles and fleets, with help on the insurance side."),
+    ("auto-glass-repair-replacement/", "Glass Repair & Replacement",
+     "Windshields, side windows and rear windows."),
+    ("paintless-dent-repair/", "Paintless Dent Repair",
+     "Door dings and hail dents, fixed without repainting."),
+    ("adas-calibration/", "ADAS Calibration",
+     "Cameras and sensors re-aimed to factory spec after repairs."),
 )
-SERVICE_PATHS = tuple(p for p, _l in SERVICES)
+SERVICE_PATHS = tuple(p for p, _l, _ln in SERVICES)
 COUNT_WORDS = ("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
 
 # A count typed beside "services" ("Four services, one shop", "the four
@@ -2570,13 +2583,17 @@ def check_chrome_local(passes: list, fails: list, root: str = None):
 class _CardGroups(HTMLParser):
     """Every service card inside <main>, grouped by the element that holds
     it. A card is anything whose class names svc-card and whose href or
-    data-pending-href lands on a service page."""
+    data-pending-href lands on a service page. Each card's first h3 and
+    first p are read too, so its words answer to SERVICES (3.90)."""
     VOID = {"img", "br", "hr", "input", "meta", "link", "source", "wbr", "area", "col", "embed", "track"}
 
     def __init__(self, page_rel: str):
         super().__init__(convert_charrefs=True)
         self.page_rel, self.stack, self.n, self.inmain = page_rel, [], 0, False
         self.groups = {}
+        self.cards = []          # [target, h3 text, p text]
+        self.card_depth = None   # stack depth of the open card
+        self.field = None
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -2590,16 +2607,31 @@ class _CardGroups(HTMLParser):
             if target in SERVICE_PATHS:
                 parent = self.stack[-1]
                 self.groups.setdefault(parent, []).append(target)
+                self.cards.append([target, None, None])
+                self.card_depth = len(self.stack)
+        if self.card_depth is not None and tag in ("h3", "p"):
+            i = 1 if tag == "h3" else 2
+            if self.cards[-1][i] is None:
+                self.cards[-1][i] = ""
+                self.field = i
         if tag not in self.VOID:
             self.n += 1
             self.stack.append((self.n, tag, a.get("id") or "", " ".join(cls)))
 
+    def handle_data(self, data):
+        if self.field is not None:
+            self.cards[-1][self.field] += data
+
     def handle_endtag(self, tag):
         if tag == "main":
             self.inmain = False
+        if tag in ("h3", "p"):
+            self.field = None
         for k in range(len(self.stack) - 1, -1, -1):
             if self.stack[k][1] == tag:
                 del self.stack[k:]
+                if self.card_depth is not None and k <= self.card_depth:
+                    self.card_depth = None
                 break
 
 
@@ -2632,17 +2664,31 @@ def service_enumeration_findings(html_text: str, page_rel: str, meta: str = "") 
     want = len(SERVICES)
     p = _CardGroups(page_rel)
     p.feed(html_text)
+    # A SERVICE PAGE'S OWN GRID IS THE FAMILY MINUS ITSELF (3.90): the
+    # Related Services section. Anywhere else a grid is the whole family.
+    expect = [x for x in SERVICE_PATHS if x != page_rel]
+    label = {x: lbl for x, lbl, _ln in SERVICES}
     for (_n, tag, gid, gcls), targets in p.groups.items():
         if len(set(targets)) < 2:
             continue
         found += 1
-        missing = [lbl for path, lbl in SERVICES if path not in targets]
+        missing = [label[x] for x in expect if x not in targets]
         where = f"<{tag}{' id=' + gid if gid else ''}{' class=' + gcls if gcls else ''}>"
         if missing:
             problems.append(f"the service cards in {where} lack {', '.join(missing)}")
+        if page_rel in targets:
+            problems.append(f"the service cards in {where} carry {label[page_rel]}, the page they sit on; "
+                            f"a service page's grid is the family minus itself")
         dup = sorted({x for x in targets if targets.count(x) > 1})
         if dup:
             problems.append(f"the service cards in {where} repeat {', '.join(dup)}")
+    # EVERY CARD SAYS WHAT ITS ROW SAYS, 3.90: one rendering per service.
+    for target, h3, para in p.cards:
+        row = next(r for r in SERVICES if r[0] == target)
+        got = (" ".join((h3 or "").split()), " ".join((para or "").split()))
+        if got != (row[1], row[2]):
+            problems.append(f"the card for {target} reads \u201c{got[0]}\u201d / \u201c{got[1]}\u201d; "
+                            f"SERVICES says \u201c{row[1]}\u201d / \u201c{row[2]}\u201d")
     units = _main_text_units(html_text) + ([meta] if meta else [])
     for u in units:
         for m in SERVICE_COUNT_RE.finditer(u):
@@ -2655,7 +2701,7 @@ def service_enumeration_findings(html_text: str, page_rel: str, meta: str = "") 
         named = [path for path, rx in SERVICE_TEXT_RE.items() if rx.search(s)]
         if len(named) >= len(SERVICES) - 1:
             found += 1
-            missing = [lbl for path, lbl in SERVICES if path not in named]
+            missing = [lbl for path, lbl, _ln in SERVICES if path not in named]
             if missing:
                 problems.append(f"\u201c{u[:110]}\u201d names {len(named)} services in words and not "
                                 f"{', '.join(missing)}")
@@ -2981,19 +3027,21 @@ def audit(source: str, coverage: dict = None):
     else:
         passes.append(f"No empty headings: all {len(p.headings)} h1 to h6 carry words.")
 
-    # --- Every service enumeration carries the whole family (3.87) ---
+    # --- Every service enumeration carries the whole family, in its words (3.87, 3.90) ---
     if not is_url(source):
         _rel = os.path.relpath(os.path.dirname(os.path.abspath(source)),
                                os.path.abspath(SITE_DIR)).replace(os.sep, "/")
         _rel = "" if _rel == "." or _rel.startswith("..") else _rel + "/"
         n_enum, enum_problems = service_enumeration_findings(html, _rel, d)
         for x in enum_problems:
-            fails.append(f"**A service enumeration is not the whole family:** {x}. Every place the "
-                         f"site lists its services carries all {len(SERVICES)} in SERVICES, so a "
-                         f"service cannot be half-added (3.87).")
+            fails.append(f"**A service enumeration does not answer to SERVICES:** {x}. Every place the "
+                         f"site lists its services carries all {len(SERVICES)} in SERVICES (a service "
+                         f"page's own grid, the family minus itself), and every card carries its row's "
+                         f"label and line, so a service cannot be half-added and a card cannot drift "
+                         f"(3.87, 3.90). Run scripts/sync-service-cards.py.")
         if n_enum and not enum_problems:
-            passes.append(f"All {n_enum} service enumeration(s) on the page carry the whole family of "
-                          f"{len(SERVICES)}.")
+            passes.append(f"All {n_enum} service enumeration(s) on the page carry the family of "
+                          f"{len(SERVICES)}, and every card its row's label and line.")
 
     # --- A Google Maps embed is the verified pin, by coordinates (3.65) ---
     # Greg's ruling of 2026-09-28: /contact-us/ embeds Google's map CENTRED

@@ -101,7 +101,7 @@ def render(page: str) -> tuple:
         c = f' class="{cls}"' if cls else ""
         return f'<a{c} href="{esc(url)}" target="_blank" rel="noopener">{label}</a>'
 
-    svc = "\n".join(f"              <li>{link(t, esc(l))}</li>" for t, l in SERVICES)
+    svc = "\n".join(f"              <li>{link(t, esc(l))}</li>" for t, l, _ln in SERVICES)
     twn = "\n".join(f"              <li>{link(t, esc(l))}</li>" for t, l in towns())
     home = link("", f'<img src="{p}logo.png" alt="Tri-County Collision" width="1332" height="530">',
                 "nav-home", ' aria-label="Tri-County Collision, home"')
@@ -150,7 +150,7 @@ def render(page: str) -> tuple:
 
     maps = esc(audit.MAPS_NAP_URL)
     explore = [link(t, esc(l).replace("Commercial Collision Repair", "Commercial Collision&nbsp;Repair"))
-               for t, l in SERVICES] + [link(*BLOG), link(*CONTACT)]
+               for t, l, _ln in SERVICES] + [link(*BLOG), link(*CONTACT)]
     exp = "\n".join(f"            <li>{x}</li>" for x in explore)
     areas = [link(t, esc(l)) for t, l in towns()] + [link(HUB[0], "Every town we serve")]
     are = "\n".join(f"            <li>{x}</li>" for x in areas)

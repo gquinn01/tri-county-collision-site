@@ -14756,6 +14756,177 @@ per width:
   warning, zero criticals.
 - No em dash added.
 
+### 3.90 Related Services on the five service pages, and one rendering per service. BUILT 2026-10-02
+
+**Greg's ruling:** each of the five service pages gains a related-services
+section for in-content internal linking.
+
+#### The gap it closes, measured before building
+
+These are links in the page body (`<main>`, chrome excluded) to another
+service page:
+
+| Page | Sibling links | Where |
+|---|---|---|
+| `/collision-repair/` | 1 | to PDR, in `#services` prose |
+| `/commercial-collision-repair/` | 0 | |
+| `/auto-glass-repair-replacement/` | 2 | both to ADAS, in `#adas` and `#why` |
+| `/paintless-dent-repair/` | 0 | |
+| `/adas-calibration/` | 0 | |
+
+That is **3 links reaching 2 distinct siblings** across five pages. Every
+page now carries **four, one to each sibling.** The inline prose links stay
+exactly as they were: prose is approved copy, and this section is
+additive.
+
+#### One table, one rendering per service
+
+- **`audit.SERVICES` is now (path, label, line).**
+- Three surfaces derive label, link and line from it:
+  - **home's router;**
+  - **the towns' What we fix grids;**
+  - **the new sections.**
+- `build-town.py`'s `FIX_CARDS` is gone.
+  - **Proof:** rebuilt in a scratch copy, it reproduces all twelve towns'
+    `#fix` sections byte for byte against the synced pages.
+- **`scripts/sync-service-cards.py`** writes the words:
+  - every service card's h3 and p, site-wide, touching nothing else on a
+    card. Home's photographs, alts and order stay home's own;
+  - each service page's section, between RELATED markers.
+  - `--check` exits 1 on drift.
+
+**The table had to choose, because the two sets of lines differed for four
+of the five.** The builder stopped on it. **Greg's ruling: the towns' lines
+win.** Home's four pairs:
+
+| Card | Before (home) | After (everywhere) |
+|---|---|---|
+| Collision Repair | Minor and major damage, repaired to manufacturer standards. | Minor and major collision damage, with a lifetime warranty on the work. |
+| Commercial Collision Repair | Commercial and fleet vehicles. | Work vehicles and fleets, with help on the insurance side. |
+| Glass | Cracked windshields and broken side windows. | Windshields, side windows and rear windows. |
+| Paintless Dent Repair | Dents removed without touching your paint. | Door dings and hail dents, fixed without repainting. |
+
+ADAS was already identical. **The collision line's "a lifetime warranty on
+the work"** is shorter than the scoped phrase the site uses everywhere else,
+"a lifetime warranty on all repair work". **It is recorded as the
+card-length rendering of the same claim, tied to the same owner
+confirmation (4.1), not as a divergence.** If Greg ever normalises it, the
+table is the one place. The table's comment says so.
+
+#### One name for glass, and the wrap it brings at 360
+
+**Greg's ruling: "Glass Repair & Replacement" on every card,** matching the
+menu and footer, which finishes 3.83's one-name principle. **"Auto Glass
+Repair" retires as a label.** Page titles, the H1 and the schema are page
+copy and are untouched.
+
+**The measurement trio, so the next label question starts from numbers:**
+
+- **Label width:** 293px at the card heading's 19.2px.
+  - "Commercial Collision Repair" is 290px;
+  - "Auto Glass Repair" was 183px.
+- **Heading box:** 278px at 360, so the label wraps to two lines on every
+  grid (home, the towns, the new sections). It wraps below a 375px-wide
+  viewport.
+- **One line from 390 up:** a 308px box. Checked at 390, 414, 759, 760,
+  800, 900, 1000, 1119, 1120, 1280, 1440 and 1920, on home, two towns and
+  all five sections.
+
+**The builder stopped on the wrap, as the ruling required. Ruled: Option A,
+ship as built.**
+
+- Glass wraps at 360 exactly as "Commercial Collision Repair" already does
+  and always has, on home and every town. That is the grids' own precedent,
+  reviewed many times without complaint.
+- **Option B is declined, with its reason:** shrinking the card heading
+  from 19.2px to 18px below 376px would bend the type scale to the content,
+  which inverts the house's direction of travel. It would also change every
+  card heading at phone widths to fix behaviour nobody has flagged. **It
+  stays here as the option if Greg's eye ever rules against the wrap at
+  360.**
+- **Option C**, keeping "Auto Glass Repair" on cards, would have reversed
+  an hour-old ruling and was out.
+
+#### The section
+
+- **Heading: "Related Services".** It is a chrome-style label, furniture
+  and not a claim, and **the one new word this change introduces** (the
+  "Explore" precedent). No heading check objects to it on five pages.
+- **The cards:** the family minus the current page, exactly four, in the
+  family's order, derived from the table, never typed.
+  - **In the towns' card style without photographs,** so the repeated
+    stock photograph (3.17) spreads no further.
+  - In `.grid2`, the four cards sit two by two from 760 up and in one
+    column below.
+- **Placed after the FAQ,** at the end of `<main>`. It carries no call.
+
+#### The extended check, mutation-proven both ways
+
+- **On a service page, a card grid must be the family minus itself.**
+  - A missing sibling fails.
+  - The page appearing in its own section fails.
+  - Anywhere else a grid is still the whole family.
+- **Every service card must carry its row's label and line, exactly.**
+- `test-audit-checks.py` section 36, 12 checks:
+  - **as shipped, these pass:** all five sections; the section holds
+    exactly the four siblings, in order; and `sync-service-cards.py
+    --check`;
+  - **each of these fails:** a dropped sibling, a self card, the retired
+    label on home, home's old commercial line, and a drifted town line.
+- Section 35 now asserts that `build-town.py` keeps no copy of the words.
+
+#### The ask rhythm, measured on the built section
+
+**The method:** every visible `tel:`, `mailto:` and `.btn` link outside the
+header, top to top. The section lengthens only the run from the page's last
+ask in `<main>` to the footer's first.
+
+| Page | 360 | 390 | Longest run on the page, before and after |
+|---|---|---|---|
+| collision | 664 to 1,427 | 606 to 1,300 | 3,820 and 3,606, unchanged |
+| commercial | 394 to 1,136 | 422 to 1,116 | 2,961 and 2,745, unchanged |
+| glass | 423 to 1,165 | 423 to 1,144 | 1,779 and 1,722, unchanged |
+| PDR | 928 to 1,067 | 871 to 1,027 | 1,836 and 1,696, unchanged |
+| ADAS | 1,234 to **1,997** | 1,205 to 1,899 | 2,142 and 2,035, unchanged |
+
+- **Every run the section lengthens stays under the 2,684 ceiling.** The
+  worst is ADAS at 360, 1,997, which matches the 1,976 the prototype
+  measured at the stop.
+- **PDR grows by less than the section's height** because its FAQ answer
+  carries a phone link, so its run starts inside the FAQ.
+- **No page's longest run moved.**
+- **Collision's and commercial's longest runs already read over 2,684 by
+  this method, well up the page.** That is the method counting fewer asks
+  than the record's every-CTA method, not this change. They are listed for
+  Greg's eye, not ruled on.
+- The section is 694 to 763 tall on a phone and 471 at 1440.
+
+#### The fold and the layout sweep against d382908, every page, 1440, 390 and 360
+
+- **The five service pages:** the section is added, and only the footer
+  below it moves. Nothing above it moved.
+- **Home:** the router onward. The new lines re-wrap: +27 at 390 and +47
+  at 360, with the same height at 1440.
+- **The twelve towns:** **at 360 only,** +21, the glass label's second line.
+  At 390 and 1440 they are identical.
+- **Every other page is identical at every width.** The fold is unchanged
+  on every page and there is no horizontal scroll.
+- **Rendered and inspected:**
+  - the sections at 360, 390 and 1440;
+  - a town's grid at 360;
+  - home's router.
+
+#### The suite
+
+- Both test scripts pass. `test-audit-checks.py` holds **372 checks**.
+- Every `--check` exits 0, including the new `sync-service-cards.py`.
+  `site.css` did not change, so no restamp was needed.
+- `STAGING=1 audit.py --strict`: **877 passing**, which is 872 plus one per
+  service page (its enumeration).
+  - Zero criticals, sameAs the only warning, every page's score unchanged.
+- CLAUDE.md's script table and pre-commit list name the new script.
+- No em dash added.
+
 ---
 
 ## 4. The claims list

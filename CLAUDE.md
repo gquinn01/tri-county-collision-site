@@ -906,6 +906,7 @@ dark. That archive is the last copy of it that will ever exist.
 | `scripts/migrate-hub.py` | Migrates `/areas-served/`, the areas hub, from the live page cached outside the repo, the blog's discipline: every migrated paragraph is quoted from the cache and must be found there exactly once, every edit is a pair with its reason, what an edit removes is HELD and printed. Each town blurb is a `data-town` block the audit's hub check holds to that town's `TOWN_ROUTES` routing; a town name links only once its page exists, so re-run it after each town lands. |
 | `scripts/sync-area-served.py` | Writes `AREA_SERVED`, the one served list in `scripts/audit.py`, into every page's business node, and `--check` exits 1 if any page is out of date. The audit fails a page whose node says otherwise. It touches only the business node's `areaServed`: a town page's Service node keeps its own. |
 | `scripts/sync-chrome.py` | Writes the site chrome, the header and the footer, into every real page, and `--check` exits 1 if any page is out of date. The nav follows the live site's own navigation, minus Home, on Greg's ruling (3.83); its services are `audit.SERVICES`, imported, not copied (3.87). The audit fails a page whose chrome differs from the others in anything but the current-page marking, a chrome link that lands nowhere real, and a redirect stub wearing chrome. The town, hub and blog builders take their chrome from it. |
+| `scripts/sync-service-cards.py` | Writes every service card's label and line from `audit.SERVICES`, the one table of (path, label, line) (3.90), touching only the card's h3 and p, and writes each service page's Related Services section, the family minus itself, after the FAQ. `--check` exits 1 if any page is out of date. The audit fails a card whose words are not its row's, a related grid missing a sibling, and one carrying its own page. |
 | `scripts/stamp-assets.py` | Cache-busting stamps for `docs/assets/site.css` and `site.js`. |
 | `scripts/fetch_seo_news.py` | Pulls the headline sweep the Google Watcher reads. |
 | `scripts/cascade-analyzer.html` | CSS cascade analyzer. |
@@ -956,13 +957,14 @@ python3 scripts/stamp-assets.py               # after touching site.css or site.
 python3 scripts/build-sitemap.py              # after adding or removing a page
 python3 scripts/sync-area-served.py           # after changing AREA_SERVED or adding a page
 python3 scripts/sync-chrome.py                # after adding a page or changing the nav
+python3 scripts/sync-service-cards.py         # after changing SERVICES or a service card
 python3 scripts/audit.py --strict             # every page at 100/100
 ```
 
-The four middle commands take `--check`, which exits 1 instead of rewriting.
+The five middle commands take `--check`, which exits 1 instead of rewriting.
 None is a thing to remember: the audit fails a page whose asset stamp is
 stale, whose `<url>` block is missing, or whose business node's served list
-is not `AREA_SERVED` (3.79), or whose chrome differs from every other page's (3.83).
+is not `AREA_SERVED` (3.79), or whose chrome differs from every other page's (3.83), or whose service cards are not the table's (3.90).
 
 ## Reporting a stop, 2026-09-30
 

@@ -606,21 +606,9 @@ def details(q, a):
 
 
 # WHAT WE FIX, one card per service, in the family's order (3.87). The
-# family is audit.SERVICES; the words on each card live here, because they
-# are this tier's rendering. A service in the family with no card here
-# stops the build, so a sixth service cannot reach the nav and miss the
-# towns. The ADAS line is the approved meta's own words, the one vetted
-# rendering, shared with home's card.
-FIX_CARDS = {
-    "collision-repair/": ("Collision Repair", "Minor and major collision damage, with a lifetime warranty on the work."),
-    "commercial-collision-repair/": ("Commercial Collision Repair", "Work vehicles and fleets, with help on the insurance side."),
-    "auto-glass-repair-replacement/": ("Auto Glass Repair", "Windshields, side windows and rear windows."),
-    "paintless-dent-repair/": ("Paintless Dent Repair", "Door dings and hail dents, fixed without repainting."),
-    "adas-calibration/": ("ADAS Calibration", "Cameras and sensors re-aimed to factory spec after repairs."),
-}
-_unlisted = [p for p in audit.SERVICE_PATHS if p not in FIX_CARDS]
-if _unlisted:
-    raise SystemExit(f"FAILED: audit.SERVICES has {_unlisted} and FIX_CARDS has no card for it")
+# label, link and line all come from audit.SERVICES, the one table (3.90):
+# home's router, this grid and the service pages' Related Services sections
+# carry one rendering per service, and the audit fails a card that drifts.
 
 
 def llms_entry(key, name, r, n_faq, origin=None):
@@ -674,7 +662,8 @@ def build(key: str) -> tuple:
             return f'          <div class="svc-card" data-pending-href="{href}">\n{body}          </div>'
         return f'          <a class="svc-card" href="{href}">\n{body}          </a>'
 
-    fix_cards = "\n".join(card(f"../{path}", *FIX_CARDS[path]) for path in audit.SERVICE_PATHS)
+    fix_cards = "\n".join(card(f"../{path}", html.escape(lbl, quote=False), html.escape(ln, quote=False))
+                          for path, lbl, ln in audit.SERVICES)
 
     chrome = open(CHROME, encoding="utf-8").read()
     head_assets = chrome[chrome.index("  <!-- No analytics tag yet."):chrome.index("  <!-- One @graph.")]

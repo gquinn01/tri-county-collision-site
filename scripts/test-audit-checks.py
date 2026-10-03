@@ -1578,7 +1578,7 @@ def main():
     # The service pages come from the generator's own SERVICES, not a typed
     # list: a typed list missed /adas-calibration/ the day it landed (3.86).
     good_keys = ["index.html", "contact-us/index.html", "blog/index.html", "areas-served/index.html"] + \
-                [f"{t}index.html" for t, _ in sc.SERVICES] + \
+                [f"{t}index.html" for t, *_ in sc.SERVICES] + \
                 [f"areas-served-collision-repair-{k}/index.html" for k in audit.TOWN_ROUTES]
 
     def site(**over):
@@ -1693,8 +1693,8 @@ def main():
     check("     home's meta description without ADAS fails", any("names 4 services" in x for x in probs), probs)
     _saved = audit.SERVICES, audit.SERVICE_PATHS, dict(audit.SERVICE_TEXT_RE)
     try:
-        audit.SERVICES = _saved[0] + (("towing/", "Towing"),)
-        audit.SERVICE_PATHS = tuple(p_ for p_, _l in audit.SERVICES)
+        audit.SERVICES = _saved[0] + (("towing/", "Towing", "Towing to the shop."),)
+        audit.SERVICE_PATHS = tuple(p_ for p_, *_ in audit.SERVICES)
         audit.SERVICE_TEXT_RE["towing/"] = re.compile(r"\btowing\b", re.I)
         _, probs = audit.service_enumeration_findings(home, "", _meta(home))
         check("     a sixth service in SERVICES fails home everywhere it enumerates: cards, count, sentences",
@@ -1719,9 +1719,39 @@ def main():
     _spec = _ilu.spec_from_file_location("build_town_t", os.path.join(os.path.dirname(os.path.abspath(__file__)), "build-town.py"))
     btm = _ilu.module_from_spec(_spec)
     _spec.loader.exec_module(btm)
-    check("     build-town.py has a What we fix card for every service, and only those",
-          sorted(btm.FIX_CARDS) == sorted(audit.SERVICE_PATHS), sorted(btm.FIX_CARDS))
+    check("     build-town.py keeps no copy of the card words; they are audit.SERVICES (3.90)",
+          not hasattr(btm, "FIX_CARDS"), None)
     check("     sync-chrome.py's SERVICES IS audit.SERVICES, not a copy", sc.SERVICES is audit.SERVICES, None)
+
+    # ONE RENDERING PER SERVICE, AND RELATED SERVICES, 3.90. Every card's
+    # words are its SERVICES row, and a service page's own grid is the family
+    # minus itself. Mutation-proven both ways on the shipped pages.
+    print("36. Every service card says what its SERVICES row says; a service page's grid is the family minus itself")
+    for path_, lbl_, _ln in audit.SERVICES:
+        sp = _page(path_.rstrip("/"))
+        n, probs = audit.service_enumeration_findings(sp, path_, _meta(sp))
+        check(f"     /{path_} as shipped: its Related Services passes", probs == [] and n >= 1, (n, probs))
+    pdr = _page("paintless-dent-repair")
+    rel = re.search(r'(?s)<section id="related">.*?</section>', pdr).group(0)
+    check("     the section holds exactly the four siblings, in the family's order",
+          re.findall(r'<a class="svc-card" href="\.\./([^"]+)">', rel) == [p_ for p_ in audit.SERVICE_PATHS if p_ != "paintless-dent-repair/"],
+          re.findall(r'href="([^"]+)"', rel))
+    drop = re.search(r'\s*<a class="svc-card" href="../adas-calibration/">.*?</a>', rel, re.S).group(0)
+    _, probs = audit.service_enumeration_findings(pdr.replace(rel, rel.replace(drop, "")), "paintless-dent-repair/")
+    check("     a missing sibling fails", any("lack ADAS Calibration" in x for x in probs), probs)
+    selfcard = drop.replace("../adas-calibration/", "./").replace("ADAS Calibration", "Paintless Dent Repair") \
+                   .replace("Cameras and sensors re-aimed to factory spec after repairs.", "Door dings and hail dents, fixed without repainting.")
+    _, probs = audit.service_enumeration_findings(pdr.replace(rel, rel.replace("</div>\n      </div>\n    </section>", selfcard + "\n        </div>\n      </div>\n    </section>")), "paintless-dent-repair/")
+    check("     the page appearing in its own section fails", any("the page they sit on" in x for x in probs), probs)
+    _, probs = audit.service_enumeration_findings(home.replace("<h3>Glass Repair &amp; Replacement</h3>", "<h3>Auto Glass Repair</h3>"), "")
+    check("     the retired label \u201cAuto Glass Repair\u201d on a card fails", any("Auto Glass Repair" in x for x in probs), probs)
+    _, probs = audit.service_enumeration_findings(home.replace("Work vehicles and fleets, with help on the insurance side.", "Commercial and fleet vehicles."), "")
+    check("     home's old commercial line back on its card fails", any("Commercial and fleet vehicles." in x for x in probs), probs)
+    _, probs = audit.service_enumeration_findings(town.replace("Door dings and hail dents, fixed without repainting.", "Door dings and hail dents."), "areas-served-collision-repair-bensalem-pa/")
+    check("     a town card's line drifting fails", any("Door dings and hail dents." in x for x in probs), probs)
+    r = subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "sync-service-cards.py"), "--check"],
+                       capture_output=True, text=True)
+    check("     sync-service-cards.py --check: every card and every Related Services is the table's", r.returncode == 0, r.stdout[-400:])
 
     print()
     if FAILURES:
