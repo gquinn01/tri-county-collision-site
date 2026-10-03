@@ -14469,6 +14469,101 @@ towns #fix        1 column      1 column      2, 2, 1 centred (3.55's rule, alre
   one for `llms.txt`'s count.
 - No em dash and no banned digits added.
 
+### 3.88 Home's router re-rows to three and two. BUILT 2026-10-02
+
+**Greg's ruling, at his review of the full-site copy:** where home's
+`.svc-cards` showed four across with the fifth alone beneath, it is now
+**three and two, the second row centred.** Four and one undersold the newest
+service as an afterthought. This extends 3.55's lone-card principle
+("pinned left it reads as a card that lost its partner") from centring the
+odd card to **balancing the rows**.
+
+#### The construction, CSS only
+
+- **At 1120 and up the grid has six tracks, not eight.** Every card still
+  spans two, so a row holds three and the gap stays the one value.
+- **A two-card last row starts at track 2 of 6**: the second-last card at
+  `2 / span 2`, the last at `4 / span 2`. Two selectors, both keyed to the
+  remainder (`3n+1` and `3n+2`), so they catch the two-card remainder only,
+  which is the only remainder the router has.
+- The 3.87 four-up rule (`4n+1`, track 4 of 8) is gone. The two-up rule
+  between 760 and 1119 is untouched. **No markup changed.**
+
+#### The card order did not change, and so the centred pair is Glass and ADAS
+
+**The brief expected PDR and ADAS.** That is the family's order in
+`audit.SERVICES` (Collision, Commercial, Glass, PDR, ADAS), which the chrome
+uses. **Home's router keeps its own order**, as 3.87 recorded ("home keeps
+its own card order, and the check holds the set, not the order"):
+
+```
+row 1   Collision Repair   Commercial Collision Repair   Paintless Dent Repair
+row 2          Auto Glass Repair   ADAS Calibration
+```
+
+The constraint "the card order does not change" was followed, so the pair
+beneath is **Glass and ADAS**. **For Greg's eye:** if he wants PDR and ADAS
+beneath, that is swapping two cards in `docs/index.html`, one line of markup
+each, and no CSS.
+
+#### Rendered, home, every width the rule touches
+
+| Width | Before | After |
+|---|---|---|
+| 360, 390, 759 | 1 column | identical |
+| 760, 900, 1119 | 2, 2, 1 centred | identical |
+| 1120, 1200, 1280, 1440, 1920 | 4 across at 252, + 1 centred | **3 across at 344, + 2 centred** |
+
+- **The pair is centred exactly:** card centres at -184 and +184 from the
+  grid's centre, at every width from 1120 to 1920. Row one's centres are
+  -368, 0 and +368.
+- **The cards at 344 are narrower than the two-up widths already rendered**
+  (348 at 760, 528 at 1119), so the card design was not stretched past
+  anything it already wore. Each card is 379 tall where it was 337.
+- **Every heading is one line at three-up.** At four-up "Commercial
+  Collision Repair" and "Paintless Dent Repair" wrapped to two, and the
+  lone ADAS card stood 27 shorter than the row above it. **Now all five
+  cards are one height.**
+- **The image resolution is unchanged in kind.** The PDR card's source is
+  600 wide; at 342 CSS pixels a 2x screen upsamples it slightly, as the
+  two-up widths (416 to 526) already did. Every other source is 1200.
+- The section grows **112 at 1440** (the grid 671 to 782); the page
+  bottom moves by the same amount.
+
+#### Phones and the fold, measured
+
+- **360 and 390: identical** to efe8eb6, every element, in the sweep.
+- **The fold is unchanged at 1440:** the first call sits at 530 and
+  clears the fold by 308, before and after. **The first element to move is
+  the router**; above it only `<main>`'s own height changes.
+
+#### A known repeat, now closer together, for Greg's eye
+
+**Collision Repair and Auto Glass Repair carry the same photograph**,
+`accent-minor-collision-repair.jpg`. That is 3.17's recorded shortage and
+part of the 4.9 cutover blocker, not new. **At four-up the two copies sat
+at the two ends of one row. At three and two they sit one above the other
+on the left,** which makes the repeat easier to see. Nothing was changed for
+it: replacing a photograph is a sourcing question, and real photos only.
+
+#### The layout sweep against efe8eb6, every page, 1440, 390 and 360
+
+- **Changed: home at 1440 only.** 270 elements in `<main>` and the 53
+  footer elements below it moved, and the phone links below the router
+  moved by 111.5 to 111.75. Fold equal, no horizontal scroll.
+- **Every other page is identical at every width**, the twelve towns and
+  their `grid2` included (3.55 and 3.87 stand). `site.css` was restamped,
+  so every page's stamp changed and nothing else did.
+
+#### The suite
+
+- Both test scripts pass. `stamp-assets.py`, `build-sitemap.py`,
+  `sync-area-served.py` and `sync-chrome.py --check` all exit 0.
+- `STAGING=1 audit.py --strict`: **the report is identical to efe8eb6's**
+  once asset stamps are ignored. 872 passing, sameAs the only warning, zero
+  criticals.
+- No em dash added.
+
 ---
 
 ## 4. The claims list
