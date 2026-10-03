@@ -63,7 +63,7 @@
        SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
   <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/site.css?v=4163f06a">
+  <link rel="stylesheet" href="../assets/site.css?v=cd3ec0b7">
   <script src="../assets/site.js?v=ff9f6936" defer></script>
 
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
@@ -804,7 +804,7 @@
   <footer class="site">
     <div class="wrap">
       <div class="foot-grid">
-        <div>
+        <div class="foot-id">
           <a class="foot-home" href="../" aria-label="Tri-County Collision, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
           <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
           <p class="foot-nap">
@@ -815,18 +815,27 @@
             <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>
           </p>
         </div>
-        <div>
+        <div class="foot-hours">
           <h2 class="foot-head">Hours</h2>
           <p>Monday to Friday, 8&nbsp;a.m. to 6&nbsp;p.m.<br>
           Saturday by appointment only</p>
         </div>
-        <div>
+        <div class="foot-start">
+          <h2 class="foot-head">Get Started</h2>
+          <ul class="foot-links">
+            <li><a href="tel:+12153225350">Call (215) 322-5350</a></li>
+            <li><a href="mailto:contact@tricountycollision.com">Email the shop</a></li>
+            <li><a href="../contact-us/">Send us your details online</a></li>
+          </ul>
+        </div>
+        <div class="foot-explore">
           <!-- These columns list only pages that exist. They grow as pages
-               land, and never before. EXPLORE IS THE FULL MAP (3.83): every
-               service page, the hub, the blog and contact, so no page is a
-               dead end from its foot. Privacy joins it when it ships. The
-               labels are the nav's, so each destination has ONE name
-               across the chrome. -->
+               land, and never before. EXPLORE AND AREAS WE SERVE ARE THE
+               FULL MAP (3.83, 3.89): every service page, the blog and
+               contact here, every town and the hub in the next column, so
+               no page is a dead end from its foot. Privacy joins Explore
+               when it ships. The labels are the nav's, so each destination
+               has ONE name across the chrome. -->
           <h2 class="foot-head">Explore</h2>
           <ul class="foot-links">
             <li><a href="../collision-repair/">Collision Repair</a></li>
@@ -834,17 +843,29 @@
             <li><a href="../auto-glass-repair-replacement/">Glass Repair &amp; Replacement</a></li>
             <li><a href="../paintless-dent-repair/">Paintless Dent Repair</a></li>
             <li><a href="../adas-calibration/">ADAS Calibration</a></li>
-            <li><a href="../areas-served/">Areas We Serve</a></li>
             <li><a href="../blog/">Blog</a></li>
             <li><a href="../contact-us/">Contact Us</a></li>
           </ul>
         </div>
-        <div>
-          <h2 class="foot-head">Get Started</h2>
-          <ul class="foot-links">
-            <li><a href="tel:+12153225350">Call (215) 322-5350</a></li>
-            <li><a href="mailto:contact@tricountycollision.com">Email the shop</a></li>
-            <li><a href="../contact-us/">Send us your details online</a></li>
+        <div class="foot-areas">
+          <!-- AREAS WE SERVE, its own column since 3.89, Greg's ruling. The
+               towns are TOWN_ROUTES, alphabetical, never typed; the column
+               ends at the hub, in the site's own phrase. -->
+          <h2 class="foot-head">Areas We Serve</h2>
+          <ul class="foot-links foot-towns">
+            <li><a href="../areas-served-collision-repair-bensalem-pa/">Bensalem</a></li>
+            <li><a href="../areas-served-collision-repair-feasterville-trevose-pa/">Feasterville-Trevose</a></li>
+            <li><a href="../areas-served-collision-repair-hatboro-pa/">Hatboro</a></li>
+            <li><a href="../areas-served-collision-repair-horsham-pa/">Horsham</a></li>
+            <li><a href="../areas-served-collision-repair-huntingdon-valley-pa/">Huntingdon Valley</a></li>
+            <li><a href="../areas-served-collision-repair-jamison-pa/">Jamison</a></li>
+            <li><a href="../areas-served-collision-repair-jenkintown-pa/">Jenkintown</a></li>
+            <li><a href="../areas-served-collision-repair-langhorne-pa/">Langhorne</a></li>
+            <li><a href="../areas-served-collision-repair-northeast-philadelphia/">Northeast Philadelphia</a></li>
+            <li><a href="../areas-served-collision-repair-richboro-pa/">Richboro</a></li>
+            <li><a href="../areas-served-collision-repair-warminster-pa/">Warminster</a></li>
+            <li><a href="./" aria-current="page">Willow Grove</a></li>
+            <li><a href="../areas-served/">Every town we serve</a></li>
           </ul>
         </div>
       </div>

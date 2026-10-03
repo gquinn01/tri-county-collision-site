@@ -2430,7 +2430,7 @@ footer.site a:focus-visible,
 footer.site { background: var(--ink); color: var(--silver); padding: var(--pad) 0 34px; }
 footer.site a { color: var(--silver); }
 .foot-grid { display: grid; gap: 34px; }
-/* FOUR COLUMNS, NOT THREE, since Hours was promoted out of the small
+/* FOUR TRACKS, NOT THREE, since Hours was promoted out of the small
    print on 2026-09-22 (proposed-changes.md 3.29). The grid gained a
    child, so it gained a track.
 
@@ -2447,8 +2447,36 @@ footer.site a { color: var(--silver); }
    logo is 200px and min-content wins: 226px at 760 against the 197px the
    ratio alone would give. That is the track doing its job, not a bug,
    and it is why nothing overflows at the narrow end. */
-@media (min-width: 760px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 900px) { .foot-grid { grid-template-columns: 1.4fr 1fr 1fr 1fr; } }
+/* AREAS WE SERVE IS A FIFTH COLUMN, 3.89, Greg's ruling, and the track
+   count did NOT grow to five. Five across gives each link column 175px
+   at 1440, and "Commercial Collision Repair", "Glass Repair &
+   Replacement" and "Send us your details online" all wrap there,
+   measured. So Get Started sits under Hours in ONE column, and the
+   markup carries it in that order: on a phone the stack reads identity,
+   Hours, Get Started, Explore, Areas, and tab order matches the columns
+   on a desktop. The link columns keep their 222px at 1440 and nothing
+   wraps from 1119 up. Below 900 the identity column spans the Hours and
+   Get Started rows, so no column stands alone on a row. "auto 1fr" puts
+   every spanning column's extra height into the last row, which keeps
+   Get Started one gap under Hours rather than pushed down by the towns. */
+.foot-id { grid-area: id; }
+.foot-hours { grid-area: hours; }
+.foot-start { grid-area: start; }
+.foot-explore { grid-area: explore; }
+.foot-areas { grid-area: areas; }
+.foot-grid { grid-template-areas: "id" "hours" "start" "explore" "areas"; }
+@media (min-width: 760px) {
+  .foot-grid {
+    grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr auto;
+    grid-template-areas: "id hours" "id start" "explore areas";
+  }
+}
+@media (min-width: 900px) {
+  .foot-grid {
+    grid-template-columns: 1.4fr 1fr 1fr 1fr; grid-template-rows: auto 1fr;
+    grid-template-areas: "id hours explore areas" "id start explore areas";
+  }
+}
 .foot-home img { width: 200px; height: 80px; object-fit: contain; }
 /* THE FOOTER LOGO GETS A BOX OF ITS OWN, added 2026-09-28 on Greg's
    ruling, proposed-changes.md 3.60. It serves the focus ring. The link was

@@ -150,12 +150,14 @@ def render(page: str) -> tuple:
 
     maps = esc(audit.MAPS_NAP_URL)
     explore = [link(t, esc(l).replace("Commercial Collision Repair", "Commercial Collision&nbsp;Repair"))
-               for t, l in SERVICES] + [link(*HUB), link(*BLOG), link(*CONTACT)]
+               for t, l in SERVICES] + [link(*BLOG), link(*CONTACT)]
     exp = "\n".join(f"            <li>{x}</li>" for x in explore)
+    areas = [link(t, esc(l)) for t, l in towns()] + [link(HUB[0], "Every town we serve")]
+    are = "\n".join(f"            <li>{x}</li>" for x in areas)
     foot = f'''<footer class="site">
     <div class="wrap">
       <div class="foot-grid">
-        <div>
+        <div class="foot-id">
           {link("", f'<img src="{p}logo.png" alt="Tri-County Collision" width="1332" height="530">', "foot-home", ' aria-label="Tri-County Collision, home"')}
           <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
           <p class="foot-nap">
@@ -166,29 +168,39 @@ def render(page: str) -> tuple:
             <a href="mailto:{EMAIL}">{EMAIL}</a>
           </p>
         </div>
-        <div>
+        <div class="foot-hours">
           <h2 class="foot-head">Hours</h2>
           <p>Monday to Friday, 8&nbsp;a.m. to 6&nbsp;p.m.<br>
           Saturday by appointment only</p>
         </div>
-        <div>
-          <!-- These columns list only pages that exist. They grow as pages
-               land, and never before. EXPLORE IS THE FULL MAP (3.83): every
-               service page, the hub, the blog and contact, so no page is a
-               dead end from its foot. Privacy joins it when it ships. The
-               labels are the nav's, so each destination has ONE name
-               across the chrome. -->
-          <h2 class="foot-head">Explore</h2>
-          <ul class="foot-links">
-{exp}
-          </ul>
-        </div>
-        <div>
+        <div class="foot-start">
           <h2 class="foot-head">Get Started</h2>
           <ul class="foot-links">
             <li><a href="{PHONE_TEL}">Call {PHONE_TEXT}</a></li>
             <li><a href="mailto:{EMAIL}">Email the shop</a></li>
             <li>{link(*CONTACT[:1], "Send us your details online")}</li>
+          </ul>
+        </div>
+        <div class="foot-explore">
+          <!-- These columns list only pages that exist. They grow as pages
+               land, and never before. EXPLORE AND AREAS WE SERVE ARE THE
+               FULL MAP (3.83, 3.89): every service page, the blog and
+               contact here, every town and the hub in the next column, so
+               no page is a dead end from its foot. Privacy joins Explore
+               when it ships. The labels are the nav's, so each destination
+               has ONE name across the chrome. -->
+          <h2 class="foot-head">Explore</h2>
+          <ul class="foot-links">
+{exp}
+          </ul>
+        </div>
+        <div class="foot-areas">
+          <!-- AREAS WE SERVE, its own column since 3.89, Greg's ruling. The
+               towns are TOWN_ROUTES, alphabetical, never typed; the column
+               ends at the hub, in the site's own phrase. -->
+          <h2 class="foot-head">Areas We Serve</h2>
+          <ul class="foot-links foot-towns">
+{are}
           </ul>
         </div>
       </div>

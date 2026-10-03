@@ -14625,6 +14625,137 @@ row 2          Paintless Dent Repair   ADAS Calibration
     fc30ab5's. The enumeration check holds the set, not the order.
   - The router comment now names the order as Greg's (3.88).
 
+### 3.89 Areas We Serve becomes its own footer column. BUILT 2026-10-02
+
+**Greg's ruling:** the footer's Areas We Serve entry leaves the Explore
+column and becomes **its own column listing the areas**.
+
+#### The column, all of it in `scripts/sync-chrome.py`
+
+- **Heading:** "Areas We Serve", the nav's own words, in `.foot-head`
+  like Explore's.
+  - It adds one chrome H2 per page. **It trips no heading check.**
+  - The audit report differs from 2d7d4c2's only in each page's heading
+    count (one more) and word count (about 19 more). Every score, warning
+    and critical is unchanged.
+- **The twelve towns, alphabetical,** from the same `towns()` the nav
+  dropdown uses: derived from `TOWN_ROUTES`, never typed (3.83's one
+  order rule).
+- **It ends with the hub,** in the site's own phrase, "Every town we
+  serve" (the town pages' nearby-card heading).
+- **Explore drops its Areas We Serve entry.** No destination is lost and
+  none is duplicated. The hub is still reachable from every foot, now
+  under the phrase.
+- **The current page is marked as everywhere in the chrome:**
+  - a town's own link reads `./` with `aria-current`;
+  - so does the hub's phrase on `/areas-served/`.
+- **The chrome identity and link checks hold the column on every page.**
+  The two redirect stubs stay bare and untouched.
+
+#### The grid: five columns on four tracks
+
+**Five tracks were rendered and rejected.** At 1440, five across gives each
+link column 175px. Three labels then wrap there: "Commercial Collision
+Repair", "Glass Repair & Replacement" and "Send us your details online".
+
+**What ships:** Get Started sits **under Hours, in one column**, and the
+markup carries it in that order. The grid uses named areas:
+
+```
+phone (one column)   id / Hours / Get Started / Explore / Areas
+760 to 899           id        Hours
+                     id        Get Started
+                     Explore   Areas
+900 and up           id   Hours         Explore   Areas
+                     id   Get Started   Explore   Areas
+```
+
+- **On a desktop the link columns keep their 222px at 1440,** and nothing
+  wraps from 1119 up. At 900 the same three labels wrap that already
+  wrapped there before this run.
+- **Tab order now matches the columns on a desktop:** Hours, Get Started,
+  Explore, Areas.
+- **Below 900 the identity column spans the Hours and Get Started rows,**
+  so no column stands alone on a row. The plain grid, rendered first, left
+  Get Started alone on a row at every width from 760.
+- **`grid-template-rows: auto 1fr`** keeps Get Started one gap under Hours,
+  rather than pushed down by the towns.
+- **The four footer divs gained classes** (`foot-id`, `foot-hours`,
+  `foot-start`, `foot-explore`, `foot-areas`) to carry the areas. Nothing
+  else reads them.
+
+#### One column of towns, not two: picked by the renders
+
+The nav dropdown's precedent, a two-column flow inside the column, was
+rendered at 390 and 1440:
+
+- **1440:** in the 222px column, two columns break "Feasterville-Trevose",
+  "Huntingdon Valley", "Northeast Philadelphia" and "Every town we serve"
+  across lines. One column breaks nothing.
+- **390:** two columns fit and save 234px.
+  - But at **360** "Northeast Philadelphia" breaks.
+  - In either width the hub's phrase lands in the flow as if it were a
+    thirteenth town. In one column it closes the list.
+- **On a phone the column's length costs no ask:** every footer call now
+  sits above it (below). **So one column at every width.**
+
+#### Phone stacking order and the ask rhythm, measured
+
+**The method:** every visible `tel:` link at 360 and 390, top to top, on
+all 37 real pages. **It is not the record's every-CTA method,** which is
+why Jenkintown reads 2,233 at 390 here against the record's 2,170. The two
+are compared like for like.
+
+**The footer's own calls are three:** the identity column's phone, Get
+Started's Call, and the small print's phone.
+
+| Order | Address phone to Get Started | Get Started to small print |
+|---|---|---|
+| before (2d7d4c2) | 606 | 195 |
+| Areas after Explore, Get Started last | **1,127** | 194 |
+| **shipped: Get Started under Hours** | **242** | **1,079** |
+
+- **The run from the last in-page call into the footer is identical** to
+  2d7d4c2 on every page at both widths. The identity column, and the phone
+  link in it, comes first in every order.
+- **No page's longest run changed** in either order, Jenkintown included
+  (2,338 at 360, 2,233 at 390, before and after). **The ceiling is
+  untouched.** The footer's longest internal run is 1,079, under 2,684.
+- The shipped order puts Get Started's Call within 242 of the address
+  phone, and the column's length goes after it.
+
+#### Footer height, per page class
+
+The footer is the same chrome on every page, so the change is one number
+per width:
+
+| Width | Before | After | Change |
+|---|---|---|---|
+| 360, 390 | 1,252 | 1,773 | +520 to +521 |
+| 760 | 945 | 1,140 | +195 |
+| 900 | 573 | 712 | +139 |
+| 1119, 1120 | 582 | 727 | +145 |
+| 1440, 1920 | 591 | 737 | +145 to +146 |
+
+#### The fold and the layout sweep against 2d7d4c2, every page, 1440, 390 and 360
+
+- **Changed: the footer on all 37 real pages, and nothing else.** Nothing
+  outside `<footer>` moved on any page.
+- **The fold and every in-page call position are identical,** asserted
+  from the sweep rather than from construction. There is no horizontal
+  scroll.
+- **Rendered and inspected:** 360, 390, 760 and 1440.
+
+#### The suite
+
+- Both test scripts pass.
+- `stamp-assets.py` was run, since `site.css` changed. It and
+  `build-sitemap.py`, `sync-area-served.py` and `sync-chrome.py --check`
+  all exit 0.
+- `STAGING=1 audit.py --strict`: every score unchanged, sameAs the only
+  warning, zero criticals.
+- No em dash added.
+
 ---
 
 ## 4. The claims list
