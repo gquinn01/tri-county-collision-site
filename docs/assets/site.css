@@ -272,6 +272,18 @@
    page flow; it does not govern the page header field. Privacy is decided
    when it is built. It is the fourth extension recorded here.
 
+   THE CAP IS AMENDED, DATED 2026-10-02, Greg's ruling (proposed-changes.md
+   3.91). The five service pages carry a THIRD in-flow ox band, a
+   NAVIGATION band: #related, Related Services, after the FAQ. Its cards
+   are links, so by the test above it asks, and the two-band cap would
+   have ruled it out; this paragraph is the amendment, in so many words.
+   It asks the reader to go somewhere, never to call or write: no CTA row,
+   no button, so the CTA bands are still the only ox bands that ask for an
+   action and their count of two stands. Same .field-ox, same gradient.
+   THE ADJACENCY RULE IS NOT AMENDED: no two adjacent sections share a
+   ground, which is why it stands between the silver FAQ and the ink
+   footer and not under the ox promise band. It is the fifth extension.
+
    TWO SANCTIONED SECTION-BACKGROUND GRADIENTS, BOTH DATED 2026-09-10.
    The second is the homepage hero's scrim, the ground its type sits on;
    see THE HERO and the readability amendment. It is not a gradient on
@@ -280,6 +292,8 @@
    THE FIRST, DECIDED 2026-09-10. The palette
    law allows exactly this one exception and only as a dated, recorded
    decision, so this is the record. The two oxblood act bands carry a gradient
+   (so does every .field-ox band, the service pages' navigation band of 3.91
+   included: it is the class's, not a second exception)
    derived from the logo's own swoosh: deep at the ends, --ox exactly through
    the middle, on the mark's angle. IT STAYS INSIDE ONE HUE, so oxblood still
    means act from the first pixel. See .field-ox for the stops, the fallback
@@ -1514,6 +1528,22 @@ section { padding: var(--pad) 0; }
 .svc-card h3 { margin-bottom: .35em; }
 .svc-card p { font-size: 1rem; color: var(--ink-2); margin: 0; }
 a.svc-card h3 { color: var(--ox-tx); }
+/* SERVICE CARDS ON A DARK GROUND, 3.91: the Related Services band on the
+   five service pages is .dark.field-ox. The cards take the dark-ground
+   card grammar (.dark .card): a .08 silver wash and silver type. MEASURED
+   ON THE RENDERED BAND, every pixel under every glyph run with the glyphs
+   transparent, at 360, 390 and 1440: the card headings and lines 8.81
+   worst, past the 7 body target; the band's H2 10.50.
+   THE BORDER RISES TO .50, NOT THE .28 .dark .card SHIPS. These cards are
+   LINKS, and a link card's edge is what tells a reader where the target
+   is, so it meets the 3:1 floor the law sets for a shape. .28 renders
+   1.98 against the wash and 2.35 against the band; .50 renders 3.34 and
+   3.99, worst case. The ink precedent, .dark .card at .28, is not a link.
+   The rule along the base answers in silver, as on .dark .card, because
+   --ox on --ox is invisible. */
+.dark .svc-card { background: rgb(var(--silver-rgb) / .08); border-color: rgb(var(--silver-rgb) / .50); }
+.dark a.svc-card h3, .dark .svc-card p { color: var(--silver); }
+.dark a.svc-card::after { background: var(--silver); }
 
 /* ---------- We Fix It All: the licensed render and the eight ----------
    Replaced the drawn intake diagram on 2026-09-17, on the client's
@@ -2066,6 +2096,9 @@ section > .wrap > .cta-row:last-child { justify-content: center; }
    about the bands that ASK FOR SOMETHING. It still governs them: the CTA
    band is the only oxblood band on a page that asks for an action, one on
    the front door and two on a long service page.
+   AMENDED 2026-10-02 (3.91): a service page also carries #related, a
+   third in-flow ox band that asks the reader to go somewhere, not to act.
+   See the palette note for the amendment in full.
 
    WHAT IS NEW IS OXBLOOD AS A PROSE-SECTION GROUND. #who-we-are carries it
    and carries no button, no CTA row and no link. It joins the recorded

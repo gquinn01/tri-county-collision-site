@@ -14927,6 +14927,141 @@ ask in `<main>` to the footer's first.
 - CLAUDE.md's script table and pre-commit list name the new script.
 - No em dash added.
 
+### 3.91 Related Services goes red, stays after the FAQ, and drops Commercial. BUILT 2026-10-02
+
+Greg made three rulings on the Related Services section at his review.
+One was reversed by Greg on the builder's measurements before anything
+shipped.
+
+#### The placement, both halves
+
+1. **Ruled up:** the section was to move above the FAQ.
+2. **Measured:** above the FAQ means directly under `#start`, the ox promise
+   band, on four of the five pages. A prototype on PDR showed the two red
+   bands **fused into one continuous red block: 994px at 390 and 869px at
+   1440**, with the seam barely visible where the gradient restarts. That
+   breaks the recorded rule that no two adjacent sections share a ground.
+   Collision-repair alone was clear, because its `#start` is ink.
+3. **Reversed on the measurements:** Greg ruled Option B. **The section
+   goes red and stays after the FAQ,** between the silver FAQ and the ink
+   footer, where red reads as red. **The adjacency rule is not amended and
+   stays binding.**
+
+#### The cap, amended in so many words (this commit is the authority)
+
+- **The brief expected a second red presence. These pages already carried
+  two in-flow ox bands each:**
+  - `#why` and `#start`;
+  - on collision-repair, `#after-a-crash` and `#why`;
+  - plus the ox hero.
+- The written law capped a page at two. Its test says a band that asks is
+  an act band. A grid of link cards asks.
+- **Greg's ruling: the five service pages carry a THIRD in-flow ox band, a
+  navigation band.**
+  - It asks the reader to go somewhere, never to call or write: no CTA row
+    and no button. **So the CTA bands are still the only ox bands that ask
+    for an action, and their count of two stands.**
+  - A fourth, or this one anywhere else, needs its own ruling.
+- **The amendment is written where the law lives:**
+  - the palette note in `site.css`, as the fifth extension;
+  - the `.dark` band comment in `site.css`;
+  - both gradient paragraphs: the band wears `.field-ox`, the class's
+    gradient, not a second exception;
+  - CLAUDE.md design rule 6 and its amendment list.
+
+#### The list: one rule, no special case
+
+- **A service page's Related Services is the family minus itself minus
+  `RELATED_LEAVES_OUT`,** a new constant in `audit.py` holding Commercial
+  Collision Repair.
+  - On Commercial's own page minus-self already removes it, so **that page
+    keeps its four siblings, two by two.**
+  - **The other four pages show three.**
+- **The lone card is centred, verified rather than assumed.** `.grid2`'s
+  rule (3.55) fires inside the band:
+  - from 700px up, the third card's centre sits at **0 offset** from the
+    grid's centre (measured at 700 and 1440);
+  - below 700 the grid is one column.
+- Home's router and the towns' grids are untouched. They carry the whole
+  family, and the check holds them to it.
+
+#### The check, mutation-proven both ways
+
+`test-audit-checks.py` section 36, now 15 checks (375 in all):
+
+- **As shipped, these pass:**
+  - all five sections;
+  - PDR holds exactly three, in the family's order;
+  - Commercial holds exactly four.
+- **Each of these fails:**
+  - **a Commercial card on a non-Commercial page's list;**
+  - **Commercial's own page missing a sibling;**
+  - a missing sibling on a three-card page;
+  - the page in its own section;
+  - the 3.90 card-word drifts.
+
+#### Contrast, measured by the readability method
+
+The method: every pixel under every glyph run, with the glyphs
+transparent, at 360, 390 and 1440, on PDR and Commercial.
+
+| Pair | Worst measured | Bar |
+|---|---|---|
+| Card heading and line (silver on the .08 wash, over the gradient) | **8.81** | 7 body target |
+| The band's H2 (silver on the band) | **10.50** | 4.5 floor |
+| Card border, .50, against the wash / against the band | **3.34 / 3.99** | 3 for a shape |
+| (the .28 the ink grammar ships, for comparison) | 1.98 / 2.35 | |
+
+- **The border rose to .50, and that is what the law's wording requires.**
+  These cards are links, and a link card's edge is what shows a reader
+  where the target is. The 3:1 floor the law sets for a shape applies.
+- The ink precedent (`.dark .card` at .28, 2.38 on ink) is a card that is
+  not a link, so it did not govern.
+- The rule along the card's base answers in silver, as on `.dark .card`.
+  The focus ring is already silver on `.dark`.
+
+#### The ask rhythm, re-measured on the shipped pages
+
+**A correction to 3.90 first.** 3.90's run table counted the phone link
+inside a closed FAQ answer. A closed `<details>` reports a position that
+does not move with the layout. That is why PDR's run read 928 to 1,067,
+which 3.90 explained wrongly. Re-measured with closed answers excluded,
+the runs across the section at f749016 were higher than 3.90 recorded,
+**worst 2,274 (collision, 360)**, all still under 2,684.
+
+| Page | 360, before / after | 390, before / after | Longest run on the page |
+|---|---|---|---|
+| collision | 2,274 / **2,108** | 2,117 / 1,972 | 3,820 and 3,606, unchanged |
+| commercial | 2,063 / 2,063 | 2,016 / 2,016 | 2,961 and 2,745, unchanged |
+| glass | 2,093 / 1,927 | 2,043 / 1,898 | now 1,927 and 1,898 |
+| PDR | 1,995 / 1,830 | 1,898 / 1,753 | now 1,836 and 1,753 |
+| ADAS | 1,997 / 1,831 | 1,899 / 1,754 | 2,142 and 2,035, unchanged |
+
+- **Every run under the 2,684 ceiling.**
+- **Three cards make the section shorter on the four pages:** 597 at 360
+  (was 763) and 550 at 390 (was 694). The runs fell by 145 to 166.
+
+#### The fold and the layout sweep against f749016, every page, 1440, 390 and 360
+
+- **Changed:**
+  - the four three-card pages, from `#related` down: the 1440 doc height
+    is equal, and it is 144 to 166 shorter on phones;
+  - and the stylesheet.
+- **Commercial's page has identical boxes;** its change is colour only.
+- **Every other page is identical.** The fold is unchanged on every page
+  and there is no horizontal scroll.
+- **Rendered and inspected:** PDR (three cards) and Commercial (four) at
+  360, 390 and 1440.
+
+#### The suite
+
+- Both test scripts pass (375 checks).
+- `site.css` was restamped. Every `--check` exits 0.
+- `STAGING=1 audit.py --strict`: 877 passing, zero criticals, sameAs the
+  only warning, every score unchanged. The four three-card pages each
+  count one fewer heading.
+- No em dash added.
+
 ---
 
 ## 4. The claims list

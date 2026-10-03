@@ -441,6 +441,13 @@ SERVICES = (
      "Cameras and sensors re-aimed to factory spec after repairs."),
 )
 SERVICE_PATHS = tuple(p for p, _l, _ln in SERVICES)
+# RELATED SERVICES LEAVES THESE OUT, 3.91, Greg's ruling. A service page's
+# Related Services list is the family minus the page itself minus these,
+# ONE rule with no special case: on Commercial's own page minus-self already
+# removes it, so that page keeps its four siblings and the other four show
+# three. Home's router and the towns' grids are untouched: they carry the
+# whole family.
+RELATED_LEAVES_OUT = ("commercial-collision-repair/",)
 COUNT_WORDS = ("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
 
 # A count typed beside "services" ("Four services, one shop", "the four
@@ -2664,9 +2671,12 @@ def service_enumeration_findings(html_text: str, page_rel: str, meta: str = "") 
     want = len(SERVICES)
     p = _CardGroups(page_rel)
     p.feed(html_text)
-    # A SERVICE PAGE'S OWN GRID IS THE FAMILY MINUS ITSELF (3.90): the
-    # Related Services section. Anywhere else a grid is the whole family.
-    expect = [x for x in SERVICE_PATHS if x != page_rel]
+    # A SERVICE PAGE'S OWN GRID IS ITS RELATED SERVICES: the family minus
+    # itself (3.90) minus RELATED_LEAVES_OUT (3.91). Anywhere else a grid is
+    # the whole family.
+    on_service = page_rel in SERVICE_PATHS
+    expect = [x for x in SERVICE_PATHS
+              if not on_service or (x != page_rel and x not in RELATED_LEAVES_OUT)]
     label = {x: lbl for x, lbl, _ln in SERVICES}
     for (_n, tag, gid, gcls), targets in p.groups.items():
         if len(set(targets)) < 2:
@@ -2679,6 +2689,10 @@ def service_enumeration_findings(html_text: str, page_rel: str, meta: str = "") 
         if page_rel in targets:
             problems.append(f"the service cards in {where} carry {label[page_rel]}, the page they sit on; "
                             f"a service page's grid is the family minus itself")
+        left_out = [label[x] for x in RELATED_LEAVES_OUT if on_service and x != page_rel and x in targets]
+        if left_out:
+            problems.append(f"the service cards in {where} carry {', '.join(left_out)}, which the Related "
+                            f"Services list leaves out (RELATED_LEAVES_OUT, 3.91)")
         dup = sorted({x for x in targets if targets.count(x) > 1})
         if dup:
             problems.append(f"the service cards in {where} repeat {', '.join(dup)}")
@@ -3036,9 +3050,9 @@ def audit(source: str, coverage: dict = None):
         for x in enum_problems:
             fails.append(f"**A service enumeration does not answer to SERVICES:** {x}. Every place the "
                          f"site lists its services carries all {len(SERVICES)} in SERVICES (a service "
-                         f"page's own grid, the family minus itself), and every card carries its row's "
+                         f"page's own grid, the family minus itself and RELATED_LEAVES_OUT), and every card carries its row's "
                          f"label and line, so a service cannot be half-added and a card cannot drift "
-                         f"(3.87, 3.90). Run scripts/sync-service-cards.py.")
+                         f"(3.87, 3.90, 3.91). Run scripts/sync-service-cards.py.")
         if n_enum and not enum_problems:
             passes.append(f"All {n_enum} service enumeration(s) on the page carry the family of "
                           f"{len(SERVICES)}, and every card its row's label and line.")

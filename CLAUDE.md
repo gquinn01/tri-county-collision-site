@@ -500,7 +500,8 @@ unchanged on either ground** — it is a border and a label already.
 
 **6. The palette is four colours, two text shades and one highlight ground**, and gold is not one of
 them any more. Oxblood means act and nothing else: two oxblood bands per page,
-each carrying the CTA row. Ink is structural. Solid colours only and no glows.
+each carrying the CTA row (a third, a navigation band, on the five service
+pages since 3.91; see below). Ink is structural. Solid colours only and no glows.
 
 **Amended 2026-09-17 on the client's ruling, in two places, both recorded in
 the palette note in `docs/assets/site.css` and in `proposed-changes.md` 3.24
@@ -523,6 +524,22 @@ the element asks the reader to do something, and a chip does not** — it cannot
 be clicked, it is not a target, it names which photograph you are looking at.
 Recorded in the palette note in `docs/assets/site.css` beside the other two
 extensions, and measured per frame in `proposed-changes.md` 3.33.
+
+**Amended 2026-10-02 on Greg's ruling (`proposed-changes.md` 3.91): THE CAP
+IS AMENDED. The five service pages carry a THIRD in-flow ox band, a
+navigation band.** It is `#related`, Related Services, after the FAQ. Its
+cards are links, so by the test above it asks, and the cap of two in-flow
+ox bands would have ruled it out; Greg ruled it in, in so many words, and
+this paragraph is the amendment rather than a reading of the old one. It
+asks the reader to GO somewhere, never to call or write: no CTA row and no
+button, so **the CTA bands are still the only ox bands that ask for an
+action**, and the act-band count of two still governs those. It wears
+`.field-ox`, the same class and the same recorded gradient. **The adjacency
+rule is NOT amended and stays binding:** no two adjacent sections share a
+ground. Above the FAQ the band fused with the ox promise band into one red
+block (994px at 390), which is why it stands between the silver FAQ and the
+ink footer instead. A fourth in-flow ox band, or this one anywhere else,
+needs its own ruling.
 
 **White is a ground, not a shade of the ground.** Added 2026-09-10. `--silver`
 is the page; `--white` is used on exactly **one band**, the stat band under the
@@ -574,7 +591,8 @@ a point. The temperature moved and the contrast very nearly did not.
 
 **One sanctioned section-background gradient, decided 2026-09-10.** The firm's
 palette law allows exactly this one exception, and only as a dated, recorded
-decision; this is the record. The two oxblood act bands carry a gradient taken
+decision; this is the record. The two oxblood act bands (and, since 3.91, the
+service pages' navigation band, which wears the same class) carry a gradient taken
 from **the logo's own swoosh** — the mark's red sweep runs dark, bright, dark
 across its length, and the chrome sweep beneath it does the same in grey. At
 band scale that reads as light falling across a painted panel.

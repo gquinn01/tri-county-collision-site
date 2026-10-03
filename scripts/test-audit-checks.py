@@ -1726,16 +1726,28 @@ def main():
     # ONE RENDERING PER SERVICE, AND RELATED SERVICES, 3.90. Every card's
     # words are its SERVICES row, and a service page's own grid is the family
     # minus itself. Mutation-proven both ways on the shipped pages.
-    print("36. Every service card says what its SERVICES row says; a service page's grid is the family minus itself")
+    print("36. Every service card says what its SERVICES row says; a service page's grid is the family minus itself and RELATED_LEAVES_OUT")
     for path_, lbl_, _ln in audit.SERVICES:
         sp = _page(path_.rstrip("/"))
         n, probs = audit.service_enumeration_findings(sp, path_, _meta(sp))
         check(f"     /{path_} as shipped: its Related Services passes", probs == [] and n >= 1, (n, probs))
     pdr = _page("paintless-dent-repair")
-    rel = re.search(r'(?s)<section id="related">.*?</section>', pdr).group(0)
-    check("     the section holds exactly the four siblings, in the family's order",
-          re.findall(r'<a class="svc-card" href="\.\./([^"]+)">', rel) == [p_ for p_ in audit.SERVICE_PATHS if p_ != "paintless-dent-repair/"],
+    rel = re.search(r'(?s)<section id="related"[^>]*>.*?</section>', pdr).group(0)
+    check("     PDR's section holds the family minus itself minus Commercial, three, in order",
+          re.findall(r'<a class="svc-card" href="\.\./([^"]+)">', rel) ==
+          [p_ for p_ in audit.SERVICE_PATHS if p_ not in ("paintless-dent-repair/",) + audit.RELATED_LEAVES_OUT],
           re.findall(r'href="([^"]+)"', rel))
+    com = _page("commercial-collision-repair")
+    crel = re.search(r'(?s)<section id="related"[^>]*>.*?</section>', com).group(0)
+    check("     Commercial's own section keeps its four siblings: the one rule, no special case",
+          re.findall(r'<a class="svc-card" href="\.\./([^"]+)">', crel) ==
+          [p_ for p_ in audit.SERVICE_PATHS if p_ != "commercial-collision-repair/"], re.findall(r'href="([^"]+)"', crel))
+    ccard = re.search(r'\s*<a class="svc-card" href="../commercial-collision-repair/">.*?</a>', town, re.S).group(0)
+    _, probs = audit.service_enumeration_findings(pdr.replace(rel, rel.replace("</div>\n      </div>\n    </section>", ccard + "\n        </div>\n      </div>\n    </section>")), "paintless-dent-repair/")
+    check("     a Commercial card on a non-Commercial page's list fails", any("leaves out" in x for x in probs), probs)
+    cdrop = re.search(r'\s*<a class="svc-card" href="../paintless-dent-repair/">.*?</a>', crel, re.S).group(0)
+    _, probs = audit.service_enumeration_findings(com.replace(crel, crel.replace(cdrop, "")), "commercial-collision-repair/")
+    check("     Commercial's own page missing a sibling fails", any("lack Paintless Dent Repair" in x for x in probs), probs)
     drop = re.search(r'\s*<a class="svc-card" href="../adas-calibration/">.*?</a>', rel, re.S).group(0)
     _, probs = audit.service_enumeration_findings(pdr.replace(rel, rel.replace(drop, "")), "paintless-dent-repair/")
     check("     a missing sibling fails", any("lack ADAS Calibration" in x for x in probs), probs)

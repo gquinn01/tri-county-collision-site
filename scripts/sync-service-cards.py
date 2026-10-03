@@ -12,10 +12,12 @@ card's h3 and p. Home's photographs, alts and order stay home's own.
 scripts/build-town.py builds the towns' cards from the same table, so a
 rebuild and this agree.
 
-RELATED SERVICES, 3.90, Greg's ruling. Each service page carries the family
-MINUS ITSELF, four cards in the family's order, after the FAQ, in the towns'
-card style without photographs, so the repeated stock photograph spreads no
-further. "Related Services" is a chrome-style label, furniture rather than a
+RELATED SERVICES, 3.90 and 3.91, Greg's rulings. Each service page carries
+the family MINUS ITSELF AND MINUS audit.RELATED_LEAVES_OUT (Commercial), in
+the family's order, after the FAQ, on the ox ground, in the card style
+without photographs, so the repeated stock photograph spreads no further.
+Commercial's own page keeps four; the other four pages show three, the
+third centred by .grid2's lone-card rule. "Related Services" is a chrome-style label, furniture rather than a
 claim (the "Explore" precedent). The section sits between the RELATED
 markers and is rewritten whole.
 
@@ -80,11 +82,14 @@ def related(page: str) -> str:
         f'              <h3>{esc(lbl)}</h3>\n'
         f'              <p>{esc(ln)}</p>\n'
         f'            </div>\n'
-        f'          </a>' for p, lbl, ln in audit.SERVICES if p != page)
-    return f'''    <!-- RELATED:START, written by scripts/sync-service-cards.py (proposed-changes.md 3.90).
-         The family in audit.SERVICES minus this page, in the family's order.
+        f'          </a>' for p, lbl, ln in audit.SERVICES
+        if p != page and p not in audit.RELATED_LEAVES_OUT)
+    return f'''    <!-- RELATED:START, written by scripts/sync-service-cards.py (proposed-changes.md 3.90, 3.91).
+         The family in audit.SERVICES minus this page and minus
+         audit.RELATED_LEAVES_OUT, in the family's order, on the ox ground:
+         the third in-flow ox band, a navigation band, by Greg's ruling (3.91).
          Edit the table, never this block. -->
-    <section id="related">
+    <section id="related" class="dark field-ox">
       <div class="wrap">
         <div class="sec-head">
           <h2 class="sec-title">Related Services</h2>
