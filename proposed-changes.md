@@ -15174,10 +15174,12 @@ ENCODE   q65, 303,426 bytes against a 304,449-byte source; only APP0 JFIF
   ownership or location claim, because whether the rollback is the shop's
   own is an open owner question (section 5, question 37). The photograph
   is one the shop published of itself, which is faithful migration.
-  `og:image`, `og:image:alt` and `primaryImageOfPage` moved with it.
-- **The van's file, `hero-wrecked-work-van.jpg`, is still in
+  `og:image`, `og:image:alt` and `primaryImageOfPage` moved with it. Since
+  3.92c, `og:image` and `primaryImageOfPage` are a second crop, below.
+- **The van's file, `hero-wrecked-work-van.jpg`, was left in
   `docs/assets/img/`, referenced by nothing.** This run's one deletion was
-  ruled to be the drag folder, so the van's file waits for its own word.
+  ruled to be the drag folder, so the van's file waited for its own word.
+  **Deleted in 3.92c.**
 
 #### Measured: scrim and fold
 
@@ -15273,6 +15275,73 @@ job6  Audi A6
   criticals.** The scores are unchanged, and it exits 1 on the standing
   owner gate, as expected.
 - No em dash or en dash added.
+
+#### 3.92c The link preview is a second crop of the same photograph, and the van's file goes
+
+Two jobs, both Greg's rulings of 2026-10-06.
+
+**THE HERO AND THE PREVIEW ARE TWO CROPS OF ONE PHOTOGRAPH, ON PURPOSE.**
+They have different jobs, and one crop can't do both:
+
+- **The hero** must be 1200x800. The Tague truck can only be removed from
+  it by redaction (3.92b). The block that redaction leaves sits under the
+  scrim's strong zone at 600px and up, and outside the cover-crop on a
+  phone, so no visitor sees it.
+- **A link preview** has no scrim and shows the whole frame, so the same
+  block showed in every shared link. The preview crop leaves the truck out
+  of the frame instead of covering it.
+
+`og-red-rollback.jpg`, built by `scripts/prepare-hero-photo.py --frame
+commercial-og` from `photo-bank/rollback-red.jpg`:
+
+```
+CROP     columns 309..1439, rows 24..777 -> 1131x754, exact 3:2
+REDACT   Tague truck and the two businesses' lettering: outside the crop,
+         skipped; registration sticker in frame, 7.2% detail left
+PLATES   408 boxes of 120x60; 3 met all three conditions, the same mirror,
+         sky and headlight the hero cleared, cleared again in crop pixels
+RESAMPLE none: the crop is the output size, so nothing is upscaled
+ENCODE   q72, 303,455 bytes against a 304,449-byte source; only APP0 JFIF
+```
+
+- **The width is 1131, not the brief's estimate of about 1190.** The Tague
+  truck's box ends at column 304, read at 4x on a 10px grid. So the crop
+  starts at 309, and 1131x754 is the widest 3:2 frame from there to the
+  right edge.
+- **The cost is the grille's left half.** It sits left of 309. The cab,
+  the hood, the Clean Idle decal, the headlight and the bed are all in
+  frame, and the image reads as a red rollback.
+- **No redaction block is visible anywhere in it.** The sticker's 42x32
+  smudge is the only redaction in frame.
+- **The hero is unchanged, byte for byte.** It was re-built to a temp
+  directory and compared with `cmp`.
+
+**The page.** `og:image`, `og:image:width` (1131), `og:image:height` (754)
+and the schema's `primaryImageOfPage` move to the new asset.
+`og:image:alt`, the schema caption and the hero itself are unchanged.
+
+**The script gained three things:**
+- **a per-frame `out_size`.** Nothing that ships as a hero uses it; the
+  1200x800 contract is `HERO_SIZE`.
+- **two redaction rules.** A `redact` box the crop leaves out is reported
+  and skipped. A box the crop cuts through fails the build: half a logo is
+  still a logo, and the redaction would be measured on the wrong pixels.
+  That rule caught this frame's first draft, whose Tague box carried the
+  hero's 8px margin past the truck's edge; the preview frame's box is the
+  truck's measured extent.
+- **a "NO RESAMPLE" line** in the output, printed when the crop already
+  matches the output size.
+
+**The van's file is deleted.** `hero-wrecked-work-van.jpg`
+(AdobeStock_430555209) was referenced by nothing. Its `FRAMES` entry was
+already retired in 3.92b, when the `commercial` frame was rebuilt for the
+rollback, so no re-proof run looks for it. The tombstone comment in the
+script now records the deletion, and git history keeps the file.
+
+**The suite:** both test scripts pass and every `--check` exits 0.
+`audit.py --strict` gives 877 passing, 37 `sameAs` warnings and 0
+criticals, unchanged; it exits 1 on the standing owner gate. No em dash or
+en dash was added.
 
 ---
 

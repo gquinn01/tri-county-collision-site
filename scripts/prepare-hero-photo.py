@@ -57,6 +57,10 @@ OUT_DIR = os.path.join(ROOT, "docs", "assets", "img")
 # says so with its own "crop" box, below.
 LEGACY_W, LEGACY_H = 1440, 960
 OUT_W, OUT_H = 1200, 800
+# THE HERO CONTRACT. A frame that is not a page hero, the commercial
+# page's link-preview crop (3.92c), names its own "out_size"; nothing that
+# ships as a hero ever does.
+HERO_SIZE = (OUT_W, OUT_H)
 
 # ONE ENTRY PER PHOTOGRAPH, BECAUSE THE CROP IS MEASURED PER FRAME AND
 # CANNOT BE GUESSED. A hero crop has to keep a particular vehicle in a
@@ -165,7 +169,8 @@ FRAMES = {
     # THE COMMERCIAL HERO IS THE SHOP'S OWN PHOTOGRAPH SINCE 2026-10-06,
     # 3.92b. It replaced AdobeStock_430555209, the interim stock work van
     # that shipped 2026-09-24 (3.49), which is retired as replaced: no
-    # frame here builds it any more. This one is a photograph the shop
+    # frame here builds it any more, and its file, hero-wrecked-work-van.jpg,
+    # was deleted from docs/ in 3.92c. Git history keeps it. This one is a photograph the shop
     # published of itself on its Facebook page, so it carries no asset id
     # and no metadata, and the provenance reader finding nothing is the
     # expected result, recorded, not a pass by default.
@@ -216,6 +221,60 @@ FRAMES = {
             ((460, 680, 620, 760),
              "the truck's own headlight: chrome reflector cells and the "
              "clear lens, bright and edge-dense, no glyph"),
+        ],
+    },
+    # THE COMMERCIAL PAGE'S LINK-PREVIEW IMAGE, 3.92c, Greg's ruling of
+    # 2026-10-06. THE SAME PHOTOGRAPH AS THE HERO, CROPPED A SECOND WAY,
+    # because the two have different jobs. The hero must be 1200x800 and
+    # covers the left of the frame with the scrim, so the redaction block
+    # where the Tague truck was sits under it. og:image serves the WHOLE
+    # frame to every link preview, so there the block showed. This crop
+    # leaves the truck out instead of covering it.
+    #
+    # MEASURED: the Tague truck's box ends at column 304, read at 4x on a
+    # 10px grid, so the crop starts at 309 and takes everything to the
+    # right edge. 1131 is the widest 3:2 width from there (1131x754, a
+    # multiple of 3), and it ships at its own size: no resample, so no
+    # upscaling. The cost is the grille's left half, which is left of 309.
+    # Rows 24..777 keep the fairing's marker lights and the whole
+    # headlight. The registration sticker is inside the crop and stays
+    # redacted; the other two boxes fall outside it and are skipped.
+    #
+    # Cleared regions here are in CROP pixels, as for every frame whose
+    # plate check runs on the crop: source minus (309, 24).
+    "commercial-og": {
+        "out": "og-red-rollback.jpg",
+        "out_size": (1131, 754),
+        "src": (1440, 1080),
+        "crop": (309, 24, 1131, 754),
+        "subject": (30, 770),        # marker lights to the headlight's lower edge
+        "subject_x": (380, 1439),    # the grille's right edge to the bed
+        "wreck": (30, 770),
+        "wreck_label": "cab and headlight",
+        "how": "read off a 60px coordinate grid on the decoded frame",
+        "note": "309 columns discarded on the left (the Tague truck, two "
+                "businesses' lettering, the grille's left half), 24 rows "
+                "at the top and 302 at the foot",
+        "provenance": "the shop's own photograph, via its Facebook page, "
+                      "Greg's ruling 3.92",
+        "redact": [
+            # The truck's measured extent, ending at column 304. The
+            # hero's box for it runs to 312, a margin this crop would cut.
+            ((110, 252, 305, 452), "the Tague Lumber box truck"),
+            ((0, 322, 118, 395), "the U-Haul panel and the moving truck's side"),
+            ((882, 280, 924, 312),
+             "the windshield registration sticker, which reads 7 and 24 "
+             "at full resolution"),
+        ],
+        # The hero frame's two cleared objects, the same pixels, inspected
+        # at magnification 2026-10-06, in crop pixels here.
+        "cleared": [
+            ((771, 0, 1031, 216),
+             "backlit sky through pine branches, and the truck's own chrome "
+             "mirror reflecting it (source 1080..1340, 24..240)"),
+            ((151, 591, 471, 751),
+             "the truck's own headlight: chrome reflector cells and the "
+             "clear lens, no glyph (source 460..780, 615..775)"),
         ],
     },
 
@@ -393,6 +452,7 @@ def main() -> int:
         print(f"FAILED: no such file: {opts.source}")
         return 1
     F = FRAMES[opts.frame]
+    OUT_W, OUT_H = F.get("out_size", HERO_SIZE)
     SRC_W, SRC_H = F["src"]
     # A frame without an explicit box is one of the two 1440-wide sources,
     # and gets exactly the crop it always had.
@@ -495,6 +555,17 @@ def main() -> int:
         if F.get("redact"):
             print(f"\nREDACT, {len(F['redact'])} region(s), pixelate then blur")
         for (rx0, ry0, rx1, ry1), why in F.get("redact", []):
+            # A BOX THE CROP LEAVES OUT IS REPORTED AND SKIPPED; A BOX THE
+            # CROP CUTS THROUGH FAILS, because half a logo is still a logo
+            # and the redaction would be measured on the wrong pixels.
+            if rx1 <= col_lo or rx0 > col_hi or ry1 <= keep_lo or ry0 > keep_hi:
+                print(f"  ({rx0},{ry0})..({rx1},{ry1}) source px is outside "
+                      f"the crop, nothing to redact: {why}")
+                continue
+            if rx0 < col_lo or rx1 > col_hi + 1 or ry0 < keep_lo or ry1 > keep_hi + 1:
+                print(f"FAILED: the crop cuts through a redaction box "
+                      f"({rx0},{ry0})..({rx1},{ry1}): {why}")
+                return 1
             fb = ((rx0 - col_lo) / cw, (ry0 - keep_lo) / chh,
                   (rx1 - col_lo) / cw, (ry1 - keep_lo) / chh)
             box, d0, d1 = rp.redact(cropped, cw, chh, fb)
@@ -588,8 +659,12 @@ def main() -> int:
         # 5 ------------------------------------------------- downscale
         if not scan_output:
             nw, nh, small = rp.downscale(cropped, cw, chh, OUT_W)
-            print(f"\nDOWNSCALE {cw}x{chh} -> {nw}x{nh}   factor {cw / nw:.4f}  "
-                  f"(box average, the one resample)")
+            if nw == cw:
+                print(f"\nNO RESAMPLE: the crop is already {cw}x{chh}, the "
+                      f"frame's output size")
+            else:
+                print(f"\nDOWNSCALE {cw}x{chh} -> {nw}x{nh}   factor {cw / nw:.4f}  "
+                      f"(box average, the one resample)")
         if (nw, nh) != (OUT_W, OUT_H):
             print(f"FAILED: expected {OUT_W}x{OUT_H}, got {nw}x{nh}.")
             return 1
