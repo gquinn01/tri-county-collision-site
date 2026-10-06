@@ -23,3 +23,8 @@ __pycache__/
 # for the same reason audit-report.md is ignored above: it is the input to
 # one run and stale the moment that run ends.
 seo-news.md
+
+# The shop's own photographs, banked on this machine and never pushed,
+# because this repo is public (3.92a, Greg's ruling). Only the cropped,
+# redacted derivatives a prepare script emits ever land under docs/.
+photo-bank/
