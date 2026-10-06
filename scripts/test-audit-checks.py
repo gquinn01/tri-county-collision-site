@@ -1765,6 +1765,28 @@ def main():
                        capture_output=True, text=True)
     check("     sync-service-cards.py --check: every card and every Related Services is the table's", r.returncode == 0, r.stdout[-400:])
 
+    # A PHOTOGRAPHED CARD PREVIEWS ITS PAGE, 3.93: its image is the target
+    # page's og:image, file, size and alt. Mutation-proven both ways on the
+    # shipped home page.
+    print("37. Every photographed service card carries its page's own preview image (og:image)")
+    n, probs = audit.card_image_findings(home, "")
+    check("     home as shipped: all five photographed cards are their pages' previews", n == 5 and probs == [], (n, probs))
+    pv = audit.preview_of("commercial-collision-repair/")
+    check("     Commercial's preview is the clean crop, not the hero (3.92c)",
+          pv and pv["src"] == "assets/img/og-red-rollback.jpg" and (pv["width"], pv["height"]) == ("1131", "754"), pv)
+    pv = audit.preview_of("collision-repair/")
+    check("     Collision's preview is its hero", pv and pv["src"] == "assets/img/hero-wrecked-gmc-outside-shop.jpg", pv)
+    _, probs = audit.card_image_findings(home.replace('src="assets/img/og-red-rollback.jpg"', 'src="assets/img/hero-red-rollback.jpg"'), "")
+    check("     the Commercial card wearing the hero, redaction block and all, fails", any("og-red-rollback.jpg" in x for x in probs), probs)
+    _, probs = audit.card_image_findings(home.replace('src="assets/img/hero-dent-lifter-on-red-door.jpg"', 'src="assets/img/accent-collision-repair-1.jpg"'), "")
+    check("     a stock accent back on a card fails", any("paintless-dent-repair/ has image" in x for x in probs), probs)
+    _, probs = audit.card_image_findings(home.replace('alt="A red rollback flatbed truck."', 'alt="A rollback."', 1), "")
+    check("     an alt drifting from the page's og:image:alt fails", any("has alt" in x for x in probs), probs)
+    _, probs = audit.card_image_findings(home.replace('width="1131" height="754"', 'width="1200" height="800"', 1), "")
+    check("     a size drifting from og:image:width and :height fails", any("has width" in x for x in probs) and any("has height" in x for x in probs), probs)
+    n, probs = audit.card_image_findings(town, "areas-served-collision-repair-bensalem-pa/")
+    check("     a town's cards carry no image and are not read", n == 0 and probs == [], (n, probs))
+
     print()
     if FAILURES:
         print(f"{len(FAILURES)} check(s) failed:")

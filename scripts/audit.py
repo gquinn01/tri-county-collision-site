@@ -2722,6 +2722,61 @@ def service_enumeration_findings(html_text: str, page_rel: str, meta: str = "") 
     return found, problems
 
 
+# A HOME SERVICE CARD PREVIEWS ITS PAGE, 3.93, Greg's ruling, refined on
+# the relay the same day. A card that carries a photograph carries THE
+# IMAGE ITS TARGET PAGE PRESENTS AS ITS OWN PREVIEW: the page's og:image,
+# with og:image:width, og:image:height and og:image:alt, verbatim. That is
+# the hero everywhere except where a page deliberately carries a clean
+# preview crop (Commercial's, 3.92c), and that exception is the point: the
+# redaction block ruled out of link previews stays off the home router too.
+# One rule, no per-card forks. scripts/sync-service-cards.py writes it from
+# preview_of(); this holds it. A card with no image (the towns', Related
+# Services) is not read.
+_ATTR_RE = re.compile(r'([a-zA-Z-]+)="([^"]*)"')
+_OG_RE = re.compile(r'<meta property="og:image(|:width|:height|:alt)" content="([^"]*)">')
+_CARD_IMG_RE = re.compile(r'(?s)<a class="svc-card" href="([^"]+)">\s*(<img\b[^>]*>)')
+
+
+def preview_of(page_rel: str, site_dir: str = None):
+    """A page's own preview image, from its og:image tags, as {src
+    (docs-relative), alt (raw, as written), width, height}, or None if the
+    page carries no og:image."""
+    path = os.path.join(site_dir or SITE_DIR, page_rel, "index.html")
+    try:
+        text = open(path, encoding="utf-8").read()
+    except OSError:
+        return None
+    og = dict(_OG_RE.findall(text))
+    if not og.get(""):
+        return None
+    src = urllib.parse.urlparse(og[""]).path.lstrip("/")
+    return {"src": src, "alt": og.get(":alt"), "width": og.get(":width"), "height": og.get(":height")}
+
+
+def card_image_findings(html_text: str, page_rel: str, site_dir: str = None) -> tuple:
+    """(cards with an image, problems). Every such card's image must be its
+    target service page's own preview: file, width, height and alt."""
+    m = re.search(r"(?s)<main\b.*?</main>", html_text)
+    n, problems = 0, []
+    for href, tag in _CARD_IMG_RE.findall(m.group(0) if m else ""):
+        target = posixpath.normpath(posixpath.join("/" + page_rel, href)).strip("/") + "/"
+        if target not in SERVICE_PATHS:
+            continue
+        n += 1
+        want = preview_of(target, site_dir)
+        if want is None:
+            problems.append(f"the card for {target} carries an image, and {target} has no og:image to preview")
+            continue
+        a = dict(_ATTR_RE.findall(tag))
+        src = posixpath.normpath(posixpath.join("/" + page_rel, a.get("src", ""))).lstrip("/")
+        for k, got, exp in (("image", src, want["src"]), ("alt", a.get("alt"), want["alt"]),
+                            ("width", a.get("width"), want["width"]), ("height", a.get("height"), want["height"])):
+            if got != exp:
+                problems.append(f"the card for {target} has {k} \u201c{got}\u201d; its page's og:image has "
+                                f"\u201c{exp}\u201d")
+    return n, problems
+
+
 def check_service_count_llms_local(passes: list, fails: list, root: str = None):
     """llms.txt tells AI agents how many services a page shows. The count
     word answers to the family, the same as on a page (3.87)."""
@@ -3056,6 +3111,18 @@ def audit(source: str, coverage: dict = None):
         if n_enum and not enum_problems:
             passes.append(f"All {n_enum} service enumeration(s) on the page carry the family of "
                           f"{len(SERVICES)}, and every card its row's label and line.")
+
+    # --- A home service card's image is its page's own preview, 3.93 ---
+    if not is_url(source):
+        n_ci, ci_problems = card_image_findings(html, _rel)
+        for x in ci_problems:
+            fails.append(f"**A service card does not preview its page:** {x}. A card that carries a "
+                         f"photograph carries the image its target page presents as its own preview, "
+                         f"its og:image, the same file, size and alt (3.93). Run "
+                         f"scripts/sync-service-cards.py.")
+        if n_ci and not ci_problems:
+            passes.append(f"All {n_ci} photographed service card(s) carry their page's own preview "
+                          f"image, file, size and alt.")
 
     # --- A Google Maps embed is the verified pin, by coordinates (3.65) ---
     # Greg's ruling of 2026-09-28: /contact-us/ embeds Google's map CENTRED

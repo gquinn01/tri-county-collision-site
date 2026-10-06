@@ -15343,7 +15343,7 @@ script now records the deletion, and git history keeps the file.
 criticals, unchanged; it exits 1 on the standing owner gate. No em dash or
 en dash was added.
 
-### 3.93 The fleet gets its photographs. BUILT 2026-10-06; the card half is HELD for a ruling
+### 3.93 The fleet gets its photographs, and every home card previews its page. BUILT 2026-10-06
 
 Greg's rulings of 2026-10-06. **The Mazda pair stays banked, held by
 ruling.** This record holds Job 2, which shipped. Job 1, the home
@@ -15508,7 +15508,80 @@ cards, and the ADAS card passed. After the sync, all five passed and
    images. `accent-minor-collision-repair.jpg` would be orphaned. The brief
    says to stop if anything still points at one.
 
-**Nothing of Job 1 is in this commit.** The 3.17 duplicate is NOT closed.
+**Nothing of Job 1 was in that commit (3e7f1be).** It shipped after the
+ruling, below.
+
+#### Job 1, RULED on the relay and built: a card carries its page's own preview
+
+**Greg's rulings on the relay, 2026-10-06: Question 1, Option 1, and
+Question 2, Option 1.**
+
+**THE RULE, REFINED: A PHOTOGRAPHED CARD CARRIES THE IMAGE ITS PAGE
+PRESENTS AS ITS OWN PREVIEW, which is its `og:image`.** The card takes the
+file, `og:image:width`, `og:image:height` and `og:image:alt`, verbatim.
+
+- **On most pages that is the hero.** It differs only where a page
+  deliberately carries a clean preview crop, which today means Commercial's
+  (3.92c), and that exception is the point.
+- **The redaction block was ruled out of link previews**, and the home
+  router is more prominent than any link preview, so the same ruling
+  reaches it.
+- **One rule, no per-card forks.** This refines the briefed "card equals
+  hero" rule rather than amending it.
+
+```
+card          image                                       size
+Collision     hero-wrecked-gmc-outside-shop.jpg           1200x800
+Commercial    og-red-rollback.jpg  (the 3.92c crop)       1131x754
+Glass         hero-windshield-replacement-in-shop.jpg     1200x800
+PDR           hero-dent-lifter-on-red-door.jpg            1200x800
+ADAS          hero-adas-sensor-fields-illustration.jpg    1200x800  (unchanged)
+```
+
+**The Commercial card shows no block.** A card is 4:3 cover over a 3:2
+image, so on the 1131x754 crop it shows crop columns 63 to 1068, which is
+source columns 372 to 1377. The Tague truck ended at 304. The registration
+sticker's smudge is the only redaction in frame.
+
+**THE MECHANISM, and none of it is a hand edit:**
+
+- **`audit.preview_of(page)`** reads a page's `og:image` tags.
+- **`scripts/sync-service-cards.py`** writes every photographed card's
+  `<img>` from it.
+- **`audit.card_image_findings`** fails a card whose file, width, height or
+  alt differs. A card with no image, such as a town's or Related Services,
+  is not read.
+- **`test-audit-checks.py` section 37 holds the check both ways:**
+  - home as shipped passes;
+  - each of these fails: the Commercial card wearing the hero, a stock
+    accent back on a card, a drifting alt, and a drifting size.
+- **Mutation-proven on the live file:** the Commercial card was pointed at
+  `hero-red-rollback.jpg`, and `audit.py --strict` reported 1 critical
+  ("A service card does not preview its page") while `--check` named
+  `docs/index.html`. Restored, both are clean.
+
+**THE 3.17 HOME DUPLICATE IS CLOSED.** No two cards share a file, and no
+card shares the home hero (`hero-wrecked-sedan-in-shop.jpg`). The repeated
+photograph that Collision and Glass both wore (3.17, 3.88, 4.9) is gone
+from the router.
+
+**THE ACCENTS, Question 2, Option 1.**
+
+- **`accent-minor-collision-repair.jpg` was orphaned and is deleted.** A
+  grep over the repo found it only in this record. The 3.92c precedent
+  applies, and git history keeps it.
+- **The other two stay in honest use on `/collision-repair/`'s Minor and
+  Major section:** `accent-collision-repair-1.jpg` and
+  `accent-major-collision-repair.jpg`. They stay until real photographs
+  replace them, and that is now a shoot-list line (4.9).
+- **The bank offers no honest substitutes today.** The Mazda close-ups are
+  held, and nothing else shows collision work in progress.
+
+**The suite after Job 1:** both test scripts pass, section 37 included,
+and every `--check` exits 0. `audit.py --strict` gives 878 passing: the
+new check's pass on home is the one more. There are 37 `sameAs` warnings
+and 0 criticals, and it exits 1 on the standing owner gate. No em dash or
+en dash was added.
 
 ---
 
@@ -15845,6 +15918,14 @@ own work at this shop:
 - **a fleet vehicle at the shop**, a work van or box truck in or outside a bay,
   ideally one of the shop's own commercial customers with their permission
   (for 3.49).
+- **a minor-damage shot and a major-damage shot of real Tri-County work**,
+  added 2026-10-06 (3.93). They replace the two stock accents still in
+  honest use on `/collision-repair/`'s Minor and Major section,
+  `accent-collision-repair-1.jpg` and `accent-major-collision-repair.jpg`.
+  When they land, those two files are orphaned and go.
+
+**The glass/home duplicate is CLOSED, 3.93.** Every home card now carries
+its own page's preview image, so no two cards share a file.
 
 ---
 

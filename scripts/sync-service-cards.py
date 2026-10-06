@@ -8,7 +8,15 @@ ONE RENDERING PER SERVICE. audit.SERVICES is the one table of the family:
 service card are the same everywhere a card appears. This writes them into
 every svc-card under docs/ that links a service page (home's router, the
 towns' What we fix grids, the Related Services sections), touching only the
-card's h3 and p. Home's photographs, alts and order stay home's own.
+card's h3 and p. Home's order stays home's own.
+
+A PHOTOGRAPHED CARD PREVIEWS ITS PAGE, 3.93, Greg's ruling. Where a card
+carries an <img> (home's router), the image is written from the image its
+target page presents as its own preview, its og:image, by
+audit.preview_of(): the same file, width, height and alt, verbatim. That is
+the hero except where a page carries a clean preview crop (Commercial's,
+3.92c). Change a page's preview and the card follows on the next run; the
+audit fails a card that has not.
 scripts/build-town.py builds the towns' cards from the same table, so a
 rebuild and this agree.
 
@@ -68,6 +76,12 @@ def card_words(text: str, page: str) -> str:
         lbl, ln = ROW[t]
         body = re.sub(r"(?s)<h3>.*?</h3>", lambda _m: f"<h3>{esc(lbl)}</h3>", m.group(4), count=1)
         body = re.sub(r"(?s)<p>.*?</p>", lambda _m: f"<p>{esc(ln)}</p>", body, count=1)
+        hero = audit.preview_of(t) if "<img" in body else None
+        if hero:
+            src = posixpath.relpath("/" + hero["src"], "/" + page) if page else hero["src"]
+            tag = (f'<img src="{src}" alt="{hero["alt"]}" width="{hero["width"]}" '
+                   f'height="{hero["height"]}" loading="lazy" decoding="async">')
+            body = re.sub(r"<img\b[^>]*>", lambda _m: tag, body, count=1)
         return m.group(1) + body + m.group(5)
     main = re.search(r"(?s)<main\b.*?</main>", text)
     if not main:
