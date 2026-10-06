@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
-Turns the shop's own before/after repair photographs into the ten
+Turns the shop's own before/after repair photographs into the twelve
 frames the Real Repairs band ships, and prints every number it used.
+The first ten (job1 to job5) shipped 2026-09-17; job6 joined from the
+photo bank 2026-10-06 (proposed-changes.md 3.92).
 
 Built to the precedent set by scripts/prepare-car-render.py: the
 irreversible decisions live in a script that can be re-run and audited,
@@ -76,6 +78,7 @@ trade: the alternative is committing readable plates.
 Usage:
     python3 scripts/prepare-repair-photos.py SOURCE_DIR
     python3 scripts/prepare-repair-photos.py SOURCE_DIR --budget 150000
+    python3 scripts/prepare-repair-photos.py photo-bank --only job6
 """
 
 import argparse
@@ -149,6 +152,28 @@ PAIRS = [
      # sky, than off the bottom, which still holds the lower bumper.
      {"before": (0.185, 0.065)},
      {"after": [(0.422, 0.596, 0.518, 0.668)]}),
+
+    # ADDED 2026-10-06, 3.92b, FROM THE BANK. The source names are the
+    # canonical names photo-bank/ files them under (3.92a), so this pair
+    # is built with SOURCE_DIR pointing there and --only job6; the five
+    # above came from the client's own folder and are not re-run.
+    #
+    # NO REDACTION, AND THAT WAS LOOKED AT RATHER THAN ASSUMED. Both
+    # frames were inspected at magnification at 2048 wide: the plate sits
+    # off the right edge of both, the after frame's only lettering is the
+    # Ciocca dealer badge and the shop's own sign, both ruled to stay, and
+    # the before frame's red shape top right is the sign's reflection in
+    # the trunk lid.
+    #
+    # TWO BANK PAIRS ARE NOT HERE, ON PURPOSE. The Honda Pilot is HELD:
+    # a face survives through its before frame's windshield at the
+    # shipped size, and the ruling was hold, not pixelate. The bank's
+    # Jeep pair is the job1 photograph again and was dropped for good.
+    # proposed-changes.md 3.92 records both.
+    ("job6", "Audi A6",
+     "audi-a6-before.jpg",
+     "audi-a6-after-sign.jpg",
+     {}, {}),
 ]
 
 
@@ -428,7 +453,16 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("source_dir")
     ap.add_argument("--budget", type=int, default=SIZE_BUDGET)
+    # THE SOURCES LIVE IN TWO PLACES SINCE 3.92b: job1 to job5 in the
+    # client's own folder, job6 in photo-bank/. A run builds the pairs
+    # named here and leaves every other shipped frame exactly as it is.
+    ap.add_argument("--only", action="append", metavar="SLUG",
+                    help="build only this pair; repeatable. Default: all.")
     opts = ap.parse_args()
+    pairs = [p for p in PAIRS if not opts.only or p[0] in opts.only]
+    if opts.only and len(pairs) != len(set(opts.only)):
+        print(f"no such pair in {opts.only}", file=sys.stderr)
+        return 1
 
     os.makedirs(OUT_DIR, exist_ok=True)
     tmp = tempfile.mkdtemp(prefix="repairphotos-")
@@ -436,7 +470,7 @@ def main():
     failures = []
     manifest = []
 
-    for slug, vehicle, bsrc, asrc, crops, reds in PAIRS:
+    for slug, vehicle, bsrc, asrc, crops, reds in pairs:
         print(f"\n{slug}  {vehicle}")
         paths = {"before": os.path.join(opts.source_dir, bsrc),
                  "after": os.path.join(opts.source_dir, asrc)}
@@ -591,7 +625,7 @@ def main():
         manifest.append((slug, vehicle, final_dims["before"]))
 
     print(f"\ntotal shipped   {total:,} bytes ({total / 1024:.0f} KB) across "
-          f"{len(PAIRS) * 2} frames, every one lazy-loaded below the fold")
+          f"{len(pairs) * 2} frames, every one lazy-loaded below the fold")
     print(f"per-frame cap   {opts.budget // 1024}KB, or the source's own size, "
           f"whichever is smaller")
     print("\naspect ratios for the markup:")

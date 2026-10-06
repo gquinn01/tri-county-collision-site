@@ -15062,6 +15062,218 @@ the runs across the section at f749016 were higher than 3.90 recorded,
   count one fewer heading.
 - No em dash added.
 
+### 3.92 The shop's own photographs ship: the commercial hero and a sixth Real Repairs pair. BUILT 2026-10-06
+
+Greg's rulings of 2026-10-06, built in two runs: 3.92a banked the
+photographs, 3.92b shipped them.
+
+#### 3.92a The photo bank, NEW
+
+- **`photo-bank/` at the repo root is the bank, git-ignored and never
+  pushed**, because this repo is public. It holds the shop's own
+  photographs, the originals untouched, under canonical names. Only a
+  prepare script's cropped, redacted, stripped output ever lands under
+  `docs/`.
+- **How the files arrived.** The macOS privacy block on `~/Desktop` was
+  abandoned as a route, for a recorded reason. Two grants and two
+  verified-fresh Terminal relaunches still left the whole Desktop
+  unreadable. **A Finder drag into the repo needs no permission**, so Greg
+  dragged `tri-county-photos/` into the repo root.
+- **The strategy chat's checksum table is dead.** None of the 14 files
+  matched any of its checksums: they were re-encoded somewhere in transit.
+  Each file was mapped by its content instead, and Greg ruled the mapping.
+  Two errors in the strategy chat's brief were corrected on the files:
+  - the Honda's damage is along the passenger side, not the front end;
+  - the two Tague shots are two different trucks, one with a white cab and
+    one with a red cab.
+- **13 files banked, every checksum verified against its source:**
+  `honda-pilot-before/after`, `audi-a6-before`, `audi-a6-after-sign`,
+  `jeep-gc-during/after`, `mazda-cx5-before/after`, `rollback-red`,
+  `rollback-white`, `mack-purple`, `tague-1` (white cab) and `tague-2`
+  (red cab).
+- **The 14th file was not banked.** It was a byte-identical `(1)` copy of
+  the Honda before.
+- **The drag folder was deleted from the working tree in 3.92b.** It was
+  untracked. The bank holds verified copies, and Greg's Desktop holds the
+  originals.
+
+#### The rulings (Greg, 2026-10-06)
+
+1. **The commercial hero is `rollback-red.jpg`.**
+2. **Real Repairs gains the Audi and Honda pairs, subject to the Honda
+   gate.** Captions and alts are approved verbatim.
+3. **THE JEEP PAIR DOES NOT SHIP, AND IT NEVER RE-ENTERS.** The bank's
+   `jeep-gc-during` and `jeep-gc-after` are the same photographs as the
+   shipped job1 pair. The strategy chat verified this: the same taped window
+   frames, the same seats, the same background. **Considered and dropped.**
+   The bank keeps the files, and this paragraph is why they stay there.
+4. **The Honda gate:** ship the pair if no face survives through the
+   windshield at the shipped frame size. If a face survives, hold both
+   frames. The cabin is not pixelated this run.
+5. **The Audi after frame ships as it is.** The Ciocca dealer badge and the
+   flag in the background are the shop presenting itself.
+6. **The stock-hero blockers are downgraded.** With the commercial stock
+   hero retired, the glass and PDR heroes and the glass/home duplicate
+   photograph move from cutover blockers to shoot-list items. Recorded in
+   4.9.
+
+#### The commercial hero
+
+`hero-red-rollback.jpg`, built by `scripts/prepare-hero-photo.py --frame
+commercial` from `photo-bank/rollback-red.jpg`. **It replaces
+AdobeStock_430555209**, the interim stock work van, which is retired as
+replaced. No frame builds the van any more.
+
+- **Provenance:** the shop's own photograph, via its Facebook page, Greg's
+  ruling 3.92.
+- **No metadata was found, which is the expected result.** The Facebook
+  re-encode left no DigitalSourceType, no CreatorTool and no C2PA, so the
+  reader saw no AI tell. It is a photograph, so the illustration refusal
+  did not fire.
+
+```
+SOURCE   1440x1080, APP2 ICC and APP13 Photoshop only
+SUBJECT  red bodywork rows 20..879, by a saturated-red scan on 20px cells
+CROP     rows 0..959, full width -> 1440x960; the 120 rows discarded are
+         bumper chrome, tyre and asphalt, and no red bodywork is lost
+REDACT   202x200 at (110,252)  detail 13.7 -> 0.6, 4.4% left   Tague truck
+         118x73  at (0,322)    detail 17.1 -> 1.4, 8.4% left   U-Haul panel,
+                                                              moving truck
+         42x32   at (882,280)  detail 20.1 -> 1.4, 7.2% left   reg. sticker
+PLATES   660 boxes of 120x60; 4 met all three conditions, all inspected
+         and cleared: 3 are sky through pine branches and the chrome
+         mirror's top, 1 is the truck's own headlight
+RESAMPLE one box downscale, factor 1.2 -> 1200x800
+ENCODE   q65, 303,426 bytes against a 304,449-byte source; only APP0 JFIF
+         survives the strip
+```
+
+- **(a) The Tague Lumber truck could not be cropped out.** It sits at
+  columns 110 to 312. A 3:2 crop that starts to its right is at most 1128
+  pixels wide, and that would have to be upscaled to reach 1200. No
+  upscaling, so the truck is made unrecognizable instead, the second way
+  the ruling allows.
+  - **Two other businesses' lettering beside it went too:** a U-Haul panel
+    and the side of a moving-and-equipment truck. Same standing rule.
+  - **What it costs, for Greg's eye:** the redaction method is the Real
+    Repairs one, pixelate then blur. At this box size it leaves a visible
+    mosaic block at the upper left of the full frame. On the page that
+    corner sits under the scrim's strong zone at 600px and up, and outside
+    the cover-crop on a phone. **It shows in `og:image`**, which serves
+    the whole frame.
+- **(b) The windshield sticker read "7" and "24"** at full resolution, a
+  registration month and year. It is redacted.
+- **The Certified Clean Idle hood decal stays.** It is a true
+  certification on the truck itself.
+- **Inspected and left alone:**
+  - the blue box truck at the right, which has no readable livery;
+  - a sticker on the old station wagon's windshield, unreadable at source
+    resolution;
+  - the carrier-bed maker's label, which is the truck's own equipment.
+- **The alt, approved:** "A red rollback flatbed truck." It makes no
+  ownership or location claim, because whether the rollback is the shop's
+  own is an open owner question (section 5, question 37). The photograph
+  is one the shop published of itself, which is faithful migration.
+  `og:image`, `og:image:alt` and `primaryImageOfPage` moved with it.
+- **The van's file, `hero-wrecked-work-van.jpg`, is still in
+  `docs/assets/img/`, referenced by nothing.** This run's one deletion was
+  ruled to be the drag folder, so the van's file waits for its own word.
+
+#### Measured: scrim and fold
+
+**The harness:** real-time CDP over `--remote-debugging-pipe`, with
+`setDeviceMetricsOverride` at each viewport, reduced motion, and DPR 1.
+The glyph runs come from `Range.getClientRects()`. The ground is the same
+render with the hero copy made transparent. **Every pixel under every run**
+is held against the element's own computed colour.
+
+| Element | 1440 | 1920 | 430 | 390 | 360 | Needs |
+|---|---|---|---|---|---|---|
+| Breadcrumb | 9.53 | 9.46 | 9.59 | 9.20 | 9.01 | 7 |
+| Eyebrow | 9.53 | 10.45 | 9.84 | 9.33 | 9.33 | 7 |
+| H1 | **6.46** | 8.04 | 9.53 | 9.46 | 9.46 | 4.5 |
+| Lead | 9.59 | 9.59 | 9.66 | 9.59 | 9.53 | 7 |
+| Ghost button label | 9.40 | 10.04 | 9.72 | 10.17 | 10.17 | 7 |
+| Chips (desktop) | 9.33 | 9.53 | n/a | n/a | n/a | 7 |
+
+**Everything clears its standard.** The H1 at 1440, the thinnest margin in
+3.49 at 5.11 over the van's pale hood, now reads **6.46** over the red cab.
+
+**The fold is identical to 3.49 to the pixel**, as it must be: the image
+contract is the same 1200x800, and the layout does not read the
+photograph.
+
+```
+                  innerHeight  min-height  CTA ends  budget
+390x664  banner       664      504.64px      580      604   clears by 24
+390x664  cutover      664      504.64px      523      604   clears by 81
+360x640  banner       640      486.4px       598      580   MISSES by 18 (as 3.49)
+360x640  cutover      640      486.4px       541      580   clears by 39
+430x745  cutover      745      560px         576      685   clears by 109
+1440x900 cutover      900      522px         533      900   clears by 367
+```
+
+#### Real Repairs: the Audi ships, the Honda is held
+
+**THE HONDA GATE FIRED. The Honda pair is held, both frames.** The before
+frame was rendered at the shipped size, 1050 wide. A person sits in the
+driver's seat behind the windshield, and **the brow, eyes, nose, mouth and
+hairline all survive**. Someone who knows them would recognise them. By
+the ruling there is no cabin pixelation this run. The pair stays in the
+bank, and question 37 carries it.
+
+**The Audi is `job6`**, built by `scripts/prepare-repair-photos.py
+photo-bank --only job6`. `--only` is new, because the sources now live in
+two places: job1 to job5 in the client's folder, job6 in the bank. A run
+builds only the pairs it names and leaves every other shipped frame
+exactly as it is.
+
+```
+job6  Audi A6
+  native   before 2048x1536 (477KB), after 2048x1536 (356KB)
+  pair     width stepped 1050 -> 945 to hold quality 52 inside the budget
+  before   job6-before.jpg  945x708  153,573 bytes at q55
+  after    job6-after.jpg   945x708  151,671 bytes at q61
+  metadata no APP1-APP15, no comment, in either
+  pair     945x708 vs 945x708, identical
+```
+
+- **No redaction, and that was inspected rather than assumed.** At 2048
+  wide:
+  - the plate is off the right edge of both frames;
+  - the after frame's only lettering is the Ciocca badge and the shop's own
+    sign, both ruled to stay;
+  - the red shape at the top right of the before frame is the sign
+    reflected in the trunk lid.
+- **"License plates are blurred" stays true.** The shipped plates are still
+  blurred, and no plate appears in the new pair.
+- **The repair script has no plate scan.** Its standard is inspection at
+  magnification, its own docstring says so, and that standard was applied.
+- **As a cross-check, the hero script's plate conjunction was run over both
+  outputs**, with the box scaled to 79x39:
+  - **before, 62 boxes, all one region:** sunlit asphalt at the lower
+    right, bright, neutral and gritty;
+  - **after, 43 boxes:** the asphalt; the corrugated siding; the side-glass
+    reflection; the stone wall by the flag; and the Ciocca badge.
+  - **None is a plate.**
+- **The markup:** one `<figure class="ba">`, appended after the Jeep in the
+  exact grammar of the shipped five, so the band ends on the shop's own
+  sign. The caption is `<strong>Audi A6</strong> Rear corner scrape`,
+  with no dash of any kind. Both alts are approved verbatim. The band's
+  comment now counts six pairs and twelve frames.
+- **The grid geometry needs nothing.** `.repairs-grid` is a single column
+  at every width, one pair per row, so six figures add a row and there is
+  never a lone card to centre (the `.grid2` note in `site.css` says so).
+
+#### The suite
+
+- Both test scripts pass. Every `--check` exits 0, and nothing needed a
+  restamp.
+- `audit.py --strict`: **877 passing, 37 warnings, all `sameAs`, 0
+  criticals.** The scores are unchanged, and it exits 1 on the standing
+  owner gate, as expected.
+- No em dash or en dash added.
+
 ---
 
 ## 4. The claims list
@@ -15367,6 +15579,13 @@ louder mistake than a stock photo in a card. That slot also needs a file at
 
 #### The service-page heroes are interim stock too, and each is a blocker
 
+**DOWNGRADED 2026-10-06 on Greg's ruling (3.92).** The commercial stock hero
+is retired, replaced by the shop's own photograph. **The glass and PDR heroes
+(AdobeStock_64691325, AdobeStock_1571353580) and the glass/home duplicate
+photograph are no longer cutover blockers. They are shoot-list items.** The
+table and the shoot list below stand as the record of what was ruled on
+2026-09-24.
+
 **Greg's ruling, 2026-09-24: the heroes of the three remaining service pages
 are licensed stock, and each is a cutover blocker beside the three accents
 above.** Licensed from Adobe Stock with the generative-AI filter excluded,
@@ -15377,7 +15596,7 @@ this shop.**
 |---|---|---|---|
 | `/auto-glass-repair-replacement/` | `hero-windshield-replacement-in-shop.jpg` | AdobeStock_64691325 | 3.47 |
 | `/paintless-dent-repair/` | `hero-dent-lifter-on-red-door.jpg` | AdobeStock_1571353580 | 3.48 |
-| `/commercial-collision-repair/` | `hero-wrecked-work-van.jpg` | AdobeStock_430555209 | 3.49 |
+| `/commercial-collision-repair/` | ~~`hero-wrecked-work-van.jpg`~~ **replaced 2026-10-06 by the shop's own `hero-red-rollback.jpg`** | ~~AdobeStock_430555209~~ retired | 3.49, 3.92 |
 | `/adas-calibration/` | `hero-adas-sensor-fields-illustration.jpg` | AdobeStock_345981008, **an illustration by scoped amendment, the page's ruled hero and NOT interim stock or a cutover blocker**. The glass stock stood in as recorded scaffolding for one commit, 57bfc90 | 3.86 |
 
 **The shoot list gains one photograph per page**, each showing that service's
@@ -15678,8 +15897,8 @@ Ordered by how much else depends on it.
     4.1b and 3.22.
 12. **The customer-vehicle photograph practice.** Does the shop have
     permission to publish photographs of customers' vehicles, and what is its
-    practice for asking? The Real Repairs band publishes ten frames of five
-    identifiable vehicles. Plates and stickers are destroyed and no person,
+    practice for asking? The Real Repairs band publishes twelve frames of six
+    identifiable vehicles (the sixth since 3.92). Plates and stickers are destroyed and no person,
     name or date appears, but a customer's car outside a body shop is still
     their car. See 3.23.
 13. **The glass page's scope** (4.10): glass in house or sublet, direct
@@ -15789,3 +16008,12 @@ Ordered by how much else depends on it.
     or dealer. Scott, as fact-checker of record, confirms the scope (every
     system and every make, static and dynamic, or which exceptions) and
     the start date, before cutover. The claims the page makes are in 4.13.
+37. **The shop's own Facebook photographs (3.92).** Scott confirms three
+    things:
+    - **the red rollback** on `/commercial-collision-repair/`'s hero is the
+      shop's own truck. The alt claims nothing until he does.
+    - **a blanket OK** to publish the photographs the shop posted on its
+      Facebook page.
+    - **the person behind the Honda Pilot's windshield.** The Honda pair is
+      held because a face survives at the shipped size. Do they agree to
+      appear, or does the pair stay out?

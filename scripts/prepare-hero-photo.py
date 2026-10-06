@@ -111,11 +111,12 @@ FRAMES = {
         ],
     },
 
-    # THE THREE SERVICE-PAGE HEROES, ADDED 2026-09-24, AND ALL THREE ARE
-    # INTERIM STOCK. Greg licensed them from Adobe Stock with the
-    # generative-AI filter excluded, and each is a cutover blocker until a
-    # real photograph of this shop's own glass, dent and fleet work
-    # replaces it; see proposed-changes.md 3.47 to 3.49 and 4.9. The
+    # THE SERVICE-PAGE HEROES ADDED 2026-09-24 WERE INTERIM STOCK. Greg
+    # licensed them from Adobe Stock with the generative-AI filter
+    # excluded; see proposed-changes.md 3.47 to 3.49 and 4.9. The fleet
+    # one is replaced by the shop's own photograph (3.92b). The glass and
+    # dent ones stay, and since Greg's ruling of 2026-10-06 they are
+    # shoot-list items, no longer cutover blockers. The
     # licensed originals stay OUTSIDE this public repo like every other
     # source, and the asset id is recorded here because the shipped file
     # carries no metadata to say where it came from.
@@ -161,23 +162,61 @@ FRAMES = {
         "note": "2 discarded columns and 4 discarded rows, all red paint",
         "cleared": [],
     },
+    # THE COMMERCIAL HERO IS THE SHOP'S OWN PHOTOGRAPH SINCE 2026-10-06,
+    # 3.92b. It replaced AdobeStock_430555209, the interim stock work van
+    # that shipped 2026-09-24 (3.49), which is retired as replaced: no
+    # frame here builds it any more. This one is a photograph the shop
+    # published of itself on its Facebook page, so it carries no asset id
+    # and no metadata, and the provenance reader finding nothing is the
+    # expected result, recorded, not a pass by default.
+    #
+    # THE CROP IS THE FULL WIDTH AND THE TOP 960 ROWS, MEASURED. A
+    # saturated-red scan on 20px cells (red over 110 and over 1.8x both
+    # green and blue) puts the truck's red bodywork at rows 20..879, so
+    # every red pixel of it stays and the 120 discarded rows are the lower
+    # bumper chrome, the bottom of the tyre and asphalt.
+    #
+    # THE TAGUE TRUCK COULD NOT BE CROPPED OUT, AND IS REDACTED INSTEAD.
+    # It sits at columns 110..312, and a 3:2 crop that starts right of it
+    # is at most 1128 wide, which would mean upscaling to 1200. No
+    # upscaling, so Greg's standing rule on another business's livery is
+    # met the other way his ruling allows: unrecognizable. See "redact".
     "commercial": {
-        "asset": "AdobeStock_430555209",
-        "out": "hero-wrecked-work-van.jpg",
-        "src": (5916, 3944),
-        "crop": (0, 0, 5916, 3944),  # the source is already exact 3:2
-        # SILVER ON GREY UNDER AN OVERCAST SKY: no colour test separates
-        # this frame, exactly as with the GMC. Extents read off a
-        # coordinate grid on the working copy, an inspection and not a
-        # scan, written down as one.
-        "subject": (402, 3638),      # roof bars to tyre contact
-        "subject_x": (1124, 5679),   # front bumper corner to the rear door
-        "wreck": (1124, 3550),       # crumpled hood to the torn bumper
-        "wreck_label": "crushed front",
-        "how": "read off a 592px coordinate grid on the working copy",
-        "note": "no pixel discarded; the van's own plate mount is EMPTY, "
-                "bare bolts and rust, inspected at full resolution",
-        "cleared": [],
+        "out": "hero-red-rollback.jpg",
+        "src": (1440, 1080),
+        "crop": (0, 0, 1440, 960),
+        "subject": (20, 879),        # the red bodywork, rows
+        "subject_x": (105, 1439),    # grille edge to the bed at the frame edge
+        "wreck": (20, 879),
+        "wreck_label": "red bodywork",
+        "how": "saturated-red scan on 20px cells",
+        "note": "120 discarded rows are bumper chrome, tyre and asphalt; "
+                "no red bodywork is lost",
+        "provenance": "the shop's own photograph, via its Facebook page, "
+                      "Greg's ruling 3.92",
+        # SOURCE PIXELS, each with what it is. Every box is destroyed by
+        # the Real Repairs method, pixelate then blur, and held to the
+        # same ceiling on the detail that survives.
+        "redact": [
+            ((110, 252, 312, 452),
+             "the Tague Lumber box truck in the background: another "
+             "business's livery, name and logo, Greg's standing rule"),
+            ((0, 322, 118, 395),
+             "two more businesses' lettering beside it: a U-Haul panel and "
+             "a moving-and-equipment truck's side"),
+            ((882, 280, 924, 312),
+             "the windshield registration sticker, which reads 7 and 24 "
+             "at full resolution"),
+        ],
+        # INSPECTED AT MAGNIFICATION 2026-10-06 AND CLEARED.
+        "cleared": [
+            ((1080, 0, 1320, 240),
+             "backlit sky through pine branches, and the top of the truck's "
+             "own chrome mirror reflecting it"),
+            ((460, 680, 620, 760),
+             "the truck's own headlight: chrome reflector cells and the "
+             "clear lens, bright and edge-dense, no glyph"),
+        ],
     },
 
     # THE ONE HERO THAT IS NOT A PHOTOGRAPH, ADDED 2026-10-01, and it is
@@ -368,8 +407,10 @@ def main() -> int:
     print(f"  subject rows {CAR_TOP}..{CAR_BOTTOM}, located by {F['how']}")
     if F.get("asset"):
         print(f"  licensed asset     {F['asset']}  "
-              f"{'(the ruled illustration, not interim stock)' if F.get('illustration') else '(interim stock, a cutover blocker)'}")
+              f"{'(the ruled illustration, not interim stock)' if F.get('illustration') else '(interim stock, a shoot-list item)'}")
     print(f"  {F['note']}")
+    if F.get("provenance"):
+        print(f"  provenance         {F['provenance']}")
 
     sys.path.insert(0, HERE)
     import audit
@@ -444,6 +485,26 @@ def main() -> int:
             cropped += px[a:a + CROP_W * 3]
         del px
         cw, chh = CROP_W, CROP_H
+
+        # 3b ------------------------------------------------- redact
+        # THE REAL REPAIRS METHOD, IMPORTED, NOT COPIED: pixelate then
+        # blur, and fail if more than MAX_DETAIL_REMAINING of the local
+        # detail survives. Boxes are in source pixels and land on the
+        # crop before the plate check, so nothing redacted is scanned
+        # as if it were still there.
+        if F.get("redact"):
+            print(f"\nREDACT, {len(F['redact'])} region(s), pixelate then blur")
+        for (rx0, ry0, rx1, ry1), why in F.get("redact", []):
+            fb = ((rx0 - col_lo) / cw, (ry0 - keep_lo) / chh,
+                  (rx1 - col_lo) / cw, (ry1 - keep_lo) / chh)
+            box, d0, d1 = rp.redact(cropped, cw, chh, fb)
+            ratio = (d1 / d0) if d0 else 0.0
+            print(f"  {box[2] - box[0]}x{box[3] - box[1]}px at ({box[0]},{box[1]})  "
+                  f"detail {d0:.1f} -> {d1:.1f}, {ratio * 100:.1f}% left   {why}")
+            if ratio > rp.MAX_DETAIL_REMAINING:
+                print(f"FAILED: the redaction left {ratio * 100:.0f}% of the "
+                      f"local detail, over {rp.MAX_DETAIL_REMAINING * 100:.0f}%.")
+                return 1
 
         # WHERE THE PLATE CHECK RUNS. The plate box is sized for a
         # 1440-wide frame, where a plate is roughly 120x60. A frame cropped
