@@ -278,6 +278,83 @@ FRAMES = {
         ],
     },
 
+    # THE FLEET FIGURE ON /commercial-collision-repair/, 3.93, Greg's
+    # ruling of 2026-10-06. Not heroes: two prints in #fleet, in the Real
+    # Repairs grammar, so they take its size (960x720, job1's precedent)
+    # and its 150KB ceiling. Both are photographs the shop published of
+    # itself on its Facebook page, and both ship CLAIM-FREE: whose trucks
+    # these are is the owner's to say (section 5, question 37).
+    #
+    # THE WHITE ROLLBACK KEEPS ITS WHOLE FRAME, AND THAT WAS DECIDED, NOT
+    # DEFAULTED. The school bus at columns 0..190 sits in front of the
+    # rollback's own bed at the same columns, so a crop that drops the bus
+    # drops the bed, and the bed is what makes the truck a rollback. The red
+    # dump truck sits behind the hood and grille, which no crop can keep
+    # while losing it. So both are made unrecognizable instead: every word
+    # and number on them is redacted, read at 2x and 3x on a 10px and 20px
+    # grid, and what is left is a yellow bus and a red dump truck that
+    # identify nobody. The Mack badge on the dump truck's hood stays; it
+    # is the maker, like the International badge on the rollback.
+    "fleet-rollback": {
+        "out": "fleet-white-rollback.jpg",
+        # ONE WIDTH STEP, 0.9, THE REAL REPAIRS RULE: at 960x720 the gravel
+        # needs 161,491 bytes at q55, over the 150KB ceiling, so the width
+        # steps down rather than the quality or the ceiling. Still exact
+        # 4:3, the Mack's aspect, so the two render at one height.
+        "out_size": (864, 648),
+        "budget": 150 * 1024,
+        "src": (1440, 1080),
+        "crop": (0, 0, 1440, 1080),
+        "subject": (0, 1010),        # fairing to the bumper's foot, rows
+        "subject_x": (0, 1380),      # the bed's end to the grille
+        "wreck": (0, 1010),
+        "wreck_label": "the whole truck",
+        "how": "read off a 60px coordinate grid on the decoded frame",
+        "note": "no pixel discarded; the one resample is 1440 -> 864",
+        "provenance": "the shop's own photograph, via its Facebook page, "
+                      "Greg's ruling 3.93",
+        "redact": [
+            ((0, 262, 114, 312),
+             "the school bus's SCHOOL BUS and EMERGENCY DOOR lettering"),
+            ((15, 382, 92, 408), "the school bus's number, V 32"),
+            ((1212, 298, 1296, 350),
+             "the dump truck's door: the company's logo, EXCAVATION and its "
+             "phone number"),
+            ((1374, 318, 1428, 342), "the dump truck's unit number, TC09"),
+            ((1085, 308, 1150, 330),
+             "a number decal and sticker on the dump body"),
+        ],
+        # INSPECTED AT MAGNIFICATION 2026-10-06 AND CLEARED.
+        "cleared": [
+            ((880, 670, 1100, 770),
+             "the truck's own headlight: the lower row of chrome reflector "
+             "cells and the lens edge, no glyph"),
+        ],
+    },
+    "fleet-mack": {
+        "out": "fleet-purple-mack.jpg",
+        "out_size": (960, 720),
+        "budget": 150 * 1024,
+        "src": (960, 720),
+        "crop": (0, 0, 960, 720),
+        "plate_box": (80, 40),
+        "subject": (65, 680),        # exhaust stack to tyre contact, rows
+        "subject_x": (25, 935),      # dump body's tail to the bumper
+        "wreck": (65, 680),
+        "wreck_label": "the whole truck",
+        "how": "read off a 60px coordinate grid on the decoded frame",
+        "note": "no pixel discarded and no resample: the source is the size "
+                "it ships at, so its own bytes ship, stripped",
+        "provenance": "the shop's own photograph, via its Facebook page, "
+                      "Greg's ruling 3.93",
+        # INSPECTED AT MAGNIFICATION 2026-10-06 AND CLEARED.
+        "cleared": [
+            ((260, 80, 420, 280),
+             "the chrome exhaust stack and its perforated heat shield, the "
+             "back of the side mirror, and the sunlit dump body behind them"),
+        ],
+    },
+
     # THE ONE HERO THAT IS NOT A PHOTOGRAPH, ADDED 2026-10-01, and it is
     # here by a scoped amendment to the hero law, not by an exception
     # quietly taken (proposed-changes.md 3.86, CLAUDE.md rule 1). Every
@@ -596,7 +673,11 @@ def main() -> int:
             box_h = round(PLATE_BOX_H * OUT_W / LEGACY_W)
         else:
             scan_px, scan_w, scan_h = cropped, cw, chh
-            box_w, box_h = PLATE_BOX_W, PLATE_BOX_H
+            # A FRAME MAY NAME ITS OWN BOX, and only the 960-wide Mack
+            # does (3.93): 80x40 is 120x60 scaled by 960/1440, so a plate is
+            # the same fraction of the box. Opt-in, so every shipped frame
+            # re-proves byte for byte with the box it was built with.
+            box_w, box_h = F.get("plate_box", (PLATE_BOX_W, PLATE_BOX_H))
 
         # 4 -------------------------------------------- the plate check
         print(f"\nPLATE CHECK, run although no plate is visible")
@@ -670,23 +751,44 @@ def main() -> int:
             return 1
 
         # 6 ---------------------------------------------------- encode
-        spng = os.path.join(tmp, "small.png")
-        rp.write_rgb_png(spng, nw, nh, small)
-        print(f"\nENCODE, searching quality down from {QUALITY_START} for a file "
-              f"no larger than the source ({src_bytes} bytes)")
+        # A FRAME THAT NEEDS NOTHING IS NOT RE-COMPRESSED, the Real Repairs
+        # rule (prepare-repair-photos.py, step 5): no crop, no redaction,
+        # no resample means the source's own bytes, metadata stripped by
+        # marker walk. Re-encoding a compressed photograph only loses.
+        untouched = ((CROP_LEFT, CROP_TOP, CROP_W, CROP_H) == (0, 0, w, h)
+                     and not F.get("redact") and (OUT_W, OUT_H) == (w, h))
+        # A per-frame byte ceiling, for a frame that ships beside the Real
+        # Repairs prints and takes their 150KB (3.93). Never above the
+        # source's own size.
+        cap = min(src_bytes, F.get("budget", src_bytes))
         chosen = None
-        for q in range(QUALITY_START, QUALITY_FLOOR - 1, -1):
+        if untouched:
+            path = os.path.join(tmp, "untouched.jpg")
+            rp.strip_app_segments(opts.source, path)
+            q, size = "source", os.path.getsize(path)
+            print(f"\nUNTOUCHED: no crop, no redaction, no resample. The source's "
+                  f"own bytes, stripped, never re-compressed: {size} bytes")
+            if size > cap:
+                print(f"FAILED: {size} bytes is over the {cap}-byte ceiling.")
+                return 1
+            chosen = (q, path, size)
+        spng = os.path.join(tmp, "small.png")
+        if not untouched:
+            rp.write_rgb_png(spng, nw, nh, small)
+            print(f"\nENCODE, searching quality down from {QUALITY_START} for a file "
+                  f"no larger than {cap} bytes (the source is {src_bytes})")
+        for q in ([] if untouched else range(QUALITY_START, QUALITY_FLOOR - 1, -1)):
             cand = os.path.join(tmp, f"q{q}.jpg")
             sips("-s", "format", "jpeg", "-s", "formatOptions", str(q),
                  spng, "--out", cand)
             stripped = os.path.join(tmp, f"s{q}.jpg")
             rp.strip_app_segments(cand, stripped)
             size = os.path.getsize(stripped)
-            if chosen is None and size <= src_bytes:
+            if chosen is None and size <= cap:
                 chosen = (q, stripped, size)
-                print(f"  q{q:<3} {size:>7} bytes   <= source, taken")
+                print(f"  q{q:<3} {size:>7} bytes   <= {cap}, taken")
                 break
-            print(f"  q{q:<3} {size:>7} bytes   over source, trying lower")
+            print(f"  q{q:<3} {size:>7} bytes   over {cap}, trying lower")
         if chosen is None:
             print("FAILED: cannot land at or under the source size above the "
                   "quality floor.")
@@ -728,7 +830,7 @@ def main() -> int:
 
     final = os.path.getsize(out)
     print(f"\nSHIPPED  {os.path.relpath(out, ROOT)}")
-    print(f"  {OUT_W}x{OUT_H} at q{q}, {final} bytes")
+    print(f"  {OUT_W}x{OUT_H} {'as the source, untouched' if q == 'source' else f'at q{q}'}, {final} bytes")
     print(f"  source was {src_bytes} bytes, so the output is "
           f"{src_bytes - final} bytes smaller ({100 * final / src_bytes:.1f}% of it)")
     if final > src_bytes:

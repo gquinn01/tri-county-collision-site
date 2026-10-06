@@ -15343,6 +15343,173 @@ script now records the deletion, and git history keeps the file.
 criticals, unchanged; it exits 1 on the standing owner gate. No em dash or
 en dash was added.
 
+### 3.93 The fleet gets its photographs. BUILT 2026-10-06; the card half is HELD for a ruling
+
+Greg's rulings of 2026-10-06. **The Mazda pair stays banked, held by
+ruling.** This record holds Job 2, which shipped. Job 1, the home
+service cards, was built, measured and then held, because two of its own
+conditions failed; the relay that closed the run carries both.
+
+#### Job 2: two fleet prints in `#fleet`, claim-free
+
+- **What shipped:** `photo-bank/rollback-white.jpg` and
+  `photo-bank/mack-purple.jpg`, as one two-frame figure closing `#fleet`
+  on `/commercial-collision-repair/`.
+- **Provenance:** both are photographs the shop published of itself on its
+  Facebook page, Greg's ruling 3.93, the formula 3.92 used for the hero.
+  Neither carried any provenance metadata, which is expected after
+  Facebook's re-encode; the reader saw no AI tell.
+- **CLAIM-FREE, BY RULING.** No visible caption: nobody has confirmed
+  whose trucks these are, or that they were repaired here. The alts, approved
+  verbatim, say what is in the frame and nothing more:
+  - "A white rollback flatbed truck."
+  - "A purple Mack dump truck."
+- **Where it sits:** the figure closes the section after its last
+  paragraph. It does not sit between the vehicle list and "chances are
+  we've repaired one like it".
+- **Rendered and judged at 1440:** the figure reads as two working vehicles
+  under the fleet argument. It does not read wrong without a caption, so no
+  caption was proposed.
+- **Owner question 37 carries what the trucks are.** The record moves on
+  Scott's answer.
+
+**Design, within the existing laws.** No ground change, no new band and no
+CSS change. The figure borrows the Real Repairs print grammar: `.ba`,
+`.ba-stack` and `.ba-frame` give the resting ink shadow, two frames up, and
+a stack below 600px. It takes nothing else from that grammar: no chips,
+because these are not a before and after, and no figcaption. Its
+`margin-top:34px` is the section's own precedent, already on the paragraph
+above it. Both images carry width, height, `loading="lazy"` and
+`decoding="async"`.
+
+**THE WHITE ROLLBACK KEEPS ITS WHOLE FRAME, and that was decided, not
+defaulted:**
+
+- **The school bus is in front of the bed.** It sits at columns 0 to 190,
+  in front of the rollback's own bed at the same columns. A crop that drops
+  the bus drops the bed, and the bed is what makes the truck a rollback.
+- **The red dump truck is behind the hood and grille,** and no crop can
+  keep those while losing it.
+- **So both are made unrecognizable,** the second way the ruling allows.
+  Every word and number on them was read at 2x and 3x and redacted by the
+  Real Repairs method, pixelate then blur. What is left is a yellow bus and
+  a red dump truck that identify nobody.
+- **The Mack badge on the dump truck's hood stays.** It is the maker, as
+  the International badge on the rollback is.
+
+```
+fleet-white-rollback.jpg   frame "fleet-rollback"
+SOURCE   1440x1080, APP13 Photoshop only
+REDACT   114x49 at (0,262)     detail 20.1 -> 0.4,  2.1% left  SCHOOL BUS,
+                                                              EMERGENCY DOOR
+         77x26  at (15,382)    detail 13.0 -> 0.9,  7.1% left  bus number V 32
+         84x52  at (1212,298)  detail 16.1 -> 1.0,  6.5% left  dump truck door:
+                                                              logo, EXCAVATION,
+                                                              phone number
+         54x24  at (1374,318)  detail 22.3 -> 1.4,  6.1% left  unit number TC09
+         65x22  at (1085,308)  detail 11.9 -> 2.0, 16.3% left  dump body decal
+PLATES   748 boxes of 120x60; 2 met all three conditions: the rollback's own
+         headlight reflector cells, inspected and cleared
+RESAMPLE 1440 -> 864, one box downscale
+ENCODE   q60, 147,202 bytes, under the 150KB ceiling; only APP0 JFIF
+
+fleet-purple-mack.jpg      frame "fleet-mack"
+SOURCE   960x720, APP13 Photoshop only
+PLATES   748 boxes of 80x40 (120x60 scaled by 960/1440); 3 met all three
+         conditions: the chrome exhaust stack, its heat shield, the mirror's
+         back and the sunlit dump body, inspected and cleared. No plate or
+         sticker in frame.
+SHIPPED  UNTOUCHED: no crop, no redaction, no resample, so the source's own
+         bytes ship with metadata stripped, never re-compressed:
+         93,904 bytes
+```
+
+- **The size, the job1 precedent.** The Mack serves what its 960x720
+  source honestly serves, and nothing is upscaled.
+- **The white rollback is one width step under the Mack**, by the Real
+  Repairs rule:
+  - at 960x720 its gravel needed 161,491 bytes at q55, over the 150KB
+    ceiling;
+  - so the width stepped by 0.9 to 864x648, rather than the quality or the
+    ceiling moving;
+  - both frames are exact 4:3, so they render at one height side by side.
+- **Rendered at 1440,** each frame is 532 CSS px wide: 1.62x for the
+  rollback and 1.80x for the Mack. Job1's 960 renders at 526.
+
+**`scripts/prepare-hero-photo.py` gained four things, all opt-in or
+behaviour-neutral:**
+- **two frames.**
+- **a per-frame `budget`,** a byte ceiling under the source's own size.
+- **a per-frame `plate_box`,** used by the Mack only. A general
+  scale-by-crop-width rule was tried first, and it changed the 1131-wide
+  preview frame's scan. Opt-in keeps every shipped frame on the box it was
+  built with.
+- **the Real Repairs untouched path,** which ships the source's own bytes,
+  stripped, when a frame needs no crop, no redaction and no resample.
+
+**All four of the script's photo-bank frames re-prove byte for byte:**
+`hero-red-rollback`, `og-red-rollback`, `fleet-white-rollback` and
+`fleet-purple-mack`.
+
+#### Measured
+
+**`#fleet`'s height** (`.staging` shown; the figure is the only change):
+
+```
+         before   after   grows by
+1440       742    1175      433
+390        898    1469      571
+360       1006    1532      526
+```
+
+**The fold is unchanged**, with the CTA row at 569, 580 and 598, as
+before. There is no horizontal scroll at any width.
+
+**The ceiling, 2,684, which counts every call to action of any kind.**
+Measured with the banner off. Calls are every `tel:` and `mailto:` link
+in `<main>` and the footer, plus the links to `/contact-us/`, such as step
+01's "request one online".
+
+```
+         longest run, before        longest run, after          run across #fleet
+1440     1,599 process > why        1,745 intro > process         1,312 -> 1,745
+390      1,996 process > why        1,996 process > why           1,391 -> 1,962
+360      2,221 process > why        2,221 process > why           1,528 -> 2,054
+```
+
+**Every run stays under 2,684.** Counting only `tel:` and `mailto:`, the
+stretch from `#intro`'s call row to `#process` reads 2,745 at 390 even
+before this change, already over the ceiling. It reads 3,316 after. Step
+01's link to the contact page is the call that breaks that stretch, and it
+is a call by the law's own wording. **Recorded so nobody mistakes that
+figure for a breach.**
+
+#### Job 1: built, measured, and held
+
+**The mechanism was built and it works.** `sync-service-cards.py` writes
+each photographed card's image from its target page's hero through a new
+`audit.hero_of()`: the file, width, height and alt, verbatim. A new audit
+check, `card_image_findings`, fails a card whose image differs from its
+page's hero. On the page as it stood, the check fired on all four stock
+cards, and the ADAS card passed. After the sync, all five passed and
+`--check` was clean.
+
+**It was held for two reasons, both measured:**
+
+1. **The commercial card would show the 3.92b redaction block.** A card is
+   `aspect-ratio: 4 / 3; object-fit: cover` over the 1200x800 hero, so it
+   shows output columns 67 to 1133. The block where the Tague truck was
+   sits at output columns 92 to 260, inside the card. Rendered at 390, it
+   is plain at the card's upper left. On the hero page that block is under
+   the scrim; on the home router there is no scrim.
+2. **Two of the three accents are not orphaned.** `/collision-repair/`'s
+   `#services` uses `accent-collision-repair-1.jpg` and
+   `accent-major-collision-repair.jpg` as its Minor and Major `.svc-photo`
+   images. `accent-minor-collision-repair.jpg` would be orphaned. The brief
+   says to stop if anything still points at one.
+
+**Nothing of Job 1 is in this commit.** The 3.17 duplicate is NOT closed.
+
 ---
 
 ## 4. The claims list
@@ -16077,8 +16244,8 @@ Ordered by how much else depends on it.
     or dealer. Scott, as fact-checker of record, confirms the scope (every
     system and every make, static and dynamic, or which exceptions) and
     the start date, before cutover. The claims the page makes are in 4.13.
-37. **The shop's own Facebook photographs (3.92).** Scott confirms three
-    things:
+37. **The shop's own Facebook photographs (3.92, 3.93).** Scott confirms
+    four things:
     - **the red rollback** on `/commercial-collision-repair/`'s hero is the
       shop's own truck. The alt claims nothing until he does.
     - **a blanket OK** to publish the photographs the shop posted on its
@@ -16086,3 +16253,7 @@ Ordered by how much else depends on it.
     - **the person behind the Honda Pilot's windshield.** The Honda pair is
       held because a face survives at the shipped size. Do they agree to
       appear, or does the pair stay out?
+    - **the white rollback and the purple Mack** in `#fleet` on
+      `/commercial-collision-repair/` (3.93). What are they: the shop's own,
+      customers' trucks it repaired, or something else? They ship
+      claim-free, with no caption, and the record moves on the answer.
