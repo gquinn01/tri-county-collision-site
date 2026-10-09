@@ -57,7 +57,7 @@ def check(label: str, passed: bool, detail=""):
 
 PAGE = """<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Collision Repair in Southampton, PA | Tri-County Collision</title>
+<title>Southampton Collision Repair | Tri County Collision Center</title>
 <meta name="description" content="A description that is comfortably under one hundred and sixty characters, so the length checks never become the reason a case fails.">
 <link rel="canonical" href="https://tricountycollision.com/collision-repair/">
 <meta property="og:title" content="Collision Repair"><meta property="og:description" content="Short.">
@@ -875,7 +875,7 @@ def main():
     print("21. An inline SVG's <title> is not the page's title")
     p, w, f = run('<svg role="img"><title>A map of the roads around the shop, drawn from OpenStreetMap data</title></svg>')
     check("     the page title is still measured as the head's alone",
-          f"({len('Collision Repair in Southampton, PA | Tri-County Collision')} chars)" in p, p)
+          f"({len('Southampton Collision Repair | Tri County Collision Center')} chars)" in p, p)
 
     # The blog's kinds, 3.57. A post is a read and an index routes, so each
     # is exempt from faq-schema and nothing else, and thin-content stays
@@ -884,7 +884,7 @@ def main():
     print("23. The blog kinds: no FAQ required, and an FAQ is still measured")
     long_body = "<p>" + " ".join(["word"] * 320) + "</p>"
     faq_vis = ('<details><summary>Is it free?<span class="faq-ico"></span></summary>'
-               '<p>Yes, estimates at Tri-County Collision are free.</p></details>')
+               '<p>Yes, estimates at Tri County Collision Center are free.</p></details>')
     # 3.94: the answer is a full sentence, because a four-word opener now
     # fails the standalone check, which is not what this section tests.
 
@@ -908,7 +908,7 @@ def main():
         p, w, f, n, kind = run_kind(meta, long_body + faq_vis)
         check(f"     a {k} with a visible FAQ and NO schema is warned, not excused",
               "no FAQPage schema" in w and "not measured here" not in n, (w, n))
-        p, w, f, n, kind = run_kind(meta, long_body + faq_vis + faq_schema("Yes, estimates at Tri-County Collision are free."))
+        p, w, f, n, kind = run_kind(meta, long_body + faq_vis + faq_schema("Yes, estimates at Tri County Collision Center are free."))
         check(f"     a {k} with a matching FAQ passes the mirror",
               "byte-identical" in p and "FAQ" not in f, (p, f))
     p, w, f, n, kind = run_kind('<meta name="tri-county-page" content="posts">', long_body)
@@ -1406,7 +1406,7 @@ def main():
     def biz_page(area, extra_nodes=()):
         g = {"@context": "https://schema.org", "@graph": [
             {"@type": "AutoBodyShop", "@id": "https://tricountycollision.com/#business",
-             "name": "Tri-County Collision", "areaServed": area}] + list(extra_nodes)}
+             "name": "Tri County Collision Center", "areaServed": area}] + list(extra_nodes)}
         return ('<script type="application/ld+json">\n' + "\n".join("  " + x for x in json.dumps(g, indent=2, ensure_ascii=False).splitlines())
                 + "\n  </script>")
     want = audit.area_served_nodes()
@@ -1533,9 +1533,15 @@ def main():
     check("     a drawn map passes", "map is drawn" in p and "map is empty" not in f, (p, f))
     for name in bt.TOWN_NAMES.values():
         t = bt.title_for(name)
-        full = f"Collision Repair for {name}, PA | Tri-County Collision"
-        check(f"     the title for {name} is {len(t)} characters, and the short brand only where needed",
-              len(t) <= 60 and (t == full if len(full) <= 60 else t.endswith("| Tri-County")), t)
+        # 3.95's cascade: the Jamison pattern, then the town before the
+        # service with the name, then the Jamison pattern with no name. Never
+        # a short brand: "Tri-County" alone is now a name variant.
+        steps = [f"Collision Repair for {name}, PA | {audit.NAP_NAME}",
+                 f"{name} Collision Repair | {audit.NAP_NAME}",
+                 f"Collision Repair for {name}, PA"]
+        want = next(x for x in steps if len(x) <= 60)
+        check(f"     the title for {name} is {len(t)} characters, the first step of the cascade that fits",
+              t == want and not audit.name_variants(t), t)
     check("     Jamison's nearby order derives: Warminster, Richboro, Hatboro, Horsham",
           bt.nearest("jamison-pa") == ["warminster-pa", "richboro-pa", "hatboro-pa", "horsham-pa"], bt.nearest("jamison-pa"))
     check("     build-town.py carries no Jamison nearby exception",
@@ -1795,7 +1801,7 @@ def main():
     # check and once against the check as it stood before 3.94, and the
     # second run must miss it. A fixture both versions catch proves nothing.
     print("38. The review count reads words between the number and \"reviews\" (3.94)")
-    stale = ("<p>For example, Tri-County Collision is proud of our “EXCELLENT” rating "
+    stale = ("<p>For example, Tri County Collision Center is proud of our “EXCELLENT” rating "
              "based on over 231 verified Google reviews.</p>")
     OLD_REVIEW_RE = re.compile(r"\b(\d[\d,]{0,6})\s+(?:google\s+)?reviews?\b", re.I)
     with _tempfile.TemporaryDirectory() as tmp:
@@ -1990,10 +1996,10 @@ def main():
          'Street Road traffic can lengthen the drive from Bensalem. The figure of about 15 minutes'),
         ('Nearly all of it. Of the roughly',
          'The drive from Bensalem is nearly all on Street Road. Of the roughly'),
-        ('No. Tri-County Collision is family owned',
-         'No, Tri-County Collision is family owned'),
-        ('Not in Hatboro itself. Tri-County Collision is at',
-         'Tri-County Collision is not in Hatboro itself; it is at'),
+        ('No. Tri County Collision Center is family owned',
+         'No, Tri County Collision Center is family owned'),
+        ('Not in Hatboro itself. Tri County Collision Center is at',
+         'Tri County Collision Center is not in Hatboro itself; it is at'),
         ('No. Crossing from',
          'No, crossing from'),
         ('Yes. Under Pennsylvania law',
@@ -2001,53 +2007,53 @@ def main():
         ('Yes. Dealing with your insurer',
          'Yes, dealing with your insurer'),
         ('Horsham has none. The shop is at',
-         'Tri-County Collision has no shop in Horsham; its shop is at'),
+         'Tri County Collision Center has no shop in Horsham; its shop is at'),
         ('It can. Alongside cars,',
          'Yes, alongside cars,'),
         ("A little. Hatboro is the closer of the two by road; from Horsham's crossroads",
          "Horsham is a little farther than Hatboro by road; from Horsham's crossroads"),
-        ("It is not. Tri-County Collision's address is",
-         'Tri-County Collision is not located in Huntingdon Valley; its address is'),
+        ("It is not. Tri County Collision Center's address is",
+         'Tri County Collision Center is not located in Huntingdon Valley; its address is'),
         ('Yes. Paintless dent repair fixes',
-         "Yes, Tri-County Collision's paintless dent repair fixes"),
+         "Yes, Tri County Collision Center's paintless dent repair fixes"),
         ('Not quite. By road, Feasterville-Trevose is closer.',
          'Huntingdon Valley is not quite the closest: by road, Feasterville-Trevose is closer.'),
-        ('No. Tri-County Collision takes on',
-         'No, Tri-County Collision takes on'),
-        ('No. At Tri-County Collision estimates are free',
-         'No, at Tri-County Collision estimates are free'),
-        ('It will. At Tri-County Collision, vehicles are',
-         'Yes, at Tri-County Collision vehicles are'),
+        ('No. Tri County Collision Center takes on',
+         'No, Tri County Collision Center takes on'),
+        ('No. At Tri County Collision Center estimates are free',
+         'No, at Tri County Collision Center estimates are free'),
+        ('It will. At Tri County Collision Center, vehicles are',
+         'Yes, at Tri County Collision Center vehicles are'),
         ('No. The shop is in Southampton',
-         'No, Tri-County Collision is in Southampton'),
+         'No, Tri County Collision Center is in Southampton'),
         ('Yes. Pennsylvania law lets you',
          'Yes, Pennsylvania law lets you'),
         ('Nearly. From Almshouse Road',
          'The drive from Richboro is nearly all on 2nd Street Pike. From Almshouse Road'),
         ('You do not. In Pennsylvania',
          "You do not have to use your insurer's shop. In Pennsylvania"),
-        ("They are. Tri-County Collision's technicians",
-         "Yes, Tri-County Collision's technicians"),
+        ("They are. Tri County Collision Center's technicians",
+         "Yes, Tri County Collision Center's technicians"),
         ("Yes. Richboro's crossroads",
          "Yes, Richboro's crossroads"),
         ('No. Its shop is at',
-         "No, Tri-County Collision's shop is at"),
+         "No, Tri County Collision Center's shop is at"),
         ('Davisville Road. You spend',
          'Davisville Road does most of the work from Willow Grove. You spend'),
-        ('A family. Tri-County Collision is family owned',
-         'Tri-County Collision is family owned'),
+        ('A family. Tri County Collision Center is family owned',
+         'Tri County Collision Center is family owned'),
         ('It can be longer or shorter. The time on this page',
          'The drive from other parts of Jenkintown can be longer or shorter. The time on this page'),
         ('Longer than the figure on this page. That figure, about 11 minutes, is a routing',
          'In traffic the drive from Willow Grove runs longer than about 11 minutes. That figure is a routing'),
         ('It does: windshields, side windows and rear windows.',
-         'Yes, Tri-County Collision fixes windshields, side windows and rear windows.'),
+         'Yes, Tri County Collision Center fixes windshields, side windows and rear windows.'),
         ('This page times the drive from Somerton.',
          'The drive time for Northeast Philadelphia is measured from Somerton.'),
         ('This page times the trip from the junction of',
          'The Warminster drive time starts at the junction of'),
         ('Pre-accident condition is the standard.',
-         "Yes, pre-accident condition is Tri-County Collision's standard."),
+         "Yes, pre-accident condition is Tri County Collision Center's standard."),
     ]
     rest = " The rest of the answer follows here."
     befores = [("Q?", b + rest) for b, _a in OPENERS]
@@ -2075,8 +2081,60 @@ def main():
            '"acceptedAnswer":{"@type":"Answer","text":"No. Estimates are free."}}]}</script>')
     _p, _w, f = run(faq)
     check("     a page whose FAQ opens \"No.\" FAILS the audit", "does not stand alone" in f, f[:200])
-    _p, _w, f = run(faq.replace("No. Estimates are free.", "No, estimates at Tri-County Collision are free."))
+    _p, _w, f = run(faq.replace("No. Estimates are free.", "No, estimates at Tri County Collision Center are free."))
     check("     the same page comma-merged passes", "does not stand alone" not in f, f[:200])
+
+    print("43. The business name is NAP_NAME, character for character (3.95)")
+    check("     NAP_NAME is the ruled string", audit.NAP_NAME == "Tri County Collision Center", audit.NAP_NAME)
+    for label, body in (
+            ("the pre-3.95 name in copy", "<p>Call Tri-County Collision today.</p>"),
+            ("the hyphenated full name", "<p>Tri-County Collision Center fixes cars.</p>"),
+            ("the name without Center", "<p>Tri County Collision fixes cars.</p>"),
+            ("the short brand in a title-like string", "<p>Collision Repair | Tri-County</p>"),
+            ("an og:title", '<meta property="og:title" content="Repairs | Tri-County Collision">'),
+            ("an image's alt", '<img src="assets/img/x.jpg" alt="The Tri-County Collision bay">'),
+            ("a JSON-LD name", '<script type="application/ld+json">{"name": "Tri-County Collision"}</script>'),
+            ("upper case", "<p>TRI-COUNTY COLLISION</p>")):
+        _p, _w, f = run(body)
+        check(f"     FAILS: {label}", "business name is written" in f, f[:160])
+    for label, body in (
+            ("the name itself, and its possessive", "<p>Tri County Collision Center and Tri County Collision Center's team.</p>"),
+            ("the logo's alt naming the wordmark as drawn", '<img src="../logo.png" alt="Tri-County Collision" width="1332" height="530">'),
+            ("a customer's words in a testimonial", '<figure class="quote"><p>I took it to tri county.</p></figure>'),
+            ("a slug in a URL", '<a href="../preserving-value-how-tri-county-collision-center-impacts/">Read</a>'),
+            ("a comment recording the old name", "<!-- the name was Tri-County Collision until 3.95 -->"),
+            ("the page-kind meta, which is code", '<meta name="tri-county-page" content="post">')):
+        _p, _w, f = run(body)
+        check(f"     passes: {label}", "business name is written" not in f, f[:160])
+    with _tempfile.TemporaryDirectory() as tmp:
+        for text, want in (("Tri County Collision Center, 995 Jaymor Rd.\n", "pass"),
+                           ("Tri-County Collision, 995 Jaymor Rd.\n", "fail")):
+            open(os.path.join(tmp, "llms.txt"), "w").write(text)
+            passes, fails = [], []
+            audit.check_name_llms_local(passes, fails, root=tmp)
+            check(f"     llms.txt saying {text[:22]!r} is a {want}", bool(fails) == (want == "fail"), fails)
+    old_page = "<p>Call Tri-County Collision today.</p>"
+    real = audit.NAME_MENTION_RE
+    audit.NAME_MENTION_RE = re.compile(r"(?!x)x")
+    try:
+        _p, _w, f = run(old_page)
+        check("     MUTATION: with no name check the old name passes, so the check is what catches it",
+              "business name is written" not in f, f[:160])
+    finally:
+        audit.NAME_MENTION_RE = real
+    shipped = sorted(glob.glob(os.path.join(root, "docs", "**", "index.html"), recursive=True))
+    clean = [x for x in shipped if not audit.name_variants(open(x, encoding="utf-8").read())]
+    check(f"     every shipped page ({len(shipped)}) names the shop as NAP_NAME", len(clean) == len(shipped),
+          [os.path.relpath(x, root) for x in shipped if x not in clean][:3])
+    real_name = audit.NAP_NAME
+    audit.NAP_NAME = "Tri-County Collision"
+    try:
+        flagged = [x for x in shipped if audit.name_variants(open(x, encoding="utf-8").read())]
+        named = [x for x in shipped if audit.name_mentions(open(x, encoding="utf-8").read())]
+        check("     MUTATION: under the pre-3.95 constant every page that names the shop fails, so the "
+              "swap is whole", flagged == named and len(named) >= 37, (len(flagged), len(named)))
+    finally:
+        audit.NAP_NAME = real_name
 
     print()
     if FAILURES:

@@ -16,9 +16,12 @@ fact invented, no claim added, none silently dropped. Every edit below is a
 pair with its reason; anything a pair removes is recorded as HELD, not lost.
 
 WHAT EVERY POST GETS, mechanically:
-  - The business name as the NAP writes it. "Tri County Collision Center",
-    "Tri-County Collision Center" and "Tri County Collision" all become
-    "Tri-County Collision", the precedent every service page set (3.47-3.49).
+  - The business name as the NAP writes it, audit.NAP_NAME. Since Greg's
+    ruling of 2026-10-09 (3.95) that is "Tri County Collision Center", the
+    name the web's listings and the live site's own titles carry, so
+    "Tri-County Collision Center", "Tri-County Collision" and "Tri County
+    Collision" all become it. Before 3.95 the rule ran the other way, to
+    "Tri-County Collision", the precedent the service pages set (3.47-3.49).
   - Links: the shop's own URLs become relative links to pages that exist,
     and pending spans (data-pending-href) to pages that do not yet, so the
     pending-link test forces each one the day its target lands. Google Maps
@@ -77,7 +80,7 @@ DOCS = os.path.join(ROOT, "docs")
 SHELL = os.path.join(DOCS, "contact-us", "index.html")
 BASE = "https://tricountycollision.com/"
 NY = ZoneInfo("America/New_York")
-MAPS = ("https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision"
+MAPS = ("https://www.google.com/maps/search/?api=1&amp;query=Tri%20County%20Collision%20Center"
         "%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966")
 TITLE_MAX, DESC_MAX = 60, 160
 
@@ -86,12 +89,22 @@ TITLE_MAX, DESC_MAX = 60, 160
 # line in place of the live post's own. Add or move a post's date in the
 # same commit as any visible change to it.
 CORRECTED = {
-    "deer-season-in-bucks-county-insurance-coverage-next-steps": "2026-10-09",
-    "critical-questions-to-ask-any-collision-center-in-bucks-county-before-handing-over-your-keys": "2026-10-09",
-    "collision-repair-near-me-in-southampton-how-to-choose-the-right-auto-body-shop": "2026-10-09",
-    "unveiling-the-hidden-benefits-of-paintless-dent-repair-in-collision-restoration": "2026-10-09",
     "what-do-all-those-lights-mean-in-my-car-understanding-your-vehicles-language": "2026-10-09",
+    "the-ultimate-guide-to-collision-repair-services-what-to-expect-and-how-to-choose-the-best-provider": "2026-10-09",
     "the-importance-of-oem-parts-in-collision-repair-ensuring-quality-and-safety-for-your-vehicle": "2026-10-09",
+    "the-art-of-paintless-dent-repair": "2026-10-09",
+    "assessing-collision-damage": "2026-10-09",
+    "preserving-value-how-tri-county-collision-center-impacts-the-resale-value-of-your-car-through-collision-repair": "2026-10-09",
+    "unveiling-the-hidden-benefits-of-paintless-dent-repair-in-collision-restoration": "2026-10-09",
+    "collision-repair-near-me-in-southampton-how-to-choose-the-right-auto-body-shop": "2026-10-09",
+    "critical-questions-to-ask-any-collision-center-in-bucks-county-before-handing-over-your-keys": "2026-10-09",
+    "is-my-car-totaled-expert-insights-from-your-southampton-collision-repair-specialists": "2026-10-09",
+    "after-the-unthinkable-your-first-steps-following-a-car-accident-in-bucks-county-before-calling-a-collision-shop": "2026-10-09",
+    "misconceptions-about-collision-repair": "2026-10-09",
+    "the-risks-of-driving-a-damaged-vehicle-in-the-southampton-area": "2026-10-09",
+    "deer-season-in-bucks-county-insurance-coverage-next-steps": "2026-10-09",
+    "your-right-to-choose-a-body-shop": "2026-10-09",
+    "adas-calibrations-after-a-crash": "2026-10-09",
 }
 
 
@@ -133,27 +146,27 @@ POSTS = {
         edits=[]),
     "the-importance-of-oem-parts-in-collision-repair-ensuring-quality-and-safety-for-your-vehicle": dict(
         title="The Importance of OEM Parts in Collision Repair",
-        meta=("Learn why Tri-County Collision prioritizes OEM parts in collision repair and "
+        meta=("Learn why Tri County Collision Center prioritizes OEM parts in collision repair and "
               "how they ensure quality, safety, and value for your vehicle."),
         edits=[]),
     "the-art-of-paintless-dent-repair": dict(
         title="The Art of Paintless Dent Repair: A Cost-Effective Solution",
-        meta=("The art of paintless dent repair at Tri-County Collision: a cost-effective, "
-              "efficient fix for minor collisions that preserves your vehicle's original finish."),
+        meta=("The art of paintless dent repair at Tri County Collision Center: a cost-effective "
+              "fix for minor collisions that preserves your vehicle's original finish."),
         edits=[]),
     "assessing-collision-damage": dict(
         title="Assessing Collision Damage: Fender Benders to Major Crashes",
-        meta=("Discover how Tri-County Collision accurately assesses collision damage "
+        meta=("Discover how Tri County Collision Center accurately assesses collision damage "
               "severity, from minor fender benders to major crashes"),
         edits=[]),
     "preserving-value-how-tri-county-collision-center-impacts-the-resale-value-of-your-car-through-collision-repair": dict(
         title="Preserving Value: How Collision Repair Impacts Resale Value",
-        meta=("Protect your car's resale value with Tri-County Collision's expert collision "
+        meta=("Protect your car's resale value with Tri County Collision Center's expert collision "
               "repair, restoring your vehicle to its pre-collision condition and appeal."),
         edits=[]),
     "unveiling-the-hidden-benefits-of-paintless-dent-repair-in-collision-restoration": dict(
         title="Unveiling the Hidden Benefits of Paintless Dent Repair",
-        meta=("The hidden benefits of paintless dent repair at Tri-County Collision: your "
+        meta=("The hidden benefits of paintless dent repair at Tri County Collision Center: your "
               "original factory finish preserved, money saved, and back on the road faster."),
         edits=[]),
     "collision-repair-near-me-in-southampton-how-to-choose-the-right-auto-body-shop": dict(
@@ -161,7 +174,7 @@ POSTS = {
         meta=("Searching \"collision repair near me\" in Southampton? Our guide helps you "
               "choose the RIGHT auto body shop with expert tips. Make a confident choice!"),
         edits=[
-            ("the Tri County Difference", "the Tri-County Difference",
+            ("the Tri County Difference", "the Tri County Collision Center Difference",
              "the name as the NAP writes it; the mechanical rule only catches the full name"),
         ]),
     "critical-questions-to-ask-any-collision-center-in-bucks-county-before-handing-over-your-keys": dict(
@@ -197,7 +210,7 @@ POSTS = {
     "misconceptions-about-collision-repair": dict(
         title="Top 5 Misconceptions About Collision Repair",
         meta=("Confused after a collision? We debunk 5 common repair myths to help you save "
-              "money and make a safer choice. Get the expert facts from Tri-County Collision."),
+              "money and make a safer choice. Get the facts from Tri County Collision Center."),
         edits=[]),
     "the-risks-of-driving-a-damaged-vehicle-in-the-southampton-area": dict(
         title="Don’t Delay Repairs! The Risks of Driving a Damaged Vehicle",
@@ -207,9 +220,9 @@ POSTS = {
     "deer-season-in-bucks-county-insurance-coverage-next-steps": dict(
         title="Deer Season in Bucks County: Insurance Coverage & Next Steps",
         meta=("Navigate deer season smart: safety and documentation tips, how claims work, "
-              "and expert repairs from Tri-County Collision to restore your vehicle."),
+              "and expert repairs from Tri County Collision Center to restore your vehicle."),
         edits=[
-            ("How Tri County handles", "How Tri-County handles",
+            ("How Tri County handles", "How Tri County Collision Center handles",
              "the name as the NAP writes it; the mechanical rule only catches the full name"),
         ],
         faq_edits=[
@@ -223,7 +236,7 @@ POSTS = {
     "your-right-to-choose-a-body-shop": dict(
         title="PA Law: Your Right to Choose a Body Shop (Anti-Steering)",
         meta=("In Pennsylvania, the repair shop is your choice, not the insurer's. How "
-              "anti-steering rules work and how to document your choice with Tri-County Collision."),
+              "anti-steering rules work and how to document it with Tri County Collision Center."),
         edits=[
             ("(Honda, Toyota, Subaru, Ford, GM, and more)", "(Honda, Subaru, Ford, GM, and more)",
              "HELD: Toyota is not among the twelve factory certifications the site checks "
@@ -248,7 +261,7 @@ POSTS = {
               "peace of mind."),
         spaced_dash_to_colon=True,
         edits=[
-            ("How Tri County coordinates", "How Tri-County coordinates",
+            ("How Tri County coordinates", "How Tri County Collision Center coordinates",
              "the name as the NAP writes it; the mechanical rule only catches the full name"),
             ('<a href="../auto-glass-repair-replacement/">', '<a href="../auto-glass-repair-replacement/#adas">',
              "the brief's ruling: the ADAS post stays a post and links to the glass page's ADAS "
@@ -266,7 +279,7 @@ POSTS = {
         ]),
 }
 
-NAME_RE = re.compile(r"Tri[ \-]County Collision Center|Tri County Collision")
+NAME_RE = re.compile(r"Tri[ \-]County Collision(?: Center)?")
 KEEP = {"p", "h2", "h3", "h4", "ul", "ol", "li", "strong", "em", "a", "br"}
 PAIRS = []
 
@@ -432,11 +445,11 @@ def build_post(src, slug, landing, record):
     h = clean(live["body"])
 
     n_names = len(NAME_RE.findall(text_of(h)))
-    h = NAME_RE.sub("Tri-County Collision", h)
+    h = NAME_RE.sub(audit.NAP_NAME, h)
     if n_names:
-        pair(slug, "name", f"{n_names} x Tri County Collision Center (and variants)",
-             "Tri-County Collision", "the NAP's name, the service pages' precedent")
-    h1 = NAME_RE.sub("Tri-County Collision", live["h1"])
+        pair(slug, "name", f"{n_names} x the business name, variants included",
+             audit.NAP_NAME, "the NAP's name, audit.NAP_NAME (3.95)")
+    h1 = NAME_RE.sub(audit.NAP_NAME, live["h1"])
     if h1 != live["h1"]:
         pair(slug, "H1", live["h1"], h1, "the NAP's name")
 
@@ -696,8 +709,8 @@ def render_post(p, assets, biz, nav, foot):
 
 def render_index(posts, record, assets, biz, nav, foot):
     url = BASE + "blog/"
-    title = "Collision Repair Tips & Advice | Tri-County Collision"
-    meta = ("Collision repair tips and advice from Tri-County Collision in Southampton, PA: "
+    title = "Collision Repair Tips & Advice | Tri County Collision Center"
+    meta = ("Collision repair tips and advice from Tri County Collision Center in Southampton, PA: "
             "insurance claims, your right to choose a shop, dent repair, ADAS and more.")
     assert len(title) <= TITLE_MAX and len(meta) <= DESC_MAX, (len(title), len(meta))
     e = lambda x: html.escape(x, quote=True)

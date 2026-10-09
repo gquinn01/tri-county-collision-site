@@ -54,11 +54,11 @@ CHROME = os.path.join(ROOT, "docs", "deer-season-in-bucks-county-insurance-cover
 HOME = os.path.join(ROOT, "docs", "index.html")
 BASE = "https://tricountycollision.com/"
 URL = BASE + "areas-served/"
-MODIFIED = "2026-09-29"
+MODIFIED = "2026-10-09"
 
-TITLE = "Areas We Serve: Bucks & Montgomery | Tri-County Collision"
-META = ("Tri-County Collision serves Bensalem, Warminster, Willow Grove, Northeast Philly and more "
-        "from Southampton, PA. ASE/I-CAR Gold certified, lifetime warranty.")
+TITLE = "Serving Bucks & Montgomery | Tri County Collision Center"
+META = ("Tri County Collision Center serves Bensalem, Warminster, Willow Grove, Northeast Philly and more "
+        "from Southampton. ASE/I-CAR Gold certified, lifetime warranty.")
 LIVE_TITLE = "Areas We Serve | Collision Repair Bucks & Montgomery County | Tri County"
 LIVE_META = ("Tri County Collision Center serves Bensalem, Warminster, Willow Grove, Northeast Philly, "
              "and more from Southampton, PA. ASE/I-CAR Gold certified; lifetime warranty. Call (215) 322-5350.")
@@ -81,7 +81,7 @@ INTRO = [
      "accept all major forms of insurance. And every repair is backed by a lifetime warranty. We'll handle "
      "your insurer, keep you informed, and push back when they want a shortcut that isn't right for your "
      "car. That last part is why a lot of people end up here.",
-     "Tri-County Collision has been answering that question from Southampton for years, family owned and "
+     "Tri County Collision Center has been answering that question from Southampton for years, family owned and "
      "operated. Our ASE/I-CAR® Gold technicians work on foreign and domestic vehicles alike. We're a "
      "factory-certified collision center for a dozen major brands. We accept all major forms of insurance. "
      "And there's a lifetime warranty on all repair work. We'll handle your insurer, keep you informed, and "
@@ -266,7 +266,7 @@ FAQ = [
     ("Which county are you actually in?",
      "Bucks. We're at 995 Jaymor Road, Southampton, PA 18966, close to the Montgomery County line, which is "
      "why customers from Hatboro and Huntingdon Valley get here about as fast as customers from Feasterville.",
-     "Tri-County Collision is in Bucks County, at 995 Jaymor Rd, Southampton, PA 18966, close to the "
+     "Tri County Collision Center is in Bucks County, at 995 Jaymor Rd, Southampton, PA 18966, close to the "
      "Montgomery County line, which is why Hatboro and Huntingdon Valley are among our shortest drives.",
      "the opener passes the standalone test; the address takes the NAP's one spelling; \"about as fast as "
      "Feasterville\" is 8 minutes against 6 by the routings, so it becomes what they show: Huntingdon Valley "
@@ -284,7 +284,7 @@ FAQ = [
     ("My vehicle isn't drivable. What now?",
      "Call us at (215) 322-5350 before you make other arrangements. We offer towing assistance and will "
      "coordinate with your insurance company.",
-     "If your vehicle isn't drivable, call Tri-County Collision at " + PHONE + " before you make other "
+     "If your vehicle isn't drivable, call Tri County Collision Center at " + PHONE + " before you make other "
      "arrangements. We offer towing assistance and will coordinate with your insurance company.",
      "the opener passes the standalone test; the phone is a link; \"towing assistance\" is flagged and "
      "joins the owner questions (Q3)"),

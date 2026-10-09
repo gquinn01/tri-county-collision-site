@@ -1,4 +1,4 @@
-name: "Tri-County Collision: Google Watcher (daily)"
+name: "Tri County Collision Center: Google Watcher (daily)"
 
 on:
   schedule:
@@ -38,7 +38,7 @@ jobs:
             Read the file agents/google-watcher.md and follow those instructions
             exactly. Today's headline sweep is in seo-news.md.
 
-            This repo belongs to Tri-County Collision, a single-location
+            This repo belongs to Tri County Collision Center, a single-location
             collision repair shop in Southampton, PA. Judge every headline
             against that one business.
           # Edit(...), NOT Write(...); see the note in site-audit-agent.yml,

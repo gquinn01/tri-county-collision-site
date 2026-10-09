@@ -155,11 +155,11 @@ TRY_AT = (0.5, 0.4, 0.6, 0.3, 0.7, 0.2, 0.8, 0.12, 0.88)
 MAX_TURN_DEG = 25
 LABEL_SIZE = 16
 SHIELD_SIZE = 13.5
-PIN_LABEL = "Tri-County Collision"
+PIN_LABEL = "Tri County Collision Center"
 PIN_LABEL_SIZE = 17
 MIN_LABEL_RUN = 150          # units of road a name needs to be written along
 
-MAPS_HREF = ("https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision"
+MAPS_HREF = ("https://www.google.com/maps/search/?api=1&amp;query=Tri%20County%20Collision%20Center"
              "%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966")
 
 # THE FRAMES. "contact" repeats the constants above exactly, so choosing it
@@ -996,12 +996,12 @@ def alt_text(drawn: list) -> str:
         return (f"Map of the drive from {CORNER['label']}, at {a} and {b}, "
                 + ("by " + ", ".join(way[:-1]) + (" and " if len(way) > 1 else "") + way[-1] + " "
                    if way else "")
-                + "to Tri-County Collision in Southampton. Opens directions in Google Maps.")
+                + "to Tri County Collision Center in Southampton. Opens directions in Google Maps.")
     near = [as_signed(n) for n in drawn if n != PIN_STREET]
     tail = ""
     if near:
         tail = (", near " + ", ".join(near[:-1]) + (" and " if len(near) > 1 else "") + near[-1])
-    return (f"Map of the roads around Tri-County Collision, marked on {as_signed(PIN_STREET)} in "
+    return (f"Map of the roads around Tri County Collision Center, marked on {as_signed(PIN_STREET)} in "
             f"Southampton{tail}. Opens directions in Google Maps.")
 
 

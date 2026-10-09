@@ -1,6 +1,6 @@
-# Tri-County Collision
+# Tri County Collision Center
 
-This is a **client build**. The client is Tri-County Collision, a collision
+This is a **client build**. The client is Tri County Collision Center, a collision
 repair shop in Southampton, PA. The site is `https://tricountycollision.com/`.
 
 Corcoran Communications builds and monitors it. The shop owns it.
@@ -80,7 +80,7 @@ before it ships. Anything they have not confirmed does not go on a page.
 **Confirmed and now enforced** (2026-09-03):
 
 ```
-name     Tri-County Collision
+name     Tri County Collision Center              (ruled 2026-10-09, 3.95)
 address  995 Jaymor Rd, Southampton, PA 18966
 phone    (215) 322-5350   tel:+12153225350
 email    contact@tricountycollision.com          (added 2026-09-05)
@@ -92,6 +92,25 @@ the client-owner the fact-checker of record for a client site, so a vendor
 confirmation is a deliberate exception and it is recorded as one, here and
 in `scripts/audit.py`. **Owner sign-off on the NAP is still outstanding.**
 When it lands, note the date in both places.
+
+**The name, ruled 2026-10-09 (`proposed-changes.md` 3.95): "Tri County
+Collision Center", exactly that string, no hyphen, character for character.**
+The web's listings, the live site's own titles and the shop's Facebook pages
+already use it; the hyphenated logo wordmark is a stylized mark, not the name
+of record. It is the same vendor ruling as the address and phone, with owner
+sign-off outstanding. Until then the site said "Tri-County Collision", and
+that string, "Tri-County Collision Center", "Tri County Collision" and a bare
+"Tri-County" are now name VARIANTS `scripts/audit.py` fails, exactly as it
+fails "Jaymor Road". **Two exemptions, both by the ruling's own terms:** the
+logo's alt may name the wordmark as drawn ("Tri-County Collision"), because an
+image is not text; and customer testimonials keep their writers' "tri county".
+URLs keep the old site's slugs, which the check does not read.
+
+**The title law's tiebreak, ruled the same day:** every title is 60
+characters or fewer, machine-counted, and **when the brand does not fit, the
+brand is what drops, never the service or the city.** "Paintless Dent Repair
+in Southampton, PA" carries no name; the three long town titles carry none.
+The town titles are `title_for`'s cascade in `scripts/build-town.py`.
 
 The email is the address the live site publishes in its `AutoBodyShop`
 JSON-LD and in the contact block on every service page. The live site also

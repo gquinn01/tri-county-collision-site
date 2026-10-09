@@ -1,4 +1,4 @@
-# Tri-County Collision: Page Map (build spec)
+# Tri County Collision Center: Page Map (build spec)
 
 *Extracted 2026-09-03 from the Tri-County plan by the strategy chat, for this repo. This is the page map of record for the build; CLAUDE.md and docs/README.md point here. This repo is public, so the full plan, pricing, and client notes stay out of it; this file carries only what the build needs.*
 

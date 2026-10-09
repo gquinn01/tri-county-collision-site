@@ -15,10 +15,9 @@ recorded routing the strategy chat verified (3.78), and the page is gated by
 the audit's routing check. Derived here, never typed:
   - the lead's first sentence and its routed minutes;
   - the directions card's intro line, steps and chip;
-  - the title, by Greg's rule (ruling 4, 3.80): "Collision Repair for
-    {Town}, PA | Tri-County Collision", and "| Tri-County" where that runs
-    past 60 characters. The title check fails anything over 60; this
-    function is what keeps the three long towns from regressing;
+  - the title, by title_for: the cascade Greg rules on in 3.95 (it was
+    ruling 4, 3.80, until the name changed). The title check fails anything
+    over 60; this function is what keeps the long towns from regressing;
   - the meta description, the schema, and the page's llms.txt entry;
   - the four nearby towns, by straight line between recorded place points.
 Every rounding is half-up (3.78). A step under an eighth of a mile is in feet.
@@ -67,7 +66,7 @@ COLLISION = os.path.join(ROOT, "docs", "collision-repair", "index.html")
 LLMS = os.path.join(ROOT, "docs", "llms.txt")
 BASE = "https://tricountycollision.com/"
 HUB = BASE + "areas-served/"
-MAPS_HREF = ("https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision"
+MAPS_HREF = ("https://www.google.com/maps/search/?api=1&amp;query=Tri%20County%20Collision%20Center"
              "%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966")
 PHONE = '<a href="tel:+12153225350">(215) 322-5350</a>'
 RIGHT_TO_CHOOSE = '<a href="../your-right-to-choose-a-body-shop/">your right to choose a body shop</a>'
@@ -96,10 +95,10 @@ JAMISON_OPENING_NOTE = '         "AND THE SURROUNDING AREA" (3.71) names no town
 
 CONTENT = {
     "jamison-pa": {
-        "name": "Jamison", "county": "bucks", "modified": "2026-09-28",
+        "name": "Jamison", "county": "bucks", "modified": "2026-10-09",
         "corner_names": ("York Road", "Almshouse Road"),
         "opening": [
-            "Tri-County Collision is a family-owned body shop in Southampton, and we fix cars for drivers "
+            "Tri County Collision Center is a family-owned body shop in Southampton, and we fix cars for drivers "
             "from Jamison, Warminster, Richboro, Ivyland and the surrounding area. We are not in Jamison, "
             "and we won't pretend to be. We are about {mi} miles down the road.",
             "Jamison sits in Warwick Township, where York Road (PA 263) meets Almshouse Road. From that "
@@ -107,21 +106,21 @@ CONTENT = {
             "accident, call before you decide where it goes.",
         ],
         "faq": [
-            ("Is Tri-County Collision actually in Jamison?",
-             "Tri-County Collision is not in Jamison: the shop is at 995 Jaymor Rd, Southampton, PA 18966, "
+            ("Is Tri County Collision Center actually in Jamison?",
+             "Tri County Collision Center is not in Jamison: the shop is at 995 Jaymor Rd, Southampton, PA 18966, "
              "about {mi} miles and {min} minutes from Jamison without traffic. Pennsylvania law protects "
              "your right to choose your own collision shop for repairs. Your insurance company cannot "
              "require you to use their preferred facility or steer you elsewhere. Our post on {rtc} "
              "explains the law."),
-            ("How do I get to Tri-County Collision from Jamison?",
-             "The drive from Jamison to Tri-County Collision is about {mi1} miles and takes about {min} "
+            ("How do I get to Tri County Collision Center from Jamison?",
+             "The drive from Jamison to Tri County Collision Center is about {mi1} miles and takes about {min} "
              "minutes without traffic: south on York Road (PA 263), left on West Bristol Road, right on "
              "Second Street Pike (PA 232), and right on Jaymor Rd to the shop."),
-            ("Does Tri-County Collision work with my insurance company if I live in Jamison?",
-             "Tri-County Collision works with all major insurance companies, and a Jamison address makes no "
+            ("Does Tri County Collision Center work with my insurance company if I live in Jamison?",
+             "Tri County Collision Center works with all major insurance companies, and a Jamison address makes no "
              "difference to that."),
-            ("When is Tri-County Collision open for Jamison drivers?",
-             "Tri-County Collision is open Monday to Friday, 8 a.m. to 6 p.m., and Saturday by appointment "
+            ("When is Tri County Collision Center open for Jamison drivers?",
+             "Tri County Collision Center is open Monday to Friday, 8 a.m. to 6 p.m., and Saturday by appointment "
              "only."),
         ],
         "steps": ("head", "follow", "go", "last"),
@@ -134,7 +133,7 @@ CONTENT = {
     "bensalem-pa": {
         "name": "Bensalem", "county": "bucks", "modified": "2026-10-09",
         "opening": [
-            "Tri-County Collision repairs cars for Bensalem drivers, and for their neighbors in "
+            "Tri County Collision Center repairs cars for Bensalem drivers, and for their neighbors in "
             "Feasterville-Trevose, Langhorne, Huntingdon Valley and Northeast Philadelphia. The shop is in "
             "Southampton, not Bensalem Township. From Knights Road the drive is about {mi} miles, and "
             "almost all of it is Street Road.",
@@ -143,8 +142,8 @@ CONTENT = {
             "your car goes to a shop you didn't pick, pick up the phone and call us.",
         ],
         "faq": [
-            ("Is there a Tri-County Collision location in Bensalem?",
-             "Bensalem has no Tri-County Collision location. The shop is at 995 Jaymor Rd, Southampton, "
+            ("Is there a Tri County Collision Center location in Bensalem?",
+             "Bensalem has no Tri County Collision Center location. The shop is at 995 Jaymor Rd, Southampton, "
              "PA 18966, about {mi} miles and {min} minutes from Knights Road and Street Road on clear "
              "roads. Where your car gets fixed is your decision under Pennsylvania law, not your "
              "insurer's, and our write-up of {rtc_steer} sets out what that means."),
@@ -152,15 +151,15 @@ CONTENT = {
              "Street Road (PA 132) does almost all the work: stay on it about {d1} from Knights Road, go "
              "left at 2nd Street Pike (PA 232) and drive about {d2}, then make the right onto Jaymor Rd, "
              "where the shop is about {d3} in."),
-            ("Does Tri-County Collision handle the insurance claim for a Bensalem driver?",
-             "Tri-County Collision handles the paperwork and communication with your insurer, so you don't "
+            ("Does Tri County Collision Center handle the insurance claim for a Bensalem driver?",
+             "Tri County Collision Center handles the paperwork and communication with your insurer, so you don't "
              "have to, and it works with all major insurance companies."),
             ("Will Street Road traffic change the drive time?",
              "Street Road traffic can lengthen the drive from Bensalem. The figure of about {min} minutes is a routing on empty roads, measured from where "
              "Knights Road crosses Street Road, so traffic on Street Road adds to it. Allow for the time "
              "of day when you set out."),
             ("How much of the drive from Bensalem is on Street Road?",
-             "The drive from Bensalem is nearly all on Street Road. Of the roughly {mi1} miles from Knights Road to Tri-County Collision, "
+             "The drive from Bensalem is nearly all on Street Road. Of the roughly {mi1} miles from Knights Road to Tri County Collision Center, "
              "about {d1} are on Street Road (PA 132). The last stretch is about {d2} on 2nd Street Pike "
              "(PA 232), then about {d3} on Jaymor Rd to the shop."),
         ],
@@ -177,8 +176,8 @@ CONTENT = {
             "car, our number is worth dialing before any other.",
         ],
         "faq": [
-            ("How far is Tri-County Collision from Feasterville-Trevose?",
-             "Tri-County Collision is about {mi1} miles and {min} minutes from Buck Road and Street Road "
+            ("How far is Tri County Collision Center from Feasterville-Trevose?",
+             "Tri County Collision Center is about {mi1} miles and {min} minutes from Buck Road and Street Road "
              "without traffic, the shortest drive of any town on the shop's Areas We Serve page. It is in Southampton "
              "at 995 Jaymor Rd, Southampton, PA 18966, not in Feasterville-Trevose itself."),
             ("What is the route from Buck Road?",
@@ -191,8 +190,8 @@ CONTENT = {
              "Neither the turnpike nor an interstate. The drive from Buck Road runs on Street Road "
              "(PA 132), then 2nd Street Pike (PA 232), then Jaymor Rd, about {mi1} miles in all, with no "
              "toll road along the way."),
-            ("Is Tri-County Collision part of a chain?",
-             "No, Tri-County Collision is family owned and operated, not a chain or a franchise, and it "
+            ("Is Tri County Collision Center part of a chain?",
+             "No, Tri County Collision Center is family owned and operated, not a chain or a franchise, and it "
              "works from 995 Jaymor Rd, Southampton, PA 18966, about {min} minutes from Buck Road and "
              "Street Road without traffic."),
         ],
@@ -201,7 +200,7 @@ CONTENT = {
         "name": "Langhorne", "county": "bucks", "modified": "2026-10-09",
         "opening": [
             "Langhorne is one of the longer trips to our door, and we'd rather say so up front. "
-            "Tri-County Collision is in Southampton, about {mi} miles from the middle of the borough. "
+            "Tri County Collision Center is in Southampton, about {mi} miles from the middle of the borough. "
             "Drivers from Bensalem, Feasterville-Trevose, Richboro and Northeast Philadelphia bring their "
             "cars to us too.",
             "The borough's center is where Maple Avenue (PA 213) crosses Bellevue Avenue, in Langhorne, "
@@ -211,19 +210,19 @@ CONTENT = {
         "faq": [
             ("Isn't Southampton a long way from Langhorne?",
              "Southampton is about {mi} miles and {min} minutes from Maple Avenue and Bellevue Avenue "
-             "without traffic, and Tri-County Collision is there, at 995 Jaymor Rd, Southampton, PA 18966. "
+             "without traffic, and Tri County Collision Center is there, at 995 Jaymor Rd, Southampton, PA 18966. "
              "It is a longer drive than some, which is why this page shows the route and the shop's case "
              "for making it."),
             ("Does the drive from Langhorne use an interstate?",
              "The recorded route uses no interstate: Maple Avenue (PA 213), Bridgetown Pike, Bustleton "
              "Pike, Street Road (PA 132), 2nd Street Pike (PA 232) and Jaymor Rd, in that order."),
             ("Does an estimate cost anything?",
-             "No, at Tri-County Collision estimates are free and there is no obligation, whichever town "
+             "No, at Tri County Collision Center estimates are free and there is no obligation, whichever town "
              "you come from."),
             ("Will my car come back clean?",
-             "Yes, at Tri-County Collision vehicles are detailed inside and out after every repair."),
-            ("Is Tri-County Collision certified for my car's brand?",
-             "Tri-County Collision is factory-certified for 12 brands: INFINITI, Nissan, Hyundai, Kia, "
+             "Yes, at Tri County Collision Center vehicles are detailed inside and out after every repair."),
+            ("Is Tri County Collision Center certified for my car's brand?",
+             "Tri County Collision Center is factory-certified for 12 brands: INFINITI, Nissan, Hyundai, Kia, "
              "Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep. That list is the same whether you "
              "drive in from Langhorne or from next door."),
         ],
@@ -232,7 +231,7 @@ CONTENT = {
     "richboro-pa": {
         "name": "Richboro", "county": "bucks", "modified": "2026-10-09",
         "opening": [
-            "Richboro drivers have one of the simplest trips to Tri-County Collision: stay on one road "
+            "Richboro drivers have one of the simplest trips to Tri County Collision Center: stay on one road "
             "until the last turn. The shop is in Southampton, about {mi1} miles from the Richboro "
             "crossroads, not in Richboro. We see cars from Feasterville-Trevose, Warminster, "
             "Jamison and Langhorne as well.",
@@ -241,8 +240,8 @@ CONTENT = {
             "first call when the damage is done, and decide the rest after.",
         ],
         "faq": [
-            ("Does Tri-County Collision have a shop in Richboro?",
-             "Tri-County Collision has no shop in Richboro. It is at 995 Jaymor Rd, Southampton, PA 18966, "
+            ("Does Tri County Collision Center have a shop in Richboro?",
+             "Tri County Collision Center has no shop in Richboro. It is at 995 Jaymor Rd, Southampton, PA 18966, "
              "about {mi1} miles and {min} minutes from 2nd Street Pike and Almshouse Road without "
              "traffic."),
             ("Is it really one road from Richboro?",
@@ -253,8 +252,8 @@ CONTENT = {
              "You do not have to use your insurer's shop. In Pennsylvania the choice of collision shop belongs to you, and an insurer "
              "cannot make you use the one it prefers. Our post on {rtc} goes through the law."),
             ("Are the technicians certified?",
-             "Yes, Tri-County Collision's technicians are ASE and I-CAR Gold Class certified."),
-            ("Is Tri-County Collision in the same county as Richboro?",
+             "Yes, Tri County Collision Center's technicians are ASE and I-CAR Gold Class certified."),
+            ("Is Tri County Collision Center in the same county as Richboro?",
              "Yes, Richboro's crossroads is in Northampton Township and the shop is in Upper Southampton "
              "Township, and both townships are in Bucks County. The drive between them is about {mi1} "
              "miles."),
@@ -263,7 +262,7 @@ CONTENT = {
     "warminster-pa": {
         "name": "Warminster", "county": "bucks", "modified": "2026-10-09",
         "opening": [
-            "A Southampton shop on a Warminster page needs explaining, so here it is: Tri-County Collision "
+            "A Southampton shop on a Warminster page needs explaining, so here it is: Tri County Collision Center "
             "is not in Warminster, and the drive from Warminster's crossroads is about {mi1} miles. We "
             "also repair cars from Hatboro, Horsham, Jamison and Willow Grove.",
             "York Road (PA 263) meets Street Road in Warminster Township, Bucks County, and the drive "
@@ -272,7 +271,7 @@ CONTENT = {
         ],
         "faq": [
             ("Why is a Southampton shop on a Warminster page?",
-             "Because Tri-County Collision repairs cars for Warminster drivers, and the shop, at 995 "
+             "Because Tri County Collision Center repairs cars for Warminster drivers, and the shop, at 995 "
              "Jaymor Rd, Southampton, PA 18966, is about {mi1} miles and {min} minutes from York Road and "
              "Street Road without traffic. It is not in Warminster, and this page says so."),
             ("Which way do I drive from York Road and Street Road?",
@@ -284,7 +283,7 @@ CONTENT = {
              "Warminster Township. Warminster is a big township, so if you start near its edges, expect "
              "the trip to run longer or shorter than that."),
             ("Is the repair work guaranteed?",
-             "Tri-County Collision gives a lifetime warranty on all repair work, for Warminster drivers as "
+             "Tri County Collision Center gives a lifetime warranty on all repair work, for Warminster drivers as "
              "for everyone else."),
             ("Which part of the drive from Warminster is longest?",
              "East County Line Road, at about {d2}. York Road (PA 263) takes up about {d1} before it, "
@@ -294,7 +293,7 @@ CONTENT = {
     "hatboro-pa": {
         "name": "Hatboro", "county": "montgomery", "modified": "2026-10-09",
         "opening": [
-            "Tri-County Collision isn't in Hatboro. The borough belongs to Montgomery County, while the "
+            "Tri County Collision Center isn't in Hatboro. The borough belongs to Montgomery County, while the "
             "shop sits in Upper Southampton Township, Bucks County, roughly {mi1} miles from York Road. "
             "Drivers from Horsham, Willow Grove, Warminster and Huntingdon Valley come to us too.",
             "York Road meets Byberry Road at the heart of Hatboro borough, and from that corner the shop "
@@ -302,8 +301,8 @@ CONTENT = {
             "touches the car, phone us.",
         ],
         "faq": [
-            ("Is Tri-County Collision in Hatboro?",
-             "Tri-County Collision is not in Hatboro itself; it is at 995 Jaymor Rd, Southampton, PA 18966, in "
+            ("Is Tri County Collision Center in Hatboro?",
+             "Tri County Collision Center is not in Hatboro itself; it is at 995 Jaymor Rd, Southampton, PA 18966, in "
              "Bucks County, about {mi1} miles and {min} minutes from York Road and Byberry Road without "
              "traffic."),
             ("What is the drive from Hatboro like?",
@@ -313,18 +312,18 @@ CONTENT = {
             ("Does it matter that Hatboro is in Montgomery County?",
              "No, crossing from Montgomery County into Bucks County changes nothing about the repair: the "
              "same certified technicians, and the same lifetime warranty on all repair work."),
-            ("Can I pick Tri-County Collision if my insurer prefers another shop?",
+            ("Can I pick Tri County Collision Center if my insurer prefers another shop?",
              "Yes, under Pennsylvania law the decision about where your car is repaired is yours, "
              "whatever your insurer would prefer; the {rtc_title} post lays out the details."),
-            ("Will Tri-County Collision talk to my insurance company for me?",
-             "Yes, dealing with your insurer, paperwork and all, is part of the job at Tri-County "
-             "Collision, and the shop works with all major insurance companies."),
+            ("Will Tri County Collision Center talk to my insurance company for me?",
+             "Yes, dealing with your insurer, paperwork and all, is part of the job at Tri County "
+             "Collision Center, and the shop works with all major insurance companies."),
         ],
     },
     "horsham-pa": {
         "name": "Horsham", "county": "montgomery", "modified": "2026-10-09",
         "opening": [
-            "From Horsham, Tri-County Collision is a Bucks County shop across the county boundary in "
+            "From Horsham, Tri County Collision Center is a Bucks County shop across the county boundary in "
             "Southampton, about {mi1} miles from Easton Road. It is not in Horsham, and this page won't "
             "suggest otherwise. Hatboro, Willow Grove, Warminster and Huntingdon Valley are on our list "
             "of towns, too.",
@@ -333,17 +332,17 @@ CONTENT = {
             "you commit it anywhere.",
         ],
         "faq": [
-            ("Is there a Tri-County Collision shop in Horsham?",
-             "Tri-County Collision has no shop in Horsham; its shop is at 995 Jaymor Rd, Southampton, PA 18966, about {mi1} miles and "
+            ("Is there a Tri County Collision Center shop in Horsham?",
+             "Tri County Collision Center has no shop in Horsham; its shop is at 995 Jaymor Rd, Southampton, PA 18966, about {mi1} miles and "
              "{min} minutes from Easton Road and Horsham Road without traffic."),
             ("How do I drive from Horsham to the shop?",
              "Most of the trip is West County Line Road, about {d3} of it. You reach it by Horsham Road "
              "and Blair Mill Road, and you leave it for James Way and then Jaymor Rd, where the shop is."),
-            ("Can Tri-County Collision repair a work truck from Horsham?",
-             "Yes, alongside cars, Tri-County Collision takes on work vehicles and fleets; its "
+            ("Can Tri County Collision Center repair a work truck from Horsham?",
+             "Yes, alongside cars, Tri County Collision Center takes on work vehicles and fleets; its "
              "{commercial} page explains how."),
             ("What if something isn't right after the repair?",
-             "Tri-County Collision stands behind the work with a lifetime warranty on all repair work: if "
+             "Tri County Collision Center stands behind the work with a lifetime warranty on all repair work: if "
              "anything isn't right, the shop will make it right."),
             ("Is Horsham farther from the shop than Hatboro?",
              "Horsham is a little farther than Hatboro by road; from Horsham's crossroads the drive is "
@@ -353,7 +352,7 @@ CONTENT = {
     "huntingdon-valley-pa": {
         "name": "Huntingdon Valley", "county": "montgomery", "modified": "2026-10-09",
         "opening": [
-            "Huntingdon Valley is a short trip to Tri-County Collision, but it's still a trip: the shop is "
+            "Huntingdon Valley is a short trip to Tri County Collision Center, but it's still a trip: the shop is "
             "in Southampton, over the Bucks County line, not in Huntingdon Valley. From Wynkoop Avenue it "
             "is about {mi1} miles away. We repair cars for drivers from Northeast Philadelphia, Willow "
             "Grove, Feasterville-Trevose and Jenkintown too.",
@@ -362,27 +361,27 @@ CONTENT = {
             "accident, give us a call first and keep your options open.",
         ],
         "faq": [
-            ("Is Tri-County Collision located in Huntingdon Valley?",
-             "Tri-County Collision is not located in Huntingdon Valley; its address is 995 Jaymor Rd, Southampton, PA 18966, about "
+            ("Is Tri County Collision Center located in Huntingdon Valley?",
+             "Tri County Collision Center is not located in Huntingdon Valley; its address is 995 Jaymor Rd, Southampton, PA 18966, about "
              "{mi1} miles and {min} minutes from Huntingdon Pike and Wynkoop Avenue without traffic."),
             ("What road do I take from Huntingdon Valley?",
              "Huntingdon Pike (PA 232) carries you about {d1} toward Southampton, changing its name to "
              "2nd Street Pike on the way, and a left onto Jaymor Rd leaves about {d2} to the shop."),
-            ("Does Tri-County Collision fix dents without repainting?",
-             "Yes, Tri-County Collision's paintless dent repair fixes door dings and hail dents without repainting, and the "
+            ("Does Tri County Collision Center fix dents without repainting?",
+             "Yes, Tri County Collision Center's paintless dent repair fixes door dings and hail dents without repainting, and the "
              "{pdr} page explains when it works."),
             ("Is Huntingdon Valley the closest town to the shop?",
              "Huntingdon Valley is not quite the closest: by road, Feasterville-Trevose is closer. From Huntingdon Pike and Wynkoop Avenue "
              "the drive is still one of the shortest of any town on the shop's Areas We Serve page."),
             ("Do I pay for an estimate?",
-             "You don't: Tri-County Collision's estimates cost nothing and come with no obligation."),
+             "You don't: Tri County Collision Center's estimates cost nothing and come with no obligation."),
         ],
     },
     "jenkintown-pa": {
         "name": "Jenkintown", "county": "montgomery", "modified": "2026-10-09",
         "opening": [
             "Jenkintown is the longest drive of any Montgomery County town we serve, and we'd rather you "
-            "hear it from us. Tri-County Collision is in Southampton, Bucks County, not Jenkintown, about "
+            "hear it from us. Tri County Collision Center is in Southampton, Bucks County, not Jenkintown, about "
             "{mi1} miles from Old York Road. Willow Grove, Huntingdon Valley, Hatboro and Horsham drivers "
             "make the trip as well.",
             "Old York Road meets West Avenue in Jenkintown borough, Montgomery County. With no traffic, "
@@ -391,7 +390,7 @@ CONTENT = {
         ],
         "faq": [
             ("Why would a Jenkintown driver go to Southampton?",
-             "Tri-County Collision is not in Jenkintown; it is about {mi1} miles and {min} minutes away, "
+             "Tri County Collision Center is not in Jenkintown; it is about {mi1} miles and {min} minutes away, "
              "without traffic, at 995 Jaymor Rd, Southampton, PA 18966. The drive is longer than a trip "
              "to a closer shop, and the proof section on this page sets out what it buys."),
             ("Is there a straight road from Jenkintown?",
@@ -399,20 +398,20 @@ CONTENT = {
              "Newbold Road, Washington Lane and Susquehanna Road, then takes Valley Road for about {d5}, "
              "Welsh Road (PA 63) for about {d6} and Huntingdon Pike (PA 232) for about {d7}, and ends on "
              "Jaymor Rd at the shop."),
-            ("Does Tri-County Collision fix auto glass?",
-             "Yes, Tri-County Collision fixes windshields, side windows and rear windows. The {glass} page has the details."),
+            ("Does Tri County Collision Center fix auto glass?",
+             "Yes, Tri County Collision Center fixes windshields, side windows and rear windows. The {glass} page has the details."),
             ("Is the drive shorter from other parts of Jenkintown?",
              "The drive from other parts of Jenkintown can be longer or shorter. The time on this page, about {min} minutes without traffic, "
              "starts at Old York Road and West Avenue in the borough."),
             ("Will I have to deal with the insurance company myself?",
-             "No, Tri-County Collision takes on the paperwork and the conversations with your insurer, and "
+             "No, Tri County Collision Center takes on the paperwork and the conversations with your insurer, and "
              "it works with all major insurance companies."),
         ],
     },
     "willow-grove-pa": {
         "name": "Willow Grove", "county": "montgomery", "modified": "2026-10-09",
         "opening": [
-            "Willow Grove is in Montgomery County; Tri-County Collision is a short hop into the next "
+            "Willow Grove is in Montgomery County; Tri County Collision Center is a short hop into the next "
             "county, in Southampton, about {mi1} miles from the Easton Road junction. The shop isn't in "
             "Willow Grove, and it has customers in Hatboro, Horsham, Huntingdon Valley and Jenkintown "
             "too.",
@@ -421,22 +420,22 @@ CONTENT = {
             "choose to call us.",
         ],
         "faq": [
-            ("Does Tri-County Collision have a Willow Grove location?",
-             "No, Tri-County Collision's shop is at 995 Jaymor Rd, Southampton, PA 18966, about {mi1} miles and {min} minutes "
+            ("Does Tri County Collision Center have a Willow Grove location?",
+             "No, Tri County Collision Center's shop is at 995 Jaymor Rd, Southampton, PA 18966, about {mi1} miles and {min} minutes "
              "from Easton Road and York Road without traffic."),
             ("Which road does most of the work from Willow Grove?",
              "Davisville Road does most of the work from Willow Grove. You spend only about {d1} on York Road (PA 611) before turning onto it, "
              "and it then carries you about {d2}, most of the trip. East County Line Road, James Way and "
              "Jaymor Rd finish it off."),
-            ("Does Tri-County Collision repair major collision damage?",
+            ("Does Tri County Collision Center repair major collision damage?",
              "Yes: minor and major damage alike, backed by a lifetime warranty on all repair work. See "
              "the {collision} page for how a repair goes, from the first look to the finished car."),
             ("How long is the drive in traffic?",
              "In traffic the drive from Willow Grove runs longer than about {min} minutes. That figure is a routing on "
              "empty roads from Easton Road and York Road, so rush hour around the junction will stretch "
              "it."),
-            ("Who owns Tri-County Collision?",
-             "Tri-County Collision is family owned and operated, and the business runs from "
+            ("Who owns Tri County Collision Center?",
+             "Tri County Collision Center is family owned and operated, and the business runs from "
              "its shop on Jaymor Rd in Southampton, Bucks County."),
         ],
     },
@@ -444,7 +443,7 @@ CONTENT = {
         "name": "Northeast Philadelphia", "origin": "Somerton", "county": "philadelphia",
         "modified": "2026-10-09",
         "opening": [
-            "Tri-County Collision is in Southampton, Bucks County, not in Northeast Philadelphia, and the "
+            "Tri County Collision Center is in Southampton, Bucks County, not in Northeast Philadelphia, and the "
             "Somerton end of the Northeast is close: about {mi1} miles away. The far side of the "
             "Northeast runs longer. We also repair cars for drivers from Feasterville-Trevose, Huntingdon "
             "Valley, Bensalem and Willow Grove.",
@@ -453,8 +452,8 @@ CONTENT = {
             "then decide where the car goes.",
         ],
         "faq": [
-            ("Is Tri-County Collision in Northeast Philadelphia?",
-             "No, Tri-County Collision is in Southampton, Bucks County, at 995 Jaymor Rd, Southampton, PA 18966: about "
+            ("Is Tri County Collision Center in Northeast Philadelphia?",
+             "No, Tri County Collision Center is in Southampton, Bucks County, at 995 Jaymor Rd, Southampton, PA 18966: about "
              "{mi1} miles and {min} minutes from Bustleton Avenue and Byberry Road in Somerton, without "
              "traffic."),
             ("How do I get from Somerton to the shop?",
@@ -468,7 +467,7 @@ CONTENT = {
              "Yes, Pennsylvania law lets you choose your collision shop, wherever it is, and your insurer "
              "cannot require its own preferred one. Our {rtc_title} post explains it."),
             ("Will my car be cleaned before I pick it up?",
-             "Every repaired vehicle at Tri-County Collision is detailed inside and out before it goes back "
+             "Every repaired vehicle at Tri County Collision Center is detailed inside and out before it goes back "
              "to its owner."),
         ],
     },
@@ -497,11 +496,18 @@ def miles_whole(r):
 
 
 def title_for(name: str) -> str:
-    """Greg's ruling 4 (3.80), as code: the Jamison pattern, and the short
-    brand where the pattern runs past 60."""
-    t = f"Collision Repair for {name}, PA | Tri-County Collision"
+    """The town title, as a cascade: Greg's ruling of 2026-10-09 (3.95), the
+    rule of record. It replaces ruling 4 of 3.80, whose short brand
+    "| Tri-County" is now a name variant. The Jamison pattern first, which
+    no town fits with the full name; then the town and the service before
+    the name; then the Jamison pattern without the name. The title law's
+    tiebreak: when the brand does not fit, the brand drops, never the
+    service or the city."""
+    t = f"Collision Repair for {name}, PA | {audit.NAP_NAME}"
     if len(t) > TITLE_MAX:
-        t = f"Collision Repair for {name}, PA | Tri-County"
+        t = f"{name} Collision Repair | {audit.NAP_NAME}"
+    if len(t) > TITLE_MAX:
+        t = f"Collision Repair for {name}, PA"
     if len(t) > TITLE_MAX:
         raise SystemExit(f"FAILED: no title pattern fits 60 for {name}: {t!r} is {len(t)}")
     return t
@@ -509,16 +515,16 @@ def title_for(name: str) -> str:
 
 def meta_for(name: str, r, origin: str = None) -> str:
     away = f"minutes from {origin}" if origin else "minutes away"
-    m = (f"Tri-County Collision in Southampton repairs cars for {name}, PA drivers, about {mins(r)} "
+    m = (f"Tri County Collision Center in Southampton repairs cars for {name}, PA drivers, about {mins(r)} "
          f"{away}. Directions from {name}, free estimates, (215) 322-5350.")
     if len(m) > META_MAX:
-        m = (f"Tri-County Collision in Southampton repairs cars for {name}, PA drivers, about {mins(r)} "
+        m = (f"Tri County Collision Center in Southampton repairs cars for {name}, PA drivers, about {mins(r)} "
              f"{away}. Directions, free estimates, (215) 322-5350.")
     if len(m) > META_MAX:
         # 3.82: a long name with an origin (Northeast Philadelphia, from
         # Somerton) overflows even that; the next step drops "Directions,"
         # and keeps the estimates line and the phone.
-        m = (f"Tri-County Collision in Southampton repairs cars for {name}, PA drivers, about {mins(r)} "
+        m = (f"Tri County Collision Center in Southampton repairs cars for {name}, PA drivers, about {mins(r)} "
              f"{away}. Free estimates, (215) 322-5350.")
     if len(m) > META_MAX:
         raise SystemExit(f"FAILED: no meta pattern fits 160 for {name}")
@@ -698,7 +704,7 @@ def build(key: str) -> tuple:
     # An origin page names only the origin here: the H1 directly above names
     # the place, and ", in {name}" wrapped the lead to six lines at 360 and
     # pushed Call under the call bar (proposed-changes.md 3.82).
-    lead = (f"Tri-County Collision is a family-owned body shop in Southampton, about {mins(r)} minutes from "
+    lead = (f"Tri County Collision Center is a family-owned body shop in Southampton, about {mins(r)} minutes from "
             f"{origin}. Factory-certified for 12 brands, with a lifetime warranty on all repair work.")
     corner = c.get("corner_names", tuple(r["corner"][:2]))
     intro = ((f"From {origin}, at the crossroads of " if origin != name else "From the crossroads of ")

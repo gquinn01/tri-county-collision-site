@@ -64,7 +64,15 @@ LLMS_PATH = os.path.join(SITE_DIR, "llms.txt")
 # owner sign-off on the NAP is still outstanding. Get it, and when you do,
 # replace this paragraph with the date the owner confirmed. Until then a
 # reader of this file knows exactly whose word these values rest on.
-NAP_NAME = "Tri-County Collision"
+#
+# THE NAME, 3.95, Greg's ruling of 2026-10-09: "Tri County Collision
+# Center", exactly that string, no hyphen, character for character. The
+# web's listings, the live site's own titles and the shop's Facebook pages
+# already use it; the hyphenated logo wordmark is a stylized mark, not the
+# name of record. A vendor ruling like the address and phone above, with
+# owner sign-off outstanding. Until 3.95 this constant read
+# "Tri-County Collision", which is now a variant the name check fails.
+NAP_NAME = "Tri County Collision Center"
 NAP_STREET = "995 Jaymor Rd"
 NAP_LOCALITY = "Southampton"
 NAP_REGION = "PA"
@@ -150,9 +158,12 @@ CARWISE_ESTIMATE_URL = ("https://www.carwise.com/online-photo-estimate/"
                         "tri-county-collision-center-southampton-pa-18966/481195")
 CARWISE_APPOINTMENT_URL = ("https://www.carwise.com/auto-body-shops/book-appointment/"
                            "tri-county-collision-center-southampton-pa-18966/481195")
-# The footer's map link, the same maps search the contact page uses.
-MAPS_NAP_URL = ("https://www.google.com/maps/search/?api=1&query=Tri-County%20Collision"
-                "%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966")
+# The footer's map link, the same maps search the contact page uses. Since
+# 3.95 it is DERIVED from the NAP constants, so it searches the name of
+# record and cannot drift from it.
+MAPS_NAP_URL = ("https://www.google.com/maps/search/?api=1&query="
+                + urllib.parse.quote(f"{NAP_NAME}, {NAP_STREET}, {NAP_LOCALITY}, {NAP_REGION} {NAP_POSTAL}",
+                                     safe=""))
 CHROME_EXTERNAL_URLS = (DOCUSIGN_URL, MAPS_NAP_URL)
 
 # The contact patterns that are actually live. Built from whichever of the
@@ -174,6 +185,49 @@ NAP_CONTACT_RES = [(k, rx) for k, rx in
 NAP_STREET_CANON = NAP_STREET
 NAP_CITYLINE_CANON = f"{NAP_LOCALITY}, {NAP_REGION} {NAP_POSTAL}"
 NAP_STREET_MENTION_RE = re.compile(r"Jaymor", re.I)
+
+# --- The name, spelled one way, 3.95 -------------------------------------
+# Any mention of the shop, "Tri-County", "Tri County Collision",
+# "Tri-County Collision Center" and the rest, must be NAP_NAME character for
+# character, exactly as "Jaymor Road" must be "995 Jaymor Rd". Read in what a
+# reader or a machine is handed as text: visible copy, titles, meta and og
+# content, alt text and JSON-LD. Not read: comments (history may name the old
+# name), and URLs, whose slugs keep the old site's spelling on purpose.
+# The logo's own alt is exempt: an image is not text, and its alt may name
+# the wordmark as drawn, "Tri-County Collision" (3.95).
+NAME_MENTION_RE = re.compile(r"\bTri[\s-]*County(?:[\s-]+Collision)?(?:[\s-]+Center)?\b", re.I)
+NAME_LOGO_IMG_RE = re.compile(r'<img\b[^>]*\bsrc="[^"]*\blogo\.png"[^>]*>', re.I)
+NAME_QUOTE_RE = re.compile(r'(?is)<figure\b[^>]*\bclass="[^"]*\bquote\b[^"]*"[^>]*>.*?</figure>')
+NAME_TEXT_ATTR_RE = re.compile(r'\b(?:alt|content|title|aria-label)="([^"]*)"', re.I)
+NAME_URL_RE = re.compile(r"https?://[^\s\"'<>]+|\b(?:href|src|srcset|data-pending-href)=\"[^\"]*\"", re.I)
+
+
+def name_variants(text: str) -> list:
+    """Every mention of the shop's name that is not NAP_NAME exactly, from
+    raw HTML or plain text. Read: text, JSON-LD, and the attributes that
+    carry text (alt, content, title, aria-label). Not read: comments, URLs,
+    markup itself (a `tri-county-page` meta is code), the logo's alt, and
+    customer testimonials, which ship exactly as their writers wrote them
+    ("tri county", "Tri-county"), never tidied (4.8)."""
+    t = re.sub(r"(?s)<!--.*?-->", " ", text)
+    t = re.sub(r"(?is)<style\b.*?</style>", " ", t)
+    t = NAME_QUOTE_RE.sub(" ", t)
+    t = NAME_LOGO_IMG_RE.sub(" ", t)
+    t = NAME_URL_RE.sub(" ", t)
+    t = re.sub(r"<[^>]*>", lambda m: " " + " ".join(NAME_TEXT_ATTR_RE.findall(m.group(0))) + " ", t)
+    t = unescape(t)
+    return [m.group(0) for m in NAME_MENTION_RE.finditer(t)
+            if re.sub(r"\s+", " ", m.group(0)) != NAP_NAME]
+
+
+def name_mentions(text: str) -> int:
+    """How many mentions name_variants reads, right or wrong."""
+    t = re.sub(r"(?s)<!--.*?-->", " ", text)
+    t = NAME_QUOTE_RE.sub(" ", NAME_LOGO_IMG_RE.sub(" ", t))
+    t = NAME_URL_RE.sub(" ", t)
+    t = re.sub(r"<[^>]*>", lambda m: " " + " ".join(NAME_TEXT_ATTR_RE.findall(m.group(0))) + " ", t)
+    return len(NAME_MENTION_RE.findall(unescape(t)))
+
 
 # --- The hours, defined once ------------------------------------------
 # ADDED 2026-09-24, proposed-changes.md 3.54, as the mechanism 3.53
@@ -3002,7 +3056,7 @@ def service_enumeration_findings(html_text: str, page_rel: str, meta: str = "") 
             n = int(w) if w.isdigit() else COUNT_WORDS.index(w)
             if n != want:
                 problems.append(f"\u201c{m.group(0)}\u201d counts {n} services; the family is {COUNT_WORDS[want]}")
-        s = u.replace("Tri-County Collision", "")
+        s = u.replace(NAP_NAME, "")
         named = [path for path, rx in SERVICE_TEXT_RE.items() if rx.search(s)]
         if len(named) >= len(SERVICES) - 1:
             found += 1
@@ -3089,6 +3143,24 @@ def check_service_count_llms_local(passes: list, fails: list, root: str = None):
     if n and not bad:
         passes.append(f"`llms.txt` counts the services as the family does, {COUNT_WORDS[len(SERVICES)]}, "
                       f"in all {n} mentions.")
+
+
+def check_name_llms_local(passes: list, fails: list, root: str = None):
+    """llms.txt names the shop as NAP_NAME and nothing else (3.95). An
+    assistant reads this file for the name it will repeat."""
+    path = os.path.join(root or SITE_DIR, "llms.txt")
+    try:
+        with open(path, encoding="utf-8") as f:
+            text = f.read()
+    except OSError:
+        return
+    bad = name_variants(text)
+    if bad:
+        fails.append(f"**`llms.txt` writes the business name {', '.join(sorted(set(f'`{b}`' for b in bad)))}, "
+                     f"not `{NAP_NAME}`.** It is the file assistants read for the name they repeat (3.95).")
+    else:
+        n = name_mentions(text)
+        passes.append(f"`llms.txt` names the shop as `{NAP_NAME}` in all {n} mentions.")
 
 
 def check_hours_llms_local(passes: list, fails: list):
@@ -3894,6 +3966,19 @@ def audit(source: str, coverage: dict = None):
             "phone number for one business, and it is the number crawlers and AI assistants "
             f"will hand out. Use `{NAP_PHONE_DISPLAY}` and let the snippet do its job.")
 
+    # --- The name, spelled one way (3.95) ---
+    bad_names = name_variants(html)
+    if bad_names:
+        shown = ", ".join(f"`{v}`" for v in sorted(set(bad_names)))
+        fails.append(
+            f"**The business name is written {shown} here, not `{NAP_NAME}`** "
+            f"({len(bad_names)} time{'' if len(bad_names) == 1 else 's'}). NAP is character-identical "
+            f"everywhere or it is nothing: each variant reads as a slightly different business "
+            f"to entity matching. The logo's alt may name the wordmark as drawn; every other "
+            f"mention, visible, meta, alt or schema, is `{NAP_NAME}` (3.95).")
+    elif name_mentions(html):
+        passes.append(f"The business name is written `{NAP_NAME}` everywhere it appears.")
+
     # --- The street address, spelled one way ---
     if NAP_STREET_MENTION_RE.search(html):
         has_street = NAP_STREET_CANON_RE.search(html) is not None
@@ -4205,6 +4290,7 @@ def main():
         check_comment_convention_local(site_warns, site_notes)
         check_pending_links_local(site_warns, site_notes)
         check_hours_llms_local(site_passes, site_fails)
+        check_name_llms_local(site_passes, site_fails)
         check_service_count_llms_local(site_passes, site_fails)
     if expand_note:
         site_notes.append(expand_note)

@@ -1,4 +1,4 @@
-name: "Tri-County Collision: Site Auditor (weekly)"
+name: "Tri County Collision Center: Site Auditor (weekly)"
 
 on:
   schedule:
@@ -59,7 +59,7 @@ jobs:
             Read the file agents/site-auditor.md and follow those instructions
             exactly. Today's scan results are in audit-report.md.
 
-            This repo belongs to Tri-County Collision, a collision repair
+            This repo belongs to Tri County Collision Center, a collision repair
             shop in Southampton, PA. The scan you are reading was run
             against their LIVE WordPress site at
             https://tricountycollision.com/. The new site in docs/ has not

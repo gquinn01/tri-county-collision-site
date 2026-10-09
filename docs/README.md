@@ -86,7 +86,7 @@ item, not a blocker.
 ## The NAP, which the audit enforces
 
 ```
-Tri-County Collision
+Tri County Collision Center
 995 Jaymor Rd, Southampton, PA 18966
 (215) 322-5350
 contact@tricountycollision.com

@@ -117,7 +117,7 @@ def render(page: str) -> tuple:
     svc = "\n".join(f"              <li>{link(t, esc(l))}</li>" for t, l, _ln in SERVICES)
     twn = "\n".join(f"              <li>{link(t, esc(l))}</li>" for t, l in towns())
     home = link("", f'<img src="{p}logo.png" alt="Tri-County Collision" width="1332" height="530">',
-                "nav-home", ' aria-label="Tri-County Collision, home"')
+                "nav-home", ' aria-label="Tri County Collision Center, home"')
 
     head = f'''<!-- CHROME:HEAD, written by scripts/sync-chrome.py (proposed-changes.md 3.83).
        Edit the script, never this block: it is rewritten on every page, and
@@ -171,10 +171,10 @@ def render(page: str) -> tuple:
     <div class="wrap">
       <div class="foot-grid">
         <div class="foot-id">
-          {link("", f'<img src="{p}logo.png" alt="Tri-County Collision" width="1332" height="530">', "foot-home", ' aria-label="Tri-County Collision, home"')}
+          {link("", f'<img src="{p}logo.png" alt="Tri-County Collision" width="1332" height="530">', "foot-home", ' aria-label="Tri County Collision Center, home"')}
           <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
           <p class="foot-nap">
-            Tri-County Collision<br>
+            Tri County Collision Center<br>
             <a href="{maps}" target="_blank" rel="noopener">995 Jaymor Rd<br>
             Southampton, PA 18966</a><br>
             <a href="{PHONE_TEL}">{PHONE_TEXT}</a><br>
@@ -221,7 +221,7 @@ def render(page: str) -> tuple:
         <!-- The year is written into the markup so it is right with
              JavaScript off, and assets/site.js updates it so it is right
              next January. A hard-coded year is a stale-clock claim. -->
-        <p>&copy; <span data-year>2026</span> Tri-County Collision &middot; <a href="{maps}" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> &middot; <a href="{PHONE_TEL}">{PHONE_TEXT}</a> &middot; <a href="mailto:{EMAIL}">{EMAIL}</a></p>
+        <p>&copy; <span data-year>2026</span> Tri County Collision Center &middot; <a href="{maps}" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> &middot; <a href="{PHONE_TEL}">{PHONE_TEXT}</a> &middot; <a href="mailto:{EMAIL}">{EMAIL}</a></p>
       </div>
     </div>
   </footer>'''

@@ -15885,6 +15885,145 @@ Applied in this commit:
 **Suite at commit two:** both test files pass, every `--check` current,
 `audit.py --strict` 975 passing, the 37 sameAs warnings, **0 critical**.
 
+### 3.95 The name: "Tri County Collision Center", everywhere. BUILT 2026-10-09
+
+**Greg's ruling of 2026-10-09: the canonical business name is "Tri County
+Collision Center"**, exactly that string, no hyphen, character for character.
+The web's listings, the live site's own titles and the shop's Facebook pages
+already use it. **The hyphenated logo wordmark is a stylized mark, not the
+name of record.** A vendor ruling, like the address and phone, with owner
+sign-off outstanding. It answers section 5's questions 1 and 24 on the vendor's
+word; the owner's confirmation folds into his NAP sign-off.
+
+**Why it changed, for the record.** Since 1.1 this build wrote "Tri-County
+Collision", following the wordmark and the service pages' precedent
+(3.47-3.49), and normalised every "Tri County Collision Center" it migrated to
+that. The Google Business Profile ("Tri County Collision Center", question
+24), CarWise ("Tri-County Collision Center", 3.53) and the live site's titles
+all said otherwise. One business needs one name everywhere it is listed, and
+the listings had the name; the site moves to them, not the reverse.
+
+#### The pair, ONE, under this ruling
+
+| Before | After |
+|---|---|
+| Tri-County Collision (and "Tri-County Collision Center", "Tri County Collision", a bare "Tri-County") | Tri County Collision Center |
+
+**Everywhere:** visible copy, FAQ text and its FAQPage twin, every schema
+`name`, og tags, `llms.txt`, alt text, meta descriptions, titles, the nav's
+and footer's home-link labels, the footer's name line, every town map's pin
+label, and the Google Maps search link (117 links, which now search the name
+the Profile carries). 751 replacements across 53 files in the first pass,
+then three post headings ("How Tri County Collision Center handles
+deer-season repairs" and the like) and the wrapped strings in the generators.
+**Not changed, by the ruling's terms:** the logo's alt, "Tri-County
+Collision", which names the wordmark as drawn (74 images); the home links
+around it carry the canonical name as their `aria-label`. Customer
+testimonials, "tri county" and "Tri-county", exactly as their writers wrote
+them (4.8). URLs and slugs, the CarWise links included. And this file's
+history.
+
+**The town maps' pin labels, measured, not redrawn.** The label is 38.1
+units wider (148.5 against 110.4). In a real render of all twelve maps it stays
+inside every frame, overlaps no other label, and crosses 2 to 9 road strokes
+where the old label crossed 2 to 10. Redrawing would mean re-fetching
+OpenStreetMap and every routing, which is cutover week's job; `PIN_LABEL` in
+`scripts/prepare-map-image.py` now carries the new name, so that redraw uses
+it. The contact map's reference fixture takes the same text.
+
+#### The mechanism
+
+- **`NAP_NAME` is the new string**, and since 3.95 something reads it: the
+  name check, a CRITICAL. Any "Tri-County", "Tri County Collision", "Tri-County
+  Collision Center" and the rest in visible text, titles, meta and og content,
+  alt text, aria-labels or JSON-LD that is not `NAP_NAME` character for
+  character fails, as "Jaymor Road" does. It does not read comments, URLs,
+  markup (`tri-county-page` is code), the logo's alt, or testimonials.
+  `llms.txt` is checked the same way.
+- **`MAPS_NAP_URL` is derived from the NAP constants**, so the Maps search
+  cannot drift from the name again.
+- **The generators follow it.** `migrate-blog.py`'s name rule now maps every
+  variant to `audit.NAP_NAME`. `build-town.py`, `migrate-hub.py`,
+  `sync-chrome.py` and `prepare-map-image.py` carry the new name.
+- **Tests, section 43, both directions and mutation-proven.** Eight variant
+  shapes fail and six exempt shapes pass. With the check switched off the old
+  name passes. Under the pre-3.95 constant, every page that names the shop
+  fails, which proves the swap is whole. Every shipped page passes. Fixtures
+  elsewhere took the new name, and the town-title test now holds the new
+  cascade.
+
+#### Titles and metas, machine-recounted: RULED by Greg 2026-10-09
+
+The name is 7 characters longer. **84 title, meta and og fields carried it;
+36 cleared their budget with the swap alone and ship.** The rest broke budget
+and were re-derived, keeping each page's pattern. **Greg approved every
+row below as proposed except two, which he re-ruled (the table carries his
+words):** `/paintless-dent-repair/` and `/areas-served/`. Each
+changes in every copy on its page: `<title>`, og:title and the WebPage `name`,
+or description, og:description and the schema description.
+
+| Page | Field | Before, with the swap (chars) | Proposed (chars) |
+|---|---|---|---|
+| `jamison-pa` | title | Collision Repair for Jamison, PA \| Tri County Collision Center (62) | Jamison Collision Repair \| Tri County Collision Center (54) |
+| `bensalem-pa` | title | Collision Repair for Bensalem, PA \| Tri County Collision Center (63) | Bensalem Collision Repair \| Tri County Collision Center (55) |
+| `bensalem-pa` | meta | Tri County Collision Center in Southampton repairs cars for Bensalem, PA drivers, about 15 minutes away. Directions from Bensalem, free estimates, (215) 322-5350. (162) | Tri County Collision Center in Southampton repairs cars for Bensalem, PA drivers, about 15 minutes away. Directions, free estimates, (215) 322-5350. (148) |
+| `feasterville-trevose-pa` | title | Collision Repair for Feasterville-Trevose, PA \| Tri-County (58) | Collision Repair for Feasterville-Trevose, PA (45) |
+| `langhorne-pa` | title | Collision Repair for Langhorne, PA \| Tri County Collision Center (64) | Langhorne Collision Repair \| Tri County Collision Center (56) |
+| `langhorne-pa` | meta | Tri County Collision Center in Southampton repairs cars for Langhorne, PA drivers, about 16 minutes away. Directions from Langhorne, free estimates, (215) 322-5350. (164) | Tri County Collision Center in Southampton repairs cars for Langhorne, PA drivers, about 16 minutes away. Directions, free estimates, (215) 322-5350. (149) |
+| `richboro-pa` | title | Collision Repair for Richboro, PA \| Tri County Collision Center (63) | Richboro Collision Repair \| Tri County Collision Center (55) |
+| `richboro-pa` | meta | Tri County Collision Center in Southampton repairs cars for Richboro, PA drivers, about 8 minutes away. Directions from Richboro, free estimates, (215) 322-5350. (161) | Tri County Collision Center in Southampton repairs cars for Richboro, PA drivers, about 8 minutes away. Directions, free estimates, (215) 322-5350. (147) |
+| `warminster-pa` | title | Collision Repair for Warminster, PA \| Tri County Collision Center (65) | Warminster Collision Repair \| Tri County Collision Center (57) |
+| `warminster-pa` | meta | Tri County Collision Center in Southampton repairs cars for Warminster, PA drivers, about 9 minutes away. Directions from Warminster, free estimates, (215) 322-5350. (165) | Tri County Collision Center in Southampton repairs cars for Warminster, PA drivers, about 9 minutes away. Directions, free estimates, (215) 322-5350. (149) |
+| `hatboro-pa` | title | Collision Repair for Hatboro, PA \| Tri County Collision Center (62) | Hatboro Collision Repair \| Tri County Collision Center (54) |
+| `horsham-pa` | title | Collision Repair for Horsham, PA \| Tri County Collision Center (62) | Horsham Collision Repair \| Tri County Collision Center (54) |
+| `huntingdon-valley-pa` | title | Collision Repair for Huntingdon Valley, PA \| Tri-County (55) | Collision Repair for Huntingdon Valley, PA (42) |
+| `jenkintown-pa` | title | Collision Repair for Jenkintown, PA \| Tri County Collision Center (65) | Jenkintown Collision Repair \| Tri County Collision Center (57) |
+| `jenkintown-pa` | meta | Tri County Collision Center in Southampton repairs cars for Jenkintown, PA drivers, about 17 minutes away. Directions from Jenkintown, free estimates, (215) 322-5350. (166) | Tri County Collision Center in Southampton repairs cars for Jenkintown, PA drivers, about 17 minutes away. Directions, free estimates, (215) 322-5350. (150) |
+| `willow-grove-pa` | title | Collision Repair for Willow Grove, PA \| Tri County Collision Center (67) | Willow Grove Collision Repair \| Tri County Collision Center (59) |
+| `northeast-philadelphia` | title | Collision Repair for Northeast Philadelphia, PA \| Tri-County (60) | Collision Repair for Northeast Philadelphia, PA (47) |
+| `index.html` | title | Auto Body Shop in Southampton, PA \| Tri County Collision Center (63) | Southampton Auto Body Shop \| Tri County Collision Center (56) |
+| `collision-repair` | title | Collision Repair in Southampton, PA \| Tri County Collision Center (65) | Southampton Collision Repair \| Tri County Collision Center (58) |
+| `auto-glass-repair-replacement` | title | Auto Glass Repair in Southampton, PA \| Tri County Collision Center (66) | Southampton Auto Glass Repair \| Tri County Collision Center (59) |
+| `paintless-dent-repair` | title | Paintless Dent Repair in Southampton \| Tri County Collision Center (66) | Paintless Dent Repair in Southampton, PA (40), Greg's words; proposed was "Paintless Dent Repair \| Tri County Collision Center" |
+| `adas-calibration` | title | ADAS Calibration in Southampton, PA \| Tri County Collision Center (65) | Southampton ADAS Calibration \| Tri County Collision Center (58) |
+| `areas-served` | title | Areas We Serve: Bucks & Montgomery \| Tri County Collision Center (64) | Serving Bucks & Montgomery \| Tri County Collision Center (56), Greg's words: the county keywords are the page's job |
+| `areas-served` | meta | Tri County Collision Center serves Bensalem, Warminster, Willow Grove, Northeast Philly and more from Southampton, PA. ASE/I-CAR Gold certified, lifetime warranty. (163) | Tri County Collision Center serves Bensalem, Warminster, Willow Grove, Northeast Philly and more from Southampton. ASE/I-CAR Gold certified, lifetime warranty. (159) |
+| `misconceptions-about-collision-repair` | meta | Confused after a collision? We debunk 5 common repair myths to help you save money and make a safer choice. Get the expert facts from Tri County Collision Center. (162) | Confused after a collision? We debunk 5 common repair myths to help you save money and make a safer choice. Get the facts from Tri County Collision Center. (155) |
+| `the-art-of-paintless-dent-repair` | meta | The art of paintless dent repair at Tri County Collision Center: a cost-effective, efficient fix for minor collisions that preserves your vehicle's original finish. (164) | The art of paintless dent repair at Tri County Collision Center: a cost-effective fix for minor collisions that preserves your vehicle's original finish. (153) |
+| `your-right-to-choose-a-body-shop` | meta | In Pennsylvania, the repair shop is your choice, not the insurer's. How anti-steering rules work and how to document your choice with Tri County Collision Center. (162) | In Pennsylvania, the repair shop is your choice, not the insurer's. How anti-steering rules work and how to document it with Tri County Collision Center. (153) |
+
+- **The town titles are a cascade in `build-town.py`'s `title_for`.** It
+  replaces ruling 4 of 3.80, whose short-brand fallback "| Tri-County" is now
+  a name variant. The steps, in order:
+  - "Collision Repair for {Town}, PA | Tri County Collision Center", which no
+    town fits;
+  - "{Town} Collision Repair | Tri County Collision Center", nine towns;
+  - "Collision Repair for {Town}, PA", with no name, the three long towns.
+- **THE TITLE LAW'S TIEBREAK, Greg's ruling 2026-10-09: when the brand does
+  not fit, the BRAND is what drops, never the service or the city.** It is
+  the town cascade's third step generalised to every page, and it is why
+  `/paintless-dent-repair/` reads "Paintless Dent Repair in Southampton, PA"
+  rather than losing "Southampton". The name stays everywhere else on the
+  page, and in its schema.
+- **The town metas follow the cascade 3.82 already ruled:** "Directions from
+  {Town}," steps down to "Directions,". Hatboro, Horsham, Jamison,
+  Feasterville and Huntingdon Valley still fit their current form.
+
+#### Dates
+
+**Every page changed visibly, the name being in every footer, so every
+page's dateModified is 2026-10-09** (53 schema values), every post's
+`article:modified_time` and "Updated" line with it, and the sitemap's 37
+`lastmod`s. This is the 3.94 policy applied, not a freshening. `CORRECTED` in
+`migrate-blog.py` lists all sixteen posts, and the town and hub generators'
+dates moved with their pages.
+
+#### Records
+
+CLAUDE.md's NAP block and its exception note, pagemap.md's title,
+`docs/README.md`, `llms.txt`, the two agents' job descriptions and the two
+workflows' names all take the new string.
+
 ## 4. The claims list
 
 Every claim the migrated page carries. All of them come from the live site, so
