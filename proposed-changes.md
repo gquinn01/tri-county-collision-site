@@ -7567,6 +7567,13 @@ from the shop that performs the work."
    nature. Truncating it would need CSS too; noted, not proposed.
 
 
+**AMENDED 2026-10-09, Greg's ruling (3.94): the dates are a policy now.**
+datePublished never moves. dateModified moves on any visible content change.
+Migration preserved the live posts' dates because migration changed no words;
+a correction changes words, so it moves dateModified. `CORRECTED` in
+`scripts/migrate-blog.py` holds each corrected post's day, and the visible
+"Updated" line, `article:modified_time` and both schema nodes follow it.
+
 ### 3.58 The other fifteen posts, in batches of five. BUILT 2026-09-25
 
 The post shape and every rule are 3.57's. `scripts/migrate-blog.py` built each
@@ -15742,6 +15749,141 @@ the new procedure (switch, sync-chrome, open robots, llms paragraph)
 **Suite at commit:** `test-sitemap-expansion` and `test-audit-checks` pass,
 every `--check` current, `audit.py --strict` 954 passing (878 before), the 37
 standing sameAs warnings, **0 critical**.
+
+#### Job 4, the drafted copy: APPROVED by Greg 2026-10-09 and shipped as the run's second commit
+
+**Q1, the FAQ openers: all 31 pairs approved verbatim**, each applied to the
+visible answer and its FAQPage twin together (every pair matched exactly
+twice per page, or nothing was written), and to the town copy in
+`scripts/build-town.py`, so the generator says what the pages say. Only the
+opener changed; the rest of each answer is as it was. No drive figure, road
+or claim moved, and the routing checks hold.
+
+| # | Page | Before | After |
+|---|---|---|---|
+| 1 | bensalem-pa | It can. The figure of about 15 minutes | Street Road traffic can lengthen the drive from Bensalem. The figure of about 15 minutes |
+| 2 | bensalem-pa | Nearly all of it. Of the roughly | The drive from Bensalem is nearly all on Street Road. Of the roughly |
+| 3 | feasterville-trevose-pa | No. Tri-County Collision is family owned | No, Tri-County Collision is family owned |
+| 4 | hatboro-pa | Not in Hatboro itself. Tri-County Collision is at | Tri-County Collision is not in Hatboro itself; it is at |
+| 5 | hatboro-pa | No. Crossing from | No, crossing from |
+| 6 | hatboro-pa | Yes. Under Pennsylvania law | Yes, under Pennsylvania law |
+| 7 | hatboro-pa | Yes. Dealing with your insurer | Yes, dealing with your insurer |
+| 8 | horsham-pa | Horsham has none. The shop is at | Tri-County Collision has no shop in Horsham; its shop is at |
+| 9 | horsham-pa | It can. Alongside cars, | Yes, alongside cars, |
+| 10 | horsham-pa | A little. Hatboro is the closer of the two by road; from Horsham's crossroads | Horsham is a little farther than Hatboro by road; from Horsham's crossroads |
+| 11 | huntingdon-valley-pa | It is not. Tri-County Collision's address is | Tri-County Collision is not located in Huntingdon Valley; its address is |
+| 12 | huntingdon-valley-pa | Yes. Paintless dent repair fixes | Yes, Tri-County Collision's paintless dent repair fixes |
+| 13 | huntingdon-valley-pa | Not quite. By road, Feasterville-Trevose is closer. | Huntingdon Valley is not quite the closest: by road, Feasterville-Trevose is closer. |
+| 14 | jenkintown-pa | No. Tri-County Collision takes on | No, Tri-County Collision takes on |
+| 15 | langhorne-pa | No. At Tri-County Collision estimates are free | No, at Tri-County Collision estimates are free |
+| 16 | langhorne-pa | It will. At Tri-County Collision, vehicles are | Yes, at Tri-County Collision vehicles are |
+| 17 | northeast-philadelphia | No. The shop is in Southampton | No, Tri-County Collision is in Southampton |
+| 18 | northeast-philadelphia | Yes. Pennsylvania law lets you | Yes, Pennsylvania law lets you |
+| 19 | richboro-pa | Nearly. From Almshouse Road | The drive from Richboro is nearly all on 2nd Street Pike. From Almshouse Road |
+| 20 | richboro-pa | You do not. In Pennsylvania | You do not have to use your insurer's shop. In Pennsylvania |
+| 21 | richboro-pa | They are. Tri-County Collision's technicians | Yes, Tri-County Collision's technicians |
+| 22 | richboro-pa | Yes. Richboro's crossroads | Yes, Richboro's crossroads |
+| 23 | willow-grove-pa | No. Its shop is at | No, Tri-County Collision's shop is at |
+| 24 | willow-grove-pa | Davisville Road. You spend | Davisville Road does most of the work from Willow Grove. You spend |
+| 25 | willow-grove-pa | A family. Tri-County Collision is family owned | Tri-County Collision is family owned |
+| 26 | jenkintown-pa | It can be longer or shorter. The time on this page | The drive from other parts of Jenkintown can be longer or shorter. The time on this page |
+| 27 | willow-grove-pa | Longer than the figure on this page. That figure, about 11 minutes, is a routing | In traffic the drive from Willow Grove runs longer than about 11 minutes. That figure is a routing |
+| 28 | jenkintown-pa | It does: windshields, side windows and rear windows. | Yes, Tri-County Collision fixes windshields, side windows and rear windows. |
+| 29 | northeast-philadelphia | This page times the drive from Somerton. | The drive time for Northeast Philadelphia is measured from Somerton. |
+| 30 | warminster-pa | This page times the trip from the junction of | The Warminster drive time starts at the junction of |
+| 31 | commercial-collision-repair | Pre-accident condition is the standard. | Yes, pre-accident condition is Tri-County Collision's standard. |
+
+1 to 27 are the sweep's 27; 28 to 31 are what the new check caught beyond
+them.
+
+**The standalone-opener check, `faq_opener_findings` in `scripts/audit.py`,
+a CRITICAL**, landing in the same commit. An answer's first sentence fails
+when it runs under six words, opens on a pronoun whose antecedent is in the
+question (It, They, This, That, These, Those), or opens on a comparative
+fragment (Longer, Shorter, Nearly, Mostly, Partly, Not quite, A little,
+Somewhat). A bare particle comma- or colon-merged into a full sentence
+passes, as the standards prescribe. Over all 108 FAQ answers on the site it
+caught exactly these 31 before the fix and none after. **Mutation-proven**
+(test section 42): the 31 openers as shipped all fail, the 31 approved
+rewrites all pass, and with the rule switched off every shipped opener
+passes. Two older fixtures carried four-word answers ("Yes, estimates are
+free.") and now read as full sentences, because the opener rule is not what
+those sections test.
+
+**Q2, the OEM post: approved as drafted.**
+
+| Before | After |
+|---|---|
+| Aftermarket parts may void your warranty or cause complications if they don't meet the manufacturer's specifications. | Your repair estimate names every part, OEM or aftermarket, so you can see what is going on your vehicle and ask about it before the work starts. |
+
+Its two neighbours, "Using OEM parts in collision repair helps maintain your
+vehicle's warranty." and "...keeps your warranty intact.", stay untouched and
+go in the legal bundle below.
+
+**Q3, the factory-warranty sentence on `/collision-repair/`: option A.**
+Both sentences deleted; `#factory-certified`'s prose now opens on "Our shop
+is factory-certified for 12 vehicle brands".
+
+| Before | After |
+|---|---|
+| When you buy a new vehicle, it comes with a manufacturer's warranty. That warranty covers repairs performed at certified facilities using proper techniques and parts. Our shop is factory-certified for 12 vehicle brands: ... | Our shop is factory-certified for 12 vehicle brands: ... |
+
+**Q4, the legal bundle: AWAITING LEGAL REVIEW.** No site change. Greg takes
+these to the lawyer as one bundle. FAQ sentences also stand in the FAQPage
+schema, word for word.
+
+- **`/` (FAQ):**
+  - "Yes, Pennsylvania law protects your right to choose your own collision shop for repairs."
+  - "Your insurance company cannot require you to use their preferred facility or steer you elsewhere."
+- **`/collision-repair/`:**
+  - "Check for injuries and call 911 if anyone is hurt."
+  - "File a police report, especially if there's significant damage or injuries."
+  - "Provide them with all the information you gathered and the police report number."
+  - "Pennsylvania law protects your right to select the repair facility you want."
+  - "Your insurer cannot require you to use their preferred shop or steer you elsewhere."
+  - "Remember, Pennsylvania law gives you the right to choose your own collision repair shop."
+  - "Your insurer cannot steer you to their preferred vendor or demand you use a specific facility."
+  - The FAQ pair, the same two sentences as `/`.
+- **`/commercial-collision-repair/`:** "under Pennsylvania law, the choice of repair shop belongs to you, not your insurer."
+- **`/areas-served/`:** "under Pennsylvania law, the shop is your call, not your insurance company's."
+- **Bensalem:** "Where your car gets fixed is your decision under Pennsylvania law, not your insurer's, and our write-up of Pennsylvania's anti-steering rules sets out what that means."
+- **Hatboro (FAQ):** "Yes, under Pennsylvania law the decision about where your car is repaired is yours, whatever your insurer would prefer."
+- **Jamison (FAQ):**
+  - "Pennsylvania law protects your right to choose your own collision shop for repairs."
+  - "Your insurance company cannot require you to use their preferred facility or steer you elsewhere."
+- **NE Philadelphia (FAQ):** "Yes, Pennsylvania law lets you choose your collision shop, wherever it is, and your insurer cannot require its own preferred one."
+- **Richboro (FAQ):** "In Pennsylvania the choice of collision shop belongs to you, and an insurer cannot make you use the one it prefers."
+- **The OEM post, beside Q2's sentence:**
+  - "Using OEM parts in collision repair helps maintain your vehicle's warranty."
+  - "Tri-County Collision's commitment to OEM parts helps protect your investment and keeps your warranty intact."
+- **The blog's own legal lines** stay where 4.11 lists them, for the same review.
+
+**Q5, the dates: RULED, a policy.** datePublished never moves; dateModified
+moves on any visible content change. Recorded as the amendment to 3.57.
+Applied in this commit:
+
+- **The six posts this run changed in visible text.** Deer, critical-questions,
+  near-me, unveiling, lights and OEM parts carry dateModified 2026-10-09. It is
+  in both schema nodes, `article:modified_time`, and an "Updated October 9,
+  2026" date line, mirrored on their `/blog/` cards. Their datePublished is
+  untouched.
+- **`/blog/` itself**, whose near-me excerpt changed.
+- **`/collision-repair/`, `/commercial-collision-repair/` and the eleven town
+  pages** whose answers changed. Jamison's text did not change and keeps
+  2026-09-28.
+- **The ten other posts are not re-dated.** Their head comments and head
+  links changed in commit one, but nothing a reader sees did.
+- **The day is written as a date, 2026-10-09, not an instant.** The day is the
+  fact we have; a time of day would be invented.
+- **Generators:** `CORRECTED` in `migrate-blog.py` holds each corrected
+  post's day, and `build-town.py`'s per-town `modified` moved with its pages.
+- **Sitemap:** `build-sitemap.py` rebuilt, 20 `lastmod`s now 2026-10-09.
+- **Not retro-applied:** pages whose visible changes predate this ruling
+  keep the dateModified they had; `/collision-repair/` read 2026-09-17
+  through later changes until today.
+
+**Suite at commit two:** both test files pass, every `--check` current,
+`audit.py --strict` 975 passing, the 37 sameAs warnings, **0 critical**.
 
 ## 4. The claims list
 

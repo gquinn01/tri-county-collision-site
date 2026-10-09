@@ -884,7 +884,9 @@ def main():
     print("23. The blog kinds: no FAQ required, and an FAQ is still measured")
     long_body = "<p>" + " ".join(["word"] * 320) + "</p>"
     faq_vis = ('<details><summary>Is it free?<span class="faq-ico"></span></summary>'
-               '<p>Yes, estimates are free.</p></details>')
+               '<p>Yes, estimates at Tri-County Collision are free.</p></details>')
+    # 3.94: the answer is a full sentence, because a four-word opener now
+    # fails the standalone check, which is not what this section tests.
 
     def faq_schema(ans):
         return ('<script type="application/ld+json">{"@type":"FAQPage","mainEntity":[{'
@@ -906,7 +908,7 @@ def main():
         p, w, f, n, kind = run_kind(meta, long_body + faq_vis)
         check(f"     a {k} with a visible FAQ and NO schema is warned, not excused",
               "no FAQPage schema" in w and "not measured here" not in n, (w, n))
-        p, w, f, n, kind = run_kind(meta, long_body + faq_vis + faq_schema("Yes, estimates are free."))
+        p, w, f, n, kind = run_kind(meta, long_body + faq_vis + faq_schema("Yes, estimates at Tri-County Collision are free."))
         check(f"     a {k} with a matching FAQ passes the mirror",
               "byte-identical" in p and "FAQ" not in f, (p, f))
     p, w, f, n, kind = run_kind('<meta name="tri-county-page" content="posts">', long_body)
@@ -1978,6 +1980,103 @@ def main():
     ico = open(os.path.join(root, "docs", "favicon.ico"), "rb").read()
     check("     favicon.ico is an ICO of three PNG entries", ico[:4] == b"\x00\x00\x01\x00"
           and ico[4] == 3 and ico.count(b"\x89PNG") == 3)
+
+    print("42. FAQ answers open on a sentence that stands alone (3.94)")
+    # THE 31 PAIRS GREG APPROVED, as fixtures: each BEFORE is the opener as
+    # it shipped and must fail; each AFTER is the approved rewrite and must
+    # pass. The sentence after the opener is a stand-in.
+    OPENERS = [
+        ('It can. The figure of about 15 minutes',
+         'Street Road traffic can lengthen the drive from Bensalem. The figure of about 15 minutes'),
+        ('Nearly all of it. Of the roughly',
+         'The drive from Bensalem is nearly all on Street Road. Of the roughly'),
+        ('No. Tri-County Collision is family owned',
+         'No, Tri-County Collision is family owned'),
+        ('Not in Hatboro itself. Tri-County Collision is at',
+         'Tri-County Collision is not in Hatboro itself; it is at'),
+        ('No. Crossing from',
+         'No, crossing from'),
+        ('Yes. Under Pennsylvania law',
+         'Yes, under Pennsylvania law'),
+        ('Yes. Dealing with your insurer',
+         'Yes, dealing with your insurer'),
+        ('Horsham has none. The shop is at',
+         'Tri-County Collision has no shop in Horsham; its shop is at'),
+        ('It can. Alongside cars,',
+         'Yes, alongside cars,'),
+        ("A little. Hatboro is the closer of the two by road; from Horsham's crossroads",
+         "Horsham is a little farther than Hatboro by road; from Horsham's crossroads"),
+        ("It is not. Tri-County Collision's address is",
+         'Tri-County Collision is not located in Huntingdon Valley; its address is'),
+        ('Yes. Paintless dent repair fixes',
+         "Yes, Tri-County Collision's paintless dent repair fixes"),
+        ('Not quite. By road, Feasterville-Trevose is closer.',
+         'Huntingdon Valley is not quite the closest: by road, Feasterville-Trevose is closer.'),
+        ('No. Tri-County Collision takes on',
+         'No, Tri-County Collision takes on'),
+        ('No. At Tri-County Collision estimates are free',
+         'No, at Tri-County Collision estimates are free'),
+        ('It will. At Tri-County Collision, vehicles are',
+         'Yes, at Tri-County Collision vehicles are'),
+        ('No. The shop is in Southampton',
+         'No, Tri-County Collision is in Southampton'),
+        ('Yes. Pennsylvania law lets you',
+         'Yes, Pennsylvania law lets you'),
+        ('Nearly. From Almshouse Road',
+         'The drive from Richboro is nearly all on 2nd Street Pike. From Almshouse Road'),
+        ('You do not. In Pennsylvania',
+         "You do not have to use your insurer's shop. In Pennsylvania"),
+        ("They are. Tri-County Collision's technicians",
+         "Yes, Tri-County Collision's technicians"),
+        ("Yes. Richboro's crossroads",
+         "Yes, Richboro's crossroads"),
+        ('No. Its shop is at',
+         "No, Tri-County Collision's shop is at"),
+        ('Davisville Road. You spend',
+         'Davisville Road does most of the work from Willow Grove. You spend'),
+        ('A family. Tri-County Collision is family owned',
+         'Tri-County Collision is family owned'),
+        ('It can be longer or shorter. The time on this page',
+         'The drive from other parts of Jenkintown can be longer or shorter. The time on this page'),
+        ('Longer than the figure on this page. That figure, about 11 minutes, is a routing',
+         'In traffic the drive from Willow Grove runs longer than about 11 minutes. That figure is a routing'),
+        ('It does: windshields, side windows and rear windows.',
+         'Yes, Tri-County Collision fixes windshields, side windows and rear windows.'),
+        ('This page times the drive from Somerton.',
+         'The drive time for Northeast Philadelphia is measured from Somerton.'),
+        ('This page times the trip from the junction of',
+         'The Warminster drive time starts at the junction of'),
+        ('Pre-accident condition is the standard.',
+         "Yes, pre-accident condition is Tri-County Collision's standard."),
+    ]
+    rest = " The rest of the answer follows here."
+    befores = [("Q?", b + rest) for b, _a in OPENERS]
+    afters = [("Q?", a + rest) for _b, a in OPENERS]
+    got = audit.faq_opener_findings(befores)
+    check("     all 31 openers as shipped FAIL", len(got) == 31,
+          [x[1] for x in befores if x[1] not in [g[1] for g in got]][:3])
+    got = audit.faq_opener_findings(afters)
+    check("     all 31 approved rewrites PASS", got == [], got[:3])
+    for ok in ("No, PDR will not damage your paint.",
+               "Yes, we work with commercial insurance policies.",
+               "Yes: minor and major damage alike, backed by a lifetime warranty on all repair work."):
+        check(f"     a merged particle passes: {ok[:40]!r}", audit.faq_opener_findings([("Q?", ok)]) == [])
+    real = (audit.FAQ_OPENER_MIN_WORDS, audit.FAQ_OPENER_PRONOUN_RE, audit.FAQ_OPENER_FRAGMENT_RE)
+    audit.FAQ_OPENER_MIN_WORDS = 0
+    audit.FAQ_OPENER_PRONOUN_RE = audit.FAQ_OPENER_FRAGMENT_RE = re.compile(r"(?!x)x")
+    try:
+        check("     MUTATION: with the rule switched off every shipped opener passes, so the "
+              "rule is what catches them", audit.faq_opener_findings(befores) == [])
+    finally:
+        audit.FAQ_OPENER_MIN_WORDS, audit.FAQ_OPENER_PRONOUN_RE, audit.FAQ_OPENER_FRAGMENT_RE = real
+    faq = ('<details><summary>Does an estimate cost anything?</summary><p>No. Estimates are free.</p></details>'
+           '<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage",'
+           '"mainEntity":[{"@type":"Question","name":"Does an estimate cost anything?",'
+           '"acceptedAnswer":{"@type":"Answer","text":"No. Estimates are free."}}]}</script>')
+    _p, _w, f = run(faq)
+    check("     a page whose FAQ opens \"No.\" FAILS the audit", "does not stand alone" in f, f[:200])
+    _p, _w, f = run(faq.replace("No. Estimates are free.", "No, estimates at Tri-County Collision are free."))
+    check("     the same page comma-merged passes", "does not stand alone" not in f, f[:200])
 
     print()
     if FAILURES:

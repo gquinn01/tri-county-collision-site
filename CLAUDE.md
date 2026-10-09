@@ -820,6 +820,14 @@ exemption applies only to a page that shows no visible FAQ, so a post that
 carries one is held to the mirror law like any page. `test-audit-checks.py`
 section 23 holds it.
 
+**Dates, a policy since 2026-10-09** (Greg's ruling, `proposed-changes.md`
+3.94, amending 3.57): **datePublished never moves; dateModified moves on any
+visible content change**, on a post or any other page, in the same commit as
+the change. Migration kept the live dates because it changed no words; a
+correction changes words. A post's day goes in `CORRECTED` in
+`scripts/migrate-blog.py`, and its schema, `article:modified_time`, visible
+"Updated" line and `/blog/` card follow it; then rebuild the sitemap.
+
 ## Staging ships noindexed on purpose
 
 **Three things are deliberately "wrong" on every page in `docs/` until

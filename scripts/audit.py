@@ -3318,6 +3318,45 @@ def check_asset_provenance_local(passes: list, warns: list, fails: list,
         "control that matters, and this is the floor under it.")
 
 
+# --- The FAQ standalone test, as a check, 3.94 ---------------------------
+# The standards' FAQ law: every answer's opening sentence must survive being
+# lifted without its question, because that is exactly what an assistant
+# does with it. The pre-launch sweep found 27 town answers opening "No.",
+# "It can.", "A little." and the like, none of which says anything alone.
+# An opener FAILS when it:
+#   - is under FAQ_OPENER_MIN_WORDS words ("No.", "Horsham has none.");
+#   - opens on a pronoun whose antecedent is in the question ("It does:
+#     windshields...", "This page times the drive...");
+#   - opens on a comparative fragment ("Longer than the figure...",
+#     "Nearly.", "Not quite.", "A little.").
+# A bare particle comma- or colon-merged into a full sentence passes ("No,
+# PDR will not damage your paint."), which is what the standards prescribe.
+FAQ_OPENER_MIN_WORDS = 6
+FAQ_OPENER_PRONOUN_RE = re.compile(r"^(?:it|they|this|that|these|those)\b", re.I)
+FAQ_OPENER_FRAGMENT_RE = re.compile(
+    r"^(?:longer|shorter|nearly|mostly|partly|not quite|a little|somewhat)\b", re.I)
+
+
+def faq_opener(answer: str) -> str:
+    """The answer's first sentence, as an assistant would lift it."""
+    return re.split(r"(?<=[.!?])\s+", unescape(re.sub(r"<[^>]+>", "", answer)).strip(), maxsplit=1)[0]
+
+
+def faq_opener_findings(qas) -> list:
+    """[(question, opener, why)] for every answer whose opener fails."""
+    bad = []
+    for q, a in qas:
+        first = faq_opener(a)
+        n = len(re.findall(r"[\w\u2019'-]+", first))
+        if n < FAQ_OPENER_MIN_WORDS:
+            bad.append((q, first, f"{n} word{'' if n == 1 else 's'}"))
+        elif FAQ_OPENER_PRONOUN_RE.match(first):
+            bad.append((q, first, "it opens on a pronoun"))
+        elif FAQ_OPENER_FRAGMENT_RE.match(first):
+            bad.append((q, first, "it opens on a fragment"))
+    return bad
+
+
 def audit(source: str, coverage: dict = None):
     """Scores one page. `coverage` carries the parsed sitemap.xml and
     llms.txt for local runs, so a page that was built but never published
@@ -3620,6 +3659,22 @@ def audit(source: str, coverage: dict = None):
         if not (only_schema or only_page or mismatched) and schema_faq:
             passes.append(f"All {len(schema_faq)} FAQ questions and answers are byte-identical "
                           f"between the visible page and the FAQPage schema.")
+
+    # --- FAQ standalone openers, 3.94 ---
+    # An assistant lifts the first sentence of an answer without its
+    # question. See FAQ_OPENER_* for the rule.
+    opener_qas = schema_faq or list(p.faq_visible or [])
+    if opener_qas:
+        bad = faq_opener_findings(opener_qas)
+        for q, first, why in bad:
+            fails.append(f"**An FAQ answer's first sentence does not stand alone ({why}):** "
+                         f"\u201c{q[:70]}\u201d opens \u201c{first[:80]}\u201d. Assistants lift "
+                         f"the opener without its question, so it has to carry its own subject. "
+                         f"Comma-merge a bare particle into the sentence after it (\u201cNo, "
+                         f"...\u201d), or name the subject.")
+        if not bad:
+            passes.append(f"All {len(opener_qas)} FAQ answers open on a sentence that stands "
+                          f"alone without its question.")
 
     # --- Crumb mirror: does the BreadcrumbList say what the crumb says? ---
     # 3.76, closing 3.60's open item 1. The FAQ mirror's law applied to the

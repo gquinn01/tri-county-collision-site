@@ -38,7 +38,14 @@ WHAT EVERY POST GETS, mechanically:
 DATES ARE FACTS. datePublished and dateModified are the live post's own
 article:published_time and article:modified_time, the same instants written
 in America/New_York, so their dates read as the live post's visible date.
-Nothing is freshened. build-sitemap.py takes lastmod from dateModified.
+Migration freshens nothing, because migration changed no words.
+build-sitemap.py takes lastmod from dateModified.
+
+AMENDED 2026-10-09, Greg's ruling (proposed-changes.md 3.94, amending
+3.57): datePublished never moves; dateModified moves on any visible content
+change. A correction changes words, so it moves dateModified. CORRECTED
+holds the day of each post's latest correction, as a date: the day is the
+fact we have, and a time of day would be invented.
 
 AUTHORSHIP IS THE SHOP'S. The live posts carry a "Greg Quinn" byline and
 author box; neither migrates. The BlogPosting's author and publisher are the
@@ -58,7 +65,7 @@ import json
 import os
 import re
 import sys
-from datetime import datetime
+from datetime import date, datetime
 from html.parser import HTMLParser
 from zoneinfo import ZoneInfo
 
@@ -73,6 +80,25 @@ NY = ZoneInfo("America/New_York")
 MAPS = ("https://www.google.com/maps/search/?api=1&amp;query=Tri-County%20Collision"
         "%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966")
 TITLE_MAX, DESC_MAX = 60, 160
+
+# THE DAY EACH POST WAS LAST CORRECTED, 3.94. A post listed here carries this
+# date as its dateModified, article:modified_time and visible "Updated"
+# line in place of the live post's own. Add or move a post's date in the
+# same commit as any visible change to it.
+CORRECTED = {
+    "deer-season-in-bucks-county-insurance-coverage-next-steps": "2026-10-09",
+    "critical-questions-to-ask-any-collision-center-in-bucks-county-before-handing-over-your-keys": "2026-10-09",
+    "collision-repair-near-me-in-southampton-how-to-choose-the-right-auto-body-shop": "2026-10-09",
+    "unveiling-the-hidden-benefits-of-paintless-dent-repair-in-collision-restoration": "2026-10-09",
+    "what-do-all-those-lights-mean-in-my-car-understanding-your-vehicles-language": "2026-10-09",
+    "the-importance-of-oem-parts-in-collision-repair-ensuring-quality-and-safety-for-your-vehicle": "2026-10-09",
+}
+
+
+def day_of(d):
+    """The calendar day of a datetime or a date."""
+    return d.date() if isinstance(d, datetime) else d
+
 
 # ---------------------------------------------------------------------------
 # PER POST: the title and meta (both trimmed from the live post's, machine
@@ -445,6 +471,8 @@ def build_post(src, slug, landing, record):
         pair(slug, "meta", live["meta"], meta, f"{len(meta)} characters, machine-counted")
 
     pub, mod = et(live["published"]), et(live["modified"])
+    if slug in CORRECTED:
+        mod = date.fromisoformat(CORRECTED[slug])
     return dict(slug=slug, title=title, meta=meta, h1=h1, body=h, faq=faq,
                 pub=pub, mod=mod, excerpt=first_sentence(h), flags=cfg.get("flags", []),
                 words=len(text_of(h).split()) + sum(len(text_of(q + " " + a).split()) for q, a in faq),
@@ -532,8 +560,8 @@ CTA = '''<div class="cta-row">
 
 def date_line(p):
     s = f'Published <time datetime="{p["pub"].date().isoformat()}">{human(p["pub"])}</time>'
-    if p["mod"].date() != p["pub"].date():
-        s += f' &middot; Updated <time datetime="{p["mod"].date().isoformat()}">{human(p["mod"])}</time>'
+    if day_of(p["mod"]) != p["pub"].date():
+        s += f' &middot; Updated <time datetime="{day_of(p["mod"]).isoformat()}">{human(p["mod"])}</time>'
     return s
 
 
@@ -601,8 +629,10 @@ def render_post(p, assets, biz, nav, foot):
        the foot (a CTA row in the mold, not the promise band: a post is a
        read, not a service argument), and the footer listing every service in SERVICES.
 
-       DATES ARE THE LIVE POST'S OWN: datePublished and dateModified are its
-       published and modified times, in Eastern time. Nothing is freshened.
+       DATES: datePublished is the live post's own and never moves.
+       dateModified is the live post's own until a visible correction lands
+       here, and then it is that day (3.94, amending 3.57; CORRECTED in
+       scripts/migrate-blog.py).
 
        NO IMAGE MIGRATES: old-site imagery is banned from this repo.{flags}
 
@@ -685,7 +715,7 @@ def render_index(posts, record, assets, biz, nav, foot):
             cards.append(f'          <div class="svc-card" data-pending-href="../{p["slug"]}/">\n{inner}\n          </div>')
     graph = [biz,
              {"@type": "CollectionPage", "@id": url + "#webpage", "url": url, "name": title,
-              "description": meta, "inLanguage": "en-US", "dateModified": "2026-09-25",
+              "description": meta, "inLanguage": "en-US", "dateModified": "2026-10-09",
               "isPartOf": {"@id": BASE + "#business"}, "breadcrumb": {"@id": url + "#breadcrumb"},
               "mainEntity": {"@id": url + "#blog"}},
              {"@type": "Blog", "@id": url + "#blog", "name": "Collision Repair Tips & Advice",
