@@ -63,6 +63,8 @@ from html.parser import HTMLParser
 from zoneinfo import ZoneInfo
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import audit  # noqa: E402
 ROOT = os.path.dirname(HERE)
 DOCS = os.path.join(ROOT, "docs")
 SHELL = os.path.join(DOCS, "contact-us", "index.html")
@@ -374,7 +376,10 @@ def human(d):
 
 def first_sentence(h):
     m = re.search(r"<p>(.*?)</p>", h, re.S)
-    t = text_of(m.group(1)) if m else ""
+    # text_of turns every tag into a space, so a link that ends just before
+    # a comma left "Collision ," in the /blog/ excerpt (3.94). Punctuation
+    # closes up on the word before it.
+    t = re.sub(r"\s+([,.;:!?])", r"\1", text_of(m.group(1))) if m else ""
     parts = re.split(r"(?<=[.!?])\s+(?=[A-Z“\"])", t)
     out = parts[0]
     if len(out) < 60 and len(parts) > 1:
@@ -466,6 +471,10 @@ def shell():
     def chrome(page):
         head, foot = sc.render(page)
         return "  " + head + "\n", "  " + foot + tail
+    # Every written page goes through sync-chrome's own pass too, which
+    # writes the favicon links and settles the banner and the noindex on
+    # STAGING (3.94), so a rebuilt post is byte-identical to a synced one.
+    chrome.sc = sc
     return head_assets, biz, chrome
 
 
@@ -510,13 +519,11 @@ SCHEMA_NOTE = '''  <!-- One @graph. The AutoBodyShop node repeats in full on eve
        sameAs IS DELIBERATELY ABSENT until the client's verified list lands.
        No image in the BlogPosting: this page has none. -->
 '''
-STAGING = '''
-  <!-- Removed at cutover, with the noindex tag and the robots.txt disallow.
-       A human who opens this page should not have to guess why it is not
-       indexed. -->
-  <p class="staging">Staging build. Not the live site. The shop's live site is at tricountycollision.com</p>
-
-'''
+# The staging banner and the noindex tag follow audit.STAGING (3.94), so a
+# rebuild after cutover cannot re-stage a post. Both strings live in
+# audit.py, which scripts/sync-chrome.py and the audit read too.
+BANNER = ("\n  " + audit.STAGING_BANNER + "\n\n") if audit.STAGING else "\n"
+ROBOTS_LINE = ("  " + audit.STAGING_ROBOTS_META + "\n") if audit.STAGING else ""
 CTA = '''<div class="cta-row">
           <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
           <a class="btn btn-ghost" href="mailto:contact@tricountycollision.com">Email the shop</a>
@@ -592,7 +599,7 @@ def render_post(p, assets, biz, nav, foot):
        THE POST SHAPE, built once and used sixteen times: breadcrumb, H1, a
        quiet date line, the prose at the site's reading width, ONE ask at
        the foot (a CTA row in the mold, not the promise band: a post is a
-       read, not a service argument), and the four-service footer.
+       read, not a service argument), and the footer listing every service in SERVICES.
 
        DATES ARE THE LIVE POST'S OWN: datePublished and dateModified are its
        published and modified times, in Eastern time. Nothing is freshened.
@@ -608,8 +615,7 @@ def render_post(p, assets, biz, nav, foot):
   <meta name="description" content="{e(p["meta"])}">
 
   <link rel="canonical" href="{url}">
-  <meta name="robots" content="noindex, nofollow">
-  <!-- A POST IS A READ, declared. Greg's ruling of 2026-09-25,
+{ROBOTS_LINE}  <!-- A POST IS A READ, declared. Greg's ruling of 2026-09-25,
        proposed-changes.md 3.57: scripts/audit.py does not require an FAQ
        of it, and measures every other check, thin content included. -->
   <meta name="tri-county-page" content="post">
@@ -627,7 +633,7 @@ def render_post(p, assets, biz, nav, foot):
   </script>
 </head>
 <body>
-{STAGING}{nav}
+{BANNER}{nav}
   <main>
 
     <section class="hero dark field-ox" id="post-head">
@@ -722,8 +728,7 @@ def render_index(posts, record, assets, biz, nav, foot):
   <meta name="description" content="{e(meta)}">
 
   <link rel="canonical" href="{url}">
-  <meta name="robots" content="noindex, nofollow">
-  <!-- AN INDEX ROUTES, declared. Greg's ruling of 2026-09-25,
+{ROBOTS_LINE}  <!-- AN INDEX ROUTES, declared. Greg's ruling of 2026-09-25,
        proposed-changes.md 3.57: scripts/audit.py does not require an FAQ
        of it, and measures every other check, thin content included. -->
   <meta name="tri-county-page" content="blog-index">
@@ -739,7 +744,7 @@ def render_index(posts, record, assets, biz, nav, foot):
   </script>
 </head>
 <body>
-{STAGING}{nav}
+{BANNER}{nav}
   <main>
 
     <section class="hero dark field-ox" id="blog-head">
@@ -796,7 +801,7 @@ def main():
         out = os.path.join(DOCS, slug, "index.html")
         os.makedirs(os.path.dirname(out), exist_ok=True)
         with open(out, "w", encoding="utf-8") as f:
-            f.write(render_post(p, assets, biz, *chrome(f"{slug}/")))
+            f.write(chrome.sc.synced(out, render_post(p, assets, biz, *chrome(f"{slug}/"))))
         built.append(p)
         print(f"built    {slug}  ({p['words']} words, {len(p['faq'])} FAQ, "
               f"published {p['pub'].date()}, modified {p['mod'].date()})")
@@ -812,8 +817,9 @@ def main():
         PAIRS[:] = kept
         allp.sort(key=lambda p: p["pub"], reverse=True)
         os.makedirs(os.path.join(DOCS, "blog"), exist_ok=True)
-        with open(os.path.join(DOCS, "blog", "index.html"), "w", encoding="utf-8") as f:
-            f.write(render_index(allp, a.record, assets, biz, *chrome("blog/")))
+        out = os.path.join(DOCS, "blog", "index.html")
+        with open(out, "w", encoding="utf-8") as f:
+            f.write(chrome.sc.synced(out, render_index(allp, a.record, assets, biz, *chrome("blog/"))))
         print(f"built    blog/  ({sum(p['built'] for p in allp)} linked, "
               f"{sum(not p['built'] for p in allp)} pending)")
     print("\nPAIRS")

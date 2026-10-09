@@ -43,6 +43,11 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import audit  # noqa: E402
 
+# The noindex tag follows audit.STAGING (3.94), so a rebuild after cutover
+# cannot re-noindex a page. sync-chrome's pass, which every page written
+# here goes through, settles the visible banner and the favicon links.
+ROBOTS_LINE = ("  " + audit.STAGING_ROBOTS_META + "\n") if audit.STAGING else ""
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "docs", "areas-served", "index.html")
 CHROME = os.path.join(ROOT, "docs", "deer-season-in-bucks-county-insurance-coverage-next-steps", "index.html")
@@ -448,8 +453,7 @@ def main() -> int:
   <meta name="description" content="{html.escape(META)}">
 
   <link rel="canonical" href="{URL}">
-  <meta name="robots" content="noindex, nofollow">
-  <!-- THE AREAS HUB, declared, and exempt from nothing: it carries FAQs and
+{ROBOTS_LINE}  <!-- THE AREAS HUB, declared, and exempt from nothing: it carries FAQs and
        its own long copy (3.79). The declaration is what makes the hub
        routing check read it. -->
   <meta name="tri-county-page" content="hub">

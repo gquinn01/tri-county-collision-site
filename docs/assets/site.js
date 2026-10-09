@@ -30,12 +30,13 @@
      the GA4 property. CallRail swaps numbers into the rendered page at
      runtime, which is why the tracking number is not in this repo's
      source and must never be pasted into it.
-   - No form handler yet. The form's fields, its endpoint and what it
-     says after a send are all still with the owner, and the endpoint
-     will be in the CLIENT'S account. When it lands, the submit handler
-     goes here and calls preventDefault(), which is exactly why the GA4
-     form_submit event has to be sent explicitly: enhanced measurement
-     cannot see a submit that never navigates.
+   - No form handler, because there is no form: Greg ruled on 2026-09-24
+     that this site carries none, and /contact-us/ reaches the shop by
+     phone, email and the shop's own CarWise links instead. If a form is
+     ever ruled back in, its endpoint goes in the CLIENT'S account, its
+     submit handler goes here and calls preventDefault(), and the GA4
+     form_submit event has to be sent explicitly, because enhanced
+     measurement cannot see a submit that never navigates.
    =========================================================================== */
 
 (function () {
@@ -77,7 +78,15 @@
 
     subBtns.forEach(function (btn) {
       var item = btn.closest(".nav-item");
-      btn.addEventListener("click", function () {
+      /* True while a desktop mouse is resting on this item, so the hover
+         has already opened its menu. 3.94: a click then toggled that open
+         menu shut under the reader's own pointer. A mouse click on a
+         hover-opened menu now leaves it open; leaving the item closes it.
+         A keyboard's click has detail 0 and a touch never sets this, so
+         both still toggle exactly as before. */
+      var hovered = false;
+      btn.addEventListener("click", function (e) {
+        if (hovered && e.detail > 0) { closeSubs(btn); setSub(btn, true); return; }
         var open = btn.getAttribute("aria-expanded") !== "true";
         closeSubs(btn);
         setSub(btn, open);
@@ -85,9 +94,10 @@
       /* A desktop pointer opens on hover, as the live site's does; a touch
          or a keyboard uses the button. */
       item.addEventListener("pointerenter", function (e) {
-        if (e.pointerType === "mouse" && wide.matches) { closeSubs(btn); setSub(btn, true); }
+        if (e.pointerType === "mouse" && wide.matches) { hovered = true; closeSubs(btn); setSub(btn, true); }
       });
       item.addEventListener("pointerleave", function (e) {
+        if (e.pointerType === "mouse") { hovered = false; }
         if (e.pointerType === "mouse" && wide.matches) { setSub(btn, false); }
       });
       item.addEventListener("focusout", function (e) {

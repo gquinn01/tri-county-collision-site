@@ -55,6 +55,11 @@ import textwrap
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import audit  # noqa: E402
 
+# The noindex tag follows audit.STAGING (3.94), so a rebuild after cutover
+# cannot re-noindex a page. sync-chrome's pass, which every page written
+# here goes through, settles the visible banner and the favicon links.
+ROBOTS_LINE = ("  " + audit.STAGING_ROBOTS_META + "\n") if audit.STAGING else ""
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CHROME = os.path.join(ROOT, "docs", "deer-season-in-bucks-county-insurance-coverage-next-steps", "index.html")
 HOME = os.path.join(ROOT, "docs", "index.html")
@@ -789,8 +794,7 @@ def build(key: str) -> tuple:
   <meta name="description" content="{html.escape(meta)}">
 
   <link rel="canonical" href="{url}">
-  <meta name="robots" content="noindex, nofollow">
-  <!-- A TOWN PAGE, declared, and exempt from nothing: Greg's ruling of
+{ROBOTS_LINE}  <!-- A TOWN PAGE, declared, and exempt from nothing: Greg's ruling of
        2026-09-28, proposed-changes.md 3.62. It carries a real FAQ and has
        to earn its words. The tier's gate is the variance check in
        scripts/audit.py, which compares every town page with its siblings

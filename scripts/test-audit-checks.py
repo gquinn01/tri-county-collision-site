@@ -693,7 +693,7 @@ def main():
     N = audit.BRAND_COUNT
     agree = {"marks": [("docs/index.html", N, "12 marks in the strip")],
              "text": [("docs/index.html", N, "a dozen vehicle brands")],
-             "schema": [("docs/collision-repair/index.html", N, "12+ vehicle brands")]}
+             "schema": [("docs/collision-repair/index.html", N, "12 vehicle brands")]}
     warns, fails, notes = run_brand(agree)
     check("     agreement across marks, text and schema is clean",
           not fails and not warns, fails + warns)
@@ -1786,6 +1786,198 @@ def main():
     check("     a size drifting from og:image:width and :height fails", any("has width" in x for x in probs) and any("has height" in x for x in probs), probs)
     n, probs = audit.card_image_findings(town, "areas-served-collision-repair-bensalem-pa/")
     check("     a town's cards carry no image and are not read", n == 0 and probs == [], (n, probs))
+
+    # 3.94, THE PRE-LAUNCH SWEEP'S FINDINGS. Each check below was added
+    # because the sweep found a defect the audit had passed, and each is
+    # MUTATION-PROVEN: the fixture that must fail is run once against the
+    # check and once against the check as it stood before 3.94, and the
+    # second run must miss it. A fixture both versions catch proves nothing.
+    print("38. The review count reads words between the number and \"reviews\" (3.94)")
+    stale = ("<p>For example, Tri-County Collision is proud of our “EXCELLENT” rating "
+             "based on over 231 verified Google reviews.</p>")
+    OLD_REVIEW_RE = re.compile(r"\b(\d[\d,]{0,6})\s+(?:google\s+)?reviews?\b", re.I)
+    with _tempfile.TemporaryDirectory() as tmp:
+        with open(os.path.join(tmp, "index.html"), "w", encoding="utf-8") as fh:
+            fh.write('<span class="stat-n">274</span> <span class="stat-l">Google reviews</span>'
+                     + stale)
+        nums = sorted(n for _p, n, _s in audit.find_review_counts(tmp))
+        check("     \"over 231 verified Google reviews\" is READ as 231", nums == [231, 274], nums)
+        real_find = audit.find_review_counts
+        audit.find_review_counts = lambda root=None, _t=tmp: real_find(_t)
+        try:
+            passes, warns, fails, notes = [], [], [], []
+            audit.check_review_count_local(passes, warns, fails, notes, today=_date(2026, 9, 10))
+            check("     and the page carrying it FAILS as a critical",
+                  len(fails) == 1 and "231" in fails[0], fails)
+            real_re = audit.REVIEW_COUNT_RE
+            audit.REVIEW_COUNT_RE = OLD_REVIEW_RE
+            try:
+                passes, warns, fails, notes = [], [], [], []
+                audit.check_review_count_local(passes, warns, fails, notes, today=_date(2026, 9, 10))
+                check("     MUTATION: the pre-3.94 pattern passes the same page, so the "
+                      "hardening is what catches it", not fails, fails)
+            finally:
+                audit.REVIEW_COUNT_RE = real_re
+        finally:
+            audit.find_review_counts = real_find
+    for text, want in (("274 Google reviews", "274"), ("274 reviews", "274"),
+                       ("1,204 five-star Google reviews", "1,204"),
+                       ("2019 Google reviews", "2019"),
+                       ("In 2019 our customers left reviews", None),
+                       ("since 2019, reviews poured in", None)):
+        m = audit.REVIEW_COUNT_RE.search(text)
+        check(f"     {text!r} reads as {want}", (m.group(1) if m else None) == want,
+              m.group(1) if m else None)
+
+    print("39. Brand LISTS are read against BRANDS, not only counted (3.94)")
+    ram_fiat = ("<p>we service a wide array of brands, including Dodge, Ram, Kia, Infiniti, "
+                "Chrysler, Jeep, GM, Hyundai, Fiat, Subaru, Ford, and Nissan, which gives us</p>")
+    short = ("<p>including Dodge, Kia, Infiniti, Chrysler, Jeep, GM, Hyundai, Subaru, Ford, "
+             "and Nissan.</p>")
+    full = ("<p>Subaru, Nissan, Kia, Jeep, INFINITI, Hyundai, GM, Ford, Dodge, Chrysler, Acura, "
+            "and Honda.</p>")
+    examples = "<p>whether it's a Honda, Nissan, Ford, or something else.</p>"
+    schema_bad = ('<script type="application/ld+json">{"text": "certified for Toyota, Honda, '
+                  'Subaru and Ford"}</script>')
+
+    def lists_of(pages):
+        with _tempfile.TemporaryDirectory() as tmp:
+            for rel, body in pages.items():
+                os.makedirs(os.path.join(tmp, rel), exist_ok=True)
+                with open(os.path.join(tmp, rel, "index.html"), "w", encoding="utf-8") as fh:
+                    fh.write(body)
+            return audit.brand_list_findings(audit.find_brand_lists(tmp))
+
+    fails, notes, n = lists_of({"a": ram_fiat})
+    check("     the sweep's Ram-and-Fiat list FAILS", len(fails) == 1 and "Fiat" in fails[0]
+          and "Ram" in fails[0], fails)
+    fails, notes, n = lists_of({"a": short})
+    check("     a long list missing Honda and Acura FAILS",
+          len(fails) == 1 and "Acura, Honda" in fails[0], fails)
+    fails, notes, n = lists_of({"a": full + examples})
+    check("     the twelve in the strip's order, and a three-name example, both pass",
+          not fails and n == 2, (fails, n))
+    fails, notes, n = lists_of({"a": schema_bad})
+    check("     a list inside JSON-LD is read too", len(fails) == 1 and "Toyota" in fails[0], fails)
+    held = "what-do-all-those-lights-mean-in-my-car-understanding-your-vehicles-language"
+    eleven = ("<p>OEM certified for INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, "
+              "Ford, Dodge and Jeep</p>")
+    fails, notes, n = lists_of({held: eleven})
+    check("     the lights post's eleven is HELD on question 28: a note, not a pass or a fail",
+          not fails and len(notes) == 1 and "question 28" in notes[0], (fails, notes))
+    fails, notes, n = lists_of({"elsewhere": eleven})
+    check("     the same eleven on any other page FAILS", len(fails) == 1, fails)
+    real_re = audit.BRAND_LIST_RE
+    audit.BRAND_LIST_RE = re.compile(r"(?!x)x")
+    try:
+        fails, notes, n = lists_of({"a": ram_fiat, "b": short})
+        check("     MUTATION: with no list reading (the audit before 3.94) both wrong lists "
+              "pass, so the list reading is what catches them", not fails and n == 0, (fails, n))
+    finally:
+        audit.BRAND_LIST_RE = real_re
+    plus = {"marks": [], "schema": [], "text": [("docs/x/index.html", 12,
+                                                  "factory-certified for 12+ vehicle brands")]}
+    warns, fails, notes = run_brand(plus)
+    check("     \"12+\" FAILS: the site says 12 (3.94)", len(fails) == 1 and "+" in fails[0], fails)
+    real_plus = audit.BRAND_PLUS_RE
+    audit.BRAND_PLUS_RE = re.compile(r"(?!x)x")
+    try:
+        warns, fails, notes = run_brand(plus)
+        check("     MUTATION: without the rule \"12+\" passes as 12", not fails, fails)
+    finally:
+        audit.BRAND_PLUS_RE = real_plus
+    _sd = audit.SITE_DIR
+    try:
+        audit.SITE_DIR = os.path.join(root, "docs")
+        passes, fails, notes = [], [], []
+        audit.check_brand_lists_local(passes, fails, notes)
+    finally:
+        audit.SITE_DIR = _sd
+    check("     every list that ships passes", not fails and len(passes) == 1, fails)
+
+    print("40. The staging flip, both directions: banner, noindex, robots.txt, llms.txt (3.94)")
+    real_staging = audit.STAGING
+    sc_spec = __import__("importlib.util").util.spec_from_file_location(
+        "sync_chrome", os.path.join(root, "scripts", "sync-chrome.py"))
+    sc = __import__("importlib.util").util.module_from_spec(sc_spec)
+    sc_spec.loader.exec_module(sc)
+    home_path = os.path.join(root, "docs", "index.html")
+    stub_path = os.path.join(root, "docs", "body-shop-jamison", "index.html")
+    try:
+        # The fixtures are the shipped pages AS STAGED, built here rather
+        # than read as they stand, so this section holds on either side of
+        # the cutover commit.
+        audit.STAGING = True
+        home_now = sc.synced(home_path, open(home_path, encoding="utf-8").read())
+        stub_now = sc.staged(stub_path, open(stub_path, encoding="utf-8").read())
+        p_, w_, f_ = audit.staging_page_findings(home_now)
+        check("     staging: the home page as staged carries its banner", p_ and not w_ and not f_,
+              (w_, f_))
+        p_, w_, f_ = audit.staging_page_findings(home_now.replace('<p class="staging">', "<p>"))
+        check("     staging: a page MISSING the banner warns", len(w_) == 1 and not f_, (w_, f_))
+        audit.STAGING = False
+        p_, w_, f_ = audit.staging_page_findings(home_now)
+        check("     live: a banner left on a page is a CRITICAL", len(f_) == 1, f_)
+        p_, w_, f_ = audit.staging_page_findings(stub_now, is_stub=True)
+        check("     live: a noindex left on a redirect stub is a CRITICAL", len(f_) == 1, f_)
+        flipped = sc.synced(home_path, home_now)
+        p_, w_, f_ = audit.staging_page_findings(flipped)
+        check("     live: sync-chrome takes the banner off", not f_ and "class=\"staging\"" not in flipped, f_)
+        # The tag as a line of the head; the head comment that explains the
+        # exception quotes it, and a comment is not a tag.
+        tag_line = "\n  " + audit.STAGING_ROBOTS_META
+        check("     live: sync-chrome takes the noindex off", tag_line not in flipped)
+        check("     live: and changes nothing else on the page",
+              flipped == home_now.replace("  " + audit.STAGING_BANNER + "\n\n", "", 1)
+                                 .replace("\n  " + audit.STAGING_ROBOTS_META, "", 1))
+        check("     live: the stub loses its noindex too",
+              tag_line not in sc.staged(stub_path, stub_now))
+        audit.STAGING = True
+        back = sc.synced(home_path, flipped)
+        p_, w_, f_ = audit.staging_page_findings(back)
+        check("     and back: staging puts the banner and the noindex back",
+              p_ and not w_ and not f_ and back.count(tag_line) == 1, (w_, f_))
+        for staging, robots, llms, want in (
+                (True, "User-agent: *\nDisallow: /\n", "THIS SITE IS NOT LIVE YET.\n", "clean"),
+                (True, "User-agent: *\nDisallow: /\n", "The shop.\n", "warn"),
+                (False, "User-agent: *\nDisallow: /\n", "The shop.\n", "fail"),
+                (False, "User-agent: *\nAllow: /\nSitemap: https://tricountycollision.com/sitemap.xml\n",
+                 "THIS SITE IS NOT LIVE YET. It is the staging build.\n", "fail"),
+                (False, "User-agent: *\nAllow: /\nSitemap: https://tricountycollision.com/sitemap.xml\n",
+                 "The shop, live.\n", "clean"),
+                (False, "User-agent: *\nAllow: /\n", "The shop, live.\n", "warn")):
+            audit.STAGING = staging
+            with _tempfile.TemporaryDirectory() as tmp:
+                open(os.path.join(tmp, "robots.txt"), "w").write(robots)
+                open(os.path.join(tmp, "llms.txt"), "w").write(llms)
+                passes, warns, notes, fails = [], [], [], []
+                audit.check_staging_local(passes, warns, notes, fails, root=tmp)
+            got = "fail" if fails else ("warn" if warns else "clean")
+            check(f"     {'staging' if staging else 'live'}: robots {robots.split(chr(10))[1]!r}, "
+                  f"llms {llms[:24]!r} is {want}", got == want, (warns, fails))
+    finally:
+        audit.STAGING = real_staging
+    for gen in ("build-town.py", "migrate-blog.py", "migrate-hub.py"):
+        src = open(os.path.join(root, "scripts", gen), encoding="utf-8").read()
+        check(f"     {gen} hard-codes no noindex tag and no banner: it reads STAGING",
+              audit.STAGING_ROBOTS_META not in src and '<p class="staging">' not in src
+              and "audit.STAGING" in src)
+
+    print("41. Every real page links the shop's favicon set, and the files exist (3.94)")
+    pv, fv = audit.icon_findings(home_now, "")
+    check("     home as shipped links all three", pv and not fv, fv)
+    town_rel = "areas-served-collision-repair-jamison-pa/"
+    town_now = open(os.path.join(root, "docs", town_rel, "index.html"), encoding="utf-8").read()
+    pv, fv = audit.icon_findings(town_now, town_rel)
+    check("     a town page links them one level up", pv and not fv, fv)
+    pv, fv = audit.icon_findings(home_now.replace('rel="apple-touch-icon"', 'rel="x"'), "")
+    check("     a page missing one FAILS", len(fv) == 1 and "apple-touch-icon" in fv[0], fv)
+    with _tempfile.TemporaryDirectory() as tmp:
+        pv, fv = audit.icon_findings(home_now, "", site_dir=tmp)
+    check("     a link to a file that is not there FAILS", len(fv) == 1 and "the file" in fv[0], fv)
+    ico = open(os.path.join(root, "docs", "favicon.ico"), "rb").read()
+    check("     favicon.ico is an ICO of three PNG entries", ico[:4] == b"\x00\x00\x01\x00"
+          and ico[4] == 3 and ico.count(b"\x89PNG") == 3)
 
     print()
     if FAILURES:

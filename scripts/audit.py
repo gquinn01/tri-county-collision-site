@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-SEO + AEO Site Auditor — the "scanning" half of your agent team.
+SEO + AEO Site Auditor: the "scanning" half of your agent team.
 
 This is a real, working audit script. It checks a page for the on-page
-factors that matter most for local businesses — both classic SEO
+factors that matter most for local businesses, both classic SEO
 (ranking in Google) and AEO / answer engine optimization (being the
 answer that AI assistants like ChatGPT, Claude, Perplexity, and
 Google's AI Overviews give when someone asks "best spa near me").
@@ -23,7 +23,7 @@ Usage:
                                                        # via its sitemap.xml
     python3 scripts/audit.py --strict                  # exit 1 if any page < 100
 
-No external packages needed — pure Python standard library.
+No external packages needed: pure Python standard library.
 """
 
 import argparse
@@ -340,12 +340,63 @@ NAP_STREET_CANON_RE = re.compile(re.escape(NAP_STREET_CANON) + r"(?![.\w])")
 # deliberate exception that the build does not enforce is just a comment,
 # and comments get violated.
 #
-# AT CUTOVER: set this to False, take the meta tag off every page, and
-# replace docs/robots.txt with an open one that names the sitemap and blocks
-# no AI crawler. All three move together. Flipping this to False before the
-# tags come off will fail every page, which is the correct alarm and not a
-# bug. Record the date here and in CLAUDE.md when it happens.
+# AT CUTOVER, amended 3.94 after the pre-launch sweep's flip simulation
+# passed a site that still said "staging" on 37 pages and in llms.txt:
+#   1. set this to False;
+#   2. run scripts/sync-chrome.py, which takes the noindex tag and the
+#      visible banner off every page, because it writes both from this
+#      switch (STAGING_ROBOTS_META and STAGING_BANNER below);
+#   3. replace docs/robots.txt with an open one that names the sitemap and
+#      blocks no AI crawler;
+#   4. rewrite docs/llms.txt's staging paragraph (the one carrying
+#      LLMS_STAGING_MARK).
+# All four move together, in one commit. With this False, a noindex tag, a
+# banner, a disallow-all robots.txt or the llms.txt paragraph left behind is
+# a CRITICAL, so a half-done flip fails loudly. The page generators
+# (build-town.py, migrate-blog.py, migrate-hub.py) read this same switch,
+# so a rebuild after cutover cannot re-stage a page. Record the date here
+# and in CLAUDE.md when it happens.
 STAGING = True
+
+# The two staging fragments every page carries while STAGING is True, held
+# here once so scripts/sync-chrome.py and the generators write the same
+# bytes the check below reads. The banner's comment names the switch, not
+# a date, so it stays true until the day it is deleted.
+STAGING_ROBOTS_META = '<meta name="robots" content="noindex, nofollow">'
+STAGING_BANNER = (
+    '<!-- Removed at cutover, with the noindex tag and the robots.txt disallow.\n'
+    '       A human who opens this page should not have to guess why it is not\n'
+    '       indexed. -->\n'
+    '  <p class="staging">Staging build. Not the live site. The shop\'s live site '
+    'is at tricountycollision.com</p>')
+STAGING_BANNER_RE = re.compile(r'<p\s+class="staging"', re.I)
+# docs/llms.txt's staging paragraph opens with this. Matched case-blind, and
+# so is the word "staging" anywhere in llms.txt once the switch is off.
+LLMS_STAGING_MARK = "THIS SITE IS NOT LIVE YET"
+
+
+def staging_robots_meta() -> str:
+    """The robots tag a generated page carries: the noindex while staging,
+    nothing after cutover."""
+    return STAGING_ROBOTS_META if STAGING else ""
+
+
+def staging_banner() -> str:
+    """The visible banner a generated page carries: present while staging,
+    nothing after cutover."""
+    return STAGING_BANNER if STAGING else ""
+
+
+# --- The favicon set, 3.94 ----------------------------------------------
+# The shop's own site icon, made by scripts/prepare-favicon.py and linked
+# from every real page's head by scripts/sync-chrome.py. Each entry is
+# (rel, attributes after rel, path under docs/). A page missing one, or a
+# file missing from docs/, fails.
+ICON_LINKS = (
+    ("icon", 'sizes="any"', "favicon.ico"),
+    ("icon", 'type="image/png" sizes="192x192"', "assets/img/icon-192.png"),
+    ("apple-touch-icon", "", "assets/img/icon-180.png"),
+)
 
 # --- The review count, and the day it was counted ---------------------
 # A REVIEW COUNT IS THE ONE NUMBER ON THIS SITE THAT ROTS ON ITS OWN. It
@@ -383,7 +434,21 @@ REVIEW_STALE_DAYS = 35
 # contradiction. The trade is deliberate: a stale number in a comment
 # misleads the next person, but failing a build over a changelog line
 # would teach everyone to stop writing them.
-REVIEW_COUNT_RE = re.compile(r"\b(\d[\d,]{0,6})\s+(?:google\s+)?reviews?\b", re.I)
+#
+# HARDENED 3.94. The pattern used to allow only "google" between the number
+# and "reviews", so "over 231 verified Google reviews" in a migrated post was
+# never read, and this check reported the count as agreeing everywhere while
+# a stale number and the retired widget's adjective stood on a page. Up to
+# three words may now sit between the two, and a "+" after the number is
+# read as the number. Measured against the whole site when it was widened:
+# it found the post's 231 and no number that is not a review count.
+# A year followed by words is not a count ("In 2019 our customers left
+# reviews"), so a 19xx or 20xx with words after it is skipped; a bare
+# "2019 reviews" still counts. A comma is read only as a thousands
+# separator, so "since 2019, reviews" is not a count either.
+REVIEW_COUNT_RE = re.compile(
+    r"\b(?!(?:19|20)\d\d\s+[A-Za-z]+\s+(?!reviews?\b))"
+    r"(\d{1,3}(?:,\d{3})+|\d{1,7})\+?\s+(?:[A-Za-z][\w'’-]*\s+){0,3}?reviews?\b", re.I)
 
 # --- The brand count: the marks, the words and the schema agree -------
 # ADDED 2026-09-17, with the brand strip, and it is the review count's
@@ -480,6 +545,48 @@ BRAND_COUNT_RE = re.compile(
     r"\b(?:(\d{1,3})\s*\+?|(?:a\s+)?(" + "|".join(BRAND_WORDS) + r"))\s+"
     r"(?:vehicle\s+|car\s+|auto\s+|automotive\s+)?"
     r"(?:brands?|manufacturers?|makes?)\b", re.I)
+
+# --- The brand LISTS, 3.94 ------------------------------------------------
+# The count check above reads numbers. It could not read a list, and the
+# pre-launch sweep found one it had passed: a migrated post saying the shop
+# services "Dodge, Ram, Kia, Infiniti, Chrysler, Jeep, GM, Hyundai, Fiat,
+# Subaru, Ford, and Nissan", two brands the shop has not confirmed (owner
+# question 6b) and two of the twelve missing, beside a site that says twelve.
+#
+# A BRAND LIST is a run of three or more brand names joined by commas,
+# "and", "&" or "/", read in visible text and inside JSON-LD. Matched
+# case-blind, so "Infiniti" is INFINITI. Two rules, both CRITICAL:
+#
+#   1. Every name in a list is one of BRANDS. A name from OTHER_BRANDS is
+#      a certification or service claim nobody has confirmed. If the owner
+#      confirms one, it moves into BRANDS and the strip in one commit.
+#   2. A list naming at least half of BRANDS is an enumeration of the
+#      twelve, and must name all of them. A shorter list is examples
+#      ("a Honda, Nissan, Ford, or something else") and may name any of
+#      them. A long list held short on an OPEN OWNER QUESTION is recorded
+#      in BRAND_LISTS_HELD with its question, where the next reader sees
+#      it, and is reported as a note instead.
+OTHER_BRANDS = ("Toyota", "Lexus", "Scion", "Ram", "Fiat", "Alfa Romeo", "Maserati",
+                "Mazda", "Mitsubishi", "BMW", "Mini", "Mercedes-Benz", "Mercedes",
+                "Audi", "Volkswagen", "VW", "Porsche", "Volvo", "Tesla", "Genesis",
+                "Lincoln", "Mercury", "Chevrolet", "Chevy", "Buick", "Cadillac", "GMC",
+                "Land Rover", "Jaguar", "Saturn", "Pontiac", "Rivian", "Polestar",
+                "Lucid", "Smart")
+_BRAND_TOKEN = "(?:" + "|".join(re.escape(b) for b in sorted(
+    set(BRANDS) | set(OTHER_BRANDS), key=len, reverse=True)) + ")"
+BRAND_LIST_RE = re.compile(
+    r"(?<![\w-])" + _BRAND_TOKEN + r"(?![\w-])"
+    r"(?:\s*(?:,\s*(?:and\s+|&\s*)?|\s+and\s+|\s*&\s*|\s*/\s*)"
+    r"(?<![\w-])" + _BRAND_TOKEN + r"(?![\w-])){2,}", re.I)
+BRAND_LISTS_HELD = {
+    "what-do-all-those-lights-mean-in-my-car-understanding-your-vehicles-language/":
+        "owner question 28: the live post's 2023 list of eleven, without Subaru "
+        "(proposed-changes.md 4.11). Held as migrated until the owner answers.",
+}
+
+
+BRAND_PLUS_RE = re.compile(r"\d\s*\+\s*(?:vehicle\s+|car\s+|auto\s+|automotive\s+)?"
+                           r"(?:brands?|manufacturers?|makes?)\b", re.I)
 
 # The one track a screen reader is offered, and the <img> elements in
 # it. Deliberately anchored to the class and to the ABSENCE of
@@ -644,7 +751,7 @@ SITEMAP_MAX_FILES = 50
 # is superseded. It is baked in as a literal rather than fetched so the
 # audit still runs with no network, which is how it runs against our
 # own pages. To refresh it after a schema.org release, walk the
-# vocabulary again — do not add names by hand, which is the habit that
+# vocabulary again; do not add names by hand, which is the habit that
 # produced the short list.
 LOCAL_BUSINESS_TYPES = frozenset({
     "LocalBusiness", "AccountingService", "AdultEntertainment",
@@ -861,6 +968,10 @@ def special_audit(source: str, html: str, p, kind: str, coverage: dict):
     listed = coverage is not None and own in coverage["sitemap_locs"]
 
     if kind == "redirect-stub":
+        sp, sw, sf = staging_page_findings(html, is_stub=True)
+        passes += sp
+        warns += sw
+        fails += sf
         canon = (p.canonical or "").strip()
         if canon.startswith(SITE_BASE):
             passes.append(f"Canonical points at the new page: {canon}")
@@ -917,7 +1028,7 @@ def special_audit(source: str, html: str, p, kind: str, coverage: dict):
 
         h1s = [h.strip() for h in p.h1s if h.strip()]
         if len(h1s) != 1:
-            fails.append(f"**{len(h1s)} H1 headings found** \u2014 the error page needs exactly one.")
+            fails.append(f"**{len(h1s)} H1 headings found.** The error page needs exactly one.")
         else:
             passes.append(f"Exactly one H1: \u201c{h1s[0][:80]}\u201d")
 
@@ -1190,50 +1301,147 @@ def check_ai_access(base_url: str, warns: list, passes: list, notes: list):
         else:
             passes.append("AEO: robots.txt does not block the major AI crawlers (GPTBot, ClaudeBot, PerplexityBot, etc.).")
     except Exception:
-        notes.append("Could not fetch robots.txt — if the site truly has none, crawlers default to full access (fine), but add one to be explicit.")
+        notes.append("Could not fetch robots.txt. If the site truly has none, crawlers default to full access (fine), but add one to be explicit.")
 
     # --- llms.txt: a curated guide for AI agents ---
     # Honest status (2026): Google says it ignores llms.txt, but Anthropic
     # recommends it, OpenAI publishes them, and Perplexity has been seen
-    # reading them. It costs 20 minutes — cheap insurance, not a magic bullet.
+    # reading them. It costs 20 minutes: cheap insurance, not a magic bullet.
     try:
         llms = load(root + "/llms.txt")
         if llms.strip():
-            passes.append("AEO: llms.txt present — AI agents get a curated guide to the business.")
+            passes.append("AEO: llms.txt present, so AI agents get a curated guide to the business.")
     except Exception:
         notes.append("No llms.txt found. Optional (Google ignores it) but Anthropic/OpenAI agent "
-                     "tooling reads it — a 20-minute add for extra AI visibility.")
+                     "tooling reads it: a 20-minute add for extra AI visibility.")
 
 
-def check_staging_local(passes: list, warns: list, notes: list):
+def check_staging_local(passes: list, warns: list, notes: list, fails: list = None,
+                        root: str = None):
     """The half of the staging exception that is a property of the SITE
-    rather than of any page: docs/robots.txt. The per-page half is in
-    audit(). Both have to be true or the exception is not actually in
-    force, and checking only the tags would have missed the file."""
-    path = os.path.join(SITE_DIR, "robots.txt")
+    rather than of any page: docs/robots.txt and docs/llms.txt. The per-page
+    half (the noindex tag and the visible banner) is in staging_page_findings.
+
+    BOTH DIRECTIONS, 3.94. While STAGING is True, robots.txt must disallow
+    everything and llms.txt must say the site is not live. Once it is False,
+    either one left behind is a CRITICAL: the pre-launch sweep simulated the
+    flip and this check passed a site whose llms.txt still told assistants
+    to read the old WordPress site, because it only ever looked one way.
+
+    SITE_DIR is resolved when this is CALLED, so the tests can point it at a
+    temporary directory."""
+    fails = fails if fails is not None else warns
+    root = root or SITE_DIR
+    path = os.path.join(root, "robots.txt")
     try:
         with open(path, encoding="utf-8") as f:
             body = "\n".join(line.split("#")[0] for line in f.read().splitlines())
     except OSError:
+        body = None
         (warns if STAGING else notes).append(
             f"**No `{path}`.** While the build is staging this file is what stops a crawler "
             f"fetching the pages at all; the meta tags are the second line, not the first.")
+    if body is not None:
+        blocks_all = re.search(r"(?im)^\s*disallow:\s*/\s*$", body) is not None
+        if STAGING and blocks_all:
+            passes.append("`docs/robots.txt` disallows everything, which is correct while the "
+                          "shop's real site is still live. It comes off at cutover, together with "
+                          "the pages' noindex tags.")
+        elif STAGING:
+            warns.append("**`docs/robots.txt` does not disallow everything and the build is still "
+                         "staging.** The pages are noindexed but nothing is stopping a crawler "
+                         "reading them. Add `Disallow: /` under `User-agent: *`.")
+        elif blocks_all:
+            fails.append("**`docs/robots.txt` still disallows everything and `STAGING` is off.** "
+                         "The site is live and invisible. This is the staging file; replace it with "
+                         "the open one that names the sitemap and blocks no AI crawler.")
+        elif not re.search(r"(?im)^\s*sitemap:\s*https://tricountycollision\.com/sitemap\.xml\s*$",
+                           body):
+            warns.append("**`docs/robots.txt` is open but does not name the sitemap.** Add "
+                         "`Sitemap: https://tricountycollision.com/sitemap.xml`.")
+        else:
+            passes.append("`docs/robots.txt` is open and names the sitemap, so crawlers and AI "
+                          "agents can read the site.")
+
+    lpath = os.path.join(root, "llms.txt")
+    try:
+        with open(lpath, encoding="utf-8") as f:
+            llms = f.read()
+    except OSError:
         return
-    blocks_all = re.search(r"(?im)^\s*disallow:\s*/\s*$", body) is not None
-    if STAGING and blocks_all:
-        passes.append("`docs/robots.txt` disallows everything, which is correct while the "
-                      "shop's real site is still live. It comes off at cutover, together with "
-                      "the pages' noindex tags.")
+    marked = LLMS_STAGING_MARK.lower() in llms.lower()
+    if STAGING and marked:
+        passes.append("`docs/llms.txt` tells assistants this build is not live yet, which is "
+                      "true until cutover.")
     elif STAGING:
-        warns.append("**`docs/robots.txt` does not disallow everything and the build is still "
-                     "staging.** The pages are noindexed but nothing is stopping a crawler "
-                     "reading them. Add `Disallow: /` under `User-agent: *`.")
-    elif blocks_all:
-        warns.append("**`docs/robots.txt` still disallows everything and `STAGING` is off.** "
-                     "The site is live and invisible. This is the staging file; replace it with "
-                     "the open one that names the sitemap and blocks no AI crawler.")
+        warns.append(f"**`docs/llms.txt` has lost its staging paragraph** (\"{LLMS_STAGING_MARK}\") "
+                     "while the build is still staging. An assistant reading it would take this "
+                     "build for the shop's live site.")
+    elif marked or re.search(r"\bstaging\b", llms, re.I):
+        fails.append("**`docs/llms.txt` still carries staging language and `STAGING` is off.** "
+                     "It tells every assistant that reads it that this site is not the shop's "
+                     "live site. Rewrite the staging paragraph as part of the cutover commit.")
     else:
-        passes.append("`docs/robots.txt` is open, so crawlers and AI agents can read the site.")
+        passes.append("`docs/llms.txt` carries no staging language.")
+
+
+def staging_page_findings(html_text: str, is_stub: bool = False) -> tuple:
+    """(passes, warns, fails) for one page's visible staging banner and, on
+    a redirect stub, its noindex tag. A real page's noindex is scored in
+    audit() itself, which has always run both ways.
+
+    While STAGING is True a real page MISSING the banner warns: a human who
+    opens a noindexed page should be told why. Once it is False, a banner is
+    a CRITICAL, and so is a noindex left on a stub. Comments are stripped
+    first, so a comment that mentions the banner is not the banner."""
+    passes, warns, fails = [], [], []
+    bare = re.sub(r"(?s)<!--.*?-->", " ", html_text)
+    has_banner = STAGING_BANNER_RE.search(bare) is not None
+    if is_stub:
+        noindex = re.search(r'<meta\s+name="robots"[^>]*noindex', bare, re.I) is not None
+        if not STAGING and noindex:
+            fails.append("**This redirect stub is still noindexed and `STAGING` is off.** The "
+                         "stub's noindex comes off with every page's at cutover. Run "
+                         "`scripts/sync-chrome.py`.")
+        if has_banner:
+            fails.append("**A redirect stub carries the staging banner.** A stub stays bare.")
+        return passes, warns, fails
+    if STAGING and has_banner:
+        passes.append("Carries the visible staging banner, so a human who opens it knows why "
+                      "it is not indexed.")
+    elif STAGING:
+        warns.append("**No visible staging banner, and the build is still staging.** Run "
+                     "`scripts/sync-chrome.py`, which writes it from `STAGING`.")
+    elif has_banner:
+        fails.append("**The staging banner is still on this page and `STAGING` is off.** Every "
+                     "visitor to the live site is told it is not the live site. Run "
+                     "`scripts/sync-chrome.py`, which removes it.")
+    else:
+        passes.append("No staging banner: `STAGING` is off and the page says nothing about it.")
+    return passes, warns, fails
+
+
+def icon_findings(html_text: str, page_rel: str, site_dir: str = None) -> tuple:
+    """(passes, fails) for one real page's favicon links, 3.94. Every
+    ICON_LINKS entry must be linked from the head at the page's own relative
+    path, and its file must exist under docs/. The sweep found none on any
+    page while the live site has one, so cutover would have dropped the mark
+    Google shows beside every result."""
+    site_dir = site_dir or SITE_DIR
+    head = html_text.split("</head>", 1)[0]
+    prefix = "../" * page_rel.count("/")
+    missing = []
+    for rel, attrs, path in ICON_LINKS:
+        want = f'<link rel="{rel}"' + (f" {attrs}" if attrs else "") + f' href="{prefix}{path}">'
+        if want not in head:
+            missing.append(want)
+        elif not os.path.isfile(os.path.join(site_dir, path)):
+            missing.append(f"the file docs/{path}")
+    if missing:
+        return [], [f"**Favicon set incomplete: missing {'; '.join(f'`{m}`' for m in missing)}.** "
+                    "Run `scripts/sync-chrome.py`; the files come from "
+                    "`scripts/prepare-favicon.py`."]
+    return [f"Links the shop's favicon set: {len(ICON_LINKS)} icon links, every file present."], []
 
 
 def visible_text(html: str) -> str:
@@ -1496,6 +1704,15 @@ def check_brand_count_local(passes: list, warns: list, fails: list,
     distinct = sorted(seen)
     total = sum(len(found[k]) for k in found)
 
+    # "12+" IS RULED OUT, 3.94. It reads as the same count above, because it
+    # is the same claim, but Greg ruled the site says 12: a "+" beside a list
+    # of exactly twelve promises brands nobody has named.
+    plus = sorted({f"`{pth}` ({kind})" for kind in ("text", "schema")
+                   for pth, _n, snip in found[kind] if BRAND_PLUS_RE.search(snip)})
+    if plus:
+        fails.append(f"**A brand count carries a \"+\":** {', '.join(plus)}. The site says "
+                     f"{BRAND_COUNT}, by Greg's ruling of 2026-10-09 (proposed-changes.md 3.94).")
+
     if len(distinct) > 1:
         where = "; ".join(
             "**{}** from {}".format(
@@ -1519,6 +1736,80 @@ def check_brand_count_local(passes: list, warns: list, fails: list,
             f"text and {len(found['schema'])} in JSON-LD, all saying {BRAND_COUNT}. "
             "The live site's own carousel shows fourteen against its prose's dozen; this "
             "is the check that keeps that from happening here.")
+
+
+def find_brand_lists(root: str = None) -> list:
+    """Every brand list under docs/, as (page_rel, kind, names, snippet),
+    kind "text" or "schema". Comments and scripts are stripped from the
+    visible text first, as everywhere else."""
+    root = root or SITE_DIR
+    canon = {b.lower(): b for b in BRANDS}
+    other = {b.lower(): b for b in OTHER_BRANDS}
+    tok = re.compile(r"(?<![\w-])" + _BRAND_TOKEN + r"(?![\w-])", re.I)
+    out = []
+    for dirpath, _dirs, files in os.walk(root):
+        for name in sorted(files):
+            if not name.endswith((".html", ".txt")):
+                continue
+            path = os.path.join(dirpath, name)
+            try:
+                with open(path, encoding="utf-8") as f:
+                    raw = f.read()
+            except OSError:
+                continue
+            rel = os.path.relpath(dirpath, root).replace(os.sep, "/")
+            rel = "" if rel == "." else rel + "/"
+            sources = []
+            if name.endswith(".html"):
+                sources.append(("text", visible_text(raw)))
+                sources += [("schema", m.group(1)) for m in JSONLD_RE.finditer(raw)]
+            else:
+                sources.append(("text", raw))
+            for kind, text in sources:
+                for m in BRAND_LIST_RE.finditer(text):
+                    names = [canon.get(t.lower()) or other.get(t.lower()) or t
+                             for t in tok.findall(m.group(0))]
+                    out.append((rel if name == "index.html" else rel + name, kind, names,
+                                m.group(0)))
+    return out
+
+
+def brand_list_findings(lists: list) -> tuple:
+    """(fails, notes, n_checked) for the lists find_brand_lists returns."""
+    fails, notes = [], []
+    half = (len(BRANDS) + 1) // 2
+    for page, kind, names, snip in lists:
+        outside = sorted({n for n in names if n not in BRANDS})
+        named = {n for n in names if n in BRANDS}
+        where = f"`{page or '/'}` ({kind})"
+        if outside:
+            fails.append(
+                f"**A brand list names {', '.join(outside)}, which BRANDS does not carry,** in "
+                f"{where}: \u201c{snip}\u201d. The site claims only the {len(BRANDS)} in BRANDS "
+                f"until the owner confirms another (proposed-changes.md question 6b).")
+        elif len(named) >= half and len(named) < len(BRANDS):
+            missing = [b for b in BRANDS if b not in named]
+            if page in BRAND_LISTS_HELD:
+                notes.append(f"**A short brand list is held, not passed,** in {where}: missing "
+                             f"{', '.join(missing)}. {BRAND_LISTS_HELD[page]}")
+            else:
+                fails.append(
+                    f"**A list of {len(named)} brands leaves out {', '.join(missing)},** in "
+                    f"{where}: \u201c{snip}\u201d. A list naming half or more of BRANDS is the "
+                    f"list, and names all {len(BRANDS)}; a few examples are fine.")
+    return fails, notes, len(lists)
+
+
+def check_brand_lists_local(passes: list, fails: list, notes: list, root: str = None):
+    """THE BRAND LISTS, READ RATHER THAN COUNTED, 3.94. See BRAND_LIST_RE."""
+    f, n, count = brand_list_findings(find_brand_lists(root))
+    fails += f
+    notes += n
+    if not f:
+        passes.append(f"Every brand list on the site names only the {len(BRANDS)} in BRANDS, "
+                      f"and every list long enough to be the list names all of them "
+                      f"({count} list{'' if count == 1 else 's'} read"
+                      f"{', ' + str(len(n)) + ' held on an owner question' if n else ''}).")
 
 
 # --- Town-page variance, the areas tier's gate (3.62) -------------------
@@ -3082,7 +3373,7 @@ def audit(source: str, coverage: dict = None):
     if len(h1s) == 0:
         fails.append("**No H1 heading.** Every page needs exactly one H1 containing the main service + location.")
     elif len(h1s) > 1:
-        warns.append(f"**{len(h1s)} H1 headings found** — use exactly one; demote the rest to H2.")
+        warns.append(f"**{len(h1s)} H1 headings found.** Use exactly one; demote the rest to H2.")
     else:
         passes.append(f"Exactly one H1: “{h1s[0][:80]}”")
 
@@ -3243,20 +3534,20 @@ def audit(source: str, coverage: dict = None):
                     if LOCAL_BUSINESS_TYPES.intersection(names):
                         business_nodes.append(item)
         except (json.JSONDecodeError, AttributeError):
-            warns.append("**A JSON-LD block failed to parse** — broken structured data is invisible to Google. Validate at validator.schema.org.")
+            warns.append("**A JSON-LD block failed to parse.** Broken structured data is invisible to Google. Validate at validator.schema.org.")
     if types:
         passes.append(f"Structured data found: {', '.join(types)}.")
         if not LOCAL_BUSINESS_TYPES.intersection(types):
-            warns.append("**No LocalBusiness-type schema detected.** For a local business this is the #1 upgrade — add name, address, phone, hours, and geo as JSON-LD.")
+            warns.append("**No LocalBusiness-type schema detected.** For a local business this is the #1 upgrade: add name, address, phone, hours, and geo as JSON-LD.")
     else:
-        fails.append("**No structured data (JSON-LD) at all.** This is how you speak directly to Google's machines and AI search. Most competitors are missing it — easy win.")
+        fails.append("**No structured data (JSON-LD) at all.** This is how you speak directly to Google's machines and AI search. Most competitors are missing it, so it is an easy win.")
 
     # --- AEO: is the page built to BE the answer? ---
     # AI assistants and Google's AI Overviews lift answers from pages that
     # ask the question and answer it directly. FAQPage schema + real Q&A
     # text is the closest thing to raising your hand.
     if "FAQPage" in types:
-        passes.append("AEO: FAQPage schema present — the page offers ready-made Q&As for AI answers and rich results.")
+        passes.append("AEO: FAQPage schema present: the page offers ready-made Q&As for AI answers and rich results.")
     elif "faq-schema" in exempt and not p.faq_visible:
         # Not required, never unmeasured: a page of an exempt kind that DOES
         # show a visible FAQ falls through to the warning below and to the
@@ -3264,7 +3555,7 @@ def audit(source: str, coverage: dict = None):
         notes.append(f"**No FAQPage schema, not measured here.** {exempt_why}")
     else:
         warns.append("**AEO gap: no FAQPage schema.** Add a real FAQ section (the questions customers "
-                     "actually call to ask) marked up as FAQPage — it's the closest thing to raising "
+                     "actually call to ask) marked up as FAQPage; it's the closest thing to raising "
                      "your hand when an AI assembles an answer.")
 
     # --- FAQ mirror: does the schema say what the page says? ---
@@ -3454,9 +3745,9 @@ def audit(source: str, coverage: dict = None):
     # because that one is a real defect.
     og_d = p.meta.get("og:description", "").strip()
     if not (p.meta.get("og:title") and og_d):
-        warns.append("**Missing Open Graph tags** (og:title / og:description) — shared links will look broken or bare on Facebook/LinkedIn.")
+        warns.append("**Missing Open Graph tags** (og:title / og:description), so shared links will look broken or bare on Facebook/LinkedIn.")
     else:
-        passes.append(f"Open Graph tags present ({len(og_d)}-char og:description) — the site will look right when shared on social.")
+        passes.append(f"Open Graph tags present ({len(og_d)}-char og:description), so the site will look right when shared on social.")
         if len(og_d) > 160:
             notes.append(f"og:description is {len(og_d)} characters, past the 160 the meta description keeps. House consistency rule, not a spec: trim it when convenient, preserving the promises over the connectives. “{og_d[:80]}…”")
 
@@ -3469,7 +3760,7 @@ def audit(source: str, coverage: dict = None):
     if p.has_viewport:
         passes.append("Mobile viewport tag present (site is mobile-friendly at the HTML level).")
     else:
-        fails.append("**No viewport meta tag** — Google indexes mobile-first; this is a must-fix.")
+        fails.append("**No viewport meta tag.** Google indexes mobile-first; this is a must-fix.")
 
     # See STAGING at the top of this file for why this check is inverted
     # while the build is not live.
@@ -3491,7 +3782,22 @@ def audit(source: str, coverage: dict = None):
                          "crawlable second copy is a second address answering for one business. "
                          "Add the tag, or set `STAGING = False` if this really is cutover day.")
     elif "noindex" in robots:
-        fails.append("**Page is set to NOINDEX** — it is telling Google to ignore it entirely. Fix immediately unless intentional.")
+        fails.append("**Page is set to NOINDEX.** It is telling Google to ignore it entirely. Fix immediately unless intentional.")
+
+    # --- The staging banner and the favicon set, 3.94 ---
+    # Only for a file that lives under docs/: a fabricated test page is
+    # not a page of this site and carries neither.
+    if not is_url(source):
+        _in = os.path.relpath(os.path.dirname(os.path.abspath(source)),
+                              os.path.abspath(SITE_DIR)).replace(os.sep, "/")
+        if not _in.startswith(".."):
+            sp, sw, sf = staging_page_findings(html)
+            passes += sp
+            warns += sw
+            fails += sf
+            ip, ifl = icon_findings(html, "" if _in == "." else _in + "/")
+            passes += ip
+            fails += ifl
 
     # --- Images ---
     missing_alt = [src for src, alt in p.images if alt is None or not alt.strip()]
@@ -3813,7 +4119,7 @@ def main():
         # load() reaches the network for a live URL, and every network
         # error is an exception: DNS, TLS, timeout, 500, a redirect loop.
         # Uncaught, that ends the process with a traceback, no report file
-        # is written, and the weekly agent has nothing to read — which is
+        # is written, and the weekly agent has nothing to read, which is
         # exactly how the 2026-08-17 scheduled run died on a transient DNS
         # failure at the runner. A page we cannot read is a finding, so
         # record it as a critical against that page and keep going.
@@ -3834,9 +4140,10 @@ def main():
     if live:
         check_ai_access(live[0], site_warns, site_passes, site_notes)
     else:
-        check_staging_local(site_passes, site_warns, site_notes)
+        check_staging_local(site_passes, site_warns, site_notes, site_fails)
         check_review_count_local(site_passes, site_warns, site_fails, site_notes)
         check_brand_count_local(site_passes, site_warns, site_fails, site_notes)
+        check_brand_lists_local(site_passes, site_fails, site_notes)
         check_town_variance_local(site_passes, site_warns, site_fails, site_notes)
         check_chrome_local(site_passes, site_fails)
         check_asset_provenance_local(site_passes, site_warns, site_fails, site_notes)
@@ -3870,7 +4177,7 @@ def main():
 
     lines = [
         "# SEO + AEO Audit Report", "",
-        f"**Site score: {site_score}/100** — {len(perfect)} of {len(results)} "
+        f"**Site score: {site_score}/100**: {len(perfect)} of {len(results)} "
         f"{'page' if len(results) == 1 else 'pages'} at 100/100{mix}",
         f"**{total_pass} passing · {total_warn} warnings · {total_fail} critical** across the site",
         "",
@@ -3885,15 +4192,15 @@ def main():
 
     if site_passes or site_warns or site_notes or site_fails:
         lines += ["## Site-wide", ""]
-        lines += section("🔴 Critical — fix these first", site_fails)
-        lines += section("🟡 Warnings — worth fixing", site_warns)
+        lines += section("🔴 Critical: fix these first", site_fails)
+        lines += section("🟡 Warnings: worth fixing", site_warns)
         lines += section("🟢 Passing", site_passes)
         lines += section("ℹ️ Notes (optional improvements)", site_notes)
 
     for r in results:
-        lines += [f"## Page: `{r['source']}` — {r['score']}/100", ""]
-        lines += section("🔴 Critical — fix these first", r["fails"])
-        lines += section("🟡 Warnings — worth fixing", r["warns"])
+        lines += [f"## Page: `{r['source']}`: {r['score']}/100", ""]
+        lines += section("🔴 Critical: fix these first", r["fails"])
+        lines += section("🟡 Warnings: worth fixing", r["warns"])
         lines += section("🟢 Passing", r["passes"])
         lines += section("ℹ️ Notes (optional improvements)", r["notes"])
 

@@ -13,10 +13,14 @@
 # makes sure any signal that does leak lands on the real site rather than on
 # a staging address.
 #
-# AT CUTOVER, ALL THREE COME OFF TOGETHER, and not one minute before. Nobody
-# should ever "fix" this file: it is doing its job. scripts/audit.py fails any
-# page that is MISSING its noindex while STAGING is on, so the two cannot
-# drift apart.
+# AT CUTOVER, ALL OF IT COMES OFF TOGETHER, and not one minute before: the
+# switch, the noindex tags and the visible banners (scripts/sync-chrome.py
+# does both from the switch), this file, and llms.txt's staging paragraph.
+# The procedure is in CLAUDE.md, amended 2026-10-09 (proposed-changes.md
+# 3.94). Nobody should ever "fix" this file before then: it is doing its
+# job. scripts/audit.py fails any page that is MISSING its noindex while
+# STAGING is on, and fails this file as a critical if it still disallows
+# everything once STAGING is off, so the two cannot drift apart.
 #
 # What replaces this at cutover is an OPEN robots.txt with the sitemap line
 # and no Disallow, because AEO doctrine says the major AI crawlers stay

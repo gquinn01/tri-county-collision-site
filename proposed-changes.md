@@ -15585,6 +15585,164 @@ en dash was added.
 
 ---
 
+### 3.94 The sweep's findings ship: the mechanical fixes, the flip repair, three conformance rewrites. BUILT 2026-10-09
+
+Greg's ruling of 2026-10-09, on the pre-launch sweep of the same day (the
+report lives outside the repo, `../tri-county-sweep-2026-10-09.md`). Jobs 1,
+2 and 3 were authorized by the ruling and ship in this commit. Job 4, the
+drafted copy, waits on Greg's approval and ships as a second commit.
+
+#### Before and after, every text change
+
+| Page | Where | Before | After | Why |
+|---|---|---|---|---|
+| deer-season | FAQ 2, visible AND schema | insurersmay | insurers may | typo, both renderings |
+| critical-questions | body | find thebest collision | find the best collision | typo |
+| critical-questions | body | exactlywhat's covered | exactly what's covered | typo |
+| critical-questions | body | as our customers often tell us , typically | as our customers often tell us, typically | stray space |
+| collision-repair-near-me | body | back in topshape. | back in top shape. | typo |
+| /blog/ | the near-me excerpt | At Tri-County Collision , we | At Tri-County Collision, we | stray space, fixed at its source: `migrate-blog.py`'s `first_sentence` closes punctuation up on the word before it, because `text_of` turns the closing `</a>` into a space |
+| unveiling-the-hidden-benefits | two anchors | `href="../collision-repair/">paintless dent repair` (and "... (PDR).") | `href="../paintless-dent-repair/">` | the live post's own links, migrated faithfully, pointed the words at the wrong page |
+| /collision-repair/ | Why Choose list, the OEM FAQ visible AND schema | factory-certified for 12+ vehicle brands (x3) | factory-certified for 12 vehicle brands | Greg's ruling: 12, beside a list of exactly twelve (4.1's open "pick one", answered) |
+| critical-questions | review sentence (Job 3) | For example, Tri-County Collision is proud of our "EXCELLENT" rating based on over 231 verified Google reviews. | For example, Tri-County Collision has 274 Google reviews: 4.9 stars on Google, counted on September 10, 2026. | the tracked figures in the stat band's own words; "EXCELLENT" (the retired widget's adjective, 4.4) and "verified" do not survive |
+| critical-questions | brand list (Job 3) | including Dodge, Ram, Kia, Infiniti, Chrysler, Jeep, GM, Hyundai, Fiat, Subaru, Ford, and Nissan, | including Subaru, Nissan, Kia, Jeep, INFINITI, Hyundai, GM, Ford, Dodge, Chrysler, Acura, and Honda, | `BRANDS`, in the strip's order. Ram and Fiat stay owner question 6b; the site claims only the twelve |
+| what-do-all-those-lights | Transmission Temperature (Job 3) | Indicator light means the engine temperature has exceeded normal limits. Check coolant level, fan operation, radiator cap, coolant leaks. | Indicator light means the transmission fluid temperature has exceeded normal limits. Pull over safely, let the vehicle cool, and have the transmission checked before driving on. | the entry duplicated Engine Temperature word for word; Greg's text, in its neighbors' "Indicator light means..." grammar |
+
+**Not changed, and flagged for a ruling:** the three Job 3 posts keep their
+`dateModified`, the live post's own date, as every migrated post does
+(3.57). Their substance changed today. Whether a conformance rewrite
+freshens the date is Greg's call.
+
+**Internal text brought current:** `docs/README.md` rewritten to the site as
+it stands (it still said one page was built and the homepage did not exist);
+the sixteen posts' head comment "the four-service footer" now reads "the
+footer listing every service in SERVICES", which names the constant rather
+than a count, and so does `migrate-blog.py`'s template; `site.js`'s header no
+longer says "No form handler yet", and says why there is none. **Em dashes:**
+25 lines in `scripts/audit.py` (24 literal, one `\u2014` escape, several of
+them in the strings the weekly client report prints) and 13 in `CLAUDE.md`,
+each replaced by the punctuation the sentence wanted. Outside the ruling's
+scope and still carrying them: `migrate-blog.py` 6, `fetch_seo_news.py` 2,
+`agents/google-watcher.md` 5, `scripts/mobile-check.md` 3.
+
+#### The dropdown: a click no longer closes what the hover opened
+
+`site.js`: a desktop mouse resting on a nav item opened its menu on
+`pointerenter`, and the click that followed toggled it shut under the
+reader's pointer. **Now a mouse click on a hover-opened menu leaves it
+open**; leaving the item closes it, as before. The test that tells a mouse
+click from the rest is `e.detail > 0` with the hover flag set: a keyboard's
+click has detail 0, and a touch never sets the flag, so both toggle exactly
+as they did. No motion added. Proved over the real-time CDP pipe against
+HEAD's `site.js` and the new one, aria-expanded/display after each step:
+
+```
+                                               BEFORE        AFTER
+mouse 1440: hover                              true/block    true/block
+mouse 1440: click while hovering               false/none    true/block   <- the bug
+mouse 1440: second click while hovering        true/block    true/block
+mouse 1440: pointer leaves                     false/none    false/none
+mouse 1440: Areas chevron, hover then click    false/none    true/block   <- the bug
+keyboard: Enter / Enter / Space / Escape       T / F / T / F T / F / T / F
+keyboard: Enter while the mouse hovers         false/none    false/none   unchanged
+touch 1440: tap / tap again                    T / F         T / F        unchanged
+touch 390, menu open: tap / tap again          T / F         T / F        unchanged
+```
+
+#### The NE Philadelphia crumb, inside the crumbs-never-wrap law
+
+At 360 the town's own name ended "Philadelp...": the last crumb needed 159px
+and had 156. Each separator spends the flex gap plus its own margin, 16px,
+twice in a town's trail. **At 400px and under both drop from 8px to 6px**,
+which hands the last crumb 8px. Measured after, at 360: natural 157, room
+162.2, **5.2px clear, one line (25px)**; 390: 35.2 clear; 1440 unchanged.
+Every other town crumb fits at 360 and 390; the posts' titles still clip by
+design (3.60).
+
+#### The favicon: the shop's own site icon
+
+`scripts/prepare-favicon.py`, new. Source: the 512x512 original of the site
+icon the live site links (`/wp-content/uploads/Tri-County-Collision-Site-Icon.png`,
+23,502 bytes, fetched 2026-10-09, kept outside the repo). **Provenance read
+through the audit's reader: no DigitalSourceType, no CreatorTool, no C2PA.**
+Unchanged: no redraw, no crop, no recolour.
+
+```
+favicon.ico         4,631 bytes   PNG entries 16 (551), 32 (1,409), 48 (2,617)
+icon-192.png        18,395 bytes
+icon-180.png        16,934 bytes  (apple-touch-icon)
+stripped            sRGB and eXIf from every output; only IHDR/PLTE/tRNS/IDAT/IEND kept
+```
+
+`sync-chrome.py` writes three head links from `audit.ICON_LINKS` on every
+real page (the template carries them too), and **the audit fails a page
+missing any of them or a file missing from `docs/`** (test section 41).
+
+#### The flip repair (Job 2)
+
+**What the sweep proved:** the three-step flip passed the audit at 0
+critical while 37 pages showed "Staging build. Not the live site" and
+`llms.txt` sent assistants to the WordPress site.
+
+- **`sync-chrome.py` now writes the noindex tag and the visible banner from
+  `audit.STAGING`**, on every page (the noindex on the two stubs as well), so
+  the flip is the switch plus one run of it. The two fragments live once, as
+  `STAGING_ROBOTS_META` and `STAGING_BANNER` in `audit.py`.
+- **The generators stop hard-coding them.** `build-town.py`, `migrate-blog.py`
+  and `migrate-hub.py` read `STAGING` and pass every page they write through
+  `sync-chrome.py`'s pass. Test section 40 fails if any of the three carries
+  the tag or the banner as a literal again.
+- **The check runs both directions.** Staging: a page missing its banner
+  warns, and `llms.txt` without its staging paragraph warns. Live: a banner,
+  a noindex (stubs included), a disallow-all `robots.txt` or staging language
+  in `llms.txt` is a CRITICAL; an open `robots.txt` not naming the sitemap
+  warns.
+- **The flip simulation, re-run in scratch copies of this tree:**
+
+```
+the old 3-step flip (switch, sed the tags, open robots)
+    0 critical before 3.94  ->  38 critical now: 37 banners + llms.txt
+the new procedure (switch, sync-chrome, open robots, llms paragraph)
+    sync-chrome wrote 39 pages; 0 noindex tags, 0 banners left
+    917 passing, 37 warnings (sameAs), 0 critical; tests pass on the flipped tree
+```
+
+- **Recorded where it is written down:** CLAUDE.md's staging section,
+  `STAGING`'s comment in `audit.py`, `docs/robots.txt`'s header,
+  `docs/README.md`.
+- **Found while proving it, NOT fixed (outside the ruling):**
+  `build-town.py --all` already fails on HEAD, before this commit:
+  `assert len(figs) == 5 and len(pick) == 3` meets 6 figures, the sixth
+  Real Repairs pair of 3.92. The generator cannot rebuild a town page today
+  either way, so its STAGING change was proved by the checks rather than by a
+  rebuild.
+
+#### Two checks hardened, both mutation-proven (test sections 38 and 39)
+
+- **The review count.** `REVIEW_COUNT_RE` allowed only "google" between the
+  number and "reviews", so "over 231 verified Google reviews" was never read,
+  and the check reported 18 places agreeing. It now allows up to three words
+  between them, reads a comma only as a thousands separator, and skips a
+  year followed by words ("In 2019 our customers left reviews"). The sweep's
+  sentence is the fixture: it FAILS now, and the same fixture under the
+  pre-3.94 pattern PASSES, which is the proof the hardening is what catches
+  it. Across the site it now reads 19 places, all 274.
+- **The brand lists.** The brand check counted; it now also READS every run
+  of three or more brand names, in visible text and in JSON-LD. Critical: a
+  name outside `BRANDS` (`OTHER_BRANDS` holds the rest of the market), or a
+  list naming half of `BRANDS` or more that leaves any out. A list of a few
+  examples passes. **One list is held, not passed:** the lights post's 2023
+  eleven, without Subaru, which is owner question 28, recorded in
+  `BRAND_LISTS_HELD` and reported as a note. **Mutation:** with list reading
+  removed, the Ram-and-Fiat list and a list missing Honda and Acura both
+  pass. 30 lists on the site read, 0 failing.
+- **"12+" is now a critical** beside the count check, by the same ruling as
+  the edit above; mutation-proven the same way.
+
+**Suite at commit:** `test-sitemap-expansion` and `test-audit-checks` pass,
+every `--check` current, `audit.py --strict` 954 passing (878 before), the 37
+standing sameAs warnings, **0 critical**.
+
 ## 4. The claims list
 
 Every claim the migrated page carries. All of them come from the live site, so
@@ -16085,7 +16243,9 @@ Greg as well as the owner.
 
 **Batch 2** (3.58)
 
-- **Post 9, critical questions: a warranty with terms.** "Reputable shops,
+- **Post 9, critical questions.** (3.94: its stale "EXCELLENT ... over 231
+  verified Google reviews" now carries the tracked 274 and 4.9, and its brand
+  list is the twelve; Ram and Fiat stay question 6b.) **A warranty with terms.** "Reputable shops,
   including Tri-County Collision, offer a lifetime warranty on paint and
   workmanship for as long as you own [the vehicle]". This is the most
   specific warranty statement anywhere on the site, and it is exactly 4.1's

@@ -388,7 +388,7 @@ illustration as over a photograph.
 Measured over a white photo pixel, `--silver` needs alpha .758 on ink to clear
 7:1 and .849 on ox; `--silver-2` needs .858 on ink and **.981 on ox**, because
 `--silver-2` on solid ox is only 7.34 to begin with. **So there is no secondary
-text tone on an ox hero** — the lead and the breadcrumb are `--silver` there.
+text tone on an ox hero**: the lead and the breadcrumb are `--silver` there.
 On ink, where `--silver-2` reads 10.78, the hierarchy stays.
 
 **Superseded rule, kept for the record: home is full-bleed, service pages are
@@ -415,7 +415,7 @@ scrolls through deciding, but a front door routes rather than argues.
 
 **Superseded 2026-09-10 on the client's ruling: the hero is text over
 photograph.** The photo-above-panel arrangement is gone. The type sits on the
-image inside a scrim — anchored left at 600px and up so the right of the frame
+image inside a scrim, anchored left at 600px and up so the right of the frame
 stays photograph, anchored to the bottom edge below that. Copy unchanged; this
 was arrangement and motion.
 
@@ -434,7 +434,7 @@ photograph the type never touches; sample every composited pixel in those runs
 against the element's own computed colour.
 
 **Floor 4.5:1 anywhere under a glyph box. Target 7:1 for body-size text.** If
-the photograph defeats the scrim, **the scrim deepens** — the standard does not
+the photograph defeats the scrim, **the scrim deepens**: the standard does not
 move, the type gets no shadow, the photograph gets no blur. Measured worst
 cases live in `proposed-changes.md` 3.20.
 
@@ -442,7 +442,7 @@ cases live in `proposed-changes.md` 3.20.
 
 **Motion may also fire once on page load, in the hero only.** The photograph
 fades up over 500ms and the copy follows 200ms behind over 500ms. **Opacity
-only** — no translation, scale, Ken Burns, parallax or carousel. Once per load,
+only**: no translation, scale, Ken Burns, parallax or carousel. Once per load,
 never on scroll, never on a loop.
 
 This contradicts "nothing animates on load", which is amended rather than
@@ -453,7 +453,7 @@ single fade of the thing they are already looking at does not.
 **The guard is the whole implementation.** Base opacity is 1 in the cascade;
 the fade exists only as keyframes inside `prefers-reduced-motion:
 no-preference`, starting from 0 *inside* the keyframes. Reduced motion, an old
-browser, a half-loaded stylesheet, JavaScript off — all rest with everything
+browser, a half-loaded stylesheet, JavaScript off: all rest with everything
 visible. **Nothing on this site is ever hidden waiting for an animation to
 reveal it.**
 
@@ -496,7 +496,7 @@ now **ink filled with silver text and the silver hairline**, exactly as the
 header's button is oxblood filled with silver text and the silver hairline. The
 fill is whichever dark the ground is not; the hairline is what gives the shape
 an edge. Labels read at 11.04 and 16.21. **The Email ghost button beside it is
-unchanged on either ground** — it is a border and a label already.
+unchanged on either ground**: it is a border and a label already.
 
 **6. The palette is four colours, two text shades and one highlight ground**, and gold is not one of
 them any more. Oxblood means act and nothing else: two oxblood bands per page,
@@ -520,7 +520,7 @@ label ground on the AFTER chip only.** The Real Repairs pairs fill their AFTER
 chip in `--ox` with a `--silver` hairline, while the BEFORE chip keeps its
 white fill and ink edge. The asymmetry is the ruling: the outcome is the
 branded moment and the wreck is not. **The test for a fourth case is whether
-the element asks the reader to do something, and a chip does not** — it cannot
+the element asks the reader to do something, and a chip does not**: it cannot
 be clicked, it is not a target, it names which photograph you are looking at.
 Recorded in the palette note in `docs/assets/site.css` beside the other two
 extensions, and measured per frame in `proposed-changes.md` 3.33.
@@ -561,7 +561,7 @@ colour**: darkest #676767, median #ABABAB, p75 #CACACA, highlight #E6E8E8.
 median is what the eye calls the silver and it is unusable as a ground:
 `--ink-2` measures 4.27 on it and `--ox-tx` 3.90, so secondary and small accent
 text both fail. The rule taken was **the lightest stop the wordmark actually
-contains** — the highlight where the chrome catches the light — which is
+contains**, the highlight where the chrome catches the light, which is
 **#E6E8E8**.
 
 **The ground was then lifted, and the rule is one step longer for it.** At
@@ -569,7 +569,7 @@ contains** — the highlight where the chrome catches the light — which is
 14.09 where the cream gave 16.21. The second step: **take the highlight and
 lift its lightness, keeping its channel relationship exactly.** The highlight
 is rgb(230,232,232), neutral with a +2 cool cast; the ground is
-**rgb(240,242,242)** — ten lighter, same cast, same hue, `--ink` at **15.42**.
+**rgb(240,242,242)**: ten lighter, same cast, same hue, `--ink` at **15.42**.
 It is no longer a pixel the wordmark contains, and saying otherwise would be
 the kind of provenance claim these records exist to prevent. What it still is:
 the logo's silver, brighter.
@@ -593,7 +593,7 @@ a point. The temperature moved and the contrast very nearly did not.
 palette law allows exactly this one exception, and only as a dated, recorded
 decision; this is the record. The two oxblood act bands (and, since 3.91, the
 service pages' navigation band, which wears the same class) carry a gradient taken
-from **the logo's own swoosh** — the mark's red sweep runs dark, bright, dark
+from **the logo's own swoosh**: the mark's red sweep runs dark, bright, dark
 across its length, and the chrome sweep beneath it does the same in grey. At
 band scale that reads as light falling across a painted panel.
 
@@ -601,13 +601,13 @@ band scale that reads as light falling across a painted panel.
 band is `--ox` exactly and the ends are a deeper oxblood, so **oxblood still
 means act from the first pixel**. A version starting in `--ink` was drawn and
 rejected for that reason: an act band would have spent its first screen
-looking structural. The deep end is **derived, not invented** — `color-mix()`
+looking structural. The deep end is **derived, not invented**: `color-mix()`
 takes it from `--ox-dk` and `--ink`, both already in the palette, so no fifth
 colour is typed into the stylesheet.
 
 Text gets *more* readable toward the ends, not less: 11.04 on `--ox`, 13.02 on
 `--ox-dk`, 14.38 at the deep end. **Nothing else on this site gets a
-gradient** — not text, not a button, not a card, not an accent.
+gradient**: not text, not a button, not a card, not an accent.
 
 **7. The lift, adopted 2026-09-10. A mold behaviour: every card on every page
 gets it and nobody re-decides it per page.** A `.card`, `.step` or `.svc`
@@ -738,7 +738,7 @@ date, here and in `site.css`, and the answer is expected to be no.
 
 **Extended 2026-09-23 on the client's ruling: the strip is a COMPONENT, and a
 page carries at most one.** That sentence used to end "on this page or any
-other", which made the strip a property of the home page. It is not — it is
+other", which made the strip a property of the home page. It is not; it is
 the one thing on this site that may loop, and a service page may carry one.
 `/collision-repair/` now carries it inside `#factory-certified`, whose subject
 it is, and from 2026-09-24 `/commercial-collision-repair/` carries it inside
@@ -855,16 +855,54 @@ is not. The audit also checks `docs/robots.txt` itself, because tags without
 the file is only half the exception. Every scored page carries a note naming
 the exception, so nobody reading a report has to wonder.
 
-**At cutover, all three come off in one commit**: set `STAGING = False`,
-strip the meta tag from every page, and replace `docs/robots.txt` with an
-open one that names the sitemap and blocks no AI crawler (GPTBot,
-OAI-SearchBot, ClaudeBot, anthropic-ai, PerplexityBot and Google-Extended
-stay welcome). Flipping the switch before the tags come off fails every
-page, which is the correct alarm and not a bug. Record the date here when it
-happens.
+**The pages also carry a visible staging banner, and `docs/llms.txt` a
+staging paragraph.** A human who opens a page should not have to read the
+head to find out why it is not indexed, and an assistant reading `llms.txt`
+should be sent to the live site. Both are staging machinery exactly like the
+three above, and both come off with them.
 
-The pages also carry a visible staging banner. A human who opens one should
-not have to read the head to find out why it is not indexed.
+### The flip, amended 2026-10-09 (`proposed-changes.md` 3.94)
+
+**The flip used to be three steps, and the pre-launch sweep proved it
+incomplete.** Simulated in a scratch copy, it passed the audit at 0 critical
+while 37 pages still told every visitor "Staging build. Not the live site"
+and `llms.txt` still sent assistants to the WordPress site. Nothing wrote the
+banner from the switch, nothing removed it, and no check looked.
+
+**At cutover, all of it comes off in ONE commit:**
+
+```
+1. scripts/audit.py        STAGING = False
+2. python3 scripts/sync-chrome.py
+                           takes the noindex tag off every page and both
+                           redirect stubs, and the visible banner off every
+                           page: it writes both from STAGING
+3. docs/robots.txt         replaced with an open one: Sitemap:
+                           https://tricountycollision.com/sitemap.xml, no
+                           Disallow, no AI crawler blocked (GPTBot,
+                           OAI-SearchBot, ClaudeBot, anthropic-ai,
+                           PerplexityBot and Google-Extended stay welcome)
+4. docs/llms.txt           the "THIS SITE IS NOT LIVE YET" paragraph
+                           rewritten; no staging language left in the file
+```
+
+Then the suite, as for any commit. **With `STAGING = False`, a noindex tag, a
+banner, a disallow-all `robots.txt` or staging language in `llms.txt` is a
+CRITICAL**, so a half-done flip fails loudly; an open `robots.txt` that does
+not name the sitemap warns. While `STAGING` is `True` the same checks run the
+other way: a page missing its banner warns, and `llms.txt` losing its staging
+paragraph warns. **The page generators** (`build-town.py`, `migrate-blog.py`,
+`migrate-hub.py`) **read `STAGING` too** and run every page they write through
+`sync-chrome.py`'s pass, so a rebuild after cutover cannot re-stage a page.
+`scripts/test-audit-checks.py` section 40 holds both directions.
+
+**Two leftovers the checks do not read, both harmless, both for the same
+commit:** each page's head comment headed "STAGING, DELIBERATE, AND NOT A
+DEFECT" (history once the flip lands; delete or reword it), and the
+`.staging` rule in `docs/assets/site.css`, which styles nothing once the
+banner is gone.
+
+Record the date here when it happens.
 
 ## Re-verify every route within a week of cutover, 2026-09-28
 
@@ -920,11 +958,12 @@ dark. That archive is the last copy of it that will ever exist.
 | `scripts/prepare-car-render.py` | Turns the licensed wireframe render into the two assets the We Fix It All band uses. Holds the measured crop box, pulls the black point so the screen blend is invisible on ink, solves a gamma only if the median line falls under the 3:1 graphic floor, and searches every integer JPEG quality against both the 250KB budget and a surviving ground. **A ground that does not decode to exactly 0 fails the export**, proved twice: once by decoding the emitted file, and once from its own quantisation table, which is decoder-independent. Builds in a temp directory and installs only on success, so a failed export cannot leave a broken asset in `docs/`. Prints every number it used. |
 | `scripts/prepare-hero-photo.py` | Turns the client's photograph of a wrecked customer vehicle into the home hero, since 2026-09-24 the licensed interim-stock service heroes too, and since 2026-10-06 the shop's own rollback on the commercial page, whose frame carries the script's `redact` boxes (another business's livery, a registration sticker), its 1131x754 link-preview crop (3.92c), and the two fleet prints in `#fleet` (3.93), one measured `FRAMES` entry per photograph with its own 3:2 crop box. `--out-dir` re-proves a shipped asset byte for byte without touching `docs/`. Reads provenance through the audit's own reader and refuses a flagged file, crops on a measured scan of where the vehicle actually is, runs the plate-detection check even though no plate is visible, strips APP segments structurally by marker walk, asserts the emitted file decodes to the 1200x800 contract, and never emits a file larger than its source. **It imports its helpers from `prepare-repair-photos.py` rather than copying them**, so the APP strip and the detail metric are one implementation. Prints every number it used. |
 | `scripts/prepare-damage-icons.py` | Turns the licensed "Car Accident" icon set into the eight marks the We Fix It All band ships. Reads the source's provenance through the audit's own reader and refuses to process a flagged file, parses the `.ai` as PDF with nothing but the standard library, splits the page on its own occupancy gaps into a 6x6 grid, and emits every mark at ONE derived scale so the set's single stroke weight survives. **The marks are filled outlines and not strokes**, which is why the band's CSS changed. It patches `docs/index.html` item by item and proves the item count and all eight headings before it writes, because an earlier patcher spanned items and ate seven of the eight. Prints every number it used. |
+| `scripts/prepare-favicon.py` | Turns the shop's own site icon, the 512px original its live site publishes, into `docs/favicon.ico` (16, 32 and 48 as PNG entries) and the 192 and 180 PNGs (3.94). Reads provenance through the audit's own reader and refuses a flagged file, keeps only the pixel-carrying PNG chunks, re-reads every output's provenance, and builds in a temp directory before installing. No redraw: the shop's mark, unchanged. Prints every number it used. |
 | `scripts/prepare-map-image.py` | Draws `/contact-us/`'s directions map from OpenStreetMap data and writes it into the page as inline SVG, between two markers. **Drawn, not stitched from tiles**: the OSMF tile policy prohibits prefetching tiles for static use, and Greg ruled 2026-09-24 that the no-third-drawing rule does not reach cartography. One Overpass query, cached outside the repo; the pin must fall inside an OSM building footprint or nothing is drawn; labels take USPS abbreviations so the pin's street matches the NAP; placement is an exhaustive search. The ODbL notice in the figcaption is the licence. `--out-dir` draws without touching `docs/`. Prints every number it used. |
 | `scripts/migrate-blog.py` | Migrates the 16 blog posts and builds `/blog/` from the live WordPress pages, cached outside the repo. Applies every rule mechanically (the NAP name, links relative or pending, no image, the prose markup, a live FAQ into the site's FAQ grammar, the live post's own dates), holds per-post titles, metas and edits, refuses to write a title over 60, a meta over 160 or an edit that does not match exactly once, and prints every change as a before/after pair for the record. |
 | `scripts/migrate-hub.py` | Migrates `/areas-served/`, the areas hub, from the live page cached outside the repo, the blog's discipline: every migrated paragraph is quoted from the cache and must be found there exactly once, every edit is a pair with its reason, what an edit removes is HELD and printed. Each town blurb is a `data-town` block the audit's hub check holds to that town's `TOWN_ROUTES` routing; a town name links only once its page exists, so re-run it after each town lands. |
 | `scripts/sync-area-served.py` | Writes `AREA_SERVED`, the one served list in `scripts/audit.py`, into every page's business node, and `--check` exits 1 if any page is out of date. The audit fails a page whose node says otherwise. It touches only the business node's `areaServed`: a town page's Service node keeps its own. |
-| `scripts/sync-chrome.py` | Writes the site chrome, the header and the footer, into every real page, and `--check` exits 1 if any page is out of date. The nav follows the live site's own navigation, minus Home, on Greg's ruling (3.83); its services are `audit.SERVICES`, imported, not copied (3.87). The audit fails a page whose chrome differs from the others in anything but the current-page marking, a chrome link that lands nowhere real, and a redirect stub wearing chrome. The town, hub and blog builders take their chrome from it. |
+| `scripts/sync-chrome.py` | Writes the site chrome, the header and the footer, into every real page, and `--check` exits 1 if any page is out of date. Since 3.94 it also writes the favicon links (`audit.ICON_LINKS`), and the noindex tag and the visible staging banner from `audit.STAGING`, so the cutover flip is the switch plus one run of it. The nav follows the live site's own navigation, minus Home, on Greg's ruling (3.83); its services are `audit.SERVICES`, imported, not copied (3.87). The audit fails a page whose chrome differs from the others in anything but the current-page marking, a chrome link that lands nowhere real, and a redirect stub wearing chrome. The town, hub and blog builders take their chrome from it. |
 | `scripts/sync-service-cards.py` | Writes every service card's label and line from `audit.SERVICES`, the one table of (path, label, line) (3.90), touching only the card's h3 and p, and writes each service page's Related Services section, the family minus itself, after the FAQ. `--check` exits 1 if any page is out of date. Since 3.93 it also writes every photographed card's image (home's router) from its target page's own preview, its `og:image` (`audit.preview_of`), so a card shows what the page shows a link preview. The audit fails a card whose words are not its row's, a card whose image is not its page's preview, a related grid missing a sibling, and one carrying its own page. |
 | `scripts/stamp-assets.py` | Cache-busting stamps for `docs/assets/site.css` and `site.js`. |
 | `scripts/fetch_seo_news.py` | Pulls the headline sweep the Google Watcher reads. |

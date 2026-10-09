@@ -2079,6 +2079,17 @@ section > .wrap > .cta-row:last-child { justify-content: center; }
    call bar at 360, and it gives each of the sixteen posts a line back at
    360 and 390. Measured: nothing else on the site moved. */
 .crumb li:last-child { flex-shrink: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* A PLACE NAME DOES NOT CLIP, 3.94. The ellipsis is for a post title that
+   repeats its H1. At 360 "Northeast Philadelphia", the longest town crumb,
+   needed 159px and had 156, so a town's own name ended "Philadelp...".
+   Each separator spends the gap plus its own margin, 16px, twice in a
+   town's three-crumb trail; at 400 and under both drop to 6px, which hands
+   the last crumb 8px back and clears it by 5. One line still, never a
+   wrap: the crumbs-never-wrap law is untouched. */
+@media (max-width: 400px) {
+  .crumb ol { gap: 6px; }
+  .crumb li + li::before { margin-right: 6px; }
+}
 
 /* ---------- Sections ---------- */
 .sec-head { max-width: 840px; margin: 0 auto var(--sec-gap); text-align: center; }

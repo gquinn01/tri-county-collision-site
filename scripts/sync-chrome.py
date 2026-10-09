@@ -33,7 +33,20 @@ migrated from the live site: a chrome label is furniture, not a claim.
 
 WHAT IT TOUCHES. On every page that is not a redirect stub: everything from
 the CHROME:HEAD marker to the end of the <header>, and the <footer
-class="site"> element. Nothing else. A redirect stub stays bare.
+class="site"> element. A redirect stub stays bare.
+
+Since 3.94 it also writes three things in every real page that follow a
+switch or a set rather than the nav:
+
+  - the favicon links, audit.ICON_LINKS, as the last lines of the <head>;
+  - the noindex tag, audit.STAGING_ROBOTS_META, present while
+    audit.STAGING is True and absent once it is False (on stubs too);
+  - the visible staging banner, audit.STAGING_BANNER, just before the
+    header, on the same switch.
+
+So the cutover flip is: set STAGING to False and run this. The pre-launch
+sweep found the flip as written left the banner on 37 pages, because
+nothing wrote it and nothing removed it.
 
 THE CURRENT PAGE is the one thing allowed to differ between pages: every
 chrome link that lands on the page itself is written "./" and carries
@@ -228,13 +241,57 @@ def is_stub(text: str) -> bool:
     return re.search(r'http-equiv=["\']refresh', text, re.I) is not None
 
 
+ICONS_RE = re.compile(r"(?s)\n  <!-- ICONS, written by scripts/sync-chrome\.py.*?-->\n"
+                      r"(?:  <link rel=\"(?:icon|apple-touch-icon)\"[^>]*>\n)*")
+ROBOTS_LINE = "\n  " + audit.STAGING_ROBOTS_META
+VIEWPORT_RE = re.compile(r"\n  <meta name=\"viewport\"[^>]*>")
+BANNER_BLOCK = "  " + audit.STAGING_BANNER + "\n\n"
+
+
+def icons(page: str) -> str:
+    p = "../" * page.count("/")
+    lines = "".join(f'  <link rel="{rel}"' + (f" {attrs}" if attrs else "") + f' href="{p}{path}">\n'
+                    for rel, attrs, path in audit.ICON_LINKS)
+    return ("\n  <!-- ICONS, written by scripts/sync-chrome.py from audit.ICON_LINKS (3.94): the\n"
+            "       shop's own site icon, made by scripts/prepare-favicon.py. -->\n" + lines)
+
+
+def staged(path: str, text: str) -> str:
+    """The noindex tag on the STAGING switch: present while staging,
+    absent after. Stubs as well as pages."""
+    has = ROBOTS_LINE in text
+    if audit.STAGING and not has:
+        m = VIEWPORT_RE.search(text)
+        if not m:
+            raise SystemExit(f"FAILED: {os.path.relpath(path, ROOT)} has no viewport line to "
+                             f"put the noindex tag after. Nothing written.")
+        text = text[:m.end()] + ROBOTS_LINE + text[m.end():]
+    elif not audit.STAGING and has:
+        text = text.replace(ROBOTS_LINE, "", 1)
+    return text
+
+
 def synced(path: str, text: str) -> str:
-    head, foot = render(page_of(path))
+    page = page_of(path)
+    head, foot = render(page)
     if len(HEAD_RE.findall(text)) != 1 or len(FOOT_RE.findall(text)) != 1:
         raise SystemExit(f"FAILED: {os.path.relpath(path, ROOT)} does not carry exactly one header "
                          f"and one footer to replace. Nothing written.")
     text = HEAD_RE.sub(lambda m: head, text)
-    return FOOT_RE.sub(lambda m: foot, text)
+    text = FOOT_RE.sub(lambda m: foot, text)
+    text = staged(path, text)
+    # The banner sits on its own just before the chrome's header comment.
+    has = BANNER_BLOCK in text
+    if audit.STAGING and not has:
+        i = text.index("  <!-- CHROME:HEAD")
+        text = text[:i] + BANNER_BLOCK + text[i:]
+    elif not audit.STAGING and has:
+        text = text.replace(BANNER_BLOCK, "", 1)
+    # The favicon links, the last lines of the head.
+    text = ICONS_RE.sub("\n", text, count=1) if ICONS_RE.search(text) else text
+    i = text.index("</head>")
+    before = text[:i].rstrip("\n") + "\n"
+    return before + icons(page).lstrip("\n") + text[i:]
 
 
 def main() -> int:
@@ -243,9 +300,7 @@ def main() -> int:
     for path in sorted(glob.glob(os.path.join(DOCS, "**", "index.html"), recursive=True)):
         with open(path, encoding="utf-8") as f:
             text = f.read()
-        if is_stub(text):
-            continue
-        new = synced(path, text)
+        new = staged(path, text) if is_stub(text) else synced(path, text)
         if new != text:
             stale.append(os.path.relpath(path, ROOT))
             if not check:
