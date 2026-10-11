@@ -543,7 +543,8 @@ HEAD_TAIL = '''
   <!-- No analytics tag yet. GA4 goes in the CLIENT'S OWN Google account at
        cutover, and the CallRail snippet goes in beside it. Neither is here,
        because a measurement ID nobody has given us is a fact nobody has
-       confirmed. docs/privacy/ ships in the same commit as the first tag. -->
+       confirmed. docs/privacy/ already discloses both (3.96); if either does
+       not ship at cutover, the policy changes in the same commit. -->
 
   <!-- Both faces are self-hosted and both are needed above the fold, so they
        are preloaded rather than discovered inside the stylesheet. They are

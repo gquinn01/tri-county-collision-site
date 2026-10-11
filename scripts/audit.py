@@ -936,6 +936,13 @@ RUBRIC_EXEMPTIONS = {
     # 3.79: the areas hub. It carries FAQs and its own long copy, so it
     # earns no exemption; declared so the hub routing check reads it.
     "hub": (),
+    # 3.96, Greg's ruling of 2026-10-11: the privacy policy. A policy states
+    # what happens to a reader's information; it does not answer questions,
+    # and it carries no visible FAQ, so faq-schema and NOTHING ELSE. Thin
+    # content stays live on it, as on a post. The kind also carries its own
+    # date check, privacy_date_findings, because the policy promises its
+    # reader that the date on the page changes when the policy does.
+    "privacy": ("faq-schema",),
 }
 
 REFRESH_RE = re.compile(
@@ -1098,6 +1105,27 @@ def special_audit(source: str, html: str, p, kind: str, coverage: dict):
             passes.append(f"All {len(p.images)} images have alt text.")
 
         check_asset_stamps(html, current_stamps(), passes, fails)
+
+        # THE STAGING MACHINERY, BOTH WAYS, 3.96: the error page is one a
+        # human reads, so it carries the banner and the noindex while
+        # STAGING is True and neither once it is False, like every page.
+        # scripts/sync-chrome.py writes both into it from the switch.
+        sp, sw, sf = staging_page_findings(html)
+        passes += sp
+        warns += sw
+        fails += sf
+        bare = re.sub(r"(?s)<!--.*?-->", " ", html)
+        noindex = re.search(r'<meta\s+name="robots"[^>]*noindex', bare, re.I) is not None
+        if STAGING and noindex:
+            passes.append("Noindexed while the build is staging, like every page.")
+        elif STAGING:
+            fails.append("**The error page is not noindexed and the build is still staging.** "
+                         "Run `scripts/sync-chrome.py`, which writes the tag from `STAGING`.")
+        elif noindex:
+            fails.append("**The error page is still noindexed and `STAGING` is off.** Run "
+                         "`scripts/sync-chrome.py`, which removes it.")
+        else:
+            passes.append("No noindex tag: `STAGING` is off.")
 
         notes.append("Scored as the error page, not as a page: no canonical is expected on it "
                      "(one would claim this URL is the real version of something), and it is "
@@ -3145,6 +3173,79 @@ def check_service_count_llms_local(passes: list, fails: list, root: str = None):
                       f"in all {n} mentions.")
 
 
+# --- The redirect table, 3.96 --------------------------------------------
+# pagemap.md's redirect column, as data: every old URL that 301s, and where.
+# The pre-launch sweep of 2026-10-09 found nine of the eleven redirects
+# planned since September with no stub at all, because nothing compared the
+# map with docs/. This does, both ways: every row has a stub whose canonical
+# is its target, and every stub under docs/ is a row. HONEST_404S are the old
+# URLs the map answers with a 404, and nothing may stand at them.
+# Change pagemap.md first, then this table, then the stubs.
+REDIRECTS = {
+    "auto-repair-shop-southampton-pa/": "",
+    "car-repair-shop-southampton-pa/": "",
+    "auto-body-repair/": "collision-repair/",
+    "body-shop-southampton/": "collision-repair/",
+    "collision-repair-copy-copy/": "commercial-collision-repair/",
+    "auto-glass-repair-replacement-copy/": "auto-glass-repair-replacement/",
+    "body-shop-jamison/": "areas-served-collision-repair-jamison-pa/",
+    "paintless-dent-repair-jamison/": "areas-served-collision-repair-jamison-pa/",
+    "customer-information/": "contact-us/",
+    "category/collision-repair/": "blog/",
+    "category/news/": "blog/",
+    # Amended 2026-10-11 (3.96): the URLs outside the 48.
+    "author/greg/": "blog/",
+    "author/digisquid/": "blog/",
+    "blog/page/2/": "blog/",
+    "category/collision-repair/page/2/": "blog/",
+    "category/news/page/2/": "blog/",
+}
+HONEST_404S = ("thanks/", "feed/")
+
+
+def redirect_table_findings(root: str = None) -> list:
+    """Every way docs/ and the redirect table disagree, as sentences."""
+    root = root or SITE_DIR
+    out = []
+    stubs = {}
+    for dirpath, _dirs, files in os.walk(root):
+        if "index.html" in files:
+            path = os.path.join(dirpath, "index.html")
+            with open(path, encoding="utf-8") as f:
+                text = f.read()
+            if REFRESH_RE.search(text):
+                rel = os.path.relpath(dirpath, root).replace(os.sep, "/") + "/"
+                stubs[rel] = text
+    for old, target in REDIRECTS.items():
+        text = stubs.get(old)
+        if text is None:
+            out.append(f"/{old} redirects to /{target} on the map and has no stub in docs/")
+            continue
+        m = re.search(r'<link\s+rel="canonical"\s+href="([^"]*)"', text)
+        if not m or m.group(1) != SITE_BASE + target:
+            out.append(f"/{old}'s stub points at {m.group(1) if m else 'nothing'}, the map says "
+                       f"{SITE_BASE + target}")
+        if not os.path.isfile(os.path.join(root, target, "index.html")):
+            out.append(f"/{old} redirects to /{target}, which is not a page in docs/")
+    for rel in sorted(set(stubs) - set(REDIRECTS)):
+        out.append(f"/{rel} is a stub in docs/ that the redirect table does not list")
+    for rel in HONEST_404S:
+        if os.path.exists(os.path.join(root, rel)):
+            out.append(f"/{rel} is an honest 404 on the map and something stands at it in docs/")
+    return out
+
+
+def check_redirects_local(passes: list, fails: list, root: str = None):
+    found = redirect_table_findings(root)
+    if found:
+        fails.append("**docs/ and the redirect table (`REDIRECTS`, pagemap.md's redirect "
+                     "column) disagree:** " + "; ".join(found) + ".")
+    else:
+        passes.append(f"Every one of the {len(REDIRECTS)} redirects on the map has its stub, "
+                      f"pointing where the map says, every stub is on the map, and the "
+                      f"{len(HONEST_404S)} honest 404s stay empty.")
+
+
 def check_name_llms_local(passes: list, fails: list, root: str = None):
     """llms.txt names the shop as NAP_NAME and nothing else (3.95). An
     assistant reads this file for the name it will repeat."""
@@ -3429,6 +3530,46 @@ def faq_opener_findings(qas) -> list:
     return bad
 
 
+PRIVACY_KIND = "privacy"
+UPDATED_RE = re.compile(r'Updated\s+<time\s+datetime="([^"]+)"[^>]*>([^<]*)</time>')
+
+
+def privacy_date_findings(html_text: str) -> tuple:
+    """(passes, fails) for the privacy policy's date, 3.96. The approved copy
+    tells its reader "When this policy changes, the date on this page changes
+    with it", so the visible "Updated" date and the WebPage dateModified are
+    ONE fact: exactly one visible date, inside <main>, equal to the schema's,
+    and its words naming the same day. A CRITICAL: a policy whose date lies
+    breaks the one promise it makes about itself."""
+    bare = re.sub(r"(?s)<!--.*?-->", " ", html_text)
+    m = re.search(r"(?is)<main\b[^>]*>(.*)</main>", bare)
+    shown = UPDATED_RE.findall(m.group(1) if m else "")
+    mods = []
+    for block in re.findall(r'(?s)<script type="application/ld\+json">(.*?)</script>', bare):
+        try:
+            data = json.loads(block)
+        except ValueError:
+            continue
+        for node in (data.get("@graph", [data]) if isinstance(data, dict) else []):
+            if isinstance(node, dict) and type_name(node.get("@type")) == "WebPage":
+                mods.append(node.get("dateModified"))
+    if len(shown) != 1 or len(mods) != 1:
+        return [], [f"**The policy needs exactly one visible \"Updated\" date and one WebPage "
+                    f"dateModified** (found {len(shown)} and {len(mods)}). Its own copy promises "
+                    f"that the date on the page changes with the policy."]
+    (iso, words), mod = shown[0], mods[0]
+    try:
+        spelled = date.fromisoformat(iso)
+        said = f"{spelled:%B} {spelled.day}, {spelled.year}"
+    except ValueError:
+        said = None
+    if iso != mod or words.strip() != said:
+        return [], [f"**The policy's visible date and its schema disagree:** the page says "
+                    f"\"{words.strip()}\" ({iso}), the WebPage dateModified says {mod}. They are "
+                    f"one fact; change both in the same commit as the words."]
+    return [f"The policy's visible date, {words.strip()}, is its WebPage dateModified."], []
+
+
 def audit(source: str, coverage: dict = None):
     """Scores one page. `coverage` carries the parsed sitemap.xml and
     llms.txt for local runs, so a page that was built but never published
@@ -3455,6 +3596,9 @@ def audit(source: str, coverage: dict = None):
         "blog-index": (f"Declared `tri-county-page` kind `blog-index`: an index routes, "
                        f"it does not answer. Exempt by Greg's ruling of 2026-09-25, "
                        f"proposed-changes.md 3.57."),
+        "privacy": (f"Declared `tri-county-page` kind `privacy`: a policy states, it does "
+                    f"not answer. Exempt by Greg's ruling of 2026-10-11, "
+                    f"proposed-changes.md 3.96."),
     }.get(kind, "")
     declared_kind = kind
     kind = "page"
@@ -3602,6 +3746,12 @@ def audit(source: str, coverage: dict = None):
         else:
             passes.append(f"Every drive figure and road on the hub derives from its town's recorded "
                           f"routing: {n_blocks} town blocks read, no bearing, no figure outside a block.")
+
+    # --- The policy's date is a promise (3.96), privacy pages only ---
+    if declared_kind == PRIVACY_KIND:
+        pp, pf = privacy_date_findings(html)
+        passes += pp
+        fails += pf
 
     # --- Structured data (JSON-LD) ---
     types = []
@@ -4291,6 +4441,7 @@ def main():
         check_pending_links_local(site_warns, site_notes)
         check_hours_llms_local(site_passes, site_fails)
         check_name_llms_local(site_passes, site_fails)
+        check_redirects_local(site_passes, site_fails)
         check_service_count_llms_local(site_passes, site_fails)
     if expand_note:
         site_notes.append(expand_note)

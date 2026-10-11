@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       THE 404 PAGE, Greg's ruling of 2026-10-11, proposed-changes.md 3.96.
+       Minimal by the ruling: the H1, one line, the call button, a link
+       home and a link to contact. The H1 and the line are his words; the
+       meta description is the line, so the page adds no copy beyond them.
+       The two link labels are the chrome's own names for those pages
+       ("Home" in every crumb, "Contact Us" in the nav), so each
+       destination keeps ONE name.
+
+       GitHub Pages serves this file with a real 404 status for any path
+       that has no file, by its location at the root of docs/. So it is
+       served AT THE MISSING URL, at any depth, which is why every link
+       and asset here is ROOT-RELATIVE ("/contact-us/", "/assets/...")
+       where every other page is relative. It is the one file in docs/
+       that may be, and scripts/stamp-assets.py reads the single leading
+       slash for exactly this file.
+
+       NO CHROME. It is not index.html, so scripts/sync-chrome.py does not
+       write the nav or the footer into it; their relative links would
+       break at any depth. What sync-chrome.py DOES write here, from the
+       same switch as every page: the noindex tag, the staging banner and
+       the favicon links (root-relative). scripts/audit.py scores it on
+       the error-page rubric (kind error-404): no canonical, which would
+       claim this URL is the real version of something, out of
+       sitemap.xml and llms.txt, and the staging banner and noindex held
+       both ways, as on every page.
+
+       STAGING, DELIBERATE, AND NOT A DEFECT: the noindex and the banner
+       come off at cutover with every other page's, by the same run.
+       ============================================================ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- Ink. The palette lives in assets/site.css; a meta tag cannot read a
+       custom property, which is why this one hex is duplicated. -->
+  <meta name="theme-color" content="#121B27">
+
+  <title>Page Not Found | Tri County Collision Center</title>
+  <meta name="description" content="The page you are looking for is not here. It may have moved when the site was rebuilt.">
+  <meta name="tri-county-page" content="error-404">
+
+  <link rel="preload" href="/assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/site.css?v=04819b70">
+  <!-- ICONS, written by scripts/sync-chrome.py from audit.ICON_LINKS (3.94): the
+       shop's own site icon, made by scripts/prepare-favicon.py. -->
+  <link rel="icon" sizes="any" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/img/icon-192.png">
+  <link rel="apple-touch-icon" href="/assets/img/icon-180.png">
+</head>
+<body>
+
+  <!-- Removed at cutover, with the noindex tag and the robots.txt disallow.
+       A human who opens this page should not have to guess why it is not
+       indexed. -->
+  <p class="staging">Staging build. Not the live site. The shop's live site is at tricountycollision.com</p>
+
+  <main>
+
+    <!-- The compact ox header, the page-header identity (3.61), with the
+         call as contact's carries it. The plain <div> keeps the call row
+         on the copy's left edge, as on /contact-us/. -->
+    <section class="hero dark field-ox" id="not-found">
+      <div class="wrap">
+        <div>
+          <h1>Page not found</h1>
+          <p class="lead">The page you are looking for is not here. It may have moved when the site was rebuilt.</p>
+          <div class="cta-row">
+            <a class="btn" href="tel:+12153225350">Call (215) 322-5350</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Read-more links, not buttons: the filled button is the call. -->
+    <section id="ways-on">
+      <div class="wrap">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/contact-us/">Contact Us</a></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+</body>
+</html>

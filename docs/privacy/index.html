@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       PRIVACY. Built 2026-10-11, proposed-changes.md 3.96, on Greg's
+       ruling of the same day. pagemap.md's Privacy row: required from day
+       one, because GA4 and the CallRail snippet need it, and it discloses
+       the Google Maps embed on /contact-us/.
+
+       EVERY WORD IN <main> IS GREG'S APPROVED COPY, VERBATIM, except the
+       "Updated" date line, which the copy's own "Changes" section
+       promises ("the date on this page changes with it"): without it that
+       sentence would be false. Do not edit copy here without adding the
+       pair to proposed-changes.md.
+
+       PRESENT TENSE FOR ANALYTICS AND CALL TRACKING, DELIBERATELY. Neither
+       is on any page yet: GA4 goes in the client's own account and the
+       CallRail snippet beside it, both in the cutover pass, and this
+       page's public life starts that same day. Until then the staging
+       banner says what this build is. If either tag does not ship at
+       cutover, this page changes in the same commit.
+
+       THE DATE: the visible "Updated" line and the WebPage dateModified
+       are one fact, and scripts/audit.py fails the page when they differ
+       (the privacy kind's date check). Change both, in the same commit as
+       the words.
+
+       THE TOP IS THE COMPACT OX HEADER, the page-header identity (3.61,
+       3.62), which CLAUDE.md left to be decided when privacy was built.
+       It is chrome, not an in-flow band, and this page carries no in-flow
+       ox band: it asks for nothing.
+
+       STAGING, DELIBERATE, AND NOT A DEFECT: noindex, robots.txt, and an
+       absolute canonical. All three come off together at cutover.
+       ============================================================ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- Ink. The palette lives in assets/site.css; a meta tag cannot read a
+       custom property, which is why this one hex is duplicated. -->
+  <meta name="theme-color" content="#121B27">
+
+  <title>Privacy Policy | Tri County Collision Center</title>
+  <meta name="description" content="How Tri County Collision Center handles your information: what this site collects, what analytics run, and how to reach us with questions.">
+
+  <link rel="canonical" href="https://tricountycollision.com/privacy/">
+  <!-- A POLICY IS DECLARED, Greg's ruling of 2026-10-11,
+       proposed-changes.md 3.96: it carries no visible FAQ, so
+       scripts/audit.py does not require FAQPage schema of it, and
+       measures every other check, thin content included. -->
+  <meta name="tri-county-page" content="privacy">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Privacy Policy | Tri County Collision Center">
+  <meta property="og:description" content="How Tri County Collision Center handles your information: what this site collects, what analytics run, and how to reach us with questions.">
+  <meta property="og:url" content="https://tricountycollision.com/privacy/">
+  <!-- NO IMAGE ON THIS PAGE, SO ITS SHARE CARD FOLLOWS HOME'S, byte for
+       byte, as /contact-us/'s and /blog/'s do. -->
+  <meta property="og:image" content="https://tricountycollision.com/assets/img/hero-wrecked-sedan-in-shop.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="800">
+  <meta property="og:image:alt" content="A red sedan with its front end crushed and the bumper torn loose, in the shop before repair.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Both faces are self-hosted and both are needed above the fold, so they
+       are preloaded rather than discovered inside the stylesheet. They are
+       SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
+  <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/site.css?v=04819b70">
+  <script src="../assets/site.js?v=fb8ca727" defer></script>
+
+  <!-- One @graph. The AutoBodyShop node repeats in full on every page under
+       the SAME @id, so the whole site resolves to one business entity.
+       geo IS THE SHOP'S VERIFIED PIN, GEO_LAT and GEO_LON in scripts/audit.py.
+       sameAs IS DELIBERATELY ABSENT until the client's verified list lands.
+       NO PRICE, OFFER, REVIEW OR RATING MARKUP. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AutoBodyShop",
+        "@id": "https://tricountycollision.com/#business",
+        "name": "Tri County Collision Center",
+        "url": "https://tricountycollision.com/",
+        "telephone": "+12153225350",
+        "email": "contact@tricountycollision.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "995 Jaymor Rd",
+          "addressLocality": "Southampton",
+          "addressRegion": "PA",
+          "postalCode": "18966",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 40.1660232,
+          "longitude": -75.0512847
+        },
+        "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "08:00",
+            "closes": "18:00"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-bucks-county",
+            "name": "Bucks County, Pennsylvania"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-montgomery-county",
+            "name": "Montgomery County, Pennsylvania"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "@id": "https://tricountycollision.com/#area-philadelphia",
+            "name": "Philadelphia, Pennsylvania"
+          },
+          {
+            "@type": "City",
+            "name": "Southampton, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Feasterville-Trevose, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Richboro, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Warminster, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Langhorne, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Bensalem, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Jamison, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-bucks-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Huntingdon Valley, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Hatboro, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Willow Grove, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Horsham, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "City",
+            "name": "Jenkintown, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-montgomery-county"
+            }
+          },
+          {
+            "@type": "Place",
+            "name": "Northeast Philadelphia, Pennsylvania",
+            "containedInPlace": {
+              "@id": "https://tricountycollision.com/#area-philadelphia"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://tricountycollision.com/privacy/#webpage",
+        "url": "https://tricountycollision.com/privacy/",
+        "name": "Privacy Policy | Tri County Collision Center",
+        "description": "How Tri County Collision Center handles your information: what this site collects, what analytics run, and how to reach us with questions.",
+        "inLanguage": "en-US",
+        "dateModified": "2026-10-11",
+        "isPartOf": {
+          "@id": "https://tricountycollision.com/#business"
+        },
+        "about": {
+          "@id": "https://tricountycollision.com/#business"
+        },
+        "breadcrumb": {
+          "@id": "https://tricountycollision.com/privacy/#breadcrumb"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://tricountycollision.com/privacy/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://tricountycollision.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Privacy Policy",
+            "item": "https://tricountycollision.com/privacy/"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <!-- ICONS, written by scripts/sync-chrome.py from audit.ICON_LINKS (3.94): the
+       shop's own site icon, made by scripts/prepare-favicon.py. -->
+  <link rel="icon" sizes="any" href="../favicon.ico">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/img/icon-192.png">
+  <link rel="apple-touch-icon" href="../assets/img/icon-180.png">
+</head>
+<body>
+
+  <!-- Removed at cutover, with the noindex tag and the robots.txt disallow.
+       A human who opens this page should not have to guess why it is not
+       indexed. -->
+  <p class="staging">Staging build. Not the live site. The shop's live site is at tricountycollision.com</p>
+
+  <!-- CHROME:HEAD, written by scripts/sync-chrome.py (proposed-changes.md 3.83).
+       Edit the script, never this block: it is rewritten on every page, and
+       scripts/audit.py fails a page whose chrome differs from the others in
+       anything but the current-page marking.
+
+       THE LOGO IS THE WAY HOME, so the nav carries no Home item. It has
+       been a link since 2026-09-10: until then it was a span carrying
+       data-pending-href="../" because docs/index.html did not exist. The
+       homepage was built, the link test demanded the conversion by
+       failing, and that was the conversion, the mechanism in 3.10 working
+       end to end rather than being described. -->
+  <header class="nav">
+    <div class="wrap inner">
+      <a class="nav-home" href="../" aria-label="Tri County Collision Center, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+      <nav class="nav-main" id="navmenu" aria-label="Main">
+        <ul class="nav-list">
+          <li class="nav-item has-sub">
+            <button class="nav-sub-toggle" type="button" aria-expanded="false" aria-controls="nav-sub-services">Collision Services<svg class="nav-chev" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>
+            <ul class="nav-sub" id="nav-sub-services">
+              <li><a href="../collision-repair/">Collision Repair</a></li>
+              <li><a href="../commercial-collision-repair/">Commercial Collision Repair</a></li>
+              <li><a href="../auto-glass-repair-replacement/">Glass Repair &amp; Replacement</a></li>
+              <li><a href="../paintless-dent-repair/">Paintless Dent Repair</a></li>
+              <li><a href="../adas-calibration/">ADAS Calibration</a></li>
+            </ul>
+          </li>
+          <li class="nav-item has-sub">
+            <a href="../areas-served/">Areas We Serve</a><button class="nav-sub-toggle nav-sub-icon" type="button" aria-expanded="false" aria-controls="nav-sub-areas" aria-label="Toggle submenu for Areas We Serve"><svg class="nav-chev" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>
+            <ul class="nav-sub nav-sub-towns" id="nav-sub-areas">
+              <li><a href="../areas-served-collision-repair-bensalem-pa/">Bensalem</a></li>
+              <li><a href="../areas-served-collision-repair-feasterville-trevose-pa/">Feasterville-Trevose</a></li>
+              <li><a href="../areas-served-collision-repair-hatboro-pa/">Hatboro</a></li>
+              <li><a href="../areas-served-collision-repair-horsham-pa/">Horsham</a></li>
+              <li><a href="../areas-served-collision-repair-huntingdon-valley-pa/">Huntingdon Valley</a></li>
+              <li><a href="../areas-served-collision-repair-jamison-pa/">Jamison</a></li>
+              <li><a href="../areas-served-collision-repair-jenkintown-pa/">Jenkintown</a></li>
+              <li><a href="../areas-served-collision-repair-langhorne-pa/">Langhorne</a></li>
+              <li><a href="../areas-served-collision-repair-northeast-philadelphia/">Northeast Philadelphia</a></li>
+              <li><a href="../areas-served-collision-repair-richboro-pa/">Richboro</a></li>
+              <li><a href="../areas-served-collision-repair-warminster-pa/">Warminster</a></li>
+              <li><a href="../areas-served-collision-repair-willow-grove-pa/">Willow Grove</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a href="https://powerforms.docusign.net/2919d585-3b16-4977-833f-75a24163bec3?env=na4&amp;acct=228c4f1e-de2e-4461-9dbe-6a809b101cd4&amp;accountId=228c4f1e-de2e-4461-9dbe-6a809b101cd4" target="_blank" rel="noopener">Authorization Forms</a></li>
+          <li class="nav-item"><a href="../contact-us/">Contact Us</a></li>
+          <li class="nav-item"><a href="../blog/">Blog</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn-sm nav-call" href="tel:+12153225350">Call (215) 322-5350</a>
+      <button class="navtoggle" type="button" aria-expanded="false" aria-controls="navmenu">
+        <svg class="ico-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="ico-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        <span>Menu</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero dark field-ox" id="privacy-head">
+      <div class="wrap">
+        <!-- Mirrors the BreadcrumbList, same labels and same order. -->
+        <nav class="crumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="../">Home</a></li>
+            <li>Privacy Policy</li>
+          </ol>
+        </nav>
+        <h1>Privacy Policy</h1>
+        <p class="lead">The short version: this website asks you for nothing. It has no forms and no accounts. If you call or email us, we use what you share to help with your vehicle, and for nothing else.</p>
+        <p>Updated <time datetime="2026-10-11">October 11, 2026</time></p>
+      </div>
+    </section>
+
+    <section id="policy">
+      <div class="wrap">
+        <div class="prose">
+          <h2>What this site collects on its own</h2><p>Nothing. There is no form to fill out and nothing to sign up for, and the site sets no cookies of its own.</p><h2>When you call or email</h2><p>You may share your name, contact details, and information about your vehicle or insurance claim. We use it to answer you, write your estimate, and do the work you asked for. We do not sell it.</p><h2>Analytics</h2><p>This site uses Google Analytics to understand how people find and use it. That tool reports pages viewed, the town a visit roughly came from, and the kind of device used. It does not tell us who you are, and Google's own privacy policy covers the data it processes.</p><h2>Call tracking</h2><p>Calls placed to numbers shown on this site may pass through a call tracking service, which logs the number you called from, when you called, and how long the call lasted. It helps us know which of our listings people find.</p><h2>Maps and the services we link to</h2><p>The contact page includes a Google Maps embed, and some pages link to DocuSign and CarWise for authorization forms and estimates. Those services have their own privacy policies and may set their own cookies.</p><h2>Server logs</h2><p>Like nearly every website, the servers that deliver these pages keep standard technical logs, which include IP addresses, for security and reliability.</p><h2>Children</h2><p>This site is for vehicle owners and is not directed at children.</p><h2>Changes</h2><p>When this policy changes, the date on this page changes with it.</p><h2>Questions</h2><p>Call <a href="tel:+12153225350">(215) 322-5350</a> or email <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>. Tri County Collision Center, 995 Jaymor Rd, Southampton, PA 18966.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-id">
+          <a class="foot-home" href="../" aria-label="Tri County Collision Center, home"><img src="../logo.png" alt="Tri-County Collision" width="1332" height="530"></a>
+          <p class="foot-tag">Family owned collision repair in Southampton, PA, serving Bucks County, Montgomery County and Northeast Philadelphia.</p>
+          <p class="foot-nap">
+            Tri County Collision Center<br>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri%20County%20Collision%20Center%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd<br>
+            Southampton, PA 18966</a><br>
+            <a href="tel:+12153225350">(215) 322-5350</a><br>
+            <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a>
+          </p>
+        </div>
+        <div class="foot-hours">
+          <h2 class="foot-head">Hours</h2>
+          <p>Monday to Friday, 8&nbsp;a.m. to 6&nbsp;p.m.<br>
+          Saturday by appointment only</p>
+        </div>
+        <div class="foot-start">
+          <h2 class="foot-head">Get Started</h2>
+          <ul class="foot-links">
+            <li><a href="tel:+12153225350">Call (215) 322-5350</a></li>
+            <li><a href="mailto:contact@tricountycollision.com">Email the shop</a></li>
+            <li><a href="../contact-us/">Send us your details online</a></li>
+          </ul>
+        </div>
+        <div class="foot-explore">
+          <!-- These columns list only pages that exist. They grow as pages
+               land, and never before. EXPLORE AND AREAS WE SERVE ARE THE
+               FULL MAP (3.83, 3.89): every service page, the blog and
+               contact here, every town and the hub in the next column, so
+               no page is a dead end from its foot. Privacy is linked from
+               the bottom line instead, small (3.96). The labels are the nav's, so each destination
+               has ONE name across the chrome. -->
+          <h2 class="foot-head">Explore</h2>
+          <ul class="foot-links">
+            <li><a href="../collision-repair/">Collision Repair</a></li>
+            <li><a href="../commercial-collision-repair/">Commercial Collision&nbsp;Repair</a></li>
+            <li><a href="../auto-glass-repair-replacement/">Glass Repair &amp; Replacement</a></li>
+            <li><a href="../paintless-dent-repair/">Paintless Dent Repair</a></li>
+            <li><a href="../adas-calibration/">ADAS Calibration</a></li>
+            <li><a href="../blog/">Blog</a></li>
+            <li><a href="../contact-us/">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="foot-areas">
+          <!-- AREAS WE SERVE, its own column since 3.89, Greg's ruling. The
+               towns are TOWN_ROUTES, alphabetical, never typed; the column
+               ends at the hub, in the site's own phrase. -->
+          <h2 class="foot-head">Areas We Serve</h2>
+          <ul class="foot-links foot-towns">
+            <li><a href="../areas-served-collision-repair-bensalem-pa/">Bensalem</a></li>
+            <li><a href="../areas-served-collision-repair-feasterville-trevose-pa/">Feasterville-Trevose</a></li>
+            <li><a href="../areas-served-collision-repair-hatboro-pa/">Hatboro</a></li>
+            <li><a href="../areas-served-collision-repair-horsham-pa/">Horsham</a></li>
+            <li><a href="../areas-served-collision-repair-huntingdon-valley-pa/">Huntingdon Valley</a></li>
+            <li><a href="../areas-served-collision-repair-jamison-pa/">Jamison</a></li>
+            <li><a href="../areas-served-collision-repair-jenkintown-pa/">Jenkintown</a></li>
+            <li><a href="../areas-served-collision-repair-langhorne-pa/">Langhorne</a></li>
+            <li><a href="../areas-served-collision-repair-northeast-philadelphia/">Northeast Philadelphia</a></li>
+            <li><a href="../areas-served-collision-repair-richboro-pa/">Richboro</a></li>
+            <li><a href="../areas-served-collision-repair-warminster-pa/">Warminster</a></li>
+            <li><a href="../areas-served-collision-repair-willow-grove-pa/">Willow Grove</a></li>
+            <li><a href="../areas-served/">Every town we serve</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <!-- The year is written into the markup so it is right with
+             JavaScript off, and assets/site.js updates it so it is right
+             next January. A hard-coded year is a stale-clock claim.
+             THE PRIVACY LINK closes this line, small, on Greg's ruling of
+             2026-10-11 (3.96): a policy is found where readers expect it,
+             not in Explore beside the pages that sell. Its label is the
+             page's own H1 and crumb, so it has ONE name. -->
+        <p>&copy; <span data-year>2026</span> Tri County Collision Center &middot; <a href="https://www.google.com/maps/search/?api=1&amp;query=Tri%20County%20Collision%20Center%2C%20995%20Jaymor%20Rd%2C%20Southampton%2C%20PA%2018966" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> &middot; <a href="tel:+12153225350">(215) 322-5350</a> &middot; <a href="mailto:contact@tricountycollision.com">contact@tricountycollision.com</a> &middot; <a href="./" aria-current="page">Privacy Policy</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- The one element the whole design turns on. Fixed to the bottom of
+       every phone viewport, hidden above 900px where the header's own call
+       button is always visible. -->
+  <a class="callbar" href="tel:+12153225350">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h3l1.5 3.8-2 1.4a12.5 12.5 0 0 0 6.2 6.2l1.4-2 3.8 1.5v3a1.8 1.8 0 0 1-2 1.8A16.5 16.5 0 0 1 4.8 5.5a1.8 1.8 0 0 1 1.8-2z"/></svg>
+    Call (215) 322-5350
+  </a>
+
+</body>
+</html>

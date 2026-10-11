@@ -38,6 +38,10 @@ https://tricountycollision.com/ and it is the one to read today.
 - https://tricountycollision.com/contact-us/ : How to reach the shop. Call,
   email, a free online estimate and online appointment booking (both through
   CarWise, a third-party service), directions, and the hours.
+- https://tricountycollision.com/privacy/ : The privacy policy. The site
+  itself collects nothing and has no forms or accounts; what the shop does
+  with what a caller or emailer shares; the analytics, call tracking, Google
+  Maps embed and linked services; and how to ask about it.
 - https://tricountycollision.com/areas-served/ : The areas the shop serves in
   Bucks County, Montgomery County and Northeast Philadelphia. Each community
   it names, with its drive time by road from a named corner, what doesn't

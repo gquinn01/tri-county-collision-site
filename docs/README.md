@@ -1,9 +1,9 @@
 # docs/ is the site
 
-Brought current 2026-10-09 (`proposed-changes.md` 3.94). **37 indexable pages
-are built**: home, five service pages, the areas hub, twelve town pages,
-contact, the blog index and sixteen posts, plus two redirect stubs. Privacy is
-the 38th and ships with the first analytics tag. `pagemap.md` at the repo root
+Brought current 2026-10-11 (`proposed-changes.md` 3.96). **All 38 indexable
+pages are built**: home, five service pages, the areas hub, twelve town pages,
+contact, privacy, the blog index and sixteen posts, plus sixteen redirect
+stubs and `404.html`. `pagemap.md` at the repo root
 is the page map of record, and `CLAUDE.md` carries the cutover checklist.
 
 **GitHub Pages is deliberately NOT enabled on this repository.** The shop's

@@ -15857,6 +15857,9 @@ schema, word for word.
   - "Using OEM parts in collision repair helps maintain your vehicle's warranty."
   - "Tri-County Collision's commitment to OEM parts helps protect your investment and keeps your warranty intact."
 - **The blog's own legal lines** stay where 4.11 lists them, for the same review.
+- **`/privacy/`, the whole page (3.96)**, above all the present-tense analytics and
+  call-tracking sections, "We do not sell it", the children line and the server-logs
+  sentence.
 
 **Q5, the dates: RULED, a policy.** datePublished never moves; dateModified
 moves on any visible content change. Recorded as the amendment to 3.57.
@@ -16023,6 +16026,193 @@ dates moved with their pages.
 CLAUDE.md's NAP block and its exception note, pagemap.md's title,
 `docs/README.md`, `llms.txt`, the two agents' job descriptions and the two
 workflows' names all take the new string.
+
+### 3.96 The last pages: the map amended, sixteen stubs, the 404 and privacy. BUILT 2026-10-11
+
+Greg's rulings of 2026-10-11, relayed by the strategy chat. The privacy copy
+was approved verbatim by the same relay, so its pairs below are recorded,
+not proposed. Four jobs, in the order the ruling set: the map first.
+
+#### Job 1: the map changes first
+
+`pagemap.md` now answers the sweep's six URLs outside the 48 (sweep report,
+2026-10-09, finding "the live site links to URLs outside the 48"):
+
+| Old URL | Live links | Live today | Ruled |
+|---|---|---|---|
+| /author/greg/ | 18 | 301 | 301 to /blog/ |
+| /author/digisquid/ | 7 | 301 | 301 to /blog/ |
+| /blog/page/2/ | 2 | 200 | 301 to /blog/ |
+| /category/news/page/2/ | 2 | 200 | 301 to /blog/ |
+| /category/collision-repair/page/2/ | 2 | 200 | 301 to /blog/ |
+| /feed/ | | 200 | honest 404, the site publishes no RSS |
+
+**The arithmetic, re-derived in the map's own Counts section:** indexable
+38; redirects 11 + 5 = 16; honest 404s 1 + 1 = 2 (/thanks/, /feed/); known
+live URLs 48 + 6 = 54 = 36 migrated + 16 redirected + 2 honest 404s. The
+Blog index row's redirect column and the Privacy row (built) were amended
+in place, the struck count kept readable.
+
+#### Job 2: the stubs
+
+**Fourteen built, sixteen in all**: the nine planned since September
+(/auto-repair-shop-southampton-pa/ and /car-repair-shop-southampton-pa/ to
+`/`; /auto-body-repair/ and /body-shop-southampton/ to collision repair;
+/collision-repair-copy-copy/ to commercial; /auto-glass-repair-replacement-copy/
+to glass; /customer-information/ to contact; the two category archives to
+the blog) plus Job 1's five. Each is the Jamison stubs' shape exactly:
+bare, `noindex` written by `sync-chrome.py`'s switch, an absolute canonical,
+a meta refresh and a visible link to the same target, the link labelled
+with the target's own H1. **The true 301 stays a hosting decision**, named
+in every stub's comment: if the production host can answer with a real 301,
+it replaces the stub at cutover.
+
+**Mechanism: `REDIRECTS` and `HONEST_404S` in `scripts/audit.py`**, the map's
+redirect column as data, and `check_redirects_local`, a site-wide CRITICAL
+both ways: every row has a stub whose canonical is its target and whose
+target is a real page, every stub under `docs/` is a row, and nothing stands
+at /thanks/ or /feed/. Nine of eleven planned stubs went missing for a month
+because nothing compared the map with `docs/`; now the build does.
+
+#### Job 3: the 404 page
+
+`docs/404.html`, minimal by the ruling: the compact ox header (page-header
+identity) with H1 "Page not found", the ruled line as the lead, and the
+call button; below it two text links, labelled with the chrome's own names
+for those pages, "Home" and "Contact Us". The meta description is the ruled
+line, so the page adds no copy. Title "Page Not Found | Tri County Collision
+Center" (44).
+
+- **Root-relative, the one file in `docs/` that is.** GitHub Pages serves
+  it at the missing URL at any depth, so a relative link would break.
+  `stamp-assets.py` already read a single leading slash for this file. The
+  test suite's dead-link sweep now resolves a leading "/" against `docs/`
+  for `404.html` only; anywhere else it still fails.
+- **No chrome**, for the same reason. **The staging machinery applies
+  anyway, from the same switch:** `sync-chrome.py`'s new `error_page()`
+  writes the noindex, the banner (just inside `<body>`) and the favicon
+  links (root-relative), and removes the first two when `STAGING` is off.
+- **How the audit treats it:** kind `error-404`, the short error rubric it
+  has had since September (title, meta, one H1, viewport, alt, stamps, out
+  of `sitemap.xml`, no canonical expected). **New in this run:** the banner
+  and the noindex are scored both ways, as on every page (a missing noindex
+  while staging is a critical, a leftover one after the flip is a critical).
+  It scores 100/100.
+- **Rendered over HTTP** (root-relative paths do not resolve over
+  `file://`): the call button's bottom edge at 347px at 1440x900, 299 at
+  390x844, 331 at 360x640; no horizontal scroll at any width.
+
+#### Job 4: the privacy page, the 38th
+
+**The pairs, all new, Greg's copy verbatim:**
+
+| Where | Before | After |
+|---|---|---|
+| title, og:title, WebPage name | (no page) | Privacy Policy \| Tri County Collision Center (44) |
+| meta, og:description, WebPage description | (no page) | How Tri County Collision Center handles your information: what this site collects, what analytics run, and how to reach us with questions. (138) |
+| H1 | (no page) | Privacy Policy |
+| lead | (no page) | The short version: this website asks you for nothing. It has no forms and no accounts. If you call or email us, we use what you share to help with your vehicle, and for nothing else. |
+| body, ten H2 sections | (no page) | the approved copy, word for word, each heading an H2 and its text one paragraph; the Questions phone and email are tel: and mailto: links |
+| date line, NOT in the approved copy | (no page) | Updated October 11, 2026 |
+
+**The date line is the one addition, and it is flagged for Greg.** The
+approved "Changes" section says "the date on this page changes with it",
+which is false on a page that shows no date. The line is the posts' own
+"Updated" grammar. If Greg would rather the page carry no date, the
+"Changes" sentence has to change with it.
+
+**Truth checks on the copy, each run against the build:** `site.js` sets
+no cookie and touches no storage; the only iframe on the site is the Maps
+embed on `/contact-us/`; the fonts are self-hosted, so nothing third-party
+loads; the DocuSign link is in every page's nav and CarWise is linked from
+contact and service pages. The copy holds.
+
+**Present tense for analytics and call tracking, deliberate (the ruling):**
+neither tag is on any page today. Both go live in the cutover pass, the
+page's public life starts the same day, and staging wears the banner
+meanwhile. The page's head comment and CLAUDE.md both say: if either tag
+does not ship at cutover, the policy changes in the same commit. **The 37
+pages' analytics comment said "docs/privacy/ ships in the same commit as
+the first tag"**, which this ruling made false; it now says the policy
+already discloses both, in every page and in `migrate-blog.py`. Comment
+only, so no date moved for it.
+
+- **Kind `privacy`, its own recorded scope**: `RUBRIC_EXEMPTIONS["privacy"]
+  = ("faq-schema",)`, nothing else. Thin content stays live (the page
+  measures ~702 words with its chrome). The exemption reports as a note
+  naming this ruling.
+- **Its own date check, `privacy_date_findings`, a CRITICAL scoped to the
+  kind:** exactly one visible "Updated" `<time>` in `<main>`, equal to the
+  WebPage `dateModified`, its words naming the same day. The page's one
+  promise about itself is now mechanism.
+- **The top is the compact ox header**, which CLAUDE.md left "decided when
+  it is built". No hero (nothing to photograph) and no in-flow ox band (the
+  page asks for nothing). Ground order: ox header, silver body, ink footer.
+- Business node in full, `AREA_SERVED` (synced), WebPage and a
+  BreadcrumbList mirroring Home / Privacy Policy. No FAQ, no review markup.
+  Share card follows home's, as contact's and the blog's do.
+- `sitemap.xml` 37 to 38; `llms.txt` lists it under Key pages after
+  contact.
+
+#### The footer's Privacy link, measured: it fits
+
+**Placed at the end of the footer's bottom line, small**, labelled "Privacy
+Policy" (the page's H1 and crumb, so one name across the chrome), not in
+Explore: a policy is found where readers look for it. The Explore comment
+that said "Privacy joins Explore when it ships" is amended, here and in the
+template.
+
+Measured before (HEAD) and after on home, blog, contact, collision repair,
+a post, the NE Philadelphia town page and the hub, over the CDP pipe at
+1440x900, 390x844 and 360x640:
+
+| Width | Footer height | Bottom line | Link | Doc heights |
+|---|---|---|---|---|
+| 1440 | 736.9 both | 1 line both | x 966 to 1052, one box | identical |
+| 390 | 1772.7 both | 3 lines both | x 228 to 313, one box | identical |
+| 360 | 1772.7 both | 3 lines both | x 228 to 313, one box | identical |
+
+**It costs nothing:** it lands in space the bottom line's existing wrap
+already had, no line is added at any width, nothing moves, and there is no
+horizontal scroll anywhere. Every fold figure is unchanged.
+
+#### Dates: not moved for the footer link, a reading for Greg
+
+**Privacy carries dateModified 2026-10-11. No other page was re-dated.**
+The 3.94 policy moves dateModified on any visible content change, and 3.95
+re-dated every page "the name being in every footer". This run reads a
+chrome link as navigation, not content: the name was a fact on every page,
+a link to a new page is furniture, and 3.94's favicon did not re-date
+either. **If Greg reads it the other way, it is one mechanical pass** (the
+generators' dates, the hand pages, the posts' "Updated" lines and cards,
+the sitemap).
+
+#### The lawyer bundle
+
+**`/privacy/` joins Q4's legal bundle (3.94)** for the same glance as the
+anti-steering language: the whole page, and above all the present-tense
+analytics and call-tracking sections, "We do not sell it", "not directed at
+children", and the server-logs sentence, which describes a host not yet
+chosen.
+
+#### The suite
+
+- `test-audit-checks.py`: all pass, 482 checks. **Section 44 is new**: the
+  privacy kind both ways (no FAQ warning, thin content still warns, the
+  CallRail number still fails, an undeclared page gets nothing), the date
+  check against five mutations and switched off by removing the kind, the
+  404 synced under each `STAGING` value scoring clean and failing under the
+  other, the sync idempotent, and the redirect table against the shipped
+  `docs/`, `pagemap.md` and four mutations (a missing stub, a stray stub, a
+  wrong target, something at /feed/). Section 19's pinned kinds and
+  section 33's chrome fixture gained privacy.
+- `test-sitemap-expansion.py` passes; every `--check` exits 0.
+- `audit.py --strict`: **38 pages, 16 stubs and the 404 page; 1103
+  passing, 38 warnings, 0 critical.** The stubs and the 404 at 100. **The
+  warnings are the standing sameAs warning, one per page, and there are 38
+  because privacy is the 38th page carrying the business node**; the
+  ruling's "37" counted the pages before it. No other warning.
+- No em dash added.
 
 ## 4. The claims list
 

@@ -22,18 +22,23 @@ repo is public. `pagemap.md` carries only what the build needs.
 
 What it commits us to, in short:
 
-- **37 indexable pages** (38 if ADAS calibration clears its gate), and
-  no utility pages since 2026-09-24, when the thank-you page left the map
-  with the form. The old sitemap's 48 entries: 36 migrate, 11 redirect, and
-  /thanks/ gets an honest 404. Privacy is new and ADAS is a candidate, which
-  is how 36 become 37 or 38. `pagemap.md` spells the arithmetic out.
+- **38 indexable pages, all built since 2026-10-11** (privacy was the
+  last, `proposed-changes.md` 3.96), and no utility pages since 2026-09-24,
+  when the thank-you page left the map with the form. The old sitemap's 48
+  entries: 36 migrate, 11 redirect, and /thanks/ gets an honest 404. The
+  sweep's six URLs outside the 48 were ruled 2026-10-11: five redirect and
+  /feed/ gets an honest 404. 54 known URLs: 36 + 16 + 2. Privacy and ADAS
+  are new, which is how 36 become 38. `pagemap.md` spells the arithmetic out.
 - **Migrate faithfully, do not rewrite for its own sake.** The promise of
   this migration is that rankings survive. Existing slugs are kept wherever
   a page keeps its purpose, because every unnecessary redirect spends a
   little of that.
-- **Eleven old URLs redirect**: 8 clones to their canonical targets, 2
-  category archives to the blog index, and `/customer-information/` to
-  `/contact-us/`. A clone or plumbing URL gets a 301 to the page it copies
+- **Sixteen old URLs redirect**: 8 clones to their canonical targets, 2
+  category archives to the blog index, `/customer-information/` to
+  `/contact-us/`, and since 2026-10-11 the 2 author archives and 3
+  paginated archives to the blog index. Every one stands in `docs/` as a
+  bare stub, and `REDIRECTS` in `scripts/audit.py` is the table the build
+  holds them to, both ways (3.96). A clone or plumbing URL gets a 301 to the page it copies
   or an honest 404, never a forced mapping to a sales page.
 - **Two gates that data decides, not us.** ADAS calibration is built only if
   Keyword Planner shows demand AND the owner confirms calibration happens
@@ -697,7 +702,8 @@ ox header is the PAGE-HEADER IDENTITY**, chrome and not an in-flow band, on
 Greg's ruling. `/contact-us/`, `/blog/`, the sixteen posts and the areas
 tier (the hub and the twelve town pages) wear it. "Because it asks" above
 described contact's instance, not the boundary of the rule. The band test
-still governs bands in the page flow. Privacy is decided when it is built.
+still governs bands in the page flow. **Privacy and the 404 page wear it
+too since 2026-10-11 (3.96)**; privacy carries no in-flow ox band.
 
 ## The motion amendment, 2026-09-10
 
@@ -810,9 +816,10 @@ is worth paying for only while a warning is an alarm.
   runs, and the page still counts as a page.
 - An exempt check still reports, as a note naming the ruling, so the report
   says what it did not measure rather than going quiet.
-- **Per kind and explicit, forever.** When the privacy page trips its own
-  mismatch, it declares its own kind with its own recorded scope. **There is
-  never a blanket pass, and never one for "utility".**
+- **Per kind and explicit, forever.** The privacy page declares its own
+  kind, `privacy`, exempt from `faq-schema` and nothing else, with a date
+  check of its own (Greg's ruling 2026-10-11, 3.96). **There is never a
+  blanket pass, and never one for "utility".**
 - `scripts/test-audit-checks.py` section 19 holds both directions: a contact
   page still fails the CallRail number, the second email, a wrong street, a
   missing H1 and a bare contact; an undeclared, misspelled or `utility` page
@@ -846,6 +853,26 @@ the change. Migration kept the live dates because it changed no words; a
 correction changes words. A post's day goes in `CORRECTED` in
 `scripts/migrate-blog.py`, and its schema, `article:modified_time`, visible
 "Updated" line and `/blog/` card follow it; then rebuild the sitemap.
+
+### The 404 page, 2026-10-11
+
+`docs/404.html`, minimal by Greg's ruling (3.96): H1, one line, the call,
+a link home and a link to contact. GitHub Pages serves it with a real 404
+status at any missing path, so **it is the one file in `docs/` whose links
+and assets are root-relative**, and it carries no chrome. `sync-chrome.py`
+writes its noindex, banner and favicon links from `STAGING` like every
+page's; `audit.py` scores it on the error-page rubric, staging both ways.
+/thanks/ and /feed/ are the map's honest 404s and nothing may stand at
+them.
+
+### The privacy policy speaks in the present tense, 2026-10-11
+
+`/privacy/` says the site uses Google Analytics and call tracking. Neither
+is on any page yet: both go live in the cutover pass, the page's public
+life starts that day, and staging wears the banner meanwhile (3.96). **If
+either tag does not ship at cutover, the policy changes in the same
+commit**, and its visible date and `dateModified` move together, which the
+audit enforces.
 
 ## Staging ships noindexed on purpose
 

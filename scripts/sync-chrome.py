@@ -33,7 +33,9 @@ migrated from the live site: a chrome label is furniture, not a claim.
 
 WHAT IT TOUCHES. On every page that is not a redirect stub: everything from
 the CHROME:HEAD marker to the end of the <header>, and the <footer
-class="site"> element. A redirect stub stays bare.
+class="site"> element. A redirect stub stays bare. docs/404.html carries no
+chrome and takes only the staging machinery and the favicon links, written
+root-relative (3.96; see error_page()).
 
 Since 3.94 it also writes three things in every real page that follow a
 switch or a set rather than the nav:
@@ -77,6 +79,7 @@ SERVICES = audit.SERVICES
 HUB = ("areas-served/", "Areas We Serve")
 CONTACT = ("contact-us/", "Contact Us")
 BLOG = ("blog/", "Blog")
+PRIVACY = ("privacy/", "Privacy Policy")
 
 
 def towns():
@@ -199,8 +202,8 @@ def render(page: str) -> tuple:
                land, and never before. EXPLORE AND AREAS WE SERVE ARE THE
                FULL MAP (3.83, 3.89): every service page, the blog and
                contact here, every town and the hub in the next column, so
-               no page is a dead end from its foot. Privacy joins Explore
-               when it ships. The labels are the nav's, so each destination
+               no page is a dead end from its foot. Privacy is linked from
+               the bottom line instead, small (3.96). The labels are the nav's, so each destination
                has ONE name across the chrome. -->
           <h2 class="foot-head">Explore</h2>
           <ul class="foot-links">
@@ -220,8 +223,12 @@ def render(page: str) -> tuple:
       <div class="foot-bottom">
         <!-- The year is written into the markup so it is right with
              JavaScript off, and assets/site.js updates it so it is right
-             next January. A hard-coded year is a stale-clock claim. -->
-        <p>&copy; <span data-year>2026</span> Tri County Collision Center &middot; <a href="{maps}" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> &middot; <a href="{PHONE_TEL}">{PHONE_TEXT}</a> &middot; <a href="mailto:{EMAIL}">{EMAIL}</a></p>
+             next January. A hard-coded year is a stale-clock claim.
+             THE PRIVACY LINK closes this line, small, on Greg's ruling of
+             2026-10-11 (3.96): a policy is found where readers expect it,
+             not in Explore beside the pages that sell. Its label is the
+             page's own H1 and crumb, so it has ONE name. -->
+        <p>&copy; <span data-year>2026</span> Tri County Collision Center &middot; <a href="{maps}" target="_blank" rel="noopener">995 Jaymor Rd, Southampton, PA 18966</a> &middot; <a href="{PHONE_TEL}">{PHONE_TEXT}</a> &middot; <a href="mailto:{EMAIL}">{EMAIL}</a> &middot; {link(*PRIVACY)}</p>
       </div>
     </div>
   </footer>'''
@@ -294,13 +301,45 @@ def synced(path: str, text: str) -> str:
     return before + icons(page).lstrip("\n") + text[i:]
 
 
+ERROR_PAGE = os.path.join(DOCS, "404.html")
+
+
+def error_page(path: str, text: str) -> str:
+    """docs/404.html, 3.96. It carries no chrome, because it is served at the
+    missing URL at any depth and the chrome's links are relative. It takes
+    the rest of the staging machinery from the same switch as every page:
+    the noindex tag, the banner (just inside <body>, where there is no
+    header to sit above) and the favicon links, ROOT-RELATIVE for the same
+    reason its other links are."""
+    text = staged(path, text)
+    has = BANNER_BLOCK in text
+    if audit.STAGING and not has:
+        i = text.index("<body>\n") + len("<body>\n")
+        text = text[:i] + "\n" + BANNER_BLOCK.rstrip("\n") + "\n" + text[i:]
+    elif not audit.STAGING and has:
+        text = text.replace("\n" + BANNER_BLOCK.rstrip("\n") + "\n", "", 1)
+    text = ICONS_RE.sub("\n", text, count=1) if ICONS_RE.search(text) else text
+    i = text.index("</head>")
+    lines = "".join(f'  <link rel="{rel}"' + (f" {attrs}" if attrs else "") + f' href="/{fp}">\n'
+                    for rel, attrs, fp in audit.ICON_LINKS)
+    block = ("  <!-- ICONS, written by scripts/sync-chrome.py from audit.ICON_LINKS (3.94): the\n"
+             "       shop's own site icon, made by scripts/prepare-favicon.py. -->\n" + lines)
+    return text[:i].rstrip("\n") + "\n" + block + text[i:]
+
+
 def main() -> int:
     check = "--check" in sys.argv[1:]
     stale = []
-    for path in sorted(glob.glob(os.path.join(DOCS, "**", "index.html"), recursive=True)):
+    paths = sorted(glob.glob(os.path.join(DOCS, "**", "index.html"), recursive=True))
+    if os.path.isfile(ERROR_PAGE):
+        paths.append(ERROR_PAGE)
+    for path in paths:
         with open(path, encoding="utf-8") as f:
             text = f.read()
-        new = staged(path, text) if is_stub(text) else synced(path, text)
+        if path == ERROR_PAGE:
+            new = error_page(path, text)
+        else:
+            new = staged(path, text) if is_stub(text) else synced(path, text)
         if new != text:
             stale.append(os.path.relpath(path, ROOT))
             if not check:

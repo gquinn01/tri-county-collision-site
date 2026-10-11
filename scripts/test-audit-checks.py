@@ -215,7 +215,15 @@ def main():
                 if ref.startswith(("http://", "https://", "tel:", "mailto:",
                                    "#", "data:")):
                     continue
-                if not os.path.isfile(audit.resolve_local_link(page, ref)):
+                # docs/404.html alone is ROOT-RELATIVE (3.96): it is served at
+                # the missing URL, at any depth. Its "/" is the site root.
+                # Anywhere else a leading "/" stays unresolved and fails.
+                if ref.startswith("/") and os.path.relpath(page, under) == "404.html":
+                    target = audit.resolve_local_link(os.path.join(under, "index.html"),
+                                                      "./" + ref.lstrip("/"))
+                else:
+                    target = audit.resolve_local_link(page, ref)
+                if not os.path.isfile(target):
                     out.append(f"{os.path.relpath(page, under)} -> {ref}")
         return out
 
@@ -760,7 +768,8 @@ def main():
                                       "post": ("faq-schema",),
                                       "blog-index": ("faq-schema",),
                                       "town": (),
-                                      "hub": ()},
+                                      "hub": (),
+                                      "privacy": ("faq-schema",)},
           audit.RUBRIC_EXEMPTIONS)
     # 3.62: a town page is a ruled kind exempt from NOTHING. It has to carry
     # a real FAQ and earn its words, so both checks stay live on it.
@@ -1585,7 +1594,8 @@ def main():
             '<body><p>Moved.</p></body></html>')
     # The service pages come from the generator's own SERVICES, not a typed
     # list: a typed list missed /adas-calibration/ the day it landed (3.86).
-    good_keys = ["index.html", "contact-us/index.html", "blog/index.html", "areas-served/index.html"] + \
+    good_keys = ["index.html", "contact-us/index.html", "blog/index.html", "areas-served/index.html",
+                 "privacy/index.html"] + \
                 [f"{t}index.html" for t, *_ in sc.SERVICES] + \
                 [f"areas-served-collision-repair-{k}/index.html" for k in audit.TOWN_ROUTES]
 
@@ -2135,6 +2145,93 @@ def main():
               "swap is whole", flagged == named and len(named) >= 37, (len(flagged), len(named)))
     finally:
         audit.NAP_NAME = real_name
+
+    print("44. The last pages: the privacy kind, its date, the 404's staging, the redirect table (3.96)")
+    priv_meta = '<meta name="tri-county-page" content="privacy">'
+    p, w, f, n, kind = run_kind(priv_meta, short)
+    check("     a privacy page draws no FAQPage warning", "no FAQPage schema" not in w, w)
+    check("     and says so as a note naming the ruling", "No FAQPage schema, not measured" in n and "3.96" in n, n)
+    check("     but thin content is still measured on it", "Thin content" in w, w)
+    p, w, f, n, kind = run_kind(priv_meta, short.replace("</p>", "</p><p>Or call 215.709.9665 today.</p>"))
+    check("     and it still fails on the CallRail number", "CallRail tracking number" in f, f)
+    p, w, f, n, kind = run_kind("", short)
+    check("     an undeclared page gets no FAQ exemption", "No FAQPage schema, not measured" not in n, n)
+
+    priv_path = os.path.join(root, "docs", "privacy", "index.html")
+    priv = open(priv_path, encoding="utf-8").read()
+    pp, pf = audit.privacy_date_findings(priv)
+    check("     the shipped policy's visible date is its dateModified", pp and not pf, pf)
+    for label, mutant in (
+            ("a schema date that moved alone", priv.replace('"dateModified": "2026-10-11"', '"dateModified": "2026-10-12"')),
+            ("a visible date that moved alone", priv.replace('<time datetime="2026-10-11">', '<time datetime="2026-10-12">')),
+            ("words that name another day", priv.replace(">October 11, 2026</time>", ">October 12, 2026</time>")),
+            ("no visible date", re.sub(r"<p>Updated <time[^>]*>[^<]*</time></p>", "", priv)),
+            ("two visible dates", priv.replace("</main>", '<p>Updated <time datetime="2026-10-11">October 11, 2026</time></p></main>'))):
+        pp, pf = audit.privacy_date_findings(mutant)
+        check(f"     caught: {label}", bool(pf) and not pp, (pp, pf))
+    audit.load = lambda _src, _h=priv.replace('"dateModified": "2026-10-11"', '"dateModified": "2026-10-12"'): _h
+    passes, warns, fails, notes, kind = audit.audit(priv_path, coverage=None)
+    check("     and the page itself fails on it, as a critical", any("visible date" in x for x in fails), fails)
+    audit.load = lambda _src, _h=priv.replace(priv_meta, ""): _h
+    passes, warns, fails, notes, kind = audit.audit(priv_path, coverage=None)
+    check("     MUTATION: undeclared, the date check does not run", not any("visible date" in x for x in passes + fails),
+          [x for x in passes + fails if "date" in x])
+
+    err_path = os.path.join(root, "docs", "404.html")
+    real_staging = audit.STAGING
+    try:
+        for staging in (True, False):
+            audit.STAGING = staging
+            err_now = sc.error_page(err_path, open(err_path, encoding="utf-8").read())
+            audit.load = lambda _src, _h=err_now: _h
+            passes, warns, fails, notes, kind = audit.audit(err_path, coverage=None)
+            check(f"     STAGING={staging}: the 404 as synced scores clean on the error rubric",
+                  kind == "error-404" and not fails and not warns, (warns, fails))
+            check(f"     STAGING={staging}: the banner and the noindex are {'on' if staging else 'off'}",
+                  (('<p class="staging">' in err_now) == staging)
+                  and ((audit.STAGING_ROBOTS_META in err_now) == staging), None)
+            check(f"     STAGING={staging}: the sync is idempotent", sc.error_page(err_path, err_now) == err_now, None)
+            flipped = err_now
+            audit.STAGING = not staging
+            audit.load = lambda _src, _h=flipped: _h
+            passes, warns, fails, notes, kind = audit.audit(err_path, coverage=None)
+            check(f"     the 404 as synced for STAGING={staging} fails once the switch says {not staging}",
+                  bool(fails) if staging else bool(fails or warns), (warns, fails))
+    finally:
+        audit.STAGING = real_staging
+    check("     the 404's favicon links are root-relative",
+          '<link rel="icon" sizes="any" href="/favicon.ico">' in open(err_path, encoding="utf-8").read(), None)
+
+    found = audit.redirect_table_findings(os.path.join(root, "docs"))
+    check(f"     the shipped docs/ carries all {len(audit.REDIRECTS)} redirects and no stray stub", found == [], found)
+    pagemap = open(os.path.join(root, "pagemap.md"), encoding="utf-8").read()
+    check("     every row of REDIRECTS is named in pagemap.md",
+          all(f"/{old}" in pagemap for old in audit.REDIRECTS), [o for o in audit.REDIRECTS if f"/{o}" not in pagemap])
+    check("     sixteen redirects and two honest 404s, the amended map's arithmetic",
+          len(audit.REDIRECTS) == 16 and audit.HONEST_404S == ("thanks/", "feed/"), None)
+    import shutil as _sh
+    with _tempfile.TemporaryDirectory() as tmp:
+        site_copy = os.path.join(tmp, "docs")
+        _sh.copytree(os.path.join(root, "docs"), site_copy,
+                     ignore=_sh.ignore_patterns("*.jpg", "*.png", "*.webp", "*.woff2", "*.svg", "*.ico"))
+        _sh.rmtree(os.path.join(site_copy, "author", "greg"))
+        check("     caught: a planned redirect with no stub",
+              any("/author/greg/" in x and "no stub" in x for x in audit.redirect_table_findings(site_copy)), None)
+        os.makedirs(os.path.join(site_copy, "author", "greg"))
+        _sh.copy(os.path.join(root, "docs", "author", "greg", "index.html"), os.path.join(site_copy, "author", "greg"))
+        stray = os.path.join(site_copy, "old-page")
+        os.makedirs(stray)
+        _sh.copy(os.path.join(root, "docs", "author", "greg", "index.html"), stray)
+        check("     caught: a stub the table does not list",
+              any("/old-page/" in x for x in audit.redirect_table_findings(site_copy)), None)
+        _sh.rmtree(stray)
+        cp = os.path.join(site_copy, "auto-body-repair", "index.html")
+        open(cp, "w").write(open(cp).read().replace("tricountycollision.com/collision-repair/", "tricountycollision.com/"))
+        check("     caught: a stub pointing somewhere the map does not say",
+              any("/auto-body-repair/" in x for x in audit.redirect_table_findings(site_copy)), None)
+        os.makedirs(os.path.join(site_copy, "feed"))
+        check("     caught: something standing at an honest 404",
+              any("/feed/" in x for x in audit.redirect_table_findings(site_copy)), None)
 
     print()
     if FAILURES:
