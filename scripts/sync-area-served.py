@@ -2,6 +2,7 @@
 """
 Writes the one served list, AREA_SERVED in scripts/audit.py, into the
 shared business node of every page under docs/. proposed-changes.md 3.79.
+And the shop's profiles, SAME_AS, since 3.97.
 
 WHY A SCRIPT. The business node repeats in full on every page, and a list
 typed into 26 pages is 26 chances for one of them to drift. That is how
@@ -9,7 +10,13 @@ Jamison had a page and was missing from the list every page carried (the
 3.62 open item). Here the list lives once, this writes it everywhere, and
 scripts/audit.py fails any page whose node says otherwise.
 
-WHAT IT TOUCHES. Only the areaServed array of a node whose @type is a
+SINCE 3.97 IT ALSO WRITES sameAs, from SAME_AS in scripts/audit.py, the
+shop's profiles, placed directly after the node's hasMap because the list
+opens on that same Maps URL. One script, because both are the business
+node's one-list fields and a second script would be a second thing to
+forget to run.
+
+WHAT IT TOUCHES. Only the areaServed and sameAs of a node whose @type is a
 LocalBusiness type. Every other node, including a Service node's own
 areaServed (a town page names its town there), is left as it is.
 
@@ -49,22 +56,45 @@ def reserialise(body: str, data) -> str:
 
 def synced(html: str) -> str:
     want = audit.area_served_nodes()
+    profiles = list(audit.SAME_AS)
+
+    def with_same_as(n: dict) -> dict:
+        """The node with sameAs directly after hasMap (at the end if the
+        node has none), every other key in its own order."""
+        out = {}
+        for k, v in n.items():
+            if k == "sameAs":
+                continue
+            out[k] = v
+            if k == "hasMap":
+                out["sameAs"] = profiles
+        out.setdefault("sameAs", profiles)
+        return out
 
     def one(m):
         body = m.group(2)
         data = json.loads(body)
         if reserialise(body, data) != body:
             raise SystemExit("FAILED: a JSON-LD block does not round-trip byte for byte, so "
-                             "rewriting it would change more than its areaServed. Nothing written.")
+                             "rewriting it would change more than its areaServed and sameAs. "
+                             "Nothing written.")
         items = data if isinstance(data, list) else [data]
-        nodes = []
-        for it in items:
-            nodes.extend(it.get("@graph", [it]) if isinstance(it, dict) else [])
-        for n in nodes:
-            t = n.get("@type")
+        def is_business(n) -> bool:
+            t = n.get("@type") if isinstance(n, dict) else None
             types = t if isinstance(t, list) else [t]
-            if audit.LOCAL_BUSINESS_TYPES.intersection(x for x in types if isinstance(x, str)):
-                n["areaServed"] = want
+            return bool(audit.LOCAL_BUSINESS_TYPES.intersection(x for x in types if isinstance(x, str)))
+
+        for it in items:
+            if not isinstance(it, dict):
+                continue
+            graph = it.get("@graph")
+            nodes = graph if isinstance(graph, list) else [it]
+            for i, n in enumerate(nodes):
+                if is_business(n):
+                    n["areaServed"] = want
+                    fixed = with_same_as(n)
+                    n.clear()
+                    n.update(fixed)
         return m.group(1) + reserialise(body, data) + m.group(3)
 
     return BLOCK_RE.sub(one, html)
@@ -84,12 +114,14 @@ def main() -> int:
                     f.write(new)
     if check:
         if stale:
-            print(f"{len(stale)} page(s) carry a served list that is not AREA_SERVED:")
+            print(f"{len(stale)} page(s) carry a served list or profiles that are not "
+                  f"AREA_SERVED and SAME_AS:")
             for p in stale:
                 print(f"  {p}")
             print("Run scripts/sync-area-served.py.")
             return 1
-        print(f"Every page's business node carries AREA_SERVED ({len(audit.AREA_SERVED)} places).")
+        print(f"Every page's business node carries AREA_SERVED ({len(audit.AREA_SERVED)} places) "
+              f"and SAME_AS ({len(audit.SAME_AS)} profiles).")
         return 0
     print(f"wrote {len(stale)} page(s)" + ("" if not stale else ":"))
     for p in stale:

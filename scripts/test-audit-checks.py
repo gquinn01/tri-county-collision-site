@@ -350,7 +350,7 @@ def main():
 
     TODAY = _date(2026, 9, 10)
     N = audit.REVIEW_COUNT
-    agree = [("docs/a/index.html", N, "274 Google reviews")]
+    agree = [("docs/a/index.html", N, f"{N} Google reviews")]
     disagree = agree + [("docs/b/index.html", 231, "231 Google reviews")]
 
     warns, fails, notes = run_review(agree, "2026-09-10", TODAY)
@@ -362,7 +362,7 @@ def main():
     warns, fails, notes = run_review(disagree, "2026-09-10", TODAY)
     check("     TWO PAGES THAT DISAGREE ARE A CRITICAL", len(fails) == 1, fails)
     check("     and the critical names both numbers",
-          bool(fails) and "231" in fails[0] and "274" in fails[0], fails)
+          bool(fails) and "231" in fails[0] and str(N) in fails[0], fails)
     check("     and names the files, so it can be fixed without a search",
           bool(fails) and "docs/b/index.html" in fails[0], fails)
 
@@ -977,8 +977,8 @@ def main():
         cp, cw, cf, cn, ck = audit.audit(os.path.join(root, "docs", "contact-us", "index.html"))
     finally:
         audit.load = _load
-    check("     /contact-us/ as it ships: no critical, and sameAs its only warning",
-          not cf and len(cw) == 1 and "sameAs" in cw[0], (cf, cw))
+    check("     /contact-us/ as it ships: no critical and no warning (sameAs shipped, 3.97)",
+          not cf and not cw, (cf, cw))
 
     # Empty headings, 3.60. One shipped in 3.58, an <h2></h2> closing a
     # migrated post, and nothing could see it: it has no box to look at and
@@ -1816,10 +1816,12 @@ def main():
     OLD_REVIEW_RE = re.compile(r"\b(\d[\d,]{0,6})\s+(?:google\s+)?reviews?\b", re.I)
     with _tempfile.TemporaryDirectory() as tmp:
         with open(os.path.join(tmp, "index.html"), "w", encoding="utf-8") as fh:
-            fh.write('<span class="stat-n">274</span> <span class="stat-l">Google reviews</span>'
+            # The agreeing figure is the constant, so the fixture follows
+            # each new reading (3.97 moved it) rather than going stale.
+            fh.write(f'<span class="stat-n">{audit.REVIEW_COUNT}</span> <span class="stat-l">Google reviews</span>'
                      + stale)
         nums = sorted(n for _p, n, _s in audit.find_review_counts(tmp))
-        check("     \"over 231 verified Google reviews\" is READ as 231", nums == [231, 274], nums)
+        check("     \"over 231 verified Google reviews\" is READ as 231", nums == [231, audit.REVIEW_COUNT], nums)
         real_find = audit.find_review_counts
         audit.find_review_counts = lambda root=None, _t=tmp: real_find(_t)
         try:
@@ -2238,6 +2240,60 @@ def main():
         os.makedirs(os.path.join(site_copy, "feed"))
         check("     caught: something standing at an honest 404",
               any("/feed/" in x for x in audit.redirect_table_findings(site_copy)), None)
+
+    print()
+    print("45. The shop's profiles: SAME_AS on every business node, opening on hasMap (3.97)")
+    import importlib.util as _ilu
+    _spec = _ilu.spec_from_file_location("sync_area_served", os.path.join(root, "scripts", "sync-area-served.py"))
+    sa = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(sa)
+    check("     the list opens on the Business Profile's Maps URL", audit.SAME_AS[0] == audit.GBP_MAP_URL)
+    check("     the Facebook page is the one the profile lists (604), never the stray",
+          any(u.endswith("id=100037804906604") for u in audit.SAME_AS)
+          and not any("facebook" in u and not u.endswith("604") for u in audit.SAME_AS))
+    shipped = sorted(glob.glob(os.path.join(root, "docs", "**", "index.html"), recursive=True))
+    stale = [p for p in shipped if sa.synced(open(p, encoding="utf-8").read()) != open(p, encoding="utf-8").read()]
+    check("     every shipped page is in sync (the sync is a no-op)", not stale, stale)
+    home_path = os.path.join(root, "docs", "index.html")
+    home = open(home_path, encoding="utf-8").read()
+    check("     sameAs sits directly after hasMap",
+          re.search(r'"hasMap": "[^"]+",\n\s*"sameAs": \[', home) is not None)
+
+    def score(html_text):
+        _load = audit.load
+        audit.load = lambda _src, _h=html_text: _h
+        try:
+            return audit.audit(home_path, coverage=None)
+        finally:
+            audit.load = _load
+    passes, warns, fails, notes, kind = score(home)
+    check("     home as it ships: the profile list passes, no sameAs warning",
+          any("SAME_AS" in x for x in passes) and not any("sameAs" in x for x in warns + fails), (warns, fails))
+    def mutate(fn):
+        """Home with its business node changed through the parsed JSON, so a
+        mutant is always valid schema and the check, not a parse error,
+        is what catches it."""
+        def one(m):
+            data = json.loads(m.group(2))
+            biz = next(n for n in data["@graph"] if n.get("@type") == "AutoBodyShop")
+            fn(biz)
+            return m.group(1) + sa.reserialise(m.group(2), data) + m.group(3)
+        return sa.BLOCK_RE.sub(one, home, count=1)
+
+    def drop(n): n["sameAs"] = n["sameAs"][:-1]
+    def stray(n): n["sameAs"] = [u.replace("100037804906604", "100037804906860") for u in n["sameAs"]]
+    def swap(n): n["sameAs"] = [n["sameAs"][1], n["sameAs"][0]] + n["sameAs"][2:]
+    def remap(n): n["hasMap"] = "https://maps.google.com/?cid=1"
+    def gone(n): n.pop("sameAs")
+    for label, fn in (("a profile dropped", drop), ("the stray Facebook page", stray),
+                      ("the order changed", swap), ("hasMap moved off the profile's URL", remap),
+                      ("no sameAs at all", gone)):
+        mutant = mutate(fn)
+        check(f"     the mutant differs: {label}", mutant != home)
+        passes, warns, fails, notes, kind = score(mutant)
+        check(f"     caught as a critical: {label}", any("profile list" in x for x in fails), fails)
+        if fn is not remap:
+            check(f"     and the sync repairs it: {label}", sa.synced(mutant) == home)
 
     print()
     if FAILURES:

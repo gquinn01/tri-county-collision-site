@@ -75,12 +75,10 @@
        geo IS THE SHOP'S VERIFIED PIN, GEO_LAT and GEO_LON in scripts/audit.py,
        adopted by Greg's ruling of 2026-09-25 (proposed-changes.md 3.56). It is
        never a map URL's @lat,lon, which is the viewport centre, not the pin.
-       sameAs IS DELIBERATELY ABSENT. The live site publishes five profile
-       URLs and they are listed in proposed-changes.md, but a sameAs claims
-       "this profile is us" and only profiles the shop actually controls
-       belong in it. The verified list is coming from the client. Until it
-       lands the property is not here, and the audit says so out loud rather
-       than the page quietly claiming an entity signal it does not have. -->
+       sameAs IS SAME_AS in scripts/audit.py, the shop's own profiles (the
+       Business Profile's Maps URL, Facebook, Instagram, LinkedIn), verified by
+       Greg 2026-10-12 (proposed-changes.md 3.97) and written by
+       scripts/sync-area-served.py; the audit fails a page whose list differs. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -106,6 +104,12 @@
           "longitude": -75.0512847
         },
         "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
+        "sameAs": [
+          "https://share.google/OPqWctAlZ4ik95HVj",
+          "https://www.facebook.com/profile.php?id=100037804906604",
+          "https://www.instagram.com/tricountycollisioncenter/",
+          "https://www.linkedin.com/company/tri-county-collision-center"
+        ],
         "openingHoursSpecification": [
           {
             "@type": "OpeningHoursSpecification",
@@ -236,7 +240,7 @@
         "name": "Southampton ADAS Calibration | Tri County Collision Center",
         "description": "ADAS calibration done in-house at Tri County Collision Center in Southampton, PA. Cameras and sensors re-aimed to factory spec after repairs. (215) 322-5350.",
         "inLanguage": "en-US",
-        "dateModified": "2026-10-09",
+        "dateModified": "2026-10-12",
         "isPartOf": {
           "@id": "https://tricountycollision.com/#business"
         },
@@ -534,9 +538,9 @@
             <span class="stat-s">If anything isn't right, we'll make it right.</span>
           </div>
           <div class="stat">
-            <span class="stat-n">274</span>
+            <span class="stat-n">279</span>
             <span class="stat-l">Google reviews</span>
-            <span class="stat-s">4.9 stars on Google, counted on September 10, 2026.</span>
+            <span class="stat-s">4.9 stars on Google, counted on October 12, 2026.</span>
           </div>
           <div class="stat">
             <span class="stat-n">12</span>

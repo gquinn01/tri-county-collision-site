@@ -72,8 +72,8 @@
        geo IS THE SHOP'S VERIFIED PIN, GEO_LAT and GEO_LON in scripts/audit.py,
        and there is no per-town geo: Jenkintown is where the reader is, not
        where the shop is. The town is named once, as the areaServed of this
-       page's own Service node. sameAs IS DELIBERATELY ABSENT until the
-       client's verified list lands. The FAQPage node is generated from the
+       page's own Service node. sameAs is SAME_AS in scripts/audit.py,
+       written by scripts/sync-area-served.py (3.97). The FAQPage node is generated from the
        same strings as the visible questions, so the two cannot differ. -->
   <script type="application/ld+json">
   {
@@ -100,6 +100,12 @@
           "longitude": -75.0512847
         },
         "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
+        "sameAs": [
+          "https://share.google/OPqWctAlZ4ik95HVj",
+          "https://www.facebook.com/profile.php?id=100037804906604",
+          "https://www.instagram.com/tricountycollisioncenter/",
+          "https://www.linkedin.com/company/tri-county-collision-center"
+        ],
         "openingHoursSpecification": [
           {
             "@type": "OpeningHoursSpecification",
@@ -230,7 +236,7 @@
         "name": "Jenkintown Collision Repair | Tri County Collision Center",
         "description": "Tri County Collision Center in Southampton repairs cars for Jenkintown, PA drivers, about 17 minutes away. Directions, free estimates, (215) 322-5350.",
         "inLanguage": "en-US",
-        "dateModified": "2026-10-09",
+        "dateModified": "2026-10-12",
         "isPartOf": {
           "@id": "https://tricountycollision.com/#business"
         },
@@ -472,9 +478,9 @@
             <span class="stat-s">If anything isn't right, we'll make it right.</span>
           </article>
           <article class="card card-figure">
-            <span class="stat-n">274</span>
+            <span class="stat-n">279</span>
             <span class="stat-l">Google reviews</span>
-            <span class="stat-s">4.9 stars on Google, counted on September 10, 2026.</span>
+            <span class="stat-s">4.9 stars on Google, counted on October 12, 2026.</span>
           </article>
           <article class="card card-figure">
             <span class="stat-n">12</span>

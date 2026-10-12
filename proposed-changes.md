@@ -830,7 +830,7 @@ it already pointed at the image that is now the hero.
 Whatever the answer to 4.9 turns out to be, this slot wants a file at 2000px or
 better, and a body shop can shoot one in an afternoon.
 
-### 3.7 sameAs is deliberately absent, pending the verified list
+### 3.7 sameAs is deliberately absent, pending the verified list. SHIPPED 2026-10-12, see 3.97
 
 The business node ships with no `sameAs`, so the audit reports one warning and
 the page scores 95/100 rather than 100. That is honest and it is the only gap.
@@ -16243,6 +16243,109 @@ words verbatim:
 - The lawyer bundle already holds `/privacy/`; recording consent is one
   more line for that glance.
 
+### 3.97 The review clock resets and sameAs ships. BUILT 2026-10-12
+
+Greg's readings off the shop's own Business Profile, 2026-10-12. By the
+brief, Greg opened all three social profiles and each is the shop's own.
+
+#### Job 1: the review count
+
+`REVIEW_COUNT` 279, `REVIEW_RATING` 4.9, `REVIEW_COUNTED_ON` 2026-10-12, read
+off the Business Profile by Greg. The vendor exception, as in 4.4; owner
+sign-off outstanding.
+
+| Where | Before | After |
+|---|---|---|
+| stat band numeral, 18 pages (home, the five service pages, the twelve town pages' figure card) | 274 | 279 |
+| its dated line, same 18 pages | 4.9 stars on Google, counted on September 10, 2026. | 4.9 stars on Google, counted on October 12, 2026. |
+| critical-questions post, the review sentence | Tri County Collision Center has 274 Google reviews: 4.9 stars on Google, counted on September 10, 2026. | Tri County Collision Center has 279 Google reviews: 4.9 stars on Google, counted on October 12, 2026. |
+
+- **Dates, per the 3.94 policy:** dateModified 2026-10-12 on all 19 pages;
+  the post's `article:modified_time`, its "Updated" line, its `CORRECTED`
+  entry in `migrate-blog.py` and its `/blog/` card follow, and `/blog/`
+  takes 2026-10-12 itself because its card's visible date changed (its
+  date in `migrate-blog.py` too). The twelve towns' `modified` in
+  `build-town.py` moved with them. `sitemap.xml` rebuilt: 20 `lastmod`s.
+- The staleness clock now runs out after 2026-11-16 (35 days).
+- **Two fixtures in `test-audit-checks.py` had 274 typed in** (sections 13
+  and 38) and failed on the new constant; they now read `REVIEW_COUNT`, so
+  the next reading does not break them.
+
+#### Job 2: sameAs, the last gap
+
+**`SAME_AS` in `scripts/audit.py`**, in this order, the corcoranpr
+precedent:
+
+```
+https://share.google/OPqWctAlZ4ik95HVj                         GBP_MAP_URL, the node's hasMap
+https://www.facebook.com/profile.php?id=100037804906604
+https://www.instagram.com/tricountycollisioncenter/
+https://www.linkedin.com/company/tri-county-collision-center
+```
+
+The three social URLs are the brief's, verbatim. **They differ in form from
+3.7's live-site list, and the brief's form is what shipped**: the Facebook
+URL is the `profile.php?id=` form of the same page id (...604, the page the
+shop's own profile lists, which settles the duplicate: ...860 is the stray;
+**retiring it stays a Greg/Scott action**), and LinkedIn carries no
+trailing slash. Yelp and CarWise, on 3.7's list, are not in it, by the
+ruling. Instagram is new to the record.
+
+- **Written through the sync:** `sync-area-served.py` now writes `sameAs`
+  beside `areaServed`, directly after `hasMap`, on every business node; one
+  script, because both are the node's one-list fields. 38 pages, six lines
+  each, insertions only. The town, hub and blog builders lift the node from
+  a shipped page, so a rebuild carries it.
+- **Checked site-wide, a critical:** a business node whose `sameAs` is not
+  `SAME_AS` exactly, in order, or whose `hasMap` is not `GBP_MAP_URL`.
+  Local files only, as the served-list check is. The old presence check
+  stays for the live site.
+- **The template** no longer tokenizes `{{SAME_AS}}`: it carries the list
+  and `hasMap` as literals, like the NAP, and says the sync rewrites both.
+- **Comments:** "sameAs IS DELIBERATELY ABSENT" stood in 37 pages, the
+  template's token list and two builders. All now name `SAME_AS` and the
+  sync. Comment only.
+- Vendor-verified per the NAP exception; owner sign-off folds into Scott's.
+- **Section 45 is new** in `test-audit-checks.py`: the list opens on
+  `GBP_MAP_URL`; the Facebook entry is ...604 and no other; every shipped
+  page is in sync; sameAs sits after hasMap; home passes with no sameAs
+  warning; and five mutants made through the parsed JSON (a profile
+  dropped, the stray Facebook id, the order swapped, `hasMap` moved, no
+  sameAs at all), each caught as a critical, and each but `hasMap` repaired
+  by the sync byte for byte. Section 22's contact assertion was "sameAs its
+  only warning"; it is now "no warning".
+
+**THE EXPECTED STATE, AS IT LANDED:** the 38 sameAs warnings are gone, every
+page reads 100/100, and **`audit.py --strict` exits 0**: 38 pages, 16 stubs
+and the 404 page; **1179 passing, 0 warnings, 0 critical** (1103, plus 38
+sameAs passes where the warnings were, plus 38 for the profile-list check).
+Nothing else warned.
+
+#### Job 3: the Business Profile, verified 2026-10-12
+
+- **Name:** the profile's name field reads exactly "Tri County Collision
+  Center", the canonical of 3.95, now GBP-confirmed.
+- **Hours:** the profile's Mon-Fri 8 to 6 and Sunday closed match the
+  constants (the record has no Sunday hours; it publishes none). **The
+  conflict reduces to Saturday alone:** the profile says Closed, set
+  automatically by Google over a previous 9:00 to 12:00; the site says by
+  appointment only. **Scott rules which is true. No site change pending his
+  answer.** Recorded in 4.7, in `CLAUDE.md` and in the hours block of
+  `scripts/audit.py`.
+
+#### Found, not fixed (not this run's scope)
+
+- **`build-town.py --all` fails at HEAD**: it asserts home carries five
+  Real Repairs pairs, and home has carried six since 3.92. To prove this
+  run's edits anyway, the builder was run in a scratch copy with only that
+  assert relaxed: **all twelve town pages came out byte-identical** to the
+  edited pages outside the map markers, and `llms.txt` unchanged. The
+  assert wants one line, when a ruling allows it.
+- **The critical-questions post's review sentence lives only in `docs/`**
+  (3.94 edited the page, not `migrate-blog.py`'s edits), so a rebuild from
+  the live cache would bring back the old 231 sentence. The review-count
+  check would fail that rebuild as a critical, so it cannot ship silently.
+
 ## 4. The claims list
 
 Every claim the migrated page carries. All of them come from the live site, so
@@ -16387,7 +16490,7 @@ but "do you actually do this":
 Both are in FAQ 1 and both are the kind of number a customer will hold the shop
 to.
 
-### 4.4 The rating and the review count, refreshed 2026-09-10
+### 4.4 The rating and the review count, refreshed 2026-09-10, and again 2026-10-12 (3.97: 279, 4.9)
 
 **Current, and on the page now:**
 
@@ -16491,7 +16594,9 @@ vehicles.
   pin, and `GEO_LAT`/`GEO_LON` in `scripts/audit.py` hold it.**
 - **Hours**: Monday to Friday 8 a.m. to 6 p.m., Saturday by appointment only.
   Must match the Google Business Profile exactly. **It does not, as of 2026-09-24**: the
-  profile says Saturday Closed and Sunday Closed (3.54). Now held by
+  profile says Saturday Closed and Sunday Closed (3.54). **Re-read
+  2026-10-12 (3.97): Mon-Fri 8 to 6 and Sunday closed match; Saturday alone
+  differs** (Closed on the profile, by appointment here). Now held by
   `HOURS_*` in `scripts/audit.py`, so when the answer lands it changes in one
   place and the build fails anywhere it did not.
 - **hasMap**, the `share.google` link, migrated from the live schema.
@@ -16867,7 +16972,7 @@ Ordered by how much else depends on it.
 8. **priceRange**: publish `$$` or not. See section 2.
 9. **The four customer quotes**: permission to republish, and whether the
    staff they name still work here. See 4.8.
-10. **The verified `sameAs` list.** See 3.7.
+10. ~~**The verified `sameAs` list.** See 3.7.~~ **Answered 2026-10-12 and shipped, 3.97.**
 11. **The eight damage types on the homepage, all in house?** And the two
     composed lines, the bumper one and the hail one. The deer strikes question
     is closed: the item was removed on 2026-09-17 rather than answered. See

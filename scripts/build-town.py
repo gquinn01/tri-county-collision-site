@@ -95,7 +95,7 @@ JAMISON_OPENING_NOTE = '         "AND THE SURROUNDING AREA" (3.71) names no town
 
 CONTENT = {
     "jamison-pa": {
-        "name": "Jamison", "county": "bucks", "modified": "2026-10-09",
+        "name": "Jamison", "county": "bucks", "modified": "2026-10-12",
         "corner_names": ("York Road", "Almshouse Road"),
         "opening": [
             "Tri County Collision Center is a family-owned body shop in Southampton, and we fix cars for drivers "
@@ -131,7 +131,7 @@ CONTENT = {
                 "James Way and Jaymor Rd, takes about the same time."),
     },
     "bensalem-pa": {
-        "name": "Bensalem", "county": "bucks", "modified": "2026-10-09",
+        "name": "Bensalem", "county": "bucks", "modified": "2026-10-12",
         "opening": [
             "Tri County Collision Center repairs cars for Bensalem drivers, and for their neighbors in "
             "Feasterville-Trevose, Langhorne, Huntingdon Valley and Northeast Philadelphia. The shop is in "
@@ -165,7 +165,7 @@ CONTENT = {
         ],
     },
     "feasterville-trevose-pa": {
-        "name": "Feasterville-Trevose", "county": "bucks", "modified": "2026-10-09",
+        "name": "Feasterville-Trevose", "county": "bucks", "modified": "2026-10-12",
         "opening": [
             "Of all the towns on our Areas We Serve page, Feasterville-Trevose is the closest by road. "
             "Even so, the shop is not in Feasterville or Trevose; it is in Southampton, about {mi1} miles "
@@ -197,7 +197,7 @@ CONTENT = {
         ],
     },
     "langhorne-pa": {
-        "name": "Langhorne", "county": "bucks", "modified": "2026-10-09",
+        "name": "Langhorne", "county": "bucks", "modified": "2026-10-12",
         "opening": [
             "Langhorne is one of the longer trips to our door, and we'd rather say so up front. "
             "Tri County Collision Center is in Southampton, about {mi} miles from the middle of the borough. "
@@ -229,7 +229,7 @@ CONTENT = {
         "steps": ("head", "roundabout", "continue", "follow", "follow", "last"),
     },
     "richboro-pa": {
-        "name": "Richboro", "county": "bucks", "modified": "2026-10-09",
+        "name": "Richboro", "county": "bucks", "modified": "2026-10-12",
         "opening": [
             "Richboro drivers have one of the simplest trips to Tri County Collision Center: stay on one road "
             "until the last turn. The shop is in Southampton, about {mi1} miles from the Richboro "
@@ -260,7 +260,7 @@ CONTENT = {
         ],
     },
     "warminster-pa": {
-        "name": "Warminster", "county": "bucks", "modified": "2026-10-09",
+        "name": "Warminster", "county": "bucks", "modified": "2026-10-12",
         "opening": [
             "A Southampton shop on a Warminster page needs explaining, so here it is: Tri County Collision Center "
             "is not in Warminster, and the drive from Warminster's crossroads is about {mi1} miles. We "
@@ -291,7 +291,7 @@ CONTENT = {
         ],
     },
     "hatboro-pa": {
-        "name": "Hatboro", "county": "montgomery", "modified": "2026-10-09",
+        "name": "Hatboro", "county": "montgomery", "modified": "2026-10-12",
         "opening": [
             "Tri County Collision Center isn't in Hatboro. The borough belongs to Montgomery County, while the "
             "shop sits in Upper Southampton Township, Bucks County, roughly {mi1} miles from York Road. "
@@ -321,7 +321,7 @@ CONTENT = {
         ],
     },
     "horsham-pa": {
-        "name": "Horsham", "county": "montgomery", "modified": "2026-10-09",
+        "name": "Horsham", "county": "montgomery", "modified": "2026-10-12",
         "opening": [
             "From Horsham, Tri County Collision Center is a Bucks County shop across the county boundary in "
             "Southampton, about {mi1} miles from Easton Road. It is not in Horsham, and this page won't "
@@ -350,7 +350,7 @@ CONTENT = {
         ],
     },
     "huntingdon-valley-pa": {
-        "name": "Huntingdon Valley", "county": "montgomery", "modified": "2026-10-09",
+        "name": "Huntingdon Valley", "county": "montgomery", "modified": "2026-10-12",
         "opening": [
             "Huntingdon Valley is a short trip to Tri County Collision Center, but it's still a trip: the shop is "
             "in Southampton, over the Bucks County line, not in Huntingdon Valley. From Wynkoop Avenue it "
@@ -378,7 +378,7 @@ CONTENT = {
         ],
     },
     "jenkintown-pa": {
-        "name": "Jenkintown", "county": "montgomery", "modified": "2026-10-09",
+        "name": "Jenkintown", "county": "montgomery", "modified": "2026-10-12",
         "opening": [
             "Jenkintown is the longest drive of any Montgomery County town we serve, and we'd rather you "
             "hear it from us. Tri County Collision Center is in Southampton, Bucks County, not Jenkintown, about "
@@ -409,7 +409,7 @@ CONTENT = {
         ],
     },
     "willow-grove-pa": {
-        "name": "Willow Grove", "county": "montgomery", "modified": "2026-10-09",
+        "name": "Willow Grove", "county": "montgomery", "modified": "2026-10-12",
         "opening": [
             "Willow Grove is in Montgomery County; Tri County Collision Center is a short hop into the next "
             "county, in Southampton, about {mi1} miles from the Easton Road junction. The shop isn't in "
@@ -441,7 +441,7 @@ CONTENT = {
     },
     "northeast-philadelphia": {
         "name": "Northeast Philadelphia", "origin": "Somerton", "county": "philadelphia",
-        "modified": "2026-10-09",
+        "modified": "2026-10-12",
         "opening": [
             "Tri County Collision Center is in Southampton, Bucks County, not in Northeast Philadelphia, and the "
             "Somerton end of the Northeast is close: about {mi1} miles away. The far side of the "
@@ -825,8 +825,8 @@ def build(key: str) -> tuple:
        geo IS THE SHOP'S VERIFIED PIN, GEO_LAT and GEO_LON in scripts/audit.py,
        and there is no per-town geo: {name} is where the reader is, not
        where the shop is. The town is named once, as the areaServed of this
-       page's own Service node. sameAs IS DELIBERATELY ABSENT until the
-       client's verified list lands. The FAQPage node is generated from the
+       page's own Service node. sameAs is SAME_AS in scripts/audit.py,
+       written by scripts/sync-area-served.py (3.97). The FAQPage node is generated from the
        same strings as the visible questions, so the two cannot differ. -->
   <script type="application/ld+json">
 {jsonld}

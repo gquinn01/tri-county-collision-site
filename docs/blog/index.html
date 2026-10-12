@@ -77,7 +77,7 @@
        geo IS THE SHOP'S VERIFIED PIN, GEO_LAT and GEO_LON in scripts/audit.py,
        adopted by Greg's ruling of 2026-09-25 (proposed-changes.md 3.56). It is
        never a map URL's @lat,lon, which is the viewport centre, not the pin.
-       sameAs IS DELIBERATELY ABSENT until the client's verified list lands.
+       sameAs is SAME_AS in scripts/audit.py, written by scripts/sync-area-served.py (3.97).
        blogPost lists only posts that exist; each is a bare @id to its page. -->
   <script type="application/ld+json">
   {
@@ -104,6 +104,12 @@
           "longitude": -75.0512847
         },
         "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
+        "sameAs": [
+          "https://share.google/OPqWctAlZ4ik95HVj",
+          "https://www.facebook.com/profile.php?id=100037804906604",
+          "https://www.instagram.com/tricountycollisioncenter/",
+          "https://www.linkedin.com/company/tri-county-collision-center"
+        ],
         "openingHoursSpecification": [
           {
             "@type": "OpeningHoursSpecification",
@@ -234,7 +240,7 @@
         "name": "Collision Repair Tips & Advice | Tri County Collision Center",
         "description": "Collision repair tips and advice from Tri County Collision Center in Southampton, PA: insurance claims, your right to choose a shop, dent repair, ADAS and more.",
         "inLanguage": "en-US",
-        "dateModified": "2026-10-09",
+        "dateModified": "2026-10-12",
         "isPartOf": {
           "@id": "https://tricountycollision.com/#business"
         },
@@ -473,7 +479,7 @@
           <a class="svc-card" href="../critical-questions-to-ask-any-collision-center-in-bucks-county-before-handing-over-your-keys/">
             <div class="svc-card-body">
               <h3>Critical Questions to Ask Any Collision Center in Bucks County Before Handing Over Your Keys</h3>
-              <p>Published <time datetime="2025-06-06">June 6, 2025</time> &middot; Updated <time datetime="2026-10-09">October 9, 2026</time></p>
+              <p>Published <time datetime="2025-06-06">June 6, 2025</time> &middot; Updated <time datetime="2026-10-12">October 12, 2026</time></p>
               <p>Dealing with car damage after an accident or unexpected incident in Bucks County is undeniably stressful.</p>
             </div>
           </a>

@@ -76,7 +76,7 @@
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
        the SAME @id, so the whole site resolves to one business entity.
        geo IS THE SHOP'S VERIFIED PIN, GEO_LAT and GEO_LON in scripts/audit.py.
-       sameAs IS DELIBERATELY ABSENT until the client's verified list lands.
+       sameAs is SAME_AS in scripts/audit.py, written by scripts/sync-area-served.py (3.97).
        NO PRICE, OFFER, REVIEW OR RATING MARKUP. -->
   <script type="application/ld+json">
   {
@@ -103,6 +103,12 @@
           "longitude": -75.0512847
         },
         "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
+        "sameAs": [
+          "https://share.google/OPqWctAlZ4ik95HVj",
+          "https://www.facebook.com/profile.php?id=100037804906604",
+          "https://www.instagram.com/tricountycollisioncenter/",
+          "https://www.linkedin.com/company/tri-county-collision-center"
+        ],
         "openingHoursSpecification": [
           {
             "@type": "OpeningHoursSpecification",

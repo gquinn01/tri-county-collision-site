@@ -56,10 +56,6 @@
        against the Google Business Profile before any page using it goes
        live. NAP consistency is exact-match or it is nothing.
 
-         {{SAME_AS}}         schema sameAs list: the GBP place_id URL
-                             plus real, claimed social profiles only.
-                             A profile the shop does not control does
-                             not go in here.
          {{SOCIAL_LINKS}}    the footer's visible version of the same
          {{AREA_SERVED}}     schema areaServed. Towns and counties the
                              shop genuinely serves. Coverage without
@@ -344,7 +340,11 @@
        GEO_LON in scripts/audit.py, adopted by Greg's ruling of 2026-09-25
        (proposed-changes.md 3.56), and the audit fails a page that says
        anything else. Never take coordinates from a map URL's @lat,lon,
-       which is the viewport centre, not the pin. -->
+       which is the viewport centre, not the pin.
+       hasMap and sameAs ARE NO LONGER TOKENS either: GBP_MAP_URL and
+       SAME_AS in scripts/audit.py, verified by Greg 2026-10-12 (3.97).
+       scripts/sync-area-served.py rewrites both on any page made from
+       this file, and the audit fails a page whose list differs. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -365,8 +365,12 @@
           "addressCountry": "US"
         },
         "geo": { "@type": "GeoCoordinates", "latitude": 40.1660232, "longitude": -75.0512847 },
+        "hasMap": "https://share.google/OPqWctAlZ4ik95HVj",
         "sameAs": [
-{{SAME_AS}}
+          "https://share.google/OPqWctAlZ4ik95HVj",
+          "https://www.facebook.com/profile.php?id=100037804906604",
+          "https://www.instagram.com/tricountycollisioncenter/",
+          "https://www.linkedin.com/company/tri-county-collision-center"
         ]
       },
       {

@@ -151,9 +151,15 @@ The live site's values, migrated, and held in `scripts/audit.py` beside the
 NAP (`proposed-changes.md` 3.54). Every day name, `Mon-Fri` range and clock
 time in visible text or `llms.txt` must sit inside one of those two strings,
 the schema must agree, and **any Sunday is a critical**: the record has no
-Sunday hours. **The Google Business Profile disagrees** (Saturday Closed,
+Sunday hours. **The Google Business Profile disagreed** (Saturday Closed,
 Sunday Closed, and a different phone and name), which is an owner question,
-not a fix; when it is answered the value changes in one place.
+not a fix; when it is answered the value changes in one place. **Re-read by
+Greg 2026-10-12 (`proposed-changes.md` 3.97):** the profile's name field
+reads exactly "Tri County Collision Center", and its Mon-Fri 8 to 6 and
+Sunday closed match the record. **The hours conflict is Saturday alone**:
+the profile says Closed (set by Google over a previous 9:00 to 12:00), the
+site says by appointment only, and the owner rules which is true. No site
+change until he does.
 
 ### The coordinates are a constant, 2026-09-25
 
@@ -194,7 +200,16 @@ invisible by eye.
 
 **Still unconfirmed, and therefore still off:**
 
-- **Everything else the template still tokenizes**: socials and `sameAs`, area served, GA4 ID, taglines, and the proof line.
+- **Everything else the template still tokenizes**: the footer's visible social links, area served, GA4 ID, taglines, and the proof line.
+  **`sameAs` is not on this list since 2026-10-12** (3.97): it is
+  `SAME_AS` in `scripts/audit.py`, the Business Profile's Maps URL (the
+  node's `hasMap`, `GBP_MAP_URL`) then Facebook, Instagram and LinkedIn,
+  each opened by Greg and confirmed the shop's own, the NAP's vendor
+  exception with owner sign-off folding into his. `sync-area-served.py`
+  writes it after `hasMap` on every page and the audit fails a page whose
+  list or `hasMap` differs. The Facebook page is the one the profile
+  lists; a second, stray page exists, and retiring it is the shop's
+  action, not the build's.
   The form endpoint is answered, not pending: **there is no form on this
   site**, by Greg's ruling of 2026-09-24, so there is no endpoint.
   `{{FORM_ENDPOINT}}` still sits in the template until someone removes the
@@ -204,8 +219,9 @@ invisible by eye.
 
 ### The review count is a fact with a clock on it
 
-**274 Google reviews, 4.9 stars, read off the shop's own Google Business
-Profile on 2026-09-10.** Vendor-confirmed, like the NAP, and so the same
+**279 Google reviews, 4.9 stars, read off the shop's own Google Business
+Profile on 2026-10-12** (3.97; the 2026-09-10 reading was 274), and the
+35-day clock runs out in mid-November. Vendor-confirmed, like the NAP, and so the same
 deliberate exception: **owner sign-off is outstanding**.
 
 It replaced 231 and "Rated Excellent", which came off the live site's
@@ -826,7 +842,7 @@ is worth paying for only while a warning is an alarm.
   gets no exemption.
 
 **The score is the share of checks passed, and a page that runs fewer checks
-rounds differently.** With sameAs as its one warning, `/contact-us/` is 15 of
+rounds differently.** With sameAs as its one warning (gone since 3.97, when every page reached 100), `/contact-us/` was 15 of
 16, which is 94, where a service page is 18 of 19, which is 95. Both are
 exactly as clean. Nobody counts an exempt check as a pass to round it up,
 because that would report a check as passing that never ran.

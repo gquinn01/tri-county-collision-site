@@ -97,7 +97,7 @@ CORRECTED = {
     "preserving-value-how-tri-county-collision-center-impacts-the-resale-value-of-your-car-through-collision-repair": "2026-10-09",
     "unveiling-the-hidden-benefits-of-paintless-dent-repair-in-collision-restoration": "2026-10-09",
     "collision-repair-near-me-in-southampton-how-to-choose-the-right-auto-body-shop": "2026-10-09",
-    "critical-questions-to-ask-any-collision-center-in-bucks-county-before-handing-over-your-keys": "2026-10-09",
+    "critical-questions-to-ask-any-collision-center-in-bucks-county-before-handing-over-your-keys": "2026-10-12",
     "is-my-car-totaled-expert-insights-from-your-southampton-collision-repair-specialists": "2026-10-09",
     "after-the-unthinkable-your-first-steps-following-a-car-accident-in-bucks-county-before-calling-a-collision-shop": "2026-10-09",
     "misconceptions-about-collision-repair": "2026-10-09",
@@ -558,7 +558,7 @@ SCHEMA_NOTE = '''  <!-- One @graph. The AutoBodyShop node repeats in full on eve
        geo IS THE SHOP'S VERIFIED PIN, GEO_LAT and GEO_LON in scripts/audit.py,
        adopted by Greg's ruling of 2026-09-25 (proposed-changes.md 3.56). It is
        never a map URL's @lat,lon, which is the viewport centre, not the pin.
-       sameAs IS DELIBERATELY ABSENT until the client's verified list lands.
+       sameAs is SAME_AS in scripts/audit.py, written by scripts/sync-area-served.py (3.97).
        No image in the BlogPosting: this page has none. -->
 '''
 # The staging banner and the noindex tag follow audit.STAGING (3.94), so a
@@ -729,7 +729,7 @@ def render_index(posts, record, assets, biz, nav, foot):
             cards.append(f'          <div class="svc-card" data-pending-href="../{p["slug"]}/">\n{inner}\n          </div>')
     graph = [biz,
              {"@type": "CollectionPage", "@id": url + "#webpage", "url": url, "name": title,
-              "description": meta, "inLanguage": "en-US", "dateModified": "2026-10-09",
+              "description": meta, "inLanguage": "en-US", "dateModified": "2026-10-12",
               "isPartOf": {"@id": BASE + "#business"}, "breadcrumb": {"@id": url + "#breadcrumb"},
               "mainEntity": {"@id": url + "#blog"}},
              {"@type": "Blog", "@id": url + "#blog", "name": "Collision Repair Tips & Advice",

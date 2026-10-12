@@ -240,7 +240,10 @@ def name_mentions(text: str) -> int:
 # THE VALUES ARE THE LIVE SITE'S, migrated: its schema says Monday to
 # Friday 08:00 to 18:00 and carries "Saturday Hours: By appointment only".
 # Owner confirmation against the Google Business Profile is outstanding
-# (4.7). SUNDAY IS DELIBERATELY ABSENT. The live schema never mentions it,
+# (4.7). Re-read 2026-10-12 (3.97): the profile's Mon-Fri 8 to 6 and
+# Sunday closed match; its Saturday says Closed where this says by
+# appointment, the one conflict left, the owner's to rule.
+# SUNDAY IS DELIBERATELY ABSENT. The live schema never mentions it,
 # open or closed, so the record does not know it, and a page that says
 # anything about Sunday is saying something nobody confirmed.
 #
@@ -458,9 +461,9 @@ ICON_LINKS = (
 # nothing on the page changes when it goes wrong. So it is recorded here
 # with the day it was counted, and the check below enforces both halves.
 #
-# 274 reviews and 4.9 stars, read off the shop's own GOOGLE BUSINESS
-# PROFILE on 2026-09-10 by Greg Quinn of Corcoran Communications, the
-# vendor. The standards make the client-owner the fact-checker of record,
+# 279 reviews and 4.9 stars, read off the shop's own GOOGLE BUSINESS
+# PROFILE on 2026-10-12 by Greg Quinn of Corcoran Communications, the
+# vendor (3.97; the reading before it, 2026-09-10, was 274). The standards make the client-owner the fact-checker of record,
 # so this is the same deliberate vendor-confirmation exception the NAP
 # block carries, recorded as one. OWNER SIGN-OFF IS STILL OUTSTANDING.
 #
@@ -473,9 +476,9 @@ ICON_LINKS = (
 # site, and the standards allow no review or rating markup unless the
 # data is real and the owner has decided to publish it. This number
 # lives in visible text and nowhere else.
-REVIEW_COUNT = 274
+REVIEW_COUNT = 279
 REVIEW_RATING = "4.9"
-REVIEW_COUNTED_ON = "2026-09-10"
+REVIEW_COUNTED_ON = "2026-10-12"
 
 # Past this many days the count is old enough that publishing it without
 # re-reading the profile is a guess. A WARNING, not a critical: the number
@@ -2244,6 +2247,24 @@ AREA_SERVED = (
     ("Place", "Northeast Philadelphia, Pennsylvania", "#area-philadelphia"),
 )
 
+# THE SHOP'S PROFILES, 3.97: ONE LIST, NOT TYPED PER PAGE. Greg's ruling
+# of 2026-10-12. The business node's sameAs on every page is written from
+# this by scripts/sync-area-served.py, beside AREA_SERVED, and the audit
+# fails any page whose node says otherwise. The Google Business Profile's
+# Maps URL comes first and is the same value as the node's hasMap, which
+# the check holds too; then Facebook, Instagram and LinkedIn, verbatim.
+# Vendor-verified, the NAP's exception: Greg opened all three and each is
+# the shop's own. Owner sign-off folds into the NAP's. THE FACEBOOK PAGE IS
+# THE ONE THE SHOP'S OWN PROFILE LISTS (id ending 604); a second page, id
+# ending 860, is the stray, and retiring it is the shop's action, not ours.
+GBP_MAP_URL = "https://share.google/OPqWctAlZ4ik95HVj"
+SAME_AS = (
+    GBP_MAP_URL,
+    "https://www.facebook.com/profile.php?id=100037804906604",
+    "https://www.instagram.com/tricountycollisioncenter/",
+    "https://www.linkedin.com/company/tri-county-collision-center",
+)
+
 
 def area_served_nodes() -> list:
     """The areaServed array every business node carries, in the exact shape
@@ -3673,9 +3694,9 @@ def audit(source: str, coverage: dict = None):
     # --- A Google Maps embed is the verified pin, by coordinates (3.65) ---
     # Greg's ruling of 2026-09-28: /contact-us/ embeds Google's map CENTRED
     # ON GEO_LAT, GEO_LON, never on the business's name. A name query renders
-    # the Business Profile's card, today carrying a second name and an
-    # unconfirmed phone number, onto the page from Google's side, where no
-    # other check of ours can see it. So any Google Maps iframe must query
+    # the Business Profile's card, which has not always agreed with this
+    # site (its Saturday hours still differ, 3.97), onto the page from
+    # Google's side, where no other check of ours can see it. So any Google Maps iframe must query
     # exactly the pin, carry a title, and load lazily.
     for tag in re.findall(r"<iframe\b[^>]*>", html, re.I):
         src = unescape((re.search(r'\bsrc="([^"]*)"', tag) or [None, ""])[1])
@@ -3986,6 +4007,28 @@ def audit(source: str, coverage: dict = None):
                          + (f"Not in AREA_SERVED: {', '.join(extra)}. " if extra else "")
                          + "Every page carries one list, AREA_SERVED in scripts/audit.py; run "
                            "scripts/sync-area-served.py rather than editing a page's schema.")
+
+    # --- The profiles: every business node carries SAME_AS (3.97) ---
+    # Same shape as the served list: one list, written by the sync, a
+    # critical when a page's node differs, local files only. hasMap is
+    # held with it, because the list opens on the same Maps URL.
+    if business_nodes and not is_url(source):
+        same = [n.get("sameAs") == list(SAME_AS) for n in business_nodes]
+        maps = [n.get("hasMap") == GBP_MAP_URL for n in business_nodes]
+        if all(same) and all(maps):
+            passes.append(f"The business node's sameAs is the one profile list, SAME_AS "
+                          f"({len(SAME_AS)} profiles), opening on its hasMap.")
+        else:
+            got = business_nodes[0].get("sameAs") or []
+            got = got if isinstance(got, list) else [got]
+            missing = [u for u in SAME_AS if u not in got]
+            extra = [u for u in got if u not in SAME_AS]
+            fails.append("**The business node's sameAs or hasMap is not the profile list.** "
+                         + (f"Missing: {', '.join(missing)}. " if missing else "")
+                         + (f"Not in SAME_AS: {', '.join(map(str, extra))}. " if extra else "")
+                         + ("" if all(maps) else f"hasMap is not GBP_MAP_URL ({GBP_MAP_URL}). ")
+                         + "Every page carries one list, SAME_AS in scripts/audit.py, in its "
+                           "order; run scripts/sync-area-served.py rather than editing a page's schema.")
 
     # Entity clarity: sameAs links tie the business to its profiles
     # (Google Business Profile, Yelp, Instagram...), which is how AI
