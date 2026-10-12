@@ -16346,6 +16346,152 @@ Nothing else warned.
   the live cache would bring back the old 231 sentence. The review-count
   check would fail that rebuild as a critical, so it cannot ship silently.
 
+### 3.98 Since 1980. BUILT 2026-10-12
+
+#### The confirmation chain
+
+- **The date:** the shop opened in **January 1980**, which the shop's own
+  Google Business Profile publishes.
+- **The family:** Greg confirms it has been **the same family's
+  throughout**.
+- **Vendor-confirmed**, the NAP's exception pattern. **Owner sign-off is
+  outstanding** and stays on Scott's list, because years in business is
+  the proof-line class.
+- **Held as `FOUNDING_DATE = "1980-01"`** in `scripts/audit.py` (the
+  profile's month precision; a full date would be a claim nobody made),
+  with `FOUNDING_YEAR` derived.
+- **A conflict in the record, flagged rather than resolved:** the live
+  WordPress schema says `foundingDate: 1974`, "in Southampton since 1974"
+  and "Fifty-two years in one location" (4.5, 4.6, and the hub's held pairs in
+  3.79). None of it was ever shipped here. The ruling is 1980, and 4.5
+  and Q7 now ask Scott which year is true.
+
+#### Job 1: the band goes four across, an amendment on Greg's ruling
+
+**The band law is amended where it is written:** `CLAUDE.md` design rule 3,
+the `site.css` header's item 3, the stat band block in `site.css`, and the
+band comment on the five service pages and home. It was THREE, NEVER FOUR
+because a fourth number would have been invented. The founding year is a
+confirmed fourth, so the band takes the natural shape. **A fifth needs its
+own ruling.**
+
+| Where | Before | After |
+|---|---|---|
+| stat band, 6 pages (home's card, the five service pages), new FIRST stat | (none) | 1980 / Family owned since / The same family, from the first day to this one. |
+| the band's `aria-label`, same 6 | Warranty, reviews and certifications | Family ownership, warranty, reviews and certifications |
+
+The other three stats are unchanged, in their order after it.
+
+**The geometry, measured over the CDP pipe (reduced motion, HTTP):**
+
+- **Four across from 1100px, two by two from 600px, stacked below.**
+- **Four across needs a smaller numeral, and that is the visible change for
+  Greg's eye.** "Lifetime" is 4.28 times its font size wide. At the band's
+  75px it needs 322px, and a quarter of home's 1008px card, less padding,
+  is 216px. So the four-up numeral is **3rem (48px)**, with an 18px side
+  padding.
+- **Measured spare** (the narrowest column less its numeral): 9px on
+  home's card and 27px on a service band at 1440; 8px and 22px at 1100.
+  Two by two keeps the band's full clamp, and home at 600 has the least
+  spare, 5px. No numeral overflows at any width.
+- **"Vehicle brands, factory-certified" goes two lines four across**, and
+  broke at its own hyphen. `.stat-l` now wears `text-wrap: balance`, so it
+  breaks at the comma. One-line labels are untouched.
+
+| Width | Home card height | Service band height | Hero call button | Horizontal scroll |
+|---|---|---|---|---|
+| 1440 | 291 to 295 | 359 to 388 | unchanged on all 6 pages | none |
+| 390 | 549 to 718 | 594 to 763 | unchanged | none |
+| 360 | 574 to 768 | 594 to 763 | unchanged | none |
+
+- **The fold budgets are untouched.** The band sits below every hero's
+  call: on all six pages, at all three widths, the call button's bottom
+  edge is the same pixel before and after.
+- **Home's white-card overlap is untouched.** The card starts at the same
+  y and overlaps the hero by the same `--statcard-overlap`. It only grows
+  downward, by 4px at 1440 and by one stacked stat on phones.
+- **No recorded law breaks**, so it ships and Greg's eye reviews it in the
+  preview. **Archivo Black at 48px is still display size**, inside rule 4.
+- **The town pages keep their proof section as is**, three figure cards
+  over three claim cards. It superseded the band on the towns (3.67) and
+  is not the band. A fourth figure would be a seventh card in a 3+3 grid.
+  `build-town.py` now lifts the band's figures less the founding stat, and
+  a scratch rebuild matched all twelve pages byte for byte outside the maps
+  (with the five-pairs assert relaxed only there, 3.97). **Adding 1980 to
+  the towns is one line on a ruling.**
+- **No check pinned three.** The town builder's own assert did, and is now
+  answered as above.
+
+#### Job 2: the fact's other homes
+
+| Where | Before | After |
+|---|---|---|
+| home, `#who-we-are` | Tri County Collision Center is a family-owned shop on Jaymor Rd in Southampton, serving drivers across Bucks and Montgomery County. | Tri County Collision Center, family-owned since 1980, is a shop on Jaymor Rd in Southampton, serving drivers across Bucks and Montgomery County. |
+| `llms.txt`, the summary | ... Serving Bucks County, Montgomery County and Northeast Philadelphia. | ... Serving Bucks County, Montgomery County and Northeast Philadelphia. Owned by the same family since it opened in January 1980. |
+| every business node, 38 pages | (no foundingDate) | `"foundingDate": "1980-01"`, after `email` |
+
+- **The `#who-we-are` edit is the smallest one that keeps the guard.**
+  "a family-owned shop on Jaymor Rd in Southampton since 1980" was the
+  smallest insertion, and it is exactly the fused claim the ruling forbids.
+  So "family-owned" moves into an appositive with its year, and the
+  location keeps its own predicate.
+- **`llms.txt` gives the fact its own sentence**, for the same reason: its
+  summary's first sentence carries the street address.
+- **`foundingDate` is written by `sync-area-served.py`**, beside
+  `areaServed` and `sameAs`. The audit fails a node without
+  `FOUNDING_DATE`, and the generators lift the node, so a rebuild carries it.
+- **The Business Profile description line waits for Scott's sitting**, per
+  the brief. No action here.
+- **Dates:** the six band pages, `/` included, already carried
+  dateModified 2026-10-12 from 3.97 this morning, so nothing moved.
+  `foundingDate` is schema, and the towns changed only a comment.
+
+#### The location-fusion guard, now a mechanism
+
+`founding_findings` in `scripts/audit.py` runs on every page and on
+`llms.txt`. It reads text by block element and clause (cut at `. ; : ! ?`
+and the comma).
+
+- **The rule:** a clause with a tenure year (an ownership or founding word
+  with a year, or "since" a year) must say 1980. A clause carrying 1980 may
+  not name a place: the street, the town, the counties, "here",
+  "location", "address", "building" or "corner". The next clause may not
+  open on "here", "in", "on" or "at" and name one.
+- **A violation is a critical.** Proven both ways in section 46: three
+  fusions, two wrong years, the shipped sentence, the stat and a
+  `llms.txt` pair. The shipped site reads clean.
+- **Its limit, stated:** it reads years. **Two migrated posts already
+  make undated, place-tied tenure claims**, "decades of local trust right
+  here in Southampton" (after-the-unthinkable) and "For decades, our
+  family-owned and operated facility has been a cornerstone of ..."
+  (collision-repair-near-me). They name no year, so the check does not
+  read them. They are the live site's words, migrated, and **found, not
+  fixed**: whether they stand is the same location question Q7 now asks.
+
+#### Recorded from 3.97: visible social links DECLINED
+
+Visible social links were considered and **declined** by Greg on
+2026-10-12. The entity signal ships in `sameAs`, and the site's one
+conversion action is the call. Recorded in `CLAUDE.md` (the template-token
+bullet, so no sweep adds them) and against `{{SOCIAL_LINKS}}` in the
+template.
+
+#### The suite
+
+- `test-audit-checks.py` passes. **Section 46 is new**:
+  - all six band pages carry four stats with the founding year first;
+  - the towns keep three figure cards;
+  - the fusion and wrong-year probes, HTML and `llms.txt`;
+  - the shipped site reads clean;
+  - `foundingDate` sits after `email`, and a full date or a missing one is
+    caught as a critical and repaired by the sync byte for byte;
+  - the fused `#who-we-are` mutant is caught.
+- `test-sitemap-expansion.py` passes, and every `--check` exits 0. Assets
+  are restamped.
+- **`audit.py --strict` exits 0: 38 pages at 100/100, 1224 passing, 0
+  warnings, 0 critical.** That is 1179, plus 38 `foundingDate` passes, 6
+  founding-text passes on the band pages, and 1 for `llms.txt`.
+
 ## 4. The claims list
 
 Every claim the migrated page carries. All of them come from the live site, so
@@ -16571,6 +16717,13 @@ that must not count, the 35 and 36 day boundary, and a date in the future.
   **since 1974** and is in its **second generation**, and neither is used on
   this page. Both are much stronger than "for years". **If they are confirmed,
   say them**: "for years" is the weakest true version of a genuinely good fact.
+- **Ruled 2026-10-12 (3.98): the shop opened in January 1980**, the date its
+  own Business Profile publishes, the same family's throughout, and that
+  ships (the band, `#who-we-are`, `llms.txt`, `foundingDate`). **1974 is not
+  shipped and now disagrees with the ruling**, as does "in Southampton since",
+  "Fifty-two years in one location" and anything else that ties a year to
+  the place. "Second generation" is not shipped either. Both stay on Scott's
+  list (Q7).
 
 ### 4.6 Facts in the live schema, confirmed and available, not yet used
 
@@ -16969,6 +17122,10 @@ Ordered by how much else depends on it.
    words claim. One answer moves the count everywhere, in one commit, and
    the build now fails if it moves in only some places. See 4.1 and 3.26.
 7. **1974 and second generation**: publish them or not. See 4.5.
+   **Amended 2026-10-12 (3.98):** 1980 ships on the Business Profile's date
+   and Greg's family confirmation. The live schema's 1974 disagrees; the
+   question for Scott is now which year is true, whether the shop has been
+   in Southampton since then, and the second generation.
 8. **priceRange**: publish `$$` or not. See section 2.
 9. **The four customer quotes**: permission to republish, and whether the
    staff they name still work here. See 4.8.

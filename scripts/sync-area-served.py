@@ -2,7 +2,8 @@
 """
 Writes the one served list, AREA_SERVED in scripts/audit.py, into the
 shared business node of every page under docs/. proposed-changes.md 3.79.
-And the shop's profiles, SAME_AS, since 3.97.
+And the shop's profiles, SAME_AS, since 3.97, and its FOUNDING_DATE since
+3.98.
 
 WHY A SCRIPT. The business node repeats in full on every page, and a list
 typed into 26 pages is 26 chances for one of them to drift. That is how
@@ -59,15 +60,19 @@ def synced(html: str) -> str:
     profiles = list(audit.SAME_AS)
 
     def with_same_as(n: dict) -> dict:
-        """The node with sameAs directly after hasMap (at the end if the
-        node has none), every other key in its own order."""
+        """The node with foundingDate directly after email and sameAs
+        directly after hasMap (each at the end if its anchor is missing),
+        every other key in its own order."""
         out = {}
         for k, v in n.items():
-            if k == "sameAs":
+            if k in ("sameAs", "foundingDate"):
                 continue
             out[k] = v
+            if k == "email":
+                out["foundingDate"] = audit.FOUNDING_DATE
             if k == "hasMap":
                 out["sameAs"] = profiles
+        out.setdefault("foundingDate", audit.FOUNDING_DATE)
         out.setdefault("sameAs", profiles)
         return out
 
@@ -114,14 +119,14 @@ def main() -> int:
                     f.write(new)
     if check:
         if stale:
-            print(f"{len(stale)} page(s) carry a served list or profiles that are not "
-                  f"AREA_SERVED and SAME_AS:")
+            print(f"{len(stale)} page(s) carry a served list, profiles or founding date "
+                  f"that are not AREA_SERVED, SAME_AS and FOUNDING_DATE:")
             for p in stale:
                 print(f"  {p}")
             print("Run scripts/sync-area-served.py.")
             return 1
-        print(f"Every page's business node carries AREA_SERVED ({len(audit.AREA_SERVED)} places) "
-              f"and SAME_AS ({len(audit.SAME_AS)} profiles).")
+        print(f"Every page's business node carries AREA_SERVED ({len(audit.AREA_SERVED)} places), "
+              f"SAME_AS ({len(audit.SAME_AS)} profiles) and FOUNDING_DATE ({audit.FOUNDING_DATE}).")
         return 0
     print(f"wrote {len(stale)} page(s)" + ("" if not stale else ":"))
     for p in stale:

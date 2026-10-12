@@ -2296,6 +2296,68 @@ def main():
             check(f"     and the sync repairs it: {label}", sa.synced(mutant) == home)
 
     print()
+    print("46. Since 1980: the band's four stats, foundingDate, and the location-fusion guard (3.98)")
+    band_pages = ("index.html", "collision-repair/index.html", "auto-glass-repair-replacement/index.html",
+                  "paintless-dent-repair/index.html", "commercial-collision-repair/index.html",
+                  "adas-calibration/index.html")
+    for rel in band_pages:
+        h = open(os.path.join(root, "docs", rel), encoding="utf-8").read()
+        band = re.search(r'(?s)<section class="statband[^"]*" id="proof".*?</section>', h).group(0)
+        nums = re.findall(r'<span class="stat-n">([^<]*)</span>', band)
+        check(f"     {rel}: four stats, the founding year first",
+              len(nums) == 4 and nums[0] == str(audit.FOUNDING_YEAR), nums)
+    town = open(os.path.join(root, "docs", "areas-served-collision-repair-jamison-pa", "index.html"),
+                encoding="utf-8").read()
+    check("     the town proof cards stay three figures, without the founding stat",
+          town.count("card-figure") == 6 and f">{audit.FOUNDING_YEAR}<" not in town)
+    for text, want_n, want_bad in (
+            ("<p>Tri County Collision Center, family-owned since 1980, is a shop on Jaymor Rd.</p>", 1, False),
+            ('<div class="stat"><span class="stat-n">1980</span><span class="stat-l">Family owned since</span></div>', 1, False),
+            ("<p>Family owned in Southampton since 1980.</p>", 1, True),
+            ("<p>On Jaymor Rd since January 1980.</p>", 1, True),
+            ("<p>family-owned since 1980, here in Southampton.</p>", 1, True),
+            ("<p>Family owned since 1979.</p>", 0, True),
+            ("<p>Serving drivers since 1985.</p>", 0, True),
+            ("<!-- family owned in Southampton since 1980 --><p>Published June 6, 2025</p>", 0, False)):
+        n, probs = audit.founding_findings(text)
+        check(f"     {re.sub('<[^>]+>', ' ', text).strip()[:60]!r}: "
+              f"{'caught' if want_bad else 'clean'}", n == want_n and bool(probs) == want_bad, (n, probs))
+    n, probs = audit.founding_findings("> Shop at 995 Jaymor Rd.\n> Owned by the same family since it\n> opened in January 1980.\n", is_html=False)
+    check("     llms.txt grammar: a separate sentence is clean", n == 1 and not probs, probs)
+    n, probs = audit.founding_findings("> A shop at 995 Jaymor Rd since\n> January 1980.\n", is_html=False)
+    check("     llms.txt: the year beside the address is caught", bool(probs), probs)
+    shipped = sorted(glob.glob(os.path.join(root, "docs", "**", "index.html"), recursive=True))
+    bad = []
+    for path in shipped:
+        n, probs = audit.founding_findings(open(path, encoding="utf-8").read())
+        bad += probs
+    check("     the shipped site: no tenure year but 1980, none fused", not bad, bad)
+
+    def found_mut(fn):
+        def one(m):
+            data = json.loads(m.group(2))
+            biz = next(x for x in data["@graph"] if x.get("@type") == "AutoBodyShop")
+            fn(biz)
+            return m.group(1) + sa.reserialise(m.group(2), data) + m.group(3)
+        return sa.BLOCK_RE.sub(one, home, count=1)
+    check("     home's business node carries foundingDate after email",
+          re.search(r'"email": "[^"]+",\n\s*"foundingDate": "' + audit.FOUNDING_DATE + '"', home) is not None)
+    passes, warns, fails, notes, kind = score(home)
+    check("     and it passes as FOUNDING_DATE", any("FOUNDING_DATE" in x for x in passes), fails)
+    for label, fn in (("a full date the profile does not publish", lambda n: n.__setitem__("foundingDate", "1980-01-01")),
+                      ("no foundingDate", lambda n: n.pop("foundingDate"))):
+        mutant = found_mut(fn)
+        check(f"     the mutant differs: {label}", mutant != home)
+        passes, warns, fails, notes, kind = score(mutant)
+        check(f"     caught as a critical: {label}", any("foundingDate" in x for x in fails), fails)
+        check(f"     and the sync repairs it: {label}", sa.synced(mutant) == home)
+    fused = home.replace("family-owned since 1980, is a shop on Jaymor Rd", "a family-owned shop on Jaymor Rd since 1980", 1)
+    check("     the mutant differs: who-we-are fused with the street", fused != home)
+    passes, warns, fails, notes, kind = score(fused)
+    check("     caught as a critical: who-we-are fused with the street",
+          any("fused with a place" in x for x in fails), fails)
+
+    print()
     if FAILURES:
         print(f"{len(FAILURES)} check(s) failed:")
         for x in FAILURES:

@@ -694,6 +694,11 @@ def build(key: str) -> tuple:
     coll = open(COLLISION, encoding="utf-8").read()
     stats = re.findall(r'(?s)          <div class="stat">\n(.*?)          </div>\n',
                        re.search(r'(?s)<section class="statband" id="proof".*?</section>', coll).group(0))
+    # THE BAND IS FOUR SINCE 3.98; THE TOWN CARDS STAY THREE. The proof
+    # section is three figure cards over three claim cards, so it lifts the
+    # band's figures less the founding stat, which the towns do not carry
+    # until a ruling says so (it would make a seventh card in a 3+3 grid).
+    stats = [st for st in stats if f">{audit.FOUNDING_YEAR}<" not in st]
     assert len(stats) == 3, len(stats)
     figure_cards = "".join('          <article class="card card-figure">\n' + st + '          </article>\n'
                            for st in stats)
@@ -878,6 +883,7 @@ def build(key: str) -> tuple:
            sentence boundary approved by Greg in the 3.67 brief;
          - the three figure cards are the stat band's own lines, lifted
            from /collision-repair/ by this builder so they cannot drift,
+           less the founding stat, which the band carries since 3.98,
            and the review count, rating and date are the constants the
            audit reads (REVIEW_COUNT, REVIEW_RATING, REVIEW_COUNTED_ON);
          - the right-to-choose and free-estimates cards are 3.64's

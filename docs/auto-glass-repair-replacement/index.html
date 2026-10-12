@@ -62,7 +62,7 @@
        SIL OFL 1.1 and their licence texts sit beside them in assets/fonts/. -->
   <link rel="preload" href="../assets/fonts/ArchivoBlack-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/SourceSans3-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/site.css?v=04819b70">
+  <link rel="stylesheet" href="../assets/site.css?v=f742d760">
   <script src="../assets/site.js?v=fb8ca727" defer></script>
 
   <!-- One @graph. The AutoBodyShop node repeats in full on every page under
@@ -87,6 +87,7 @@
         "url": "https://tricountycollision.com/",
         "telephone": "+12153225350",
         "email": "contact@tricountycollision.com",
+        "foundingDate": "1980-01",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "995 Jaymor Rd",
@@ -483,10 +484,12 @@
     </section>
 
     <!-- ============ STAT BAND ============
-         Three stats, and three is the rule rather than the leftover. A fourth
-         would have to be invented, and inventing a number to balance a row is
-         the exact failure the prime law exists to stop. So one of the three is
-         a word rather than a number.
+         Four stats since 3.98, Greg's ruling of 2026-10-12. Three was the
+         rule while a fourth would have had to be invented; the founding year
+         is a confirmed fourth (FOUNDING_DATE in scripts/audit.py), so the
+         band takes the natural shape. Inventing a number to balance a row is
+         still the exact failure the prime law exists to stop, and one stat
+         is still a word rather than a number.
 
          THE ORDER IS THE BAND'S DOM ORDER. Read the markup below for what it
          is; this comment does not repeat it, and neither should the next one.
@@ -518,9 +521,14 @@
          own guidelines rule out self-serving review markup on a business's
          own site, and the standards allow none unless the data is real and
          the owner has decided to publish it. This is visible text. -->
-    <section class="statband" id="proof" aria-label="Warranty, reviews and certifications">
+    <section class="statband" id="proof" aria-label="Family ownership, warranty, reviews and certifications">
       <div class="wrap">
         <div class="stats">
+          <div class="stat">
+            <span class="stat-n">1980</span>
+            <span class="stat-l">Family owned since</span>
+            <span class="stat-s">The same family, from the first day to this one.</span>
+          </div>
           <div class="stat">
             <span class="stat-n">Lifetime</span>
             <span class="stat-l">Warranty on all repair work</span>

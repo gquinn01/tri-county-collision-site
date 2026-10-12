@@ -178,6 +178,23 @@ are one value. **The value it replaced, -75.0538596, was a Google Maps URL's
 `@lat,lon`: the viewport centre, 220m west, not the pin. Never take
 coordinates from a map URL.**
 
+### The founding date is a constant, 2026-10-12
+
+```
+FOUNDING_DATE   1980-01      "Family owned since 1980"
+```
+
+The shop opened in January 1980, which its own Business Profile publishes,
+and has been the same family's throughout, confirmed by Greg (3.98). The
+NAP's vendor exception, and **owner sign-off stays outstanding**, because
+years in business is the proof-line class. `sync-area-served.py` writes it
+as every business node's `foundingDate`. **The claim is the family and the
+date, never the place**: that the shop has stood in Southampton or on
+Jaymor Rd since 1980 is not confirmed, so `audit.py` fails any tenure year
+other than 1980 and any clause that puts the year beside a place
+(`founding_findings`). It reads years, so "for decades ... right here in
+Southampton", which two migrated posts say, is not caught (3.98).
+
 ### The CallRail number never reaches the source
 
 **(215) 709-9665 is a CallRail tracking number.** The old WordPress header
@@ -200,7 +217,10 @@ invisible by eye.
 
 **Still unconfirmed, and therefore still off:**
 
-- **Everything else the template still tokenizes**: the footer's visible social links, area served, GA4 ID, taglines, and the proof line.
+- **Everything else the template still tokenizes**: area served, GA4 ID, taglines, and the proof line.
+  **Visible social links were considered and DECLINED** (Greg, 2026-10-12,
+  `proposed-changes.md` 3.97 and 3.98): the entity signal ships in `sameAs`
+  and the site's one conversion action is the call. No sweep adds them.
   **`sameAs` is not on this list since 2026-10-12** (3.97): it is
   `SAME_AS` in `scripts/audit.py`, the Business Profile's Maps URL (the
   node's `hasMap`, `GBP_MAP_URL`) then Facebook, Instagram and LinkedIn,
@@ -345,7 +365,9 @@ through.
 The proof line deserves its own warning. Years in business, I-CAR or ASE
 certifications, manufacturer approvals, insurer relationships, warranty
 terms: every one of those is checkable, and every one of them ships only
-after the owner has confirmed it.
+after the owner has confirmed it. **The one exception is 1980** (3.98),
+shipped on the vendor's confirmation from the shop's own Business Profile,
+with the owner's sign-off still on his list.
 
 ### 4. The client owns their accounts
 
@@ -505,10 +527,17 @@ the edge**: it is welded to the glass, and only the column inside it moves
 with the grid. `width = --edge + --col + --pad-r`, and because the width
 contains `--edge`, the panel is 792px at 1440 and 1032px at 1920.
 
-**3. A stat band sits directly under the hero, on paper. Three stats.**
-Big numeral, label, one supporting line. **Three is the rule, not the
-leftover**: a four-across row is the natural shape and there is no fourth
-honest number, so the third stat is a word. Inventing a statistic to balance a
+**3. A stat band sits directly under the hero, on paper. Four stats since
+2026-10-12** (Greg's ruling, `proposed-changes.md` 3.98). Big numeral, label,
+one supporting line. **Three was the rule, not the leftover**, while a
+four-across row was the natural shape and there was no fourth honest number.
+The founding year (`FOUNDING_DATE` in `scripts/audit.py`, "1980 / Family
+owned since") is that number, so the band goes four across from 1100px, two
+by two from 600px, stacked below, with a 3rem numeral when four across (the
+word stat has to fit a quarter of home's card). A fifth needs its own
+ruling. One stat is still a word. **The town pages' proof cards stay three
+figures over three claims**, without the founding stat, until a ruling adds
+it. Inventing a statistic to balance a
 layout is the exact failure the prime law exists to stop. **Any number that is
 true only on the day it is written carries the date it was true**, in the
 supporting line. On the collision page that is the review count.
@@ -583,7 +612,7 @@ needs its own ruling.
 
 **White is a ground, not a shade of the ground.** Added 2026-09-10. `--silver`
 is the page; `--white` is used on exactly **one band**, the stat band under the
-hero, to lift the three proof figures off the run of the page. Every text pair
+hero, to lift the proof figures off the run of the page. Every text pair
 gets better on it: ink 17.33 against 15.42, oxblood 11.80 against 10.50,
 `--ink-2` 9.80 against 8.72, `--ox-tx` 8.95 against 7.96.
 

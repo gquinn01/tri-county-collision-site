@@ -2265,6 +2265,19 @@ SAME_AS = (
     "https://www.linkedin.com/company/tri-county-collision-center",
 )
 
+# THE FOUNDING DATE, 3.98, Greg's confirmation of 2026-10-12: the shop opened
+# in January 1980, which its own Business Profile publishes, and has been the
+# same family's throughout. The NAP's vendor exception; OWNER SIGN-OFF STAYS
+# OUTSTANDING, because years in business is the proof-line class.
+# Written into every business node as foundingDate by
+# scripts/sync-area-served.py, and held in visible text by
+# founding_findings: any founding or tenure year must be this one, and THE
+# YEAR NEVER SHARES A CLAUSE WITH A PLACE. The claim is family and date
+# only; that the shop has been in Southampton, or on Jaymor Rd, since then
+# is NOT confirmed, so no sentence may fuse the two.
+FOUNDING_DATE = "1980-01"
+FOUNDING_YEAR = int(FOUNDING_DATE[:4])
+
 
 def area_served_nodes() -> list:
     """The areaServed array every business node carries, in the exact shape
@@ -3285,6 +3298,74 @@ def check_name_llms_local(passes: list, fails: list, root: str = None):
         passes.append(f"`llms.txt` names the shop as `{NAP_NAME}` in all {n} mentions.")
 
 
+# A tenure claim: a year in one clause with an ownership or founding word,
+# or "since" a year. A place: the shop's street, town, counties, or a word
+# that points at a spot. The clause is cut at . ; : ! ? and the comma, and
+# the text at block elements, so a stat's numeral and its label are one
+# unit and two neighbouring stats are not.
+FOUNDING_CUE_RE = re.compile(
+    r"(?i)\b(?:family|owned|founded|founding|established|opened|est\.)|\bsince\s+(?:[A-Za-z]+\s+)?(?:1[89]|20)\d\d\b")
+FOUNDING_YEAR_RE = re.compile(r"\b((?:1[89]|20)\d\d)\b")
+FOUNDING_PLACE_RE = re.compile(
+    r"(?i)\b(?:Southampton|Jaymor|Bucks|Montgomery|Philadelphia|Pennsylvania|PA|here|"
+    r"location|address|building|street|corner)\b")
+_BLOCK_TAG_RE = re.compile(
+    r"(?i)</?(?:p|div|li|ul|ol|h[1-6]|section|article|header|footer|nav|main|td|th|tr|"
+    r"dd|dt|figcaption|blockquote|br|aside|summary|details|button|label)\b[^>]*>")
+
+
+def founding_findings(text: str, is_html: bool = True) -> tuple:
+    """(founding-year mentions, problems). Every tenure claim's year must be
+    FOUNDING_YEAR, and no clause carrying it may name a place, nor may the
+    clause right after it open on "here", "in", "on" or "at" and name one
+    ("since 1980, here in Southampton"). THE LIMIT: it reads years. "For
+    decades ... right here in Southampton" names no year and is not read."""
+    if is_html:
+        t = re.sub(r"(?is)<!--.*?-->|<(script|style)\b[^>]*>.*?</\1\s*>", " ", text)
+        t = _BLOCK_TAG_RE.sub("\x00", re.sub(r"\s+", " ", t))
+        t = re.sub(r"(?s)<[^>]+>", " ", t)
+        blocks = unescape(t).split("\x00")
+    else:
+        blocks = re.split(r"\n\s*\n", text)
+    n, problems = 0, []
+    for block in blocks:
+        b = " ".join(block.replace("\u00a0", " ").replace(">", " ").split())
+        clauses = [c.strip() for c in re.split(r"[.;:!?,](?=\s|$)", b)]
+        for i, c in enumerate(clauses):
+            years = FOUNDING_YEAR_RE.findall(c)
+            if not years or not FOUNDING_CUE_RE.search(c):
+                continue
+            for y in years:
+                if int(y) != FOUNDING_YEAR:
+                    problems.append(f"a tenure year other than {FOUNDING_YEAR}: \u201c{c}\u201d")
+            if str(FOUNDING_YEAR) not in years:
+                continue
+            n += 1
+            nxt = clauses[i + 1] if i + 1 < len(clauses) else ""
+            if FOUNDING_PLACE_RE.search(c) or (
+                    re.match(r"(?i)(?:right\s+)?(?:here|in|on|at)\b", nxt)
+                    and FOUNDING_PLACE_RE.search(nxt)):
+                problems.append(f"the founding year fused with a place: \u201c{c}"
+                                f"{', ' + nxt if nxt and not FOUNDING_PLACE_RE.search(c) else ''}\u201d")
+    return n, problems
+
+
+def check_founding_llms_local(passes: list, fails: list):
+    """llms.txt states the founding year to AI agents, so it answers to the
+    same rule as every page (3.98)."""
+    try:
+        with open(LLMS_PATH, encoding="utf-8") as f:
+            text = f.read()
+    except OSError:
+        return
+    n, problems = founding_findings(text, is_html=False)
+    for x in problems:
+        fails.append(f"**`{LLMS_PATH}`: {x}.** The founding claim is the family and the date "
+                     f"only (FOUNDING_DATE, 3.98); the location since then is not confirmed.")
+    if n and not problems:
+        passes.append(f"`{LLMS_PATH}` states the founding year as {FOUNDING_YEAR}, unfused.")
+
+
 def check_hours_llms_local(passes: list, fails: list):
     """docs/llms.txt states the hours to AI agents, so it answers to the
     same constants as every page. Same test, same severity."""
@@ -4013,6 +4094,13 @@ def audit(source: str, coverage: dict = None):
     # critical when a page's node differs, local files only. hasMap is
     # held with it, because the list opens on the same Maps URL.
     if business_nodes and not is_url(source):
+        founded = [n.get("foundingDate") == FOUNDING_DATE for n in business_nodes]
+        if all(founded):
+            passes.append(f"The business node's foundingDate is FOUNDING_DATE ({FOUNDING_DATE}).")
+        else:
+            fails.append(f"**The business node's foundingDate is not FOUNDING_DATE** "
+                         f"({FOUNDING_DATE}, 3.98). Run scripts/sync-area-served.py rather "
+                         f"than editing a page's schema.")
         same = [n.get("sameAs") == list(SAME_AS) for n in business_nodes]
         maps = [n.get("hasMap") == GBP_MAP_URL for n in business_nodes]
         if all(same) and all(maps):
@@ -4236,6 +4324,17 @@ def audit(source: str, coverage: dict = None):
         passes.append(f"Hours match the constants in all {n_ok} visible mention"
                       f"{'' if n_ok == 1 else 's'}"
                       f"{' and the schema' if biz_nodes else ''}.")
+
+    # --- The founding year: 1980, and never fused with a place (3.98) ---
+    n_found, found_probs = founding_findings(html)
+    for x in found_probs:
+        fails.append(f"**{x[0].upper() + x[1:]}.** The founding claim is the family and the "
+                     f"date only (FOUNDING_DATE in scripts/audit.py, 3.98): the shop has been "
+                     f"the same family's since {FOUNDING_YEAR}, and where it stood for all of "
+                     f"that time is not confirmed, so no sentence may say so.")
+    if n_found and not found_probs:
+        passes.append(f"The founding year reads {FOUNDING_YEAR} in {n_found} place"
+                      f"{'' if n_found == 1 else 's'}, and no clause fuses it with a place.")
 
     # --- The shop's coordinates: every business node says the constants ---
     all_nodes = []
@@ -4483,6 +4582,7 @@ def main():
         check_comment_convention_local(site_warns, site_notes)
         check_pending_links_local(site_warns, site_notes)
         check_hours_llms_local(site_passes, site_fails)
+        check_founding_llms_local(site_passes, site_fails)
         check_name_llms_local(site_passes, site_fails)
         check_redirects_local(site_passes, site_fails)
         check_service_count_llms_local(site_passes, site_fails)

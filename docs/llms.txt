@@ -3,7 +3,8 @@
 > Family owned auto body and collision repair shop at 995 Jaymor Rd,
 > Southampton, PA 18966. Phone (215) 322-5350. Email
 > contact@tricountycollision.com. Serving Bucks County, Montgomery County and
-> Northeast Philadelphia.
+> Northeast Philadelphia. Owned by the same family since it opened in January
+> 1980.
 
 THIS SITE IS NOT LIVE YET. It is the staging build of a migration from the
 shop's WordPress site. Every page carries a noindex tag and robots.txt
