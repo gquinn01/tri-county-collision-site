@@ -16368,6 +16368,10 @@ Nothing else warned.
 
 #### Job 1: the band goes four across, an amendment on Greg's ruling
 
+**SUPERSEDED THE SAME DAY by 3.99**, on Greg's eye: the band is three
+again, and the brands stat is the one that left. Kept below as built and
+measured.
+
 **The band law is amended where it is written:** `CLAUDE.md` design rule 3,
 the `site.css` header's item 3, the stat band block in `site.css`, and the
 band comment on the five service pages and home. It was THREE, NEVER FOUR
@@ -16491,6 +16495,89 @@ template.
 - **`audit.py --strict` exits 0: 38 pages at 100/100, 1224 passing, 0
   warnings, 0 critical.** That is 1179, plus 38 `foundingDate` passes, 6
   founding-text passes on the band pages, and 1 for `llms.txt`.
+
+### 3.99 The band returns to three. BUILT 2026-10-12
+
+**Greg's eye ruling, 2026-10-12. The odometer's pattern (3.85):** the
+four-across band was built and proven under 3.98, and his eye rules it out.
+Superseded and recorded, not argued.
+
+**The reason, his:** the eye, plus the brand strip making the band's 12-card
+a same-page duplicate. The band is three across again, in this order:
+**1980, Lifetime Warranty, 279 reviews.** The third honest number simply
+replaced the word-stat era's arithmetic. A fourth needs its own ruling.
+
+| Where | Before | After |
+|---|---|---|
+| stat band, 6 pages (home's card, the five service pages) | 4th stat: 12 / Vehicle brands, factory-certified / INFINITI, Nissan, Hyundai, Kia, Acura, Honda, GM, Chrysler, Ford, Dodge, Subaru and Jeep. | (removed) |
+| the band's `aria-label`, same 6 | Family ownership, warranty, reviews and certifications | Family ownership, warranty and reviews |
+
+- **Whole removal, as the enumeration law requires.** No partial brand list
+  remains in the band's markup or in the comment that heads it. Section 46
+  reads both, on all six pages.
+- **The band law is amended where 3.98 amended it:**
+  - `CLAUDE.md` design rule 3;
+  - the `site.css` header's item 3 and the stat band block;
+  - the band comment on the five service pages and home.
+  Each records the supersession and its reason. **The CSS is back to
+  3.97's rules exactly:**
+  - three across from 820px, stacked below, at the band's own numeral
+    clamp;
+  - 3.98's two by two, its four-up 3rem numeral and the balanced label
+    are gone (the balance existed only for the brands label).
+- **The brand fact is not reduced anywhere else:**
+  - the three strips, on home, `/collision-repair/` and
+    `/commercial-collision-repair/`;
+  - the collision page's certification section;
+  - the commercial page's fleet argument;
+  - the ADAS FAQ;
+  - the schema;
+  - the twelve town pages' figure card.
+
+  The towns lifted that card from the band, so `build-town.py` now writes
+  it from `BRANDS`, the strip's own list. A scratch rebuild matched all
+  twelve pages byte for byte outside the maps (five-pairs assert relaxed
+  only there, as in 3.97).
+- **Flagged for Greg:** on `/auto-glass-repair-replacement/` and
+  `/paintless-dent-repair/` the band was the only place either page named
+  the brand certification. Neither carries a strip, so those two pages no
+  longer state it. That follows the ruling ("everywhere the band
+  appears"), and it is recorded so it was seen.
+- **The brand-count check, confirmed with the band's mention gone:** "Brand
+  count agrees everywhere: 12." 3 strips of marks, 34 mentions in visible
+  text, 3 in JSON-LD. The list check reads 24 lists, 1 held on owner
+  question 28 as before.
+- **Dates:** all six pages already carry dateModified 2026-10-12 (3.97 and
+  3.98 today), so none moved and the sitemap is unchanged.
+
+**The geometry, re-measured over the CDP pipe** at 3.97 (before the band
+changed), 3.98 (HEAD) and now:
+
+| Page, width | 3.97 | 3.98 | 3.99 |
+|---|---|---|---|
+| home card, 1440 | 291 | 295 | 266 |
+| home card, 390 | 549 | 718 | 524 |
+| home card, 360 | 574 | 768 | 574 |
+| service band, 1440 | 359 | 388 | 359 |
+| service band, 390 | 594 | 763 | 569 |
+| service band, 360 | 594 | 763 | 569 |
+
+- **Same shape as 3.97.** Three across at 1440 with "Lifetime" filling its
+  column exactly as it did then (0px spare, no overflow), and stacked on
+  phones.
+- **The fold is untouched.** On all six pages at all three widths, the
+  hero call button's bottom edge is the same pixel in all three states.
+- No horizontal scroll anywhere. Home's card keeps its overlap; it is
+  shorter, never taller, than 3.97's.
+
+**The suite:**
+- `test-audit-checks.py` passes. Section 46 now pins the band's three stats
+  in order on all six pages, holds no brand name in the band or its
+  comment, and confirms the towns keep the brands figure.
+- Every `--check` exits 0, and assets are restamped.
+- **`audit.py --strict` exits 0: 38 pages at 100/100, 1224 passing, 0
+  warnings, 0 critical.** The count is unchanged, because no check counted
+  the band's stats.
 
 ## 4. The claims list
 

@@ -47,13 +47,14 @@
       margin rather than detaching from the edge: it is pinned to the glass,
       and only its content column is centred. See .heroA-panel for the sum.
 
-   3. STAT BAND directly under the hero, on the silver ground. FOUR stats
-      since 2026-10-12 (3.98), big numeral, label, one supporting line. It
-      was three, not four, because a fourth would have had to be invented;
-      the founding year is a confirmed fourth, so the band takes the natural
-      shape. Inventing a statistic to balance a row is still exactly the
-      failure the prime law exists to stop. Any number that is true only on
-      the day it is written CARRIES THE DATE IT WAS TRUE.
+   3. STAT BAND directly under the hero, on the silver ground. THREE stats,
+      big numeral, label, one supporting line. Since 2026-10-12 the founding
+      year is the first (3.98). 3.98 took the band to four across; Greg's eye
+      ruled it out the same day (3.99), and the brands stat left, because the
+      brand strip makes it a same-page duplicate. Inventing a statistic to
+      balance a row is still exactly the failure the prime law exists to
+      stop. Any number that is true only on the day it is written CARRIES
+      THE DATE IT WAS TRUE.
 
    4. TYPE: Archivo Black for display, Source Sans 3 for everything read at
       length. Both self-hosted, both SIL OFL 1.1, licence texts beside them
@@ -1459,7 +1460,7 @@ section { padding: var(--pad) 0; }
 @media (min-width: 600px) { .proofstrip { display: none; } }
 
 /* ---------- The stat band, worn as jewellery ----------
-   SAME .statband CLASS ON PURPOSE: the same four stats in the same
+   SAME .statband CLASS ON PURPOSE: the same three stats in the same
    type as a service page's band. .statcard only changes where the white
    sits.
 
@@ -2581,43 +2582,32 @@ footer.site a { color: var(--silver); }
    only moving part on the page and it moves because a person opened it.
    =========================================================================== */
 
-/* ---------- Stat band: four numbers, directly under the hero ----------
-   FOUR, SINCE 2026-10-12, a dated amendment on Greg's ruling
-   (proposed-changes.md 3.98). It was THREE, NEVER FOUR: a four-across row
-   is the natural shape and there was no fourth honest number, so the row
-   was three and one of the three a word. The founding year is that fourth
-   number, confirmed (the shop's own Business Profile publishes it), so the
-   band takes the shape it was always going to. The prime law is unchanged:
-   a number that is not confirmed never balances a row, and a FIFTH needs
-   its own ruling.
+/* ---------- Stat band: three numbers, directly under the hero ----------
+   THREE, AGAIN, Greg's eye ruling of 2026-10-12 (proposed-changes.md 3.99).
+   It was THREE, NEVER FOUR while a fourth number would have had to be
+   invented. 3.98 found a confirmed fourth, the founding year, and took the
+   band four across; built and measured, it was ruled out by eye the same
+   day, the odometer's pattern (3.85). The brands stat left rather than the
+   year, because the brand strip already says it on the same page. So the
+   third honest number replaced the word-stat era's arithmetic: one stat is
+   still a word, and none was invented. A FOURTH needs its own ruling.
    ANY NUMBER TRUE ONLY ON THE DAY IT WAS WRITTEN CARRIES ITS DATE, in .stat-s.
-   The review count is the one on this page.
-   THE GEOMETRY, MEASURED (3.98). One column under 600px, as before. Two by
-   two from 600px. Four across only from 1100px, and there the numeral is
-   3rem, not the band's clamp: the band's word, at 4.28 times its own font
-   size wide, has to fit a quarter of home's 1008px card less the padding,
-   and at the band's 75px it would need 322px of a 216px column. */
+   The review count is the one on this page. */
 /* THE HIGHLIGHT GROUND. This is the one band on the site that is --white
    rather than --silver. See the palette note for why 1.12 is the point. */
 /* ANYTHING ADDED HERE HAS TO BE ANSWERED in .statband.statcard above, which
    is the home page wearing this band as a floating card. */
 .statband { background: var(--white); border-bottom: 1px solid var(--rule); }
 .stats { display: grid; gap: 34px; }
-@media (min-width: 600px) { .stats { grid-template-columns: repeat(2, 1fr); column-gap: 0; } }
-@media (min-width: 1100px) { .stats { grid-template-columns: repeat(4, 1fr); row-gap: 0; } }
+@media (min-width: 820px) { .stats { grid-template-columns: repeat(3, 1fr); gap: 0; } }
 /* CENTRED AT EVERY WIDTH, numeral, label and supporting line together,
    including the stacked phone layout. The padding is SYMMETRIC on purpose:
    the old rule put 44px on one side only, which would pull centred text
    off its own centre by 22px and look like a mistake nobody could find. */
 .stat { padding: 8px 0; text-align: center; }
-@media (min-width: 600px) {
+@media (min-width: 820px) {
   .stat { padding: 8px 22px; }
-  .stat:nth-child(even) { border-left: 1px solid var(--rule); }
-}
-@media (min-width: 1100px) {
-  .stat { padding: 8px 18px; }
   .stat + .stat { border-left: 1px solid var(--rule); }
-  .stats .stat-n { font-size: 3rem; }
 }
 /* .fig-n, 3.68: .stat-n's look for a figure that is not one of the band's
    own. The counting effect it was split off from is withdrawn (3.85);
@@ -2627,14 +2617,11 @@ footer.site a { color: var(--silver); }
   font-size: clamp(3.1rem, 6.4vw, 4.7rem); line-height: .88;
   letter-spacing: -.025em; color: var(--ox);
 }
-/* BALANCED (3.98): four across, the brands label takes two lines, and
-   unbalanced it broke at its own hyphen, "factory-" over "certified".
-   Balanced, it breaks at the comma. A one-line label is untouched. */
-.stat-l { display: block; margin-top: 15px; font-size: 1.06rem; font-weight: 700; text-wrap: balance; }
+.stat-l { display: block; margin-top: 15px; font-size: 1.06rem; font-weight: 700; }
 .stat-s { display: block; margin-top: 7px; font-size: .95rem; color: var(--ink-2); }
 /* THE FIGURES AS CARDS, added 2026-09-29, proposed-changes.md 3.67: the
-   town page's proof section carries three of the stat band's figures in
-   cards (the founding stat stays off it, 3.98), beside three claim cards, so Lifetime, the review count and 12
+   town page's proof section carries three figures in cards (two of them
+   the band's, and the brands figure the band carried until 3.99), beside three claim cards, so Lifetime, the review count and 12
    still land at a glance. Centred, as .stat is. The band's size would run
    "Lifetime" about 320px wide into a card with about 297px inside it at
    1440, so a card sets its own; the line-height stays the band's .88em. */

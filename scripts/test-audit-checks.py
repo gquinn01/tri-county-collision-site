@@ -2296,20 +2296,27 @@ def main():
             check(f"     and the sync repairs it: {label}", sa.synced(mutant) == home)
 
     print()
-    print("46. Since 1980: the band's four stats, foundingDate, and the location-fusion guard (3.98)")
+    print("46. Since 1980: the band's three stats, foundingDate, and the location-fusion guard (3.98, 3.99)")
     band_pages = ("index.html", "collision-repair/index.html", "auto-glass-repair-replacement/index.html",
                   "paintless-dent-repair/index.html", "commercial-collision-repair/index.html",
                   "adas-calibration/index.html")
     for rel in band_pages:
         h = open(os.path.join(root, "docs", rel), encoding="utf-8").read()
-        band = re.search(r'(?s)<section class="statband[^"]*" id="proof".*?</section>', h).group(0)
+        sec = re.search(r'(?s)<section class="statband[^"]*" id="proof".*?</section>', h)
+        # The band and the comment that heads it: 3.99 rules no brand list
+        # may remain in either.
+        band = h[h.rindex("<!--", 0, sec.start()):sec.end()]
         nums = re.findall(r'<span class="stat-n">([^<]*)</span>', band)
-        check(f"     {rel}: four stats, the founding year first",
-              len(nums) == 4 and nums[0] == str(audit.FOUNDING_YEAR), nums)
+        check(f"     {rel}: three stats, the year, Lifetime, the reviews (3.99)",
+              nums == [str(audit.FOUNDING_YEAR), "Lifetime", str(audit.REVIEW_COUNT)], nums)
+        check(f"     {rel}: no brand named anywhere in the band, comments included",
+              not any(b in band for b in audit.BRANDS) and "brands," not in band, None)
     town = open(os.path.join(root, "docs", "areas-served-collision-repair-jamison-pa", "index.html"),
                 encoding="utf-8").read()
     check("     the town proof cards stay three figures, without the founding stat",
           town.count("card-figure") == 6 and f">{audit.FOUNDING_YEAR}<" not in town)
+    check("     and they keep the brands figure the band gave up (3.99)",
+          f'<span class="stat-n">{len(audit.BRANDS)}</span>' in town)
     for text, want_n, want_bad in (
             ("<p>Tri County Collision Center, family-owned since 1980, is a shop on Jaymor Rd.</p>", 1, False),
             ('<div class="stat"><span class="stat-n">1980</span><span class="stat-l">Family owned since</span></div>', 1, False),

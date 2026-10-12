@@ -527,17 +527,18 @@ the edge**: it is welded to the glass, and only the column inside it moves
 with the grid. `width = --edge + --col + --pad-r`, and because the width
 contains `--edge`, the panel is 792px at 1440 and 1032px at 1920.
 
-**3. A stat band sits directly under the hero, on paper. Four stats since
-2026-10-12** (Greg's ruling, `proposed-changes.md` 3.98). Big numeral, label,
-one supporting line. **Three was the rule, not the leftover**, while a
-four-across row was the natural shape and there was no fourth honest number.
-The founding year (`FOUNDING_DATE` in `scripts/audit.py`, "1980 / Family
-owned since") is that number, so the band goes four across from 1100px, two
-by two from 600px, stacked below, with a 3rem numeral when four across (the
-word stat has to fit a quarter of home's card). A fifth needs its own
-ruling. One stat is still a word. **The town pages' proof cards stay three
-figures over three claims**, without the founding stat, until a ruling adds
-it. Inventing a statistic to balance a
+**3. A stat band sits directly under the hero, on paper. Three stats.**
+Big numeral, label, one supporting line. **Since 2026-10-12 they are the
+founding year, the lifetime warranty and the review count, in that order**
+(`proposed-changes.md` 3.98, 3.99). Three was the rule while a fourth honest
+number did not exist. 3.98 found one, `FOUNDING_DATE`, and took the band four
+across; **built and measured, it was ruled out by Greg's eye the same day
+(3.99)**, the odometer's pattern, and superseded rather than argued. The
+brands stat left rather than the year, because the brand strip makes it a
+same-page duplicate; the brand fact stays everywhere else (the strip, the
+collision and commercial pages, the ADAS FAQ, the schema, the town cards).
+So the third honest number replaced the word-stat era's arithmetic, one stat
+is still a word, and a fourth needs its own ruling. Inventing a statistic to balance a
 layout is the exact failure the prime law exists to stop. **Any number that is
 true only on the day it is written carries the date it was true**, in the
 supporting line. On the collision page that is the review count.
