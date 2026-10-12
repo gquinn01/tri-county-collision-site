@@ -2161,15 +2161,21 @@ def main():
     priv = open(priv_path, encoding="utf-8").read()
     pp, pf = audit.privacy_date_findings(priv)
     check("     the shipped policy's visible date is its dateModified", pp and not pf, pf)
+    # The mutants read the shipped date off the page, so moving it (3.96's
+    # amendment did) cannot turn a mutation into a no-op that passes.
+    iso = re.search(r'<time datetime="([0-9-]{10})">', priv).group(1)
+    words = re.search(r'<time datetime="[0-9-]{10}">([^<]*)</time>', priv).group(1)
+    schema_moved = priv.replace(f'"dateModified": "{iso}"', '"dateModified": "2026-09-30"')
     for label, mutant in (
-            ("a schema date that moved alone", priv.replace('"dateModified": "2026-10-11"', '"dateModified": "2026-10-12"')),
-            ("a visible date that moved alone", priv.replace('<time datetime="2026-10-11">', '<time datetime="2026-10-12">')),
-            ("words that name another day", priv.replace(">October 11, 2026</time>", ">October 12, 2026</time>")),
+            ("a schema date that moved alone", schema_moved),
+            ("a visible date that moved alone", priv.replace(f'<time datetime="{iso}">', '<time datetime="2026-09-30">')),
+            ("words that name another day", priv.replace(f">{words}</time>", ">September 30, 2026</time>")),
             ("no visible date", re.sub(r"<p>Updated <time[^>]*>[^<]*</time></p>", "", priv)),
-            ("two visible dates", priv.replace("</main>", '<p>Updated <time datetime="2026-10-11">October 11, 2026</time></p></main>'))):
+            ("two visible dates", priv.replace("</main>", '<p>Updated <time datetime="2026-09-30">September 30, 2026</time></p></main>'))):
+        check(f"     the mutant differs: {label}", mutant != priv)
         pp, pf = audit.privacy_date_findings(mutant)
         check(f"     caught: {label}", bool(pf) and not pp, (pp, pf))
-    audit.load = lambda _src, _h=priv.replace('"dateModified": "2026-10-11"', '"dateModified": "2026-10-12"'): _h
+    audit.load = lambda _src, _h=schema_moved: _h
     passes, warns, fails, notes, kind = audit.audit(priv_path, coverage=None)
     check("     and the page itself fails on it, as a critical", any("visible date" in x for x in fails), fails)
     audit.load = lambda _src, _h=priv.replace(priv_meta, ""): _h

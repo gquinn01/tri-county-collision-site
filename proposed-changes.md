@@ -16214,6 +16214,35 @@ chosen.
   ruling's "37" counted the pages before it. No other warning.
 - No em dash added.
 
+#### Amendment, 2026-10-12: call recording, Greg's ruling
+
+**CallRail call recording is ON, and the pre-call announcement is
+confirmed live by Greg's own test call** ("This call will be recorded for
+quality assurance and training purposes"). The policy now says so, his
+words verbatim:
+
+| Where | Before | After |
+|---|---|---|
+| privacy, H2 | Call tracking | Call tracking and recording |
+| privacy, its paragraph | Calls placed to numbers shown on this site may pass through a call tracking service, which logs the number you called from, when you called, and how long the call lasted. It helps us know which of our listings people find. | Calls placed to numbers shown on this site may pass through a call tracking service, which logs the number you called from, when you called, and how long the call lasted. Calls are recorded for quality assurance and training, and a notice at the start of the call tells you so. This helps us know which of our listings people find and how we handled your call. |
+| privacy, date line and WebPage dateModified | Updated October 11, 2026 (2026-10-11) | Updated October 12, 2026 (2026-10-12) |
+| llms.txt, the privacy entry | the analytics, call tracking, Google Maps embed and linked services | the analytics, call tracking and recording, Google Maps embed and linked services |
+
+- **The date moved per the 3.94 policy**, the visible line and the schema
+  together, which the privacy kind's date check enforces; `sitemap.xml`
+  rebuilt, privacy's `lastmod` 2026-10-12. No other page changed words.
+- **The llms.txt entry is the one change outside the ruling's text**: it
+  summarises the page, and a summary listing "call tracking" alone would
+  now understate it. Same words as the new heading.
+- **Tense:** recording is live today on the shop's tracked lines, by Greg's
+  test, so this sentence is present tense as plain fact; the analytics and
+  the on-page number swap stay present tense by the 3.96 ruling.
+- **The suite's date mutants were hard-coded to 2026-10-11** and would have
+  become silent no-ops once the page moved. They now read the shipped date
+  off the page, and each mutant is checked to differ from the page.
+- The lawyer bundle already holds `/privacy/`; recording consent is one
+  more line for that glance.
+
 ## 4. The claims list
 
 Every claim the migrated page carries. All of them come from the live site, so

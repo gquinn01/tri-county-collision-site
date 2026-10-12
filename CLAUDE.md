@@ -873,6 +873,9 @@ life starts that day, and staging wears the banner meanwhile (3.96). **If
 either tag does not ship at cutover, the policy changes in the same
 commit**, and its visible date and `dateModified` move together, which the
 audit enforces.
+Call recording is the exception that needs no cutover: it is on today,
+the pre-call announcement confirmed by Greg's test call, and the page has
+said so since 2026-10-12 (3.96 amendment).
 
 ## Staging ships noindexed on purpose
 
