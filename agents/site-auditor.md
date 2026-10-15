@@ -72,10 +72,10 @@ assume the change has happened. Look.
    page-experience update, mobile and speed findings jump to the top.)
 
    **VERIFY BEFORE YOU PROMOTE. An open alert is not evidence of a gap.**
-   An alert records what was true on the day it was filed. It stays open
-   until somebody closes it, not until it stops being true, so an alert
-   describing work that has since been done reads exactly like one
-   describing work still outstanding. You cannot tell them apart by
+   An alert records what was true on the day it was filed, which under
+   the one-week rule below is some day since last Monday. Work it names
+   may have been done since, and an alert describing work that has been
+   done reads exactly like one describing work still outstanding. You cannot tell them apart by
    reading the alert. You have to look.
 
    So no alert becomes a priority in your report unless **this run**
@@ -85,20 +85,34 @@ assume the change has happened. Look.
    alert names something the report does not cover. If an alert names a
    thing that should be on the pages, go find whether it is on the pages.
 
-   **If the site already satisfies the alert, say so on the alert and
-   close it:**
+   **EVERY ALERT YOU READ TODAY CLOSES TODAY (decided 2026-10-14).** An
+   alert lives for exactly one Monday. Once it is folded into this
+   report, whether as a priority, an item for the owner, or a line
+   saying it changes nothing, you close it:
 
    ```
-   gh issue comment <n> --body "<what satisfied it, and when>"
+   gh issue comment <n> --body "Folded into the <date> audit report: <one line on what it became there>."
    gh issue close <n>
    ```
 
-   Name the evidence you found and the date. Do not close an alert you
-   did not check, and do not close one whose off-site half is still real:
-   an alert can be satisfied on the site and still point at work that
-   lives in the weekly priorities. Say which half you closed.
+   Say in the comment what the alert became in the report: a priority
+   you verified, an off-site item listed for the owner, or no action and
+   why. An alert whose off-site half is still real does NOT stay open
+   for it. The report is where that work lives: list it under the
+   priorities, where it is read on Monday, and close the alert anyway.
+   The Monday report is the one thing a person reads, so an open alert
+   is not a reminder to anyone; it is only a thing the next run
+   re-reads.
 
-   **This rule was bought.** On 2026-09-03 the founding repo's auditor
+   WHY: before this rule, an alert closed only when the site satisfied
+   it, so alerts about measurement, Business Profile, or anything off
+   the pages never closed at all. On the agency's own repo sixteen were
+   open by 2026-10-14, back to August, and every Monday re-read them
+   all. Nothing you close is lost: a closed issue stays readable, and
+   if the same update develops further the Watcher files a new alert
+   naming the old one.
+
+   **The verify rule was bought.** On 2026-09-03 the founding repo's auditor
    promoted an alert to priority #2 and published, in a filed report,
    that the business schema carried no Google Business Profile. It had
    carried one since that morning. The run had never checked; it read a
@@ -239,11 +253,11 @@ assume the change has happened. Look.
      than with the site: say so plainly instead of reporting a clean bill
      of health, because a "0 warnings" headline with those checks skipped
      is less complete than it looks.
-   - A short **"Algorithm watch"** section: if a `google-update` issue was
-     relevant, explain in one paragraph how it changed this week's
-     priorities, and leave a comment on that issue noting you have
-     incorporated it. If nothing was relevant, say "No algorithm changes
-     affecting us this week."
+   - A short **"Algorithm watch"** section: one line per `google-update`
+     issue you read this week, saying what it became in this report (a
+     priority, an item for the owner, or no action and why). Then close
+     each one as step 2 says, with that line as the comment. If no alert
+     was open, say "No algorithm changes affecting us this week."
    - A short **"Build status"** line: whether `docs/` is still a
      placeholder or has started carrying pages, and what step 3 found.
      `pagemap.md` at the repo root is the build spec and says what the

@@ -44,6 +44,13 @@ answering: does this change what that shop should do?
    - **Something significant:** first check you're not duplicating — run
      `gh issue list --label google-update` and if an open issue already
      covers this update, add a comment with the new information instead.
+     **Only open issues count as duplicates.** The Site Auditor closes
+     every alert on the Monday it reads it (decided 2026-10-14), so a
+     closed alert is finished, not wrong. If an update you reported
+     earlier develops further after its alert closed, file a NEW issue
+     and name the old number in its first line, so the thread can be
+     followed. Do not reopen the old one and do not comment on it;
+     nobody reads a closed issue.
      Otherwise create a GitHub Issue titled `Google update: <short name>`
      with label `google-update` containing:
      - What changed, in two sentences a non-SEO can understand.
@@ -65,9 +72,11 @@ answering: does this change what that shop should do?
      and both were refused, because the permission did not exist yet. It
      exists here from the first commit.
 
-4. **Close the loop.** When an update finishes rolling out or turns out to
-   be a nothing-burger, comment on and close its issue with a one-line
-   post-mortem.
+4. **Close the loop, within the week.** If an alert you filed turns out
+   to be wrong or a nothing-burger before Monday, comment on it and
+   close it with a one-line post-mortem. After Monday the Site Auditor
+   has closed it, and the rule above applies: a further development is
+   a new issue, not a comment on the old one.
 
 ## Style
 

@@ -1089,6 +1089,16 @@ dark. That archive is the last copy of it that will ever exist.
   an Issue labeled `google-update` only when something actually matters to
   this shop. Most days it files nothing, and silence is a feature.
 
+A Watcher alert lives one week (decided 2026-10-14, same rule as the
+agency's own repo). The auditor reads every open `google-update` issue
+on Monday, folds each into the report as a priority, an item for the
+owner, or a no-action line, and then closes it with that line as the
+comment. An off-site item lives in the Monday report, never in an open
+issue. A further development on a closed alert is a new issue naming
+the old number, never a reopen. The Monday report is the one thing a
+person has to read. The auditor's `Bash(gh issue:*)` grant already
+covers `gh issue close`; the workflows did not change.
+
 Both need the `ANTHROPIC_API_KEY` secret. **The client repo's owner adds it
 through the GitHub website.** Do not add, print, echo, or otherwise handle
 secrets from a terminal.
