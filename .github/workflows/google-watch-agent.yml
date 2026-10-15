@@ -2,7 +2,18 @@ name: "Tri County Collision Center: Google Watcher (daily)"
 
 on:
   schedule:
-    - cron: "0 11 * * *"   # Every day, 11:00 UTC (7:00am ET)
+    # Every day at 11:19 UTC: 7:19am Eastern in summer, 6:19am in winter.
+    # GitHub's clock is UTC and does not follow daylight time.
+    #
+    # NOT ON THE HOUR, on purpose (changed 2026-10-15, as the agency's own
+    # repo was on 2026-10-12). GitHub delays scheduled runs at busy times
+    # and names the start of every hour as one of them. Its advice is to
+    # pick a different minute, and that is all this is. Do not tidy it
+    # back to :00.
+    # This ran at "0 11" (7:00am Eastern) and started five to nine hours
+    # late every day: 1:16pm on Oct 9, 12:05pm, 12:30pm, 4:05pm on Oct
+    # 12, 1:55pm, and 11:41am on Oct 14.
+    - cron: "19 11 * * *"
   workflow_dispatch: {}     # Manual "Run workflow" button for testing
 
 permissions:
