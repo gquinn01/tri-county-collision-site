@@ -2,7 +2,18 @@ name: "Tri County Collision Center: Site Auditor (weekly)"
 
 on:
   schedule:
-    - cron: "0 12 * * 1"   # Every Monday, 12:00 UTC (8:00am ET)
+    # Every Monday at 12:41 UTC: 8:41am Eastern in summer, 7:41am in winter.
+    # GitHub's clock is UTC and does not follow daylight time.
+    #
+    # NOT ON THE HOUR, on purpose (changed 2026-10-15, as the agency's own
+    # repo was on 2026-10-12). GitHub delays scheduled runs at busy times
+    # and names the start of every hour as one of them. Its advice is to
+    # pick a different minute, and that is all this is. Do not tidy it
+    # back to :00.
+    # This ran at "0 12" (8:00am Eastern) and started hours late every
+    # week: 1:15pm on Sept 21, then 2:48pm, 3:48pm, and 4:28pm on Oct 12.
+    # The Monday report is the product, and it was landing mid-afternoon.
+    - cron: "41 12 * * 1"
   workflow_dispatch: {}     # Adds a manual "Run workflow" button so you can test anytime
 
 permissions:

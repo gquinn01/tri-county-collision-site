@@ -1082,12 +1082,17 @@ dark. That archive is the last copy of it that will ever exist.
 
 ## The two agents
 
-- **Site Auditor**, Mondays 12:00 UTC. Scans the site, files the weekly
+- **Site Auditor**, Mondays 12:41 UTC. Scans the site, files the weekly
   report as a GitHub Issue labeled `audit-report`. That report is the
   monitoring product the retainer buys, so it ships every week.
-- **Google Watcher**, daily 11:00 UTC. Reads the SEO news sweep and files
+- **Google Watcher**, daily 11:19 UTC. Reads the SEO news sweep and files
   an Issue labeled `google-update` only when something actually matters to
   this shop. Most days it files nothing, and silence is a feature.
+
+Neither runs on the hour (changed 2026-10-15). GitHub delays scheduled
+runs at the start of every hour, and the Monday report was landing
+mid-afternoon; the workflow files carry the measured delays. Do not
+tidy the minutes back to :00.
 
 A Watcher alert lives one week (decided 2026-10-14, same rule as the
 agency's own repo). The auditor reads every open `google-update` issue
